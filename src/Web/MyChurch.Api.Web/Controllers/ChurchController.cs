@@ -24,5 +24,19 @@ namespace MyChurch.Api.Web.Controllers
             var mediator = await Mediator.Send(command);
             return Ok(mediator);
         }
+        
+        /// <summary>
+        /// Update a Church
+        /// </summary>
+        /// <response code="200">Success: Church Updated</response>
+        /// <response code="400">Failure: Invalid Requet</response>
+        /// <response code="401">Failure: error</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        public async Task<IActionResult> UpdateChurch(CreateChurchCommand command)
+        {
+            var mediator = await Mediator.Send(command);
+            return Ok(mediator);
+        }
     }
 }

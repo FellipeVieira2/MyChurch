@@ -1,4 +1,6 @@
 ﻿
+using MyChurch.Domain.Entities;
+
 namespace MyChurch.Application.Dtos
 {
     public class SubscriptionDto
@@ -6,7 +8,7 @@ namespace MyChurch.Application.Dtos
         public int Id { get; set; }
         public int ChurchId { get; set; }
         public ChurchDto Church { get; set; }
-        public int PlanId { get; set; }
+        public int? PlanId { get; set; }
         public PlanDto Plan { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -14,5 +16,18 @@ namespace MyChurch.Application.Dtos
 
         // Pagamentos vinculados à assinatura  
         public ICollection<PaymentDto> Payments { get; set; } = new List<PaymentDto>();
+
+        public static SubscriptionDto New(Subscription subscription)
+        {
+            return new SubscriptionDto
+            {
+                Id = subscription.Id,
+                ChurchId = subscription.ChurchId,
+                Plan = PlanDto.New(subscription.Plan),
+                StartDate = subscription.StartDate,
+                EndDate = subscription.EndDate,   
+                Payments = subscription.Payments.Select(PaymentDto.New).ToList()
+            };
+        }
     }
 }

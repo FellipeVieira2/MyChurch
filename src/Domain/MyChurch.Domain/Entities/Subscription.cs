@@ -17,6 +17,8 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive => EndDate > DateTime.UtcNow;
+        public DateTime Created { get; set; }
+        public DateTime? Updated { get; set; }
 
         // Pagamentos vinculados à assinatura  
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
