@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyChurch.Api.Web</name>
+    </assembly>
+    <members>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
+            <summary>
+            Create a new Church
+            </summary>
+            <response code="200">Success: Church Created</response>
+            <response code="400">Failure: Invalid Requet</response>
+            <response code="401">Failure: error</response>
+        </member>
+    </members>
+</doc>

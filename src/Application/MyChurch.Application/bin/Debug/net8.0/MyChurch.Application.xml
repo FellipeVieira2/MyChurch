@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyChurch.Application</name>
+    </assembly>
+    <members>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
+            <summary>Name</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Street">
+            <summary>Street</summary>
+            <example>Piracicaba</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.City">
+            <summary>City</summary>
+            <example>Araras</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.State">
+            <summary>State</summary>
+            <example>SP</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.ZipCode">
+            <summary>ZipCode</summary>
+            <example>13609090</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Country">
+            <summary>Country</summary>
+            <example>Brasil</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Neighborhood">
+            <summary>Neighborhood</summary>
+            <example>São João</example>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
+    "Method": "CreateChurch",
+    "RelativePath": "Church",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

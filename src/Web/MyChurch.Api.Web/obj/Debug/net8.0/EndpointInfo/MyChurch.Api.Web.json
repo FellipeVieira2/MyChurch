@@ -1,0 +1,139 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API MyChurch",
+    "description": "Api To Manage MyChurch."
+  },
+  "paths": {
+    "/Church": {
+      "post": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Create a new Church",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: Church Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failure: Invalid Requet"
+          },
+          "401": {
+            "description": "Failure: error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddressChurch": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Street",
+            "nullable": true,
+            "example": "Piracicaba"
+          },
+          "city": {
+            "type": "string",
+            "description": "City",
+            "nullable": true,
+            "example": "Araras"
+          },
+          "state": {
+            "type": "string",
+            "description": "State",
+            "nullable": true,
+            "example": "SP"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "ZipCode",
+            "nullable": true,
+            "example": "13609090"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country",
+            "nullable": true,
+            "example": "Brasil"
+          },
+          "neighborhood": {
+            "type": "string",
+            "description": "Neighborhood",
+            "nullable": true,
+            "example": "São João"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateChurchCommand": {
+        "required": [
+          "address",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Name",
+            "example": "Igreja Pentecostal"
+          },
+          "phone": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Phone",
+            "example": "19987250777"
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressChurch"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

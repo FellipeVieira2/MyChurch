@@ -1,0 +1,13 @@
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.deps.json
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.pdb
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.csproj.AssemblyReference.cache
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.AssemblyInfoInputs.cache
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.AssemblyInfo.cs
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.sourcelink.json
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\refint\MyChurch.Domain.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.pdb
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\ref\MyChurch.Domain.dll
