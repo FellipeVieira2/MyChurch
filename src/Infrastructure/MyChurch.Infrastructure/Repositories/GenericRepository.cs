@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Domain.Contracts;
-using MyChurch.Infrastructure.Context;
 
 namespace MyChurch.Infrastructure.Repositories
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MyChurch.Infrastructure.Context
+namespace MyChurch.Infrastructure
 {
     public class MyChurchDbContext : DbContext
     {

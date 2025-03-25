@@ -21,6 +21,7 @@
         public string Neighborhood { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
+        public Church Church { get; set; }
 
         public void Update(string? street, string? city, string? zipCode, string? country, string? neighborhood, string? state)
         {

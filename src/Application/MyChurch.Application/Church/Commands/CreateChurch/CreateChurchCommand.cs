@@ -13,7 +13,12 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
         /// <summary>Phone</summary>
         /// <example>19987250777</example>
         public string Phone { get; set; }
+        /// <summary>PlanId</summary>
+        /// <example>1</example>
         public int PlanId { get; set; }
+        /// <summary>Logo</summary>
+        /// <example>Base64</example>
+        public int Logo { get; set; }
         public AddressChurch Address { get; set; }
 
         public class AddressChurch

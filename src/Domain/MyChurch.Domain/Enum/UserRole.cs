@@ -8,6 +8,7 @@
         Leader,
         Worker,
         Deacon,
-        Elder
+        Elder,
+        Visitor
     }
 }

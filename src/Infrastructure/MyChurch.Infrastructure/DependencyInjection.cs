@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyChurch.Domain.Contracts;
-using MyChurch.Infrastructure.Context;
 using MyChurch.Infrastructure.Repositories;
 
 namespace MyChurch.Infrastructure

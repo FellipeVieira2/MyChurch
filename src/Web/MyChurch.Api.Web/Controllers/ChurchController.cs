@@ -1,9 +1,5 @@
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace MyChurch.Api.Web.Controllers
 {

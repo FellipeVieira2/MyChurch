@@ -14,12 +14,14 @@ namespace MyChurch.Domain.Entities
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
         public bool IsBaptized { get; set; }
-        public DateTime BaptizedDate { get; set; }
+        public DateTime? BaptizedDate { get; set; }
         public bool IsTither { get; set; }
         public int ChurchId { get; set; }
         public Church Church { get; set; }
         public UserRole Role { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
+        public ICollection<Donation> Donations { get; set; }
+        public ICollection<Event> Events { get; set; }
     }
 }

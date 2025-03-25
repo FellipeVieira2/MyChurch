@@ -12,6 +12,14 @@
             <summary>Phone</summary>
             <example>19987250777</example>
         </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.PlanId">
+            <summary>PlanId</summary>
+            <example>1</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Logo">
+            <summary>Logo</summary>
+            <example>Base64</example>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Street">
             <summary>Street</summary>
             <example>Piracicaba</example>
@@ -35,6 +43,82 @@
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Neighborhood">
             <summary>Neighborhood</summary>
             <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
+            <summary>Name</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Street">
+            <summary>Street</summary>
+            <example>Piracicaba</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.City">
+            <summary>City</summary>
+            <example>Araras</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.State">
+            <summary>State</summary>
+            <example>SP</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.ZipCode">
+            <summary>ZipCode</summary>
+            <example>13609090</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Country">
+            <summary>Country</summary>
+            <example>Brasil</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Neighborhood">
+            <summary>Neighborhood</summary>
+            <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Name">
+            <summary>Name</summary>
+            <example>Fellipe</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Email">
+            <summary>Email</summary>
+            <example>fvsouza623@gmail.com</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Document">
+            <summary>Document</summary>
+            <example>45570179836</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Photo">
+            <summary>Photo</summary>
+            <example>base64</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BirthDate">
+            <summary>BirthDate</summary>
+            <example>14/01/2000</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsBaptized">
+            <summary>IsBaptized</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BaptizedDate">
+            <summary>BaptizedDate</summary>
+            <example>14/01/2000</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsTither">
+            <summary>IsTither</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.ChurchId">
+            <summary>ChurchId</summary>
+            <example>1</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Role">
+            <summary>Role</summary>
+            <example>Worker</example>
         </member>
     </members>
 </doc>

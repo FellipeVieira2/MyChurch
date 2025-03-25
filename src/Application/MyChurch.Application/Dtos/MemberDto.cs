@@ -23,7 +23,7 @@ namespace MyChurch.Application.Dtos
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
-        public static MemberDto New(Member member)
+        public static MemberDto New(Domain.Entities.Member member)
         {
             return new MemberDto
             {

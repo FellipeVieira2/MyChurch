@@ -1,22 +1,33 @@
 ﻿namespace MyChurch.Domain.Entities
 {
-    public class Church(string name, Address address, string phone, Subscription subscription, string? logo)
+    public class Church
     {
+        public Church()
+        {
+        }
+        public Church(string name, string phone, Address address, Subscription subscription)
+        {
+            Name = name;
+            Phone = phone;
+            Address = address;
+            Subscription = subscription;
+            Created = DateTime.UtcNow;
+        }
         public int Id { get; set; }
-        public string Name { get; set; } = name;
-        public string? Logo { get; set; } = logo;
+        public string Name { get; set; }
+        public string? LogoFileName { get; set; } 
         public string? Description { get; set; }
         public int AddressId { get; set; }
-        public Address Address { get; set; } = address;
-        public string Phone { get; set; } = phone;
+        public Address Address { get; set; } 
+        public string Phone { get; set; } 
         public ICollection<Member>? Members { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
+        public ICollection<Event> Events { get; set; }
 
         // Assinatura da igreja  
         public int SubscriptionId { get; set; }
-        public Subscription Subscription { get; set; } = subscription;
-
+        public Subscription Subscription { get; set; }
         public void Update(string? name, string? phone)
         {
             Name = name ?? Name;

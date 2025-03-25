@@ -12,5 +12,21 @@
             <response code="400">Failure: Invalid Requet</response>
             <response code="401">Failure: error</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
+            <summary>
+            Update a Church
+            </summary>
+            <response code="200">Success: Church Updated</response>
+            <response code="400">Failure: Invalid Requet</response>
+            <response code="401">Failure: error</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
+            <summary>
+            Create a new Member
+            </summary>
+            <response code="200">Success: Member Created</response>
+            <response code="400">Failure: Invalid Requet</response>
+            <response code="401">Failure: error</response>
+        </member>
     </members>
 </doc>

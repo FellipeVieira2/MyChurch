@@ -1,6 +1,5 @@
 ﻿using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
-using MyChurch.Infrastructure.Context;
 
 namespace MyChurch.Infrastructure.Repositories
 {
