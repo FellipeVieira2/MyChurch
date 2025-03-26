@@ -8,6 +8,10 @@
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>
         </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Description">
+            <summary>Description</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Phone">
             <summary>Phone</summary>
             <example>19987250777</example>
@@ -20,27 +24,27 @@
             <summary>Logo</summary>
             <example>Base64</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Street">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Street">
             <summary>Street</summary>
             <example>Piracicaba</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.City">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.City">
             <summary>City</summary>
             <example>Araras</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.State">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.State">
             <summary>State</summary>
             <example>SP</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.ZipCode">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.ZipCode">
             <summary>ZipCode</summary>
             <example>13609090</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Country">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Country">
             <summary>Country</summary>
             <example>Brasil</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurch.Neighborhood">
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Neighborhood">
             <summary>Neighborhood</summary>
             <example>São João</example>
         </member>
@@ -98,7 +102,7 @@
         </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BirthDate">
             <summary>BirthDate</summary>
-            <example>14/01/2000</example>
+            <example>2023-10-14T00:00:00</example>
         </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsBaptized">
             <summary>IsBaptized</summary>
@@ -106,7 +110,7 @@
         </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BaptizedDate">
             <summary>BaptizedDate</summary>
-            <example>14/01/2000</example>
+            <example>2023-10-14T00:00:00</example>
         </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsTither">
             <summary>IsTither</summary>

@@ -8,7 +8,7 @@ using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.Church.Commands.UpdateChurch
 {
-    public class UpdateChurchCommand : IRequest<ChurchDto>
+    public class UpdateChurchCommand :JwtMemberDto, IRequest<ChurchDto>
     {
         [JsonIgnore]
         public int Id { get; set; }
@@ -45,39 +45,41 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
     }
     public class UpdateChurchCommandHandler : IRequestHandler<UpdateChurchCommand, ChurchDto>
     {
-        private readonly IUnitOfWork _repository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<UpdateChurchCommandHandler> _logger;
-        public UpdateChurchCommandHandler(IUnitOfWork repository, ILogger<UpdateChurchCommandHandler> logger)
+
+        public UpdateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateChurchCommandHandler> logger)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
         public async Task<ChurchDto> Handle(UpdateChurchCommand request, CancellationToken cancellationToken)
         {
-            var churchToUpdate = await _repository.Churchs.Query().Include(church => church.Address).FirstOrDefaultAsync(church => church.Id == request.Id);
-
-            if (churchToUpdate is null)
+            var member = await _unitOfWork.Members.Query().FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+            if (member == null || member.ChurchId != request.Id)
             {
-                ValidationException.ThrowException("Church", "This Church Id Does not Exist!");
+                _logger.LogWarning("User does not have permission to update this church.");
+                ValidationException.ThrowException("Update","You do not have permission to update this church.");
             }
 
-            churchToUpdate.Update(name: request.Name, phone: request.Phone);
-            if (request.Address is not null)
+            var church = await _unitOfWork.Churchs.Query().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+            if (church == null)
             {
-                churchToUpdate.Address.Update(
-                    street: request.Address.Street ?? null,
-                    city: request.Address.City ?? null,
-                    zipCode: request.Address.ZipCode ?? null,
-                    country: request.Address.Country ?? null,
-                    neighborhood: request.Address.Neighborhood ?? null,
-                    state: request.Address.State ?? null);
+                _logger.LogWarning("Church not found with ID: {Id}", request.Id);
+                ValidationException.ThrowException("Update", "Church not found.");
             }
 
-            _repository.Churchs.Update(churchToUpdate);
-            await _repository.CommitAsync();
+            church.Update(request.Name, request.Phone);
+            if (request.Address != null)
+            {
+                church.Address.Update(request.Address.Street, request.Address.City, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood, request.Address.State);
+            }
 
-            return ChurchDto.New(churchToUpdate);
+            _unitOfWork.Churchs.Update(church);
+            await _unitOfWork.CommitAsync();
+
+            return ChurchDto.New(church);
         }
     }
 }

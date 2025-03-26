@@ -36,6 +36,9 @@
             "projectReferences": {
               "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj": {
                 "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj"
+              },
+              "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj"
               }
             }
           }
@@ -75,6 +78,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.7.0, )"
             }
           },
           "imports": [
@@ -230,9 +237,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "EntityFramework": {
+            "AWSSDK.Extensions.NETCore.Setup": {
               "target": "Package",
-              "version": "[6.5.1, )"
+              "version": "[3.7.400, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.415.25, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -338,6 +349,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AWSSDK.Extensions.NETCore.Setup": {
+              "target": "Package",
+              "version": "[3.7.400, )"
+            },
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.0, )"

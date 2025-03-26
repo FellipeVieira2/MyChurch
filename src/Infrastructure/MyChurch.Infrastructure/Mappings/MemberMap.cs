@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyChurch.Domain.Entities;
-using MyChurch.Domain.Enum;
 
 namespace MyChurch.Infrastructure.Mappings
 {
@@ -30,13 +29,13 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(m => m.Email)
                 .HasColumnName("email")
                 .HasColumnType("varchar(200)")
-                .IsRequired();
+                .IsRequired(false);
 
             builder
                 .Property(m => m.Document)
                 .HasColumnName("document")
                 .HasColumnType("varchar(50)")
-                .IsRequired();
+                .IsRequired(false);
 
             builder
                 .Property(m => m.Photo)
@@ -48,13 +47,19 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(m => m.PasswordHash)
                 .HasColumnName("password_hash")
                 .HasColumnType("varchar(500)")
-                .IsRequired();
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.Password)
+                .HasColumnName("password")
+                .HasColumnType("varchar(500)")
+                .IsRequired(false);
 
             builder
                 .Property(m => m.Phone)
                 .HasColumnName("phone")
                 .HasColumnType("varchar(20)")
-                .IsRequired();
+                .IsRequired(false);
 
             builder
                 .Property(m => m.BirthDate)
@@ -66,6 +71,7 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(m => m.IsBaptized)
                 .HasColumnName("is_baptized")
                 .HasColumnType("boolean")
+                .HasDefaultValue(false)
                 .IsRequired();
 
             builder

@@ -10,6 +10,7 @@
             ZipCode = zipCode;
             Country = country;
             Neighborhood = neighborhood;
+            Created = DateTime.UtcNow;
         }
 
         public int Id { get; set; }

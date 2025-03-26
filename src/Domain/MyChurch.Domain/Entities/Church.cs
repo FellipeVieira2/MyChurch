@@ -5,12 +5,12 @@
         public Church()
         {
         }
-        public Church(string name, string phone, Address address, Subscription subscription)
+        public Church(string name, string phone, Address address, string description)
         {
             Name = name;
+            Description = description;
             Phone = phone;
             Address = address;
-            Subscription = subscription;
             Created = DateTime.UtcNow;
         }
         public int Id { get; set; }
@@ -26,12 +26,17 @@
         public ICollection<Event> Events { get; set; }
 
         // Assinatura da igreja  
-        public int SubscriptionId { get; set; }
         public Subscription Subscription { get; set; }
         public void Update(string? name, string? phone)
         {
             Name = name ?? Name;
             Phone = phone ?? Phone;
+            Updated = DateTime.UtcNow;
+        }
+
+        public void UpdateLogo(string logoFileName)
+        {
+            LogoFileName = logoFileName;
             Updated = DateTime.UtcNow;
         }
     }

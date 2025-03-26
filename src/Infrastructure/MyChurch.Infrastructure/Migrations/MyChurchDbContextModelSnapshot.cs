@@ -127,9 +127,6 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("phone");
 
-                    b.Property<int>("SubscriptionId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp")
                         .HasColumnName("updated");
@@ -230,17 +227,17 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnName("created");
 
                     b.Property<string>("Document")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("document");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("varchar(200)")
                         .HasColumnName("email");
 
                     b.Property<bool>("IsBaptized")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
+                        .HasDefaultValue(false)
                         .HasColumnName("is_baptized");
 
                     b.Property<bool>("IsTither")
@@ -252,13 +249,15 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(200)")
                         .HasColumnName("name");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("password");
+
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("varchar(500)")
                         .HasColumnName("password_hash");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("varchar(20)")
                         .HasColumnName("phone");
 

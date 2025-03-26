@@ -137,9 +137,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "EntityFramework": {
+            "AWSSDK.Extensions.NETCore.Setup": {
               "target": "Package",
-              "version": "[6.5.1, )"
+              "version": "[3.7.400, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.415.25, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

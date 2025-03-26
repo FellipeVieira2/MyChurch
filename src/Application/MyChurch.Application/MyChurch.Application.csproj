@@ -15,10 +15,12 @@
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\MyChurch.Domain\MyChurch.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MyChurch.Infrastructure\MyChurch.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

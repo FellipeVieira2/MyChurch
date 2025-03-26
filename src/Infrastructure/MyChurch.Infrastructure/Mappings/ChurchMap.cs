@@ -78,6 +78,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasForeignKey(x => x.ChurchId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder
+                .HasOne(x => x.Subscription)
+                .WithOne(x => x.Church)
+                .HasForeignKey<Subscription>(x => x.ChurchId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }
