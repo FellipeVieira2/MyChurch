@@ -9,8 +9,6 @@ namespace MyChurch.Application.Dtos
         public string Name { get; set; }
         public string Document { get; set; }
         public string? Email { get; set; }
-        public string? Password { get; set; }
-        public string? PasswordSalt { get; set; }
         public string? Phone { get; set; }
         public string? Photo { get; set; }
         public DateTime? BirthDate { get; set; }

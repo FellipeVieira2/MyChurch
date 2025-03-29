@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
 using MyChurch.Application.Church.Commands.UpdateChurch;
+using MyChurch.Application.Church.Queries.GetChurch;
 using MyChurch.Application.Dtos;
 
 namespace MyChurch.Api.Web.Controllers
@@ -36,6 +37,23 @@ namespace MyChurch.Api.Web.Controllers
             command.Id = id;
             var mediator = await Mediator.Send(command);
             return Ok(mediator);
+        }
+
+        /// <summary>
+        /// Update a Church
+        /// </summary>
+        /// <response code="200">Success: Returned Church</response>
+        /// <response code="400">Failure: Invalid Request</response>
+        /// <response code="401">Failure: Unauthorized</response>
+        [Authorize()]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChurchDto))]
+        public async Task<IActionResult> GetChurch([FromRoute] int id)
+        {
+            var command = AuthorizationRequestCreate<GetChurchByIdQuery>();
+                command.Id = id;
+            var church = await Mediator.Send(command);
+            return Ok(church);
         }
     }
 }

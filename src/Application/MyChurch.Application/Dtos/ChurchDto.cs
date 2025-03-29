@@ -8,6 +8,7 @@ namespace MyChurch.Application.Dtos
         public string Logo { get; set; }
         public AddressDto Address { get; set; }
         public string Phone { get; set; }
+        public string Description { get; set; }
         public ICollection<MemberDto> Members { get; set; } = new List<MemberDto>();
 
         // Assinatura da igreja  
@@ -21,7 +22,8 @@ namespace MyChurch.Application.Dtos
                 Address = AddressDto.New(church.Address),
                 Phone = church.Phone,
                 Members = church.Members.Select(MemberDto.New).ToList(),
-                Subscription = SubscriptionDto.New(church.Subscription)
+                Subscription = SubscriptionDto.New(church.Subscription),
+                Description = church.Description
             };
         }
     }

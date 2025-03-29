@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyChurch.Application.Church.Commands.CreateChurchCommand;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.CreateMember;
+using MyChurch.Application.Member.Queries.GetMemberById;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -33,6 +35,30 @@ namespace MyChurch.Api.Web.Controllers
             command.Hash = hash;
             await Mediator.Send(command);
             return NoContent();
+        }
+        /// <summary>
+        /// Get Member by ID
+        /// </summary>
+        /// <response code="200">Success: Member Retrieved</response>
+        /// <response code="400">Failure: Invalid Request</response>
+        /// <response code="401">Failure: Unauthorized</response>
+        /// <response code="404">Failure: Member Not Found</response>
+        [HttpGet("{id}")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetMember([FromRoute] int id)
+        {
+            var query = AuthorizationRequestCreate<GetMemberByIdQuery>();
+            query.Id = id;
+            var member = await Mediator.Send(query);
+
+            if (member == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(member);
         }
     }
 }

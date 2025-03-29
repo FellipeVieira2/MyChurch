@@ -20,6 +20,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
+            <summary>
+            Update a Church
+            </summary>
+            <response code="200">Success: Returned Church</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateMember(MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand)">
             <summary>
             Create a new Member
@@ -35,6 +43,15 @@
             <response code="204">Success: Password Activaded</response>
             <response code="400">Failure: Invalid Requet</response>
             <response code="401">Failure: error</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32)">
+            <summary>
+            Get Member by ID
+            </summary>
+            <response code="200">Success: Member Retrieved</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+            <response code="404">Failure: Member Not Found</response>
         </member>
     </members>
 </doc>
