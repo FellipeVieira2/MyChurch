@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -42,6 +43,15 @@ builder.Services.InjectApplication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
 builder.Services.AddControllersWithViews(options => options.Filters.Add<ApiExceptionFilterAttribute>());
+builder.Services.AddCors(delegate (CorsOptions options)
+{
+    options.AddPolicy("_myAllowSpecificOrigins", delegate (CorsPolicyBuilder policy)
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
 
 // Configurar Swagger para suportar JWT
 builder.Services.AddSwaggerGen(c =>
@@ -76,11 +86,11 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.DefaultModelsExpandDepth(-1);
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
 });
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("_myAllowSpecificOrigins");
 
 // Registrar o middleware JWT
 app.UseMiddleware<JwtMiddleware>();

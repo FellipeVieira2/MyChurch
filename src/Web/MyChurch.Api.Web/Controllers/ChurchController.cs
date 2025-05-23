@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
+using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
 using MyChurch.Application.Church.Commands.UpdateChurch;
 using MyChurch.Application.Church.Queries.GetChurch;
 using MyChurch.Application.Dtos;
@@ -37,6 +38,20 @@ namespace MyChurch.Api.Web.Controllers
             command.Id = id;
             var mediator = await Mediator.Send(command);
             return Ok(mediator);
+        }
+
+        /// <summary>
+        /// Cria uma nova Igreja já com usuário Admin
+        /// </summary>
+        /// <response code="200">Sucesso: Igreja criada</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPost("withadmin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        public async Task<IActionResult> CreateChurchWithAdmin([FromBody] CreateChurchWithAdminMemberCommand command)
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
 
         /// <summary>

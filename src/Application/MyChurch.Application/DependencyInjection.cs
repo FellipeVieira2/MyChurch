@@ -2,7 +2,6 @@
 using MediatR;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using MyChurch.Domain.Behauviours;
 
 namespace MyChurch.Application
