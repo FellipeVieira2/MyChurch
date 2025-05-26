@@ -44,6 +44,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(p => p.Branches)
+                .HasColumnName("branches")
+                .HasColumnType("int")
+                .IsRequired();
+
+            builder
                 .Property(p => p.MaxStorageGB)
                 .HasColumnName("max_storage_gb")
                 .HasColumnType("int")

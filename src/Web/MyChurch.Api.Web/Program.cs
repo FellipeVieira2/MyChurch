@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +12,7 @@ using MyChurch.Api.Web.Configuration;
 using MyChurch.Api.Web.Filters;
 using MyChurch.Api.Web.Middleware;
 using MyChurch.Application;
+using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

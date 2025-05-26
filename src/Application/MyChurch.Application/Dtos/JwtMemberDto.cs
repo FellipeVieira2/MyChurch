@@ -1,9 +1,14 @@
-﻿namespace MyChurch.Application.Dtos
+﻿using System.Text.Json.Serialization;
+
+namespace MyChurch.Application.Dtos
 {
     public class JwtMemberDto
     {
+        [JsonIgnore]
         public int UserId { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
+        [JsonIgnore]
+        public string? Email { get; set; }
+        [JsonIgnore]
+        public string? Role { get; set; }
     }
 }

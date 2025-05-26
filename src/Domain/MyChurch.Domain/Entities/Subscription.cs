@@ -16,7 +16,6 @@
         public Plan Plan { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool IsActive => EndDate > DateTime.UtcNow;
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 

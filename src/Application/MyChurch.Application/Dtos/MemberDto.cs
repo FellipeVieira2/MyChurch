@@ -36,6 +36,7 @@ namespace MyChurch.Application.Dtos
                 Role = member.Role,
                 Created = member.Created,
                 Updated = member.Updated,
+                ChurchId = member.ChurchId,
             };
         }
     }

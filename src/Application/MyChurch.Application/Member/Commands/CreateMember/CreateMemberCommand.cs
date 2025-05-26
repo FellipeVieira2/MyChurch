@@ -1,14 +1,15 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
+using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.S3;
-using System.Text;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
-    public class CreateMemberCommand : IRequest<int>
+    public class CreateMemberCommand :JwtMemberDto, IRequest<int>
     {
         /// <summary>Name</summary>
         /// <example>Fellipe</example>
@@ -37,14 +38,10 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         /// <summary>IsTither</summary>
         /// <example>true</example>
         public bool IsTither { get; set; }
-        /// <summary>ChurchId</summary>
-        /// <example>1</example>
-        public int ChurchId { get; set; }
         /// <summary>Role</summary>
         /// <example>Worker</example>
-        public UserRole Role { get; set; }
+        public UserRole RoleMember { get; set; }
     }
-
     public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -60,7 +57,45 @@ namespace MyChurch.Application.Member.Commands.CreateMember
 
         public async Task<int> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
         {
-            var member = MapToMemberEntity(request);
+            // Busca o membro logado para obter o ChurchId
+            var loggedMember = await _unitOfWork.Members.Query()
+                .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+
+            if (loggedMember == null)
+                ValidationException.ThrowException("Member", "This Member does not exist.");
+
+            int churchId = loggedMember.ChurchId;
+
+            // Validação de limite de membros do plano
+            await ValidatePlanMemberLimitAsync(churchId, cancellationToken);
+
+            // Validação de duplicidade (documento/email)
+            var exists = await _unitOfWork.Members.Query()
+                .AnyAsync(m =>
+                    m.ChurchId == churchId &&
+                    (m.Document == request.Document || (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email)),
+                    cancellationToken);
+
+            if (exists)
+                ValidationException.ThrowException("Member", "This Member does not exist.");
+
+            var member = new Domain.Entities.Member
+            {
+                Name = request.Name,
+                Email = request.Email,
+                Document = request.Document,
+                Phone = request.Phone,
+                BirthDate = request.BirthDate,
+                IsBaptized = request.IsBaptized,
+                BaptizedDate = request.BaptizedDate,
+                IsTither = request.IsTither,
+                ChurchId = churchId,
+                Role = request.RoleMember,
+                Created = DateTime.UtcNow
+            };
+
+            var hash = Guid.NewGuid().ToString("N");
+            member.PasswordHash = hash;
 
             if (!string.IsNullOrEmpty(request.Photo))
             {
@@ -75,29 +110,37 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             return member.Id;
         }
 
-        private Domain.Entities.Member MapToMemberEntity(CreateMemberCommand request)
+        /// <summary>
+        /// Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
+        /// </summary>
+        private async Task ValidatePlanMemberLimitAsync(int churchId, CancellationToken cancellationToken)
         {
-            return new Domain.Entities.Member
-            {
-                Name = request.Name,
-                Email = request.Email,
-                Document = request.Document,
-                Phone = request.Phone,
-                BirthDate = request.BirthDate,
-                IsBaptized = request.IsBaptized,
-                BaptizedDate = request.BaptizedDate,
-                IsTither = request.IsTither,
-                ChurchId = request.ChurchId,
-                Role = request.Role
-            };
-        }
+            // Busca assinatura ativa da igreja (Subscription + Plan)
+            var subscription = await _unitOfWork.Subscriptions.Query()
+                .Include(s => s.Plan)
+                .FirstOrDefaultAsync(s => s.ChurchId == churchId && s.EndDate > DateTime.UtcNow, cancellationToken);
 
+            if (subscription == null || subscription.Plan == null)
+            {
+                _logger.LogInformation("This Church does not has a Active Plan.");
+                ValidationException.ThrowException("Plan", "This Church does not has a Active Plan.");
+            }
+
+            // Conta membros já cadastrados
+            var currentMembersCount = await _unitOfWork.Members.Query()
+                .CountAsync(m => m.ChurchId == churchId, cancellationToken);
+
+            // Valida limite do plano
+            if (currentMembersCount >= subscription.Plan.MaxMembers)
+            {
+                _logger.LogInformation("This Church does not has a Active Plan.");
+                ValidationException.ThrowException("Plan", $"Member limit reached for the plan '{subscription.Plan.Name}'. To register more members, please upgrade your plan.");
+            }
+        }
         private async Task<string> UploadPhotoAsync(string photoBase64, CancellationToken cancellationToken)
         {
             if (photoBase64.Contains(','))
-            {
                 photoBase64 = photoBase64.Split(',')[1];
-            }
 
             var photoBytes = Convert.FromBase64String(photoBase64);
             using var photoStream = new MemoryStream(photoBytes);

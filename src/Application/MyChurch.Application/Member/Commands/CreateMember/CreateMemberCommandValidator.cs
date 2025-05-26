@@ -25,11 +25,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
 
             RuleFor(x => x.BaptizedDate)
                 .LessThanOrEqualTo(DateTime.Now).WithMessage("A data de batismo deve ser no passado ou presente.");
-
-            RuleFor(x => x.ChurchId)
-                .GreaterThan(0).WithMessage("O ID da igreja deve ser maior que zero.");
-
-            RuleFor(x => x.Role)
+            RuleFor(x => x.RoleMember)
                 .IsInEnum().WithMessage("O papel do usuário deve ser válido.");
 
             RuleFor(x => x)

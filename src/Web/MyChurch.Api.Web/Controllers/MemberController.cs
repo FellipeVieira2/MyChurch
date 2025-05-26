@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.CreateMember;
+using MyChurch.Application.Member.Queries.GetAllMembers;
 using MyChurch.Application.Member.Queries.GetMemberById;
 
 namespace MyChurch.Api.Web.Controllers
@@ -16,6 +18,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <response code="400">Failure: Invalid Requet</response>
         /// <response code="401">Failure: error</response>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> CreateMember(CreateMemberCommand command)
         {
@@ -59,6 +62,21 @@ namespace MyChurch.Api.Web.Controllers
             }
 
             return Ok(member);
+        }
+
+        /// <summary>
+        /// Lista membros da igreja com filtros e paginação (apenas para Admin)
+        /// </summary>
+        /// <response code="200">Sucesso: Lista paginada de membros</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResultDto<MemberDto>))]
+        public async Task<IActionResult> GetAllMembers([FromQuery] GetAllMembersQuery query)
+        {
+            var result = await Mediator.Send(query);
+            return Ok(result);
         }
     }
 }

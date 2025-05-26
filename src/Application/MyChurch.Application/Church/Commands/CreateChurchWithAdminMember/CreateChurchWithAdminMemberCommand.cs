@@ -12,35 +12,99 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
     public class CreateChurchWithAdminMemberCommand : IRequest<int>
     {
         // Dados da Igreja
+
+        /// <summary>Nome da Igreja</summary>
+        /// <example>Igreja Pentecostal</example>
         public string Name { get; set; }
+
+        /// <summary>Descrição da Igreja</summary>
+        /// <example>Igreja Pentecostal</example>
         public string Description { get; set; }
+
+        /// <summary>Telefone da Igreja</summary>
+        /// <example>19987250777</example>
         public string Phone { get; set; }
+
+        /// <summary>ID do Plano</summary>
+        /// <example>1</example>
         public int PlanId { get; set; }
+
+        /// <summary>Logo da Igreja (Base64)</summary>
+        /// <example>Base64</example>
         public string? Logo { get; set; }
+
         public AddressChurchWithAdminCreate Address { get; set; }
 
         // Dados do Admin
+
+        /// <summary>Nome do Administrador</summary>
+        /// <example>João da Silva</example>
         public string AdminName { get; set; }
+
+        /// <summary>Email do Administrador</summary>
+        /// <example>joao@email.com</example>
         public string? AdminEmail { get; set; }
+
+        /// <summary>Documento do Administrador</summary>
+        /// <example>12345678900</example>
         public string AdminDocument { get; set; }
+
+        /// <summary>Foto do Administrador (Base64)</summary>
+        /// <example>Base64</example>
         public string? AdminPhoto { get; set; }
+
+        /// <summary>Telefone do Administrador</summary>
+        /// <example>19999999999</example>
         public string AdminPhone { get; set; }
+
+        /// <summary>Data de Nascimento do Administrador</summary>
+        /// <example>1990-01-01</example>
         public DateTime AdminBirthDate { get; set; }
+
+        /// <summary>Administrador é Batizado?</summary>
+        /// <example>true</example>
         public bool AdminIsBaptized { get; set; }
+
+        /// <summary>Data do Batismo do Administrador</summary>
+        /// <example>2010-05-20</example>
         public DateTime? AdminBaptizedDate { get; set; }
+
+        /// <summary>Administrador é Dizimista?</summary>
+        /// <example>true</example>
         public bool AdminIsTither { get; set; }
-        public string AdminPassword { get; set; } // NOVO: senha do admin
+
+        /// <summary>Senha do Administrador</summary>
+        /// <example>SenhaForte123!</example>
+        public string AdminPassword { get; set; }
 
         public class AddressChurchWithAdminCreate
         {
+            /// <summary>Rua</summary>
+            /// <example>Piracicaba</example>
             public string Street { get; set; }
+
+            /// <summary>Cidade</summary>
+            /// <example>Araras</example>
             public string City { get; set; }
+
+            /// <summary>Estado</summary>
+            /// <example>SP</example>
             public string State { get; set; }
+
+            /// <summary>CEP</summary>
+            /// <example>13609090</example>
             public string ZipCode { get; set; }
+
+            /// <summary>País</summary>
+            /// <example>Brasil</example>
             public string Country { get; set; }
+
+            /// <summary>Bairro</summary>
+            /// <example>São João</example>
             public string Neighborhood { get; set; }
         }
     }
+
 
     public class CreateChurchWithAdminMemberCommandHandler : IRequestHandler<CreateChurchWithAdminMemberCommand, int>
     {
@@ -98,7 +162,8 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 BaptizedDate = request.AdminBaptizedDate,
                 IsTither = request.AdminIsTither,
                 ChurchId = church.Id,
-                Role = UserRole.Admin
+                Role = UserRole.Admin,
+                Created = DateTime.Now
             };
 
             // 6. Faz upload da foto do admin se necessário
