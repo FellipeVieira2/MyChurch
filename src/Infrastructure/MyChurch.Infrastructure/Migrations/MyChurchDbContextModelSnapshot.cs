@@ -91,6 +91,58 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("address", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Asset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("IdentificationCode")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("identification_code");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("photo");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("asset", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
                     b.Property<int>("Id")
@@ -423,6 +475,17 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Asset", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany("Assets")
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Address", "Address")
@@ -505,6 +568,8 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
+                    b.Navigation("Assets");
+
                     b.Navigation("Events");
 
                     b.Navigation("Members");

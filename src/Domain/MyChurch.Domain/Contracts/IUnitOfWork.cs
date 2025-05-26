@@ -9,7 +9,7 @@
         IPaymentRepository Payments { get; }
         IPlanRepository Plans { get; }
         ISubscriptionRepository Subscriptions { get; }
-
+        IAssetRepository Assets { get; }
         Task<bool> CommitAsync();
 
     }

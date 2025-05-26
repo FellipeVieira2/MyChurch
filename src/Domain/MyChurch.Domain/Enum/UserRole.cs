@@ -2,13 +2,14 @@
 {
     public enum UserRole
     {
-        Admin,
-        Member,
-        Minister,
-        Leader,
-        Worker,
-        Deacon,
-        Elder,
-        Visitor
+        Admin = 0,
+        Member = 1,
+        Minister = 2,
+        Leader = 3,
+        Worker = 4,
+        Deacon = 5,
+        Elder = 6,
+        Visitor = 7,
+        PlatformAdmin = 8
     }
 }

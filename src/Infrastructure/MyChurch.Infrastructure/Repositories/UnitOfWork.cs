@@ -20,7 +20,9 @@ namespace MyChurch.Infrastructure.Repositories
 
         public ISubscriptionRepository Subscriptions { get; }
 
-        public UnitOfWork(IChurchRepository churchs, IDonationRepository donations, IEventRepository events, IMemberRepository members, IPaymentRepository payments, IPlanRepository plans, ISubscriptionRepository subscriptions, MyChurchDbContext context)
+        public IAssetRepository Assets { get; }
+
+        public UnitOfWork(IChurchRepository churchs, IDonationRepository donations, IEventRepository events, IMemberRepository members, IPaymentRepository payments, IPlanRepository plans, ISubscriptionRepository subscriptions, MyChurchDbContext context, IAssetRepository assets)
         {
             Churchs = churchs;
             Donations = donations;
@@ -30,6 +32,7 @@ namespace MyChurch.Infrastructure.Repositories
             Plans = plans;
             Subscriptions = subscriptions;
             _context = context;
+            Assets = assets;
         }
 
         public async Task<bool> CommitAsync()

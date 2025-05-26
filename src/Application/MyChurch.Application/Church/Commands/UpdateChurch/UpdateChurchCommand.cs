@@ -8,7 +8,7 @@ using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.Church.Commands.UpdateChurch
 {
-    public class UpdateChurchCommand :JwtMemberDto, IRequest<ChurchDto>
+    public class UpdateChurchCommand : JwtMemberDto, IRequest<ChurchDto>
     {
         [JsonIgnore]
         public int Id { get; set; }

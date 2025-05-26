@@ -4,6 +4,42 @@
         <name>MyChurch.Application</name>
     </assembly>
     <members>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Name">
+            <summary>Name</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Value">
+            <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Description">
+            <summary>Description</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Photo">
+            <summary>Photo (Base64)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Type">
+            <summary>Type</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.IdentificationCode">
+            <summary>Identification Code</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Name">
+            <summary>Name</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Value">
+            <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Description">
+            <summary>Description</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Photo">
+            <summary>Photo (Base64)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Type">
+            <summary>Type</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.IdentificationCode">
+            <summary>Identification Code</summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Name">
             <summary>Nome da Igreja</summary>
             <example>Igreja Pentecostal</example>

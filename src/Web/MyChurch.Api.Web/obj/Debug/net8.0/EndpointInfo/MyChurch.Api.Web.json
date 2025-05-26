@@ -5,6 +5,276 @@
     "description": "Api To Manage MyChurch."
   },
   "paths": {
+    "/Asset": {
+      "post": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Cria um novo ativo patrimonial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: Ativo criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Busca Lista de Ativos patrimonial",
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Value",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/AssetType"
+            }
+          },
+          {
+            "name": "IdentificationCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Ativo retornado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Não encontrado"
+          }
+        }
+      }
+    },
+    "/Asset/{id}": {
+      "get": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Busca um ativo patrimonial por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Ativo retornado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Não encontrado"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Atualiza um ativo patrimonial existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssetCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssetCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssetCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: Ativo atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Asset"
+        ],
+        "summary": "Exclui um ativo patrimonial",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sucesso: Ativo excluído"
+          },
+          "404": {
+            "description": "Falha: Não encontrado"
+          }
+        }
+      }
+    },
     "/api/Auth/login": {
       "post": {
         "tags": [
@@ -568,6 +838,119 @@
           }
         }
       }
+    },
+    "/Subscription": {
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Cria uma nova assinatura",
+        "responses": {
+          "200": {
+            "description": "Sucesso: Assinatura criada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          }
+        }
+      }
+    },
+    "/Subscription/{id}": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Busca uma assinatura por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Assinatura retornada"
+          },
+          "404": {
+            "description": "Falha: Não encontrada"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Atualiza uma assinatura existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Assinatura atualizada"
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Subscription"
+        ],
+        "summary": "Cancela uma assinatura",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Assinatura cancelada"
+          },
+          "404": {
+            "description": "Falha: Não encontrada"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -742,6 +1125,63 @@
         },
         "additionalProperties": false
       },
+      "AssetDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/AssetType"
+          },
+          "identificationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          99
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "ChurchDto": {
         "type": "object",
         "properties": {
@@ -777,6 +1217,50 @@
           },
           "subscription": {
             "$ref": "#/components/schemas/SubscriptionDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateAssetCommand": {
+        "required": [
+          "description",
+          "identificationCode",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Name"
+          },
+          "value": {
+            "minimum": 0,
+            "exclusiveMinimum": true,
+            "type": "number",
+            "description": "Value",
+            "format": "double"
+          },
+          "description": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Description"
+          },
+          "photo": {
+            "type": "string",
+            "description": "Photo (Base64)",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/AssetType"
+          },
+          "identificationCode": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "Identification Code"
           }
         },
         "additionalProperties": false
@@ -1234,6 +1718,41 @@
         },
         "additionalProperties": false
       },
+      "UpdateAssetCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          },
+          "value": {
+            "type": "number",
+            "description": "Value",
+            "format": "double",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description",
+            "nullable": true
+          },
+          "photo": {
+            "type": "string",
+            "description": "Photo (Base64)",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/AssetType"
+          },
+          "identificationCode": {
+            "type": "string",
+            "description": "Identification Code",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateChurchCommand": {
         "type": "object",
         "properties": {
@@ -1264,7 +1783,8 @@
           4,
           5,
           6,
-          7
+          7,
+          8
         ],
         "type": "integer",
         "format": "int32"
