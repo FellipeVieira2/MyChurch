@@ -14,6 +14,7 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
           "MyChurch.Domain": "1.0.0",
           "MyChurch.Infrastructure": "1.0.0",
+          "Mychurch.Common": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
@@ -327,6 +328,14 @@
           }
         }
       },
+      "Mychurch.Common/1.0.0": {
+        "runtime": {
+          "Mychurch.Common.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "MyChurch.Domain/1.0.0": {
         "dependencies": {
           "FluentValidation": "11.11.0",
@@ -335,7 +344,7 @@
         },
         "runtime": {
           "MyChurch.Domain.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -352,7 +361,7 @@
         },
         "runtime": {
           "MyChurch.Infrastructure.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -567,6 +576,11 @@
       "sha512": "sha512-8dKL3A9pVqYCJIXHd4H2epQqLxSvKeNxGonR0e5g89yMchyvsM/NLuB06otx29BicUd6+LUJZgNZmvYjjPsPGg==",
       "path": "system.identitymodel.tokens.jwt/8.7.0",
       "hashPath": "system.identitymodel.tokens.jwt.8.7.0.nupkg.sha512"
+    },
+    "Mychurch.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "MyChurch.Domain/1.0.0": {
       "type": "project",

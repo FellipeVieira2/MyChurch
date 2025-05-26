@@ -18,3 +18,5 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.A
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\obj\Debug\net8.0\MyChurch.Application.xml
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Debug\net8.0\MyChurch.Infrastructure.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Debug\net8.0\MyChurch.Infrastructure.pdb
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Debug\net8.0\Mychurch.Common.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Debug\net8.0\Mychurch.Common.pdb

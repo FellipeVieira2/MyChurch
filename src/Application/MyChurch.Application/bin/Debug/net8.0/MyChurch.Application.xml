@@ -4,6 +4,90 @@
         <name>MyChurch.Application</name>
     </assembly>
     <members>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Name">
+            <summary>Nome da Igreja</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Description">
+            <summary>Descrição da Igreja</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Phone">
+            <summary>Telefone da Igreja</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.PlanId">
+            <summary>ID do Plano</summary>
+            <example>1</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Logo">
+            <summary>Logo da Igreja (Base64)</summary>
+            <example>Base64</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminName">
+            <summary>Nome do Administrador</summary>
+            <example>João da Silva</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminEmail">
+            <summary>Email do Administrador</summary>
+            <example>joao@email.com</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminDocument">
+            <summary>Documento do Administrador</summary>
+            <example>12345678900</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminPhoto">
+            <summary>Foto do Administrador (Base64)</summary>
+            <example>Base64</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminPhone">
+            <summary>Telefone do Administrador</summary>
+            <example>19999999999</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminBirthDate">
+            <summary>Data de Nascimento do Administrador</summary>
+            <example>1990-01-01</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminIsBaptized">
+            <summary>Administrador é Batizado?</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminBaptizedDate">
+            <summary>Data do Batismo do Administrador</summary>
+            <example>2010-05-20</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminIsTither">
+            <summary>Administrador é Dizimista?</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminPassword">
+            <summary>Senha do Administrador</summary>
+            <example>SenhaForte123!</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.Street">
+            <summary>Rua</summary>
+            <example>Piracicaba</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.City">
+            <summary>Cidade</summary>
+            <example>Araras</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.State">
+            <summary>Estado</summary>
+            <example>SP</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.ZipCode">
+            <summary>CEP</summary>
+            <example>13609090</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.Country">
+            <summary>País</summary>
+            <example>Brasil</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate.Neighborhood">
+            <summary>Bairro</summary>
+            <example>São João</example>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>
@@ -116,13 +200,41 @@
             <summary>IsTither</summary>
             <example>true</example>
         </member>
-        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.ChurchId">
-            <summary>ChurchId</summary>
-            <example>1</example>
-        </member>
-        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Role">
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.RoleMember">
             <summary>Role</summary>
             <example>Worker</example>
+        </member>
+        <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Name">
+            <summary>Filtro por nome (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Document">
+            <summary>Filtro por documento (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Email">
+            <summary>Filtro por email (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.BirthDate">
+            <summary>Filtro por data de nascimento exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsBaptized">
+            <summary>Filtro se é batizado</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.BaptizedDate">
+            <summary>Filtro por data de batismo exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.RoleMember">
+            <summary>Filtro por papel (role)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageSize">
+            <summary>Tamanho da página</summary>
         </member>
     </members>
 </doc>

@@ -94,6 +94,64 @@
         }
       }
     },
+    "/Church/withadmin": {
+      "post": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Cria uma nova Igreja já com usuário Admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: Igreja criada",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
     "/Church/{id}": {
       "get": {
         "tags": [
@@ -280,6 +338,118 @@
           },
           "401": {
             "description": "Failure: error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Lista membros da igreja com filtros e paginação (apenas para Admin)",
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "query",
+            "description": "Filtro por nome (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Document",
+            "in": "query",
+            "description": "Filtro por documento (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "description": "Filtro por email (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "BirthDate",
+            "in": "query",
+            "description": "Filtro por data de nascimento exata",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "IsBaptized",
+            "in": "query",
+            "description": "Filtro se é batizado",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "BaptizedDate",
+            "in": "query",
+            "description": "Filtro por data de batismo exata",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "RoleMember",
+            "in": "query",
+            "description": "Filtro por papel (role)",
+            "schema": {
+              "$ref": "#/components/schemas/UserRole"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Número da página (começa em 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Tamanho da página",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Lista paginada de membros",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
           }
         }
       }
@@ -496,6 +666,48 @@
         },
         "additionalProperties": false
       },
+      "AddressChurchWithAdminCreate": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "description": "Rua",
+            "nullable": true,
+            "example": "Piracicaba"
+          },
+          "city": {
+            "type": "string",
+            "description": "Cidade",
+            "nullable": true,
+            "example": "Araras"
+          },
+          "state": {
+            "type": "string",
+            "description": "Estado",
+            "nullable": true,
+            "example": "SP"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "CEP",
+            "nullable": true,
+            "example": "13609090"
+          },
+          "country": {
+            "type": "string",
+            "description": "País",
+            "nullable": true,
+            "example": "Brasil"
+          },
+          "neighborhood": {
+            "type": "string",
+            "description": "Bairro",
+            "nullable": true,
+            "example": "São João"
+          }
+        },
+        "additionalProperties": false
+      },
       "AddressDto": {
         "type": "object",
         "properties": {
@@ -613,6 +825,104 @@
         },
         "additionalProperties": false
       },
+      "CreateChurchWithAdminMemberCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome da Igreja",
+            "nullable": true,
+            "example": "Igreja Pentecostal"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição da Igreja",
+            "nullable": true,
+            "example": "Igreja Pentecostal"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone da Igreja",
+            "nullable": true,
+            "example": "19987250777"
+          },
+          "planId": {
+            "type": "integer",
+            "description": "ID do Plano",
+            "format": "int32",
+            "example": 1
+          },
+          "logo": {
+            "type": "string",
+            "description": "Logo da Igreja (Base64)",
+            "nullable": true,
+            "example": "Base64"
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
+          },
+          "adminName": {
+            "type": "string",
+            "description": "Nome do Administrador",
+            "nullable": true,
+            "example": "João da Silva"
+          },
+          "adminEmail": {
+            "type": "string",
+            "description": "Email do Administrador",
+            "nullable": true,
+            "example": "joao@email.com"
+          },
+          "adminDocument": {
+            "type": "string",
+            "description": "Documento do Administrador",
+            "nullable": true,
+            "example": "12345678900"
+          },
+          "adminPhoto": {
+            "type": "string",
+            "description": "Foto do Administrador (Base64)",
+            "nullable": true,
+            "example": "Base64"
+          },
+          "adminPhone": {
+            "type": "string",
+            "description": "Telefone do Administrador",
+            "nullable": true,
+            "example": "19999999999"
+          },
+          "adminBirthDate": {
+            "type": "string",
+            "description": "Data de Nascimento do Administrador",
+            "format": "date-time",
+            "example": "1990-01-01"
+          },
+          "adminIsBaptized": {
+            "type": "boolean",
+            "description": "Administrador é Batizado?",
+            "example": true
+          },
+          "adminBaptizedDate": {
+            "type": "string",
+            "description": "Data do Batismo do Administrador",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2010-05-20"
+          },
+          "adminIsTither": {
+            "type": "boolean",
+            "description": "Administrador é Dizimista?",
+            "example": true
+          },
+          "adminPassword": {
+            "type": "string",
+            "description": "Senha do Administrador",
+            "nullable": true,
+            "example": "SenhaForte123!"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateMemberCommand": {
         "required": [
           "name"
@@ -674,15 +984,7 @@
             "description": "IsTither",
             "example": true
           },
-          "churchId": {
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "type": "integer",
-            "description": "ChurchId",
-            "format": "int32",
-            "example": 1
-          },
-          "role": {
+          "roleMember": {
             "$ref": "#/components/schemas/UserRole"
           }
         },
@@ -763,6 +1065,36 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDto"
+            },
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -905,18 +1237,6 @@
       "UpdateChurchCommand": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
-            "type": "string",
-            "nullable": true
-          },
           "name": {
             "type": "string",
             "description": "Name",

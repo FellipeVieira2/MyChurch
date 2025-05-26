@@ -2058,6 +2058,7 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
           "MyChurch.Domain": "1.0.0",
           "MyChurch.Infrastructure": "1.0.0",
+          "Mychurch.Common": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
@@ -2066,6 +2067,16 @@
         },
         "runtime": {
           "bin/placeholder/MyChurch.Application.dll": {}
+        }
+      },
+      "Mychurch.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Mychurch.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Mychurch.Common.dll": {}
         }
       },
       "MyChurch.Domain/1.0.0": {
@@ -5773,6 +5784,11 @@
       "path": "../../Application/MyChurch.Application/MyChurch.Application.csproj",
       "msbuildProject": "../../Application/MyChurch.Application/MyChurch.Application.csproj"
     },
+    "Mychurch.Common/1.0.0": {
+      "type": "project",
+      "path": "../../Infrastructure/Mychurch.Common/Mychurch.Common.csproj",
+      "msbuildProject": "../../Infrastructure/Mychurch.Common/Mychurch.Common.csproj"
+    },
     "MyChurch.Domain/1.0.0": {
       "type": "project",
       "path": "../../Domain/MyChurch.Domain/MyChurch.Domain.csproj",
@@ -5853,7 +5869,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.100"
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
@@ -5927,8 +5943,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "O pacote 'Microsoft.Identity.Web' 3.2.0 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rpq8-q44m-2rpg",
+      "libraryId": "Microsoft.Identity.Web",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

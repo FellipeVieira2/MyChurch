@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "UsXmaCsVP2A4DZ9j/36Pzi/L8pmMNNR1XSCY4o1tnS8=",
+  "Source": "MyChurch.Api.Web",
+  "BasePath": "_content/MyChurch.Api.Web",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

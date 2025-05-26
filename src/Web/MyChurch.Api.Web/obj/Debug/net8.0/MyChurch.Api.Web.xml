@@ -20,6 +20,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurchWithAdmin(MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand)">
+            <summary>
+            Cria uma nova Igreja já com usuário Admin
+            </summary>
+            <response code="200">Sucesso: Igreja criada</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
             <summary>
             Update a Church
@@ -52,6 +60,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
             <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
+            <summary>
+            Lista membros da igreja com filtros e paginação (apenas para Admin)
+            </summary>
+            <response code="200">Sucesso: Lista paginada de membros</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
     </members>
 </doc>
