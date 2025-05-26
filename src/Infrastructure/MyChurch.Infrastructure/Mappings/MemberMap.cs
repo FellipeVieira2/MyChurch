@@ -92,6 +92,38 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
+            // Novos campos
+            builder
+                .Property(m => m.MaritalStatus)
+                .HasColumnName("marital_status")
+                .HasColumnType("varchar(50)")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.MemberSince)
+                .HasColumnName("member_since")
+                .HasColumnType("date")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.Ministry)
+                .HasColumnName("ministry")
+                .HasColumnType("varchar(100)")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.IsActive)
+                .HasColumnName("is_active")
+                .HasColumnType("boolean")
+                .HasDefaultValue(true)
+                .IsRequired();
+
+            builder
+                .Property(m => m.Notes)
+                .HasColumnName("notes")
+                .HasColumnType("varchar(1000)")
+                .IsRequired(false);
+
             builder
                 .Property(m => m.Role)
                 .HasColumnName("role")

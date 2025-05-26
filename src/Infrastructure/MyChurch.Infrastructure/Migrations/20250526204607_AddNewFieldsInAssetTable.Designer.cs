@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyChurch.Infrastructure;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyChurch.Infrastructure.Migrations
 {
     [DbContext(typeof(MyChurchDbContext))]
-    partial class MyChurchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526204607_AddNewFieldsInAssetTable")]
+    partial class AddNewFieldsInAssetTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,12 +325,6 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(200)")
                         .HasColumnName("email");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true)
-                        .HasColumnName("is_active");
-
                     b.Property<bool>("IsBaptized")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -338,26 +335,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("is_tither");
 
-                    b.Property<string>("MaritalStatus")
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("marital_status");
-
-                    b.Property<DateTime?>("MemberSince")
-                        .HasColumnType("date")
-                        .HasColumnName("member_since");
-
-                    b.Property<string>("Ministry")
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("ministry");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
                         .HasColumnName("name");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("varchar(1000)")
-                        .HasColumnName("notes");
 
                     b.Property<string>("Password")
                         .HasColumnType("varchar(500)")

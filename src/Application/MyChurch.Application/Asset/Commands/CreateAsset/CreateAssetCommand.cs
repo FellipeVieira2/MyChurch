@@ -24,6 +24,22 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
         public AssetType Type { get; set; }
         /// <summary>Identification Code</summary>
         public string IdentificationCode { get; set; } = null!;
+        /// <summary>Condition</summary>
+        public string Condition { get; set; } = null!;
+        /// <summary>Purchase Date</summary>
+        public DateTime? PurchaseDate { get; set; }
+        /// <summary>Location</summary>
+        public string Location { get; set; } = null!;
+        /// <summary>Responsible</summary>
+        public string Responsible { get; set; } = null!;
+        /// <summary>Last Maintenance</summary>
+        public DateTime? LastMaintenance { get; set; }
+        /// <summary>Next Maintenance</summary>
+        public DateTime? NextMaintenance { get; set; }
+        /// <summary>Warranty Until</summary>
+        public DateTime? WarrantyUntil { get; set; }
+        /// <summary>Notes</summary>
+        public string Notes { get; set; } = null!;
     }
 
     public class CreateAssetCommandHandler : IRequestHandler<CreateAssetCommand, int>
@@ -65,7 +81,15 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
                 Type = request.Type,
                 IdentificationCode = request.IdentificationCode,
                 ChurchId = churchId,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Condition = request.Condition,
+                PurchaseDate = request.PurchaseDate,
+                Location = request.Location,
+                Responsible = request.Responsible,
+                LastMaintenance = request.LastMaintenance,
+                NextMaintenance = request.NextMaintenance,
+                WarrantyUntil = request.WarrantyUntil,
+                Notes = request.Notes
             };
 
             if (!string.IsNullOrEmpty(request.Photo))

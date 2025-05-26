@@ -14,6 +14,14 @@ namespace MyChurch.Application.Dtos
         public string IdentificationCode { get; set; } = null!;
         public int ChurchId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string Condition { get; set; } = null!;
+        public DateTime? PurchaseDate { get; set; }
+        public string Location { get; set; } = null!;
+        public string Responsible { get; set; } = null!;
+        public DateTime? LastMaintenance { get; set; }
+        public DateTime? NextMaintenance { get; set; }
+        public DateTime? WarrantyUntil { get; set; }
+        public string Notes { get; set; } = null!;
 
         public static AssetDto New(Domain.Entities.Asset asset)
         {
@@ -27,7 +35,15 @@ namespace MyChurch.Application.Dtos
                 Type = asset.Type,
                 IdentificationCode = asset.IdentificationCode,
                 ChurchId = asset.ChurchId,
-                CreatedAt = asset.CreatedAt
+                CreatedAt = asset.CreatedAt,
+                Condition = asset.Condition,
+                PurchaseDate = asset.PurchaseDate,
+                Location = asset.Location,
+                Responsible = asset.Responsible,
+                LastMaintenance = asset.LastMaintenance,
+                NextMaintenance = asset.NextMaintenance,
+                WarrantyUntil = asset.WarrantyUntil,
+                Notes = asset.Notes
             };
         }
     }

@@ -18,6 +18,11 @@ namespace MyChurch.Domain.Entities
         public DateTime? BaptizedDate { get; set; }
         public bool IsTither { get; set; } = false;
         public int ChurchId { get; set; }
+        public string? MaritalStatus { get; set; }      
+        public DateTime? MemberSince { get; set; }     
+        public string? Ministry { get; set; }         
+        public bool IsActive { get; set; } = true;      
+        public string? Notes { get; set; }
         public Church Church { get; set; }
         public UserRole Role { get; set; }
         public DateTime Created { get; set; }

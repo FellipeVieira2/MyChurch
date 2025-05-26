@@ -15,7 +15,31 @@ namespace MyChurch.Domain.Entities
         public Church Church { get; set; } = null!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public void Update(string name, decimal value, string description, string photo, AssetType type, string identificationCode)
+        // Novos campos
+        public string Condition { get; set; } = null!; // Condição do ativo (ex: Novo, Usado, Danificado)
+        public DateTime? PurchaseDate { get; set; } // Data de compra
+        public string Location { get; set; } = null!; // Localização física
+        public string Responsible { get; set; } = null!; // Responsável pelo ativo
+        public DateTime? LastMaintenance { get; set; } // Última manutenção
+        public DateTime? NextMaintenance { get; set; } // Próxima manutenção
+        public DateTime? WarrantyUntil { get; set; } // Garantia até
+        public string Notes { get; set; } = null!; // Observações
+
+        public void Update(
+            string name,
+            decimal value,
+            string description,
+            string photo,
+            AssetType type,
+            string identificationCode,
+            string condition,
+            DateTime? purchaseDate,
+            string location,
+            string responsible,
+            DateTime? lastMaintenance,
+            DateTime? nextMaintenance,
+            DateTime? warrantyUntil,
+            string notes)
         {
             Name = name;
             Value = value;
@@ -23,6 +47,14 @@ namespace MyChurch.Domain.Entities
             Photo = photo;
             Type = type;
             IdentificationCode = identificationCode;
+            Condition = condition;
+            PurchaseDate = purchaseDate;
+            Location = location;
+            Responsible = responsible;
+            LastMaintenance = lastMaintenance;
+            NextMaintenance = nextMaintenance;
+            WarrantyUntil = warrantyUntil;
+            Notes = notes;
         }
     }
 }

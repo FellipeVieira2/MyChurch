@@ -16,17 +16,35 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
         [JsonIgnore]
         public int AssetId { get; set; }
         /// <summary>Name</summary>
-        public string? Name { get; set; } = null!;
+        public string? Name { get; set; }
         /// <summary>Value</summary>
         public decimal? Value { get; set; }
         /// <summary>Description</summary>
-        public string? Description { get; set; } = null!;
+        public string? Description { get; set; }
         /// <summary>Photo (Base64)</summary>
         public string? Photo { get; set; }
         /// <summary>Type</summary>
         public AssetType? Type { get; set; }
         /// <summary>Identification Code</summary>
-        public string? IdentificationCode { get; set; } = null!;
+        public string? IdentificationCode { get; set; }
+
+        // Novos campos
+        /// <summary>Condition</summary>
+        public string? Condition { get; set; }
+        /// <summary>Purchase Date</summary>
+        public DateTime? PurchaseDate { get; set; }
+        /// <summary>Location</summary>
+        public string? Location { get; set; }
+        /// <summary>Responsible</summary>
+        public string? Responsible { get; set; }
+        /// <summary>Last Maintenance</summary>
+        public DateTime? LastMaintenance { get; set; }
+        /// <summary>Next Maintenance</summary>
+        public DateTime? NextMaintenance { get; set; }
+        /// <summary>Warranty Until</summary>
+        public DateTime? WarrantyUntil { get; set; }
+        /// <summary>Notes</summary>
+        public string? Notes { get; set; }
     }
 
     public class UpdateAssetCommandHandler : IRequestHandler<UpdateAssetCommand, AssetDto>
@@ -97,6 +115,30 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
             if (!string.IsNullOrEmpty(request.IdentificationCode))
                 asset.IdentificationCode = request.IdentificationCode;
 
+            if (!string.IsNullOrEmpty(request.Condition))
+                asset.Condition = request.Condition;
+
+            if (request.PurchaseDate.HasValue)
+                asset.PurchaseDate = request.PurchaseDate;
+
+            if (!string.IsNullOrEmpty(request.Location))
+                asset.Location = request.Location;
+
+            if (!string.IsNullOrEmpty(request.Responsible))
+                asset.Responsible = request.Responsible;
+
+            if (request.LastMaintenance.HasValue)
+                asset.LastMaintenance = request.LastMaintenance;
+
+            if (request.NextMaintenance.HasValue)
+                asset.NextMaintenance = request.NextMaintenance;
+
+            if (request.WarrantyUntil.HasValue)
+                asset.WarrantyUntil = request.WarrantyUntil;
+
+            if (!string.IsNullOrEmpty(request.Notes))
+                asset.Notes = request.Notes;
+
             if (!string.IsNullOrEmpty(request.Photo))
             {
                 _logger.LogInformation("Atualizando foto do ativo. AssetId: {AssetId}", asset.Id);
@@ -124,3 +166,4 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
         }
     }
 }
+

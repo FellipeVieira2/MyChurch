@@ -102,6 +102,66 @@
             }
           },
           {
+            "name": "Condition",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PurchaseDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Location",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Responsible",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "LastMaintenance",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "NextMaintenance",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "WarrantyUntil",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Notes",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
@@ -676,6 +736,47 @@
             }
           },
           {
+            "name": "IsActive",
+            "in": "query",
+            "description": "Filtro por membro ativo",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Ministry",
+            "in": "query",
+            "description": "Filtro por ministério (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MaritalStatus",
+            "in": "query",
+            "description": "Filtro por estado civil (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MemberSince",
+            "in": "query",
+            "description": "Filtro por data de entrada como membro",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Notes",
+            "in": "query",
+            "description": "Filtro por observações (contém)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "PageNumber",
             "in": "query",
             "description": "Número da página (começa em 1)",
@@ -1162,6 +1263,42 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "responsible": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastMaintenance": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "nextMaintenance": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "warrantyUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1261,6 +1398,50 @@
             "minLength": 1,
             "type": "string",
             "description": "Identification Code"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Condition",
+            "nullable": true
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "Purchase Date",
+            "format": "date-time",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "description": "Location",
+            "nullable": true
+          },
+          "responsible": {
+            "type": "string",
+            "description": "Responsible",
+            "nullable": true
+          },
+          "lastMaintenance": {
+            "type": "string",
+            "description": "Last Maintenance",
+            "format": "date-time",
+            "nullable": true
+          },
+          "nextMaintenance": {
+            "type": "string",
+            "description": "Next Maintenance",
+            "format": "date-time",
+            "nullable": true
+          },
+          "warrantyUntil": {
+            "type": "string",
+            "description": "Warranty Until",
+            "format": "date-time",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1461,6 +1642,7 @@
             "type": "string",
             "description": "BaptizedDate",
             "format": "date-time",
+            "nullable": true,
             "example": "2023-10-14T00:00:00"
           },
           "isTither": {
@@ -1470,6 +1652,36 @@
           },
           "roleMember": {
             "$ref": "#/components/schemas/UserRole"
+          },
+          "maritalStatus": {
+            "type": "string",
+            "description": "Estado civil",
+            "nullable": true,
+            "example": "Solteiro"
+          },
+          "memberSince": {
+            "type": "string",
+            "description": "Membro desde",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2020-01-01T00:00:00"
+          },
+          "ministry": {
+            "type": "string",
+            "description": "Ministério",
+            "nullable": true,
+            "example": "Louvor"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Membro ativo",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "Observações",
+            "nullable": true,
+            "example": "Participa do grupo de jovens"
           }
         },
         "additionalProperties": false
@@ -1525,7 +1737,8 @@
           },
           "baptizedDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "isTither": {
             "type": "boolean"
@@ -1548,6 +1761,26 @@
           "updated": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "maritalStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberSince": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ministry": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1748,6 +1981,50 @@
           "identificationCode": {
             "type": "string",
             "description": "Identification Code",
+            "nullable": true
+          },
+          "condition": {
+            "type": "string",
+            "description": "Condition",
+            "nullable": true
+          },
+          "purchaseDate": {
+            "type": "string",
+            "description": "Purchase Date",
+            "format": "date-time",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "description": "Location",
+            "nullable": true
+          },
+          "responsible": {
+            "type": "string",
+            "description": "Responsible",
+            "nullable": true
+          },
+          "lastMaintenance": {
+            "type": "string",
+            "description": "Last Maintenance",
+            "format": "date-time",
+            "nullable": true
+          },
+          "nextMaintenance": {
+            "type": "string",
+            "description": "Next Maintenance",
+            "format": "date-time",
+            "nullable": true
+          },
+          "warrantyUntil": {
+            "type": "string",
+            "description": "Warranty Until",
+            "format": "date-time",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes",
             "nullable": true
           }
         },

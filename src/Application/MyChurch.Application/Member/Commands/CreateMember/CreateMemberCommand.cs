@@ -9,7 +9,7 @@ using MyChurch.Infrastructure.Utils.S3;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
-    public class CreateMemberCommand :JwtMemberDto, IRequest<int>
+    public class CreateMemberCommand : JwtMemberDto, IRequest<int>
     {
         /// <summary>Name</summary>
         /// <example>Fellipe</example>
@@ -34,14 +34,32 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         public bool IsBaptized { get; set; }
         /// <summary>BaptizedDate</summary>
         /// <example>2023-10-14T00:00:00</example>
-        public DateTime BaptizedDate { get; set; }
+        public DateTime? BaptizedDate { get; set; }
         /// <summary>IsTither</summary>
         /// <example>true</example>
         public bool IsTither { get; set; }
         /// <summary>Role</summary>
         /// <example>Worker</example>
         public UserRole RoleMember { get; set; }
+
+        // Novos campos
+        /// <summary>Estado civil</summary>
+        /// <example>Solteiro</example>
+        public string? MaritalStatus { get; set; }
+        /// <summary>Membro desde</summary>
+        /// <example>2020-01-01T00:00:00</example>
+        public DateTime? MemberSince { get; set; }
+        /// <summary>Ministério</summary>
+        /// <example>Louvor</example>
+        public string? Ministry { get; set; }
+        /// <summary>Membro ativo</summary>
+        /// <example>true</example>
+        public bool IsActive { get; set; } = true;
+        /// <summary>Observações</summary>
+        /// <example>Participa do grupo de jovens</example>
+        public string? Notes { get; set; }
     }
+
     public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -91,7 +109,13 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 IsTither = request.IsTither,
                 ChurchId = churchId,
                 Role = request.RoleMember,
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                // Novos campos
+                MaritalStatus = request.MaritalStatus,
+                MemberSince = request.MemberSince,
+                Ministry = request.Ministry,
+                IsActive = request.IsActive,
+                Notes = request.Notes
             };
 
             var hash = Guid.NewGuid().ToString("N");

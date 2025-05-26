@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Text.Json.Serialization;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mychurch.Common.Utils.Objects;
@@ -33,6 +31,21 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
 
         /// <summary>Filtro por papel (role)</summary>
         public UserRole? RoleMember { get; set; }
+
+        /// <summary>Filtro por membro ativo</summary>
+        public bool? IsActive { get; set; }
+
+        /// <summary>Filtro por ministério (contém)</summary>
+        public string? Ministry { get; set; }
+
+        /// <summary>Filtro por estado civil (contém)</summary>
+        public string? MaritalStatus { get; set; }
+
+        /// <summary>Filtro por data de entrada como membro</summary>
+        public DateTime? MemberSince { get; set; }
+
+        /// <summary>Filtro por observações (contém)</summary>
+        public string? Notes { get; set; }
 
         /// <summary>Número da página (começa em 1)</summary>
         public int PageNumber { get; set; } = 1;
@@ -72,33 +85,43 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
                 .AsNoTracking()
                 .Where(m => m.ChurchId == churchId);
 
-            // Filtro por nome (LIKE)
+            // Filtros existentes
             if (!string.IsNullOrWhiteSpace(request.Name))
                 query = query.Where(m => EF.Functions.Like(m.Name, $"%{request.Name}%"));
 
-            // Filtro por documento (LIKE)
             if (!string.IsNullOrWhiteSpace(request.Document))
                 query = query.Where(m => EF.Functions.Like(m.Document, $"%{request.Document}%"));
 
-            // Filtro por email (LIKE)
             if (!string.IsNullOrWhiteSpace(request.Email))
                 query = query.Where(m => EF.Functions.Like(m.Email, $"%{request.Email}%"));
 
-            // Filtro por data de nascimento exata
             if (request.BirthDate.HasValue)
                 query = query.Where(m => m.BirthDate.Date == request.BirthDate.Value.Date);
 
-            // Filtro se é batizado
             if (request.IsBaptized.HasValue)
                 query = query.Where(m => m.IsBaptized == request.IsBaptized.Value);
 
-            // Filtro por data de batismo exata
             if (request.BaptizedDate.HasValue)
                 query = query.Where(m => m.BaptizedDate.HasValue && m.BaptizedDate.Value.Date == request.BaptizedDate.Value.Date);
 
-            // Filtro por papel (role)
             if (request.RoleMember.HasValue)
                 query = query.Where(m => m.Role == request.RoleMember.Value);
+
+            // Novos filtros
+            if (request.IsActive.HasValue)
+                query = query.Where(m => m.IsActive == request.IsActive.Value);
+
+            if (!string.IsNullOrWhiteSpace(request.Ministry))
+                query = query.Where(m => EF.Functions.Like(m.Ministry, $"%{request.Ministry}%"));
+
+            if (!string.IsNullOrWhiteSpace(request.MaritalStatus))
+                query = query.Where(m => EF.Functions.Like(m.MaritalStatus, $"%{request.MaritalStatus}%"));
+
+            if (request.MemberSince.HasValue)
+                query = query.Where(m => m.MemberSince.HasValue && m.MemberSince.Value.Date == request.MemberSince.Value.Date);
+
+            if (!string.IsNullOrWhiteSpace(request.Notes))
+                query = query.Where(m => EF.Functions.Like(m.Notes, $"%{request.Notes}%"));
 
             // Conta o total de registros após os filtros
             var totalCount = await query.CountAsync(cancellationToken);

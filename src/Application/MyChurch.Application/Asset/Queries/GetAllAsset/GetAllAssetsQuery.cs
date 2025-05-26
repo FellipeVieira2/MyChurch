@@ -14,7 +14,15 @@ namespace MyChurch.Application.Asset.Queries.GetAllAssets
         public decimal? Value { get; set; }
         public AssetType? Type { get; set; }
         public string? IdentificationCode { get; set; }
-        public int Page { get; set; } = 1;
+        public string? Condition { get; set; }
+        public DateTime? PurchaseDate { get; set; }
+        public string? Location { get; set; }
+        public string? Responsible { get; set; }
+        public DateTime? LastMaintenance { get; set; }
+        public DateTime? NextMaintenance { get; set; }
+        public DateTime? WarrantyUntil { get; set; }
+        public string? Notes { get; set; }
+         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 
@@ -54,6 +62,30 @@ namespace MyChurch.Application.Asset.Queries.GetAllAssets
 
             if (!string.IsNullOrEmpty(request.IdentificationCode))
                 query = query.Where(a => a.IdentificationCode.Contains(request.IdentificationCode));
+
+            if (!string.IsNullOrEmpty(request.Condition))
+                query = query.Where(a => a.Condition.Contains(request.Condition));
+
+            if (request.PurchaseDate.HasValue)
+                query = query.Where(a => a.PurchaseDate == request.PurchaseDate.Value);
+
+            if (!string.IsNullOrEmpty(request.Location))
+                query = query.Where(a => a.Location.Contains(request.Location));
+
+            if (!string.IsNullOrEmpty(request.Responsible))
+                query = query.Where(a => a.Responsible.Contains(request.Responsible));
+
+            if (request.LastMaintenance.HasValue)
+                query = query.Where(a => a.LastMaintenance == request.LastMaintenance.Value);
+
+            if (request.NextMaintenance.HasValue)
+                query = query.Where(a => a.NextMaintenance == request.NextMaintenance.Value);
+
+            if (request.WarrantyUntil.HasValue)
+                query = query.Where(a => a.WarrantyUntil == request.WarrantyUntil.Value);
+
+            if (!string.IsNullOrEmpty(request.Notes))
+                query = query.Where(a => a.Notes.Contains(request.Notes));
 
             var total = await query.CountAsync(cancellationToken);
 

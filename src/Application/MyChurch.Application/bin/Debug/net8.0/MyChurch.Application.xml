@@ -22,6 +22,30 @@
         <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.IdentificationCode">
             <summary>Identification Code</summary>
         </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Condition">
+            <summary>Condition</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.PurchaseDate">
+            <summary>Purchase Date</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Location">
+            <summary>Location</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Responsible">
+            <summary>Responsible</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.LastMaintenance">
+            <summary>Last Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.NextMaintenance">
+            <summary>Next Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.WarrantyUntil">
+            <summary>Warranty Until</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Notes">
+            <summary>Notes</summary>
+        </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Name">
             <summary>Name</summary>
         </member>
@@ -39,6 +63,30 @@
         </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.IdentificationCode">
             <summary>Identification Code</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Condition">
+            <summary>Condition</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.PurchaseDate">
+            <summary>Purchase Date</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Location">
+            <summary>Location</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Responsible">
+            <summary>Responsible</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.LastMaintenance">
+            <summary>Last Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.NextMaintenance">
+            <summary>Next Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.WarrantyUntil">
+            <summary>Warranty Until</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Notes">
+            <summary>Notes</summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Name">
             <summary>Nome da Igreja</summary>
@@ -240,6 +288,26 @@
             <summary>Role</summary>
             <example>Worker</example>
         </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MaritalStatus">
+            <summary>Estado civil</summary>
+            <example>Solteiro</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberSince">
+            <summary>Membro desde</summary>
+            <example>2020-01-01T00:00:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Ministry">
+            <summary>Ministério</summary>
+            <example>Louvor</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsActive">
+            <summary>Membro ativo</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Notes">
+            <summary>Observações</summary>
+            <example>Participa do grupo de jovens</example>
+        </member>
         <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
@@ -265,6 +333,21 @@
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.RoleMember">
             <summary>Filtro por papel (role)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsActive">
+            <summary>Filtro por membro ativo</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
+            <summary>Filtro por ministério (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MaritalStatus">
+            <summary>Filtro por estado civil (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MemberSince">
+            <summary>Filtro por data de entrada como membro</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Notes">
+            <summary>Filtro por observações (contém)</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageNumber">
             <summary>Número da página (começa em 1)</summary>

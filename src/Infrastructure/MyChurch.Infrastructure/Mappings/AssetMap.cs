@@ -67,6 +67,55 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
+            // Novos campos
+            builder
+                .Property(a => a.Condition)
+                .HasColumnName("condition")
+                .HasColumnType("varchar(50)")
+                .IsRequired();
+
+            builder
+                .Property(a => a.PurchaseDate)
+                .HasColumnName("purchase_date")
+                .HasColumnType("timestamp")
+                .IsRequired(false);
+
+            builder
+                .Property(a => a.Location)
+                .HasColumnName("location")
+                .HasColumnType("varchar(200)")
+                .IsRequired();
+
+            builder
+                .Property(a => a.Responsible)
+                .HasColumnName("responsible")
+                .HasColumnType("varchar(100)")
+                .IsRequired();
+
+            builder
+                .Property(a => a.LastMaintenance)
+                .HasColumnName("last_maintenance")
+                .HasColumnType("timestamp")
+                .IsRequired(false);
+
+            builder
+                .Property(a => a.NextMaintenance)
+                .HasColumnName("next_maintenance")
+                .HasColumnType("timestamp")
+                .IsRequired(false);
+
+            builder
+                .Property(a => a.WarrantyUntil)
+                .HasColumnName("warranty_until")
+                .HasColumnType("timestamp")
+                .IsRequired(false);
+
+            builder
+                .Property(a => a.Notes)
+                .HasColumnName("notes")
+                .HasColumnType("text")
+                .IsRequired();
+
             builder
                 .HasOne(a => a.Church)
                 .WithMany(c => c.Assets)
