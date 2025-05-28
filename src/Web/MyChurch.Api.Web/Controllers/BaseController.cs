@@ -6,7 +6,7 @@ using MyChurch.Application.Dtos;
 namespace MyChurch.Api.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BaseController : ControllerBase
     {
         private ISender _mediator = null!;

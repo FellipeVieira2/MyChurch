@@ -5,7 +5,7 @@
     "description": "Api To Manage MyChurch."
   },
   "paths": {
-    "/Asset": {
+    "/api/Asset": {
       "post": {
         "tags": [
           "Asset"
@@ -205,7 +205,7 @@
         }
       }
     },
-    "/Asset/{id}": {
+    "/api/Asset/{id}": {
       "get": {
         "tags": [
           "Asset"
@@ -366,7 +366,7 @@
         }
       }
     },
-    "/Church": {
+    "/api/Church": {
       "post": {
         "tags": [
           "Church"
@@ -424,7 +424,7 @@
         }
       }
     },
-    "/Church/withadmin": {
+    "/api/Church/withadmin": {
       "post": {
         "tags": [
           "Church"
@@ -482,7 +482,7 @@
         }
       }
     },
-    "/Church/{id}": {
+    "/api/Church/{id}": {
       "get": {
         "tags": [
           "Church"
@@ -614,7 +614,7 @@
         }
       }
     },
-    "/Member": {
+    "/api/Member": {
       "post": {
         "tags": [
           "Member"
@@ -825,7 +825,7 @@
         }
       }
     },
-    "/Member/{id}": {
+    "/api/Member/{id}": {
       "get": {
         "tags": [
           "Member"
@@ -892,7 +892,7 @@
         }
       }
     },
-    "/Member/active/password/{hash}": {
+    "/api/Member/active/password/{hash}": {
       "patch": {
         "tags": [
           "Member"
@@ -940,7 +940,7 @@
         }
       }
     },
-    "/Subscription": {
+    "/api/Subscription": {
       "post": {
         "tags": [
           "Subscription"
@@ -976,7 +976,7 @@
         }
       }
     },
-    "/Subscription/{id}": {
+    "/api/Subscription/{id}": {
       "get": {
         "tags": [
           "Subscription"

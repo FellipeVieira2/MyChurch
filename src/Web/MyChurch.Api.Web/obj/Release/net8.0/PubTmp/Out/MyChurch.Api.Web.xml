@@ -4,6 +4,41 @@
         <name>MyChurch.Api.Web</name>
     </assembly>
     <members>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.CreateAsset(MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand)">
+            <summary>
+            Cria um novo ativo patrimonial
+            </summary>
+            <response code="200">Sucesso: Ativo criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.UpdateAsset(System.Int32,MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand)">
+            <summary>
+            Atualiza um ativo patrimonial existente
+            </summary>
+            <response code="200">Sucesso: Ativo atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.GetAsset(System.Int32)">
+            <summary>
+            Busca um ativo patrimonial por ID
+            </summary>
+            <response code="200">Sucesso: Ativo retornado</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.GetAllAsset(MyChurch.Application.Asset.Queries.GetAllAssets.GetAllAssetsQuery)">
+            <summary>
+            Busca Lista de Ativos patrimonial
+            </summary>
+            <response code="200">Sucesso: Ativo retornado</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.DeleteAsset(System.Int32)">
+            <summary>
+            Exclui um ativo patrimonial
+            </summary>
+            <response code="204">Sucesso: Ativo excluído</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
             <summary>
             Create a new Church
@@ -19,6 +54,14 @@
             <response code="200">Success: Church Updated</response>
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurchWithAdmin(MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand)">
+            <summary>
+            Cria uma nova Igreja já com usuário Admin
+            </summary>
+            <response code="200">Sucesso: Igreja criada</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
             <summary>
@@ -52,6 +95,42 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
             <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
+            <summary>
+            Lista membros da igreja com filtros e paginação (apenas para Admin)
+            </summary>
+            <response code="200">Sucesso: Lista paginada de membros</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription">
+            <summary>
+            Cria uma nova assinatura
+            </summary>
+            <response code="200">Sucesso: Assinatura criada</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.UpdateSubscription(System.Int32)">
+            <summary>
+            Atualiza uma assinatura existente
+            </summary>
+            <response code="200">Sucesso: Assinatura atualizada</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.GetSubscription(System.Int32)">
+            <summary>
+            Busca uma assinatura por ID
+            </summary>
+            <response code="200">Sucesso: Assinatura retornada</response>
+            <response code="404">Falha: Não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CancelSubscription(System.Int32)">
+            <summary>
+            Cancela uma assinatura
+            </summary>
+            <response code="200">Sucesso: Assinatura cancelada</response>
+            <response code="404">Falha: Não encontrada</response>
         </member>
     </members>
 </doc>

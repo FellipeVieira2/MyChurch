@@ -1,40 +1,8 @@
 [
   {
-    "ContainingType": "MyChurch.Api.Controllers.AuthController",
-    "Method": "Login",
-    "RelativePath": "api/Auth/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "MyChurch.Application.Member.Commands.Login.LoginCommand",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MyChurch.Api.Controllers.FileController",
-    "Method": "DownloadFile",
-    "RelativePath": "api/File/storage",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "fileName",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "MyChurch.Api.Web.Controllers.AssetController",
     "Method": "CreateAsset",
-    "RelativePath": "Asset",
+    "RelativePath": "api/Asset",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -60,7 +28,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.AssetController",
     "Method": "GetAllAsset",
-    "RelativePath": "Asset",
+    "RelativePath": "api/Asset",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -171,7 +139,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.AssetController",
     "Method": "UpdateAsset",
-    "RelativePath": "Asset/{id}",
+    "RelativePath": "api/Asset/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -202,7 +170,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.AssetController",
     "Method": "GetAsset",
-    "RelativePath": "Asset/{id}",
+    "RelativePath": "api/Asset/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -228,7 +196,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.AssetController",
     "Method": "DeleteAsset",
-    "RelativePath": "Asset/{id}",
+    "RelativePath": "api/Asset/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -248,9 +216,25 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Member.Commands.Login.LoginCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "CreateChurch",
-    "RelativePath": "Church",
+    "RelativePath": "api/Church",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -276,7 +260,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "UpdateChurch",
-    "RelativePath": "Church/{id}",
+    "RelativePath": "api/Church/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -307,7 +291,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "GetChurch",
-    "RelativePath": "Church/{id}",
+    "RelativePath": "api/Church/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -333,7 +317,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "CreateChurchWithAdmin",
-    "RelativePath": "Church/withadmin",
+    "RelativePath": "api/Church/withadmin",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -357,9 +341,25 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Controllers.FileController",
+    "Method": "DownloadFile",
+    "RelativePath": "api/File/storage",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fileName",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
     "Method": "CreateMember",
-    "RelativePath": "Member",
+    "RelativePath": "api/Member",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -385,7 +385,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
     "Method": "GetAllMembers",
-    "RelativePath": "Member",
+    "RelativePath": "api/Member",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -486,7 +486,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
     "Method": "GetMember",
-    "RelativePath": "Member/{id}",
+    "RelativePath": "api/Member/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -521,7 +521,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
     "Method": "ActivePassword",
-    "RelativePath": "Member/active/password/{hash}",
+    "RelativePath": "api/Member/active/password/{hash}",
     "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
@@ -548,7 +548,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.SubscriptionController",
     "Method": "CreateSubscription",
-    "RelativePath": "Subscription",
+    "RelativePath": "api/Subscription",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -568,7 +568,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.SubscriptionController",
     "Method": "UpdateSubscription",
-    "RelativePath": "Subscription/{id}",
+    "RelativePath": "api/Subscription/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -590,7 +590,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.SubscriptionController",
     "Method": "GetSubscription",
-    "RelativePath": "Subscription/{id}",
+    "RelativePath": "api/Subscription/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -612,7 +612,7 @@
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.SubscriptionController",
     "Method": "CancelSubscription",
-    "RelativePath": "Subscription/{id}",
+    "RelativePath": "api/Subscription/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,

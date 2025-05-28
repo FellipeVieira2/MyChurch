@@ -1,5 +1,9 @@
 using System;
 using System.Text;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
@@ -80,6 +84,12 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
+});
+builder.Services.AddFluentValidationRulesToSwagger();
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
+{
+    Region = RegionEndpoint.USEast2
 });
 
 var app = builder.Build();

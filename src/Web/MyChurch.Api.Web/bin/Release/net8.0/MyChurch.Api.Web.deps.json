@@ -1311,12 +1311,21 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
           "MyChurch.Domain": "1.0.0",
           "MyChurch.Infrastructure": "1.0.0",
+          "Mychurch.Common": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
         "runtime": {
           "MyChurch.Application.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Mychurch.Common/1.0.0": {
+        "runtime": {
+          "Mychurch.Common.dll": {
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1329,7 +1338,7 @@
         },
         "runtime": {
           "MyChurch.Domain.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1346,7 +1355,7 @@
         },
         "runtime": {
           "MyChurch.Infrastructure.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -2102,6 +2111,11 @@
       "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
     },
     "MyChurch.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Mychurch.Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

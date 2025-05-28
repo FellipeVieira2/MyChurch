@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-MyChurch.Api.Web-b6f66eb2-132b-4c43-981f-7f12a82a7f9a</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 

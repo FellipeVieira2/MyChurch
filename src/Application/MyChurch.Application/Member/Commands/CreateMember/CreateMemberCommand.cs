@@ -110,7 +110,6 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 ChurchId = churchId,
                 Role = request.RoleMember,
                 Created = DateTime.UtcNow,
-                // Novos campos
                 MaritalStatus = request.MaritalStatus,
                 MemberSince = request.MemberSince,
                 Ministry = request.Ministry,
