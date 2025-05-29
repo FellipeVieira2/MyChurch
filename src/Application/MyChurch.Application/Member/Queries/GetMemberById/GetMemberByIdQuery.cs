@@ -14,6 +14,7 @@ namespace MyChurch.Application.Member.Queries.GetMemberById
         [JsonIgnore]
         public int Id { get; set; }
     }
+
     public class GetMemberByIdQueryHandler : IRequestHandler<GetMemberByIdQuery, MemberDto>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -27,16 +28,32 @@ namespace MyChurch.Application.Member.Queries.GetMemberById
 
         public async Task<MemberDto> Handle(GetMemberByIdQuery request, CancellationToken cancellationToken)
         {
-            var member = await _unitOfWork.Members.Query().AsNoTrackingWithIdentityResolution()
+            // Busca o membro autenticado para obter o ChurchId
+            var loggedMember = await _unitOfWork.Members.Query()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+
+            if (loggedMember is null)
+            {
+                _logger.LogError("Authenticated member not found");
+                ValidationException.ThrowException("Member", "Authenticated member not found");
+            }
+
+            int churchId = loggedMember.ChurchId;
+
+            // Busca o membro solicitado, validando se pertence à mesma igreja
+            var member = await _unitOfWork.Members.Query()
+                .AsNoTrackingWithIdentityResolution()
                 .Include(m => m.Church)
-                .FirstOrDefaultAsync(m => m.Id == request.Id && m.Church.Members.Any(x => x.Id == request.UserId), cancellationToken);
+                .FirstOrDefaultAsync(m => m.Id == request.Id && m.ChurchId == churchId, cancellationToken);
+
             if (member == null)
             {
-                _logger.LogError("Member not found");
-                ValidationException.ThrowException("Get", "Member not found");
+                _logger.LogError("Member not found or does not belong to your church");
+                ValidationException.ThrowException("Get", "Member not found or does not belong to your church");
             }
+
             return MemberDto.New(member);
         }
     }
-
 }

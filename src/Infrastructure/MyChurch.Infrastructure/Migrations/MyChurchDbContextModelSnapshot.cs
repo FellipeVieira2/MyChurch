@@ -277,6 +277,19 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<DateTime>("FinishDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("finish_date");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("location");
+
+                    b.Property<bool>("RequiresParticipantList")
+                        .HasColumnType("boolean")
+                        .HasColumnName("requires_participant_list");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("varchar(200)")
@@ -287,6 +300,68 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasIndex("ChurchId");
 
                     b.ToTable("event", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("message");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("sent_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("event_notification", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventRecurrence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int")
+                        .HasColumnName("frequency");
+
+                    b.Property<DateTime?>("RecurrenceEndDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("recurrence_end_date");
+
+                    b.Property<int>("RecurrenceType")
+                        .HasColumnType("int")
+                        .HasColumnName("recurrence_type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId")
+                        .IsUnique();
+
+                    b.ToTable("event_recurrence", "postgres");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
@@ -577,6 +652,28 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventNotification", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithMany("Notifications")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventRecurrence", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithOne("Recurrence")
+                        .HasForeignKey("MyChurch.Domain.Entities.EventRecurrence", "EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -633,6 +730,14 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Members");
 
                     b.Navigation("Subscription")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
+                {
+                    b.Navigation("Notifications");
+
+                    b.Navigation("Recurrence")
                         .IsRequired();
                 });
 

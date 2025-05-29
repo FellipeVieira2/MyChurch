@@ -38,6 +38,24 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(e => e.FinishDate)
+                .HasColumnName("finish_date")
+                .HasColumnType("timestamp")
+                .IsRequired();
+
+            builder
+                .Property(e => e.Location)
+                .HasColumnName("location")
+                .HasColumnType("varchar(200)")
+                .IsRequired();
+
+            builder
+                .Property(e => e.RequiresParticipantList)
+                .HasColumnName("requires_participant_list")
+                .HasColumnType("boolean")
+                .IsRequired();
+
+            builder
                 .Property(e => e.ChurchId)
                 .HasColumnName("church_id")
                 .HasColumnType("int")
@@ -69,6 +87,18 @@ namespace MyChurch.Infrastructure.Mappings
                         j.ToTable("event_participants");
                         j.HasKey("event_id", "member_id");
                     });
+
+            builder
+                .HasMany(e => e.Notifications)
+                .WithOne(n => n.Event)
+                .HasForeignKey(n => n.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(r => r.Recurrence)
+                .WithOne(r => r.Event)
+                .HasForeignKey<EventRecurrence>(r => r.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

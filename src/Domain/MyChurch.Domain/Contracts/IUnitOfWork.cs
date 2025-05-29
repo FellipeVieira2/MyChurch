@@ -10,6 +10,8 @@
         IPlanRepository Plans { get; }
         ISubscriptionRepository Subscriptions { get; }
         IAssetRepository Assets { get; }
+        IEventNotificationRepository EventNotifications { get; }
+        IEventRecurrenceRepository EventRecurrences { get; }
         Task<bool> CommitAsync();
 
     }

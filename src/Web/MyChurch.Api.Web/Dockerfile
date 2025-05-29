@@ -15,6 +15,7 @@ WORKDIR /src
 COPY ["Web/MyChurch.Api.Web/MyChurch.Api.Web.csproj", "Web/MyChurch.Api.Web/"]
 COPY ["Application/MyChurch.Application/MyChurch.Application.csproj", "Application/MyChurch.Application/"]
 COPY ["Domain/MyChurch.Domain/MyChurch.Domain.csproj", "Domain/MyChurch.Domain/"]
+COPY ["Infrastructure/Mychurch.Common/Mychurch.Common.csproj", "Infrastructure/Mychurch.Common/"]
 COPY ["Infrastructure/MyChurch.Infrastructure/MyChurch.Infrastructure.csproj", "Infrastructure/MyChurch.Infrastructure/"]
 RUN dotnet restore "./Web/MyChurch.Api.Web/MyChurch.Api.Web.csproj"
 COPY . .

@@ -22,7 +22,21 @@ namespace MyChurch.Infrastructure.Repositories
 
         public IAssetRepository Assets { get; }
 
-        public UnitOfWork(IChurchRepository churchs, IDonationRepository donations, IEventRepository events, IMemberRepository members, IPaymentRepository payments, IPlanRepository plans, ISubscriptionRepository subscriptions, MyChurchDbContext context, IAssetRepository assets)
+        public IEventNotificationRepository EventNotifications { get; }
+        public IEventRecurrenceRepository EventRecurrences { get; }
+
+        public UnitOfWork(
+            IChurchRepository churchs,
+            IDonationRepository donations,
+            IEventRepository events,
+            IMemberRepository members,
+            IPaymentRepository payments,
+            IPlanRepository plans,
+            ISubscriptionRepository subscriptions,
+            MyChurchDbContext context,
+            IAssetRepository assets,
+            IEventNotificationRepository eventNotifications,
+            IEventRecurrenceRepository eventRecurrences)
         {
             Churchs = churchs;
             Donations = donations;
@@ -33,6 +47,8 @@ namespace MyChurch.Infrastructure.Repositories
             Subscriptions = subscriptions;
             _context = context;
             Assets = assets;
+            EventNotifications = eventNotifications;
+            EventRecurrences = eventRecurrences;
         }
 
         public async Task<bool> CommitAsync()
