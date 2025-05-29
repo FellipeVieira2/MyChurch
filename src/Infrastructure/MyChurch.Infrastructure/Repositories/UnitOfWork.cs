@@ -24,6 +24,8 @@ namespace MyChurch.Infrastructure.Repositories
 
         public IEventNotificationRepository EventNotifications { get; }
         public IEventRecurrenceRepository EventRecurrences { get; }
+        public IFeedPostRepository FeedPosts { get; }
+        public IFeedLikeRepository FeedLikes { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -36,7 +38,9 @@ namespace MyChurch.Infrastructure.Repositories
             MyChurchDbContext context,
             IAssetRepository assets,
             IEventNotificationRepository eventNotifications,
-            IEventRecurrenceRepository eventRecurrences)
+            IEventRecurrenceRepository eventRecurrences,
+            IFeedPostRepository feedPosts,
+            IFeedLikeRepository feedLikes)
         {
             Churchs = churchs;
             Donations = donations;
@@ -49,6 +53,8 @@ namespace MyChurch.Infrastructure.Repositories
             Assets = assets;
             EventNotifications = eventNotifications;
             EventRecurrences = eventRecurrences;
+            FeedPosts = feedPosts;
+            FeedLikes = feedLikes;
         }
 
         public async Task<bool> CommitAsync()

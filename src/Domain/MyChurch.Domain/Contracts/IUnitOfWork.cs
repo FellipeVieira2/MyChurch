@@ -12,6 +12,8 @@
         IAssetRepository Assets { get; }
         IEventNotificationRepository EventNotifications { get; }
         IEventRecurrenceRepository EventRecurrences { get; }
+        IFeedPostRepository FeedPosts { get; }
+        IFeedLikeRepository FeedLikes { get; }
         Task<bool> CommitAsync();
 
     }

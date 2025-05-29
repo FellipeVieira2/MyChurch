@@ -23,6 +23,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IAssetRepository, AssetRepository>();
             services.AddScoped<IEventNotificationRepository, EventNotificationRepository>();
             services.AddScoped<IEventRecurrenceRepository, EventRecurrenceRepository>();
+            services.AddScoped<IFeedPostRepository, FeedPostRepository>();
+            services.AddScoped<IFeedLikeRepository, FeedLikeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {

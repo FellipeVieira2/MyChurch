@@ -364,6 +364,76 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("event_recurrence", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<int>("FeedPostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("feed_post_id");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("FeedPostId", "MemberId")
+                        .IsUnique();
+
+                    b.ToTable("feed_likes", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedPost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("feed_posts", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
                     b.Property<int>("Id")
@@ -674,6 +744,44 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedLike", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.FeedPost", "FeedPost")
+                        .WithMany("Likes")
+                        .HasForeignKey("FeedPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FeedPost");
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedPost", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -739,6 +847,11 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.Navigation("Recurrence")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedPost", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
