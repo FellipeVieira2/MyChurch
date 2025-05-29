@@ -14,6 +14,8 @@
         IEventRecurrenceRepository EventRecurrences { get; }
         IFeedPostRepository FeedPosts { get; }
         IFeedLikeRepository FeedLikes { get; }
+        ICashFlowEntryRepository CashFlowEntries { get; }
+        ICashFlowCategoryRepository CashFlowCategories { get; }
         Task<bool> CommitAsync();
 
     }

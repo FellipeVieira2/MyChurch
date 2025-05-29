@@ -29,5 +29,6 @@ namespace MyChurch.Domain.Entities
         public DateTime? Updated { get; set; }
         public ICollection<Donation> Donations { get; set; }
         public ICollection<Event> Events { get; set; }
+        public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
     }
 }

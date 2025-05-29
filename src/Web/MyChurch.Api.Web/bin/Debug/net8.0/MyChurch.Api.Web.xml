@@ -39,6 +39,56 @@
             <response code="204">Sucesso: Ativo excluído</response>
             <response code="404">Falha: Não encontrado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.CreateCashFlowEntry(MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand)">
+            <summary>
+            Cria um novo lançamento de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetChurchCashFlowBalance">
+            <summary>
+            Retorna o saldo consolidado do fluxo de caixa da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowEntry(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand)">
+            <summary>
+            Atualiza um lançamento de fluxo de caixa existente
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetCashFlowEntry(System.Int32)">
+            <summary>
+            Busca um lançamento de fluxo de caixa por ID
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowEntries(MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery)">
+            <summary>
+            Lista lançamentos de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowEntry(System.Int32)">
+            <summary>
+            Exclui um lançamento de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.CreateCashFlowCategory(MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand)">
+            <summary>
+            Cria uma nova categoria de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowCategory(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand)">
+            <summary>
+            Atualiza uma categoria de fluxo de caixa existente
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowCategory(System.Int32)">
+            <summary>
+            Exclui uma categoria de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories">
+            <summary>
+            Lista todas as categorias de fluxo de caixa da igreja
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
             <summary>
             Create a new Church

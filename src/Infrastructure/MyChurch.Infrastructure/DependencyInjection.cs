@@ -25,6 +25,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IEventRecurrenceRepository, EventRecurrenceRepository>();
             services.AddScoped<IFeedPostRepository, FeedPostRepository>();
             services.AddScoped<IFeedLikeRepository, FeedLikeRepository>();
+            services.AddScoped<ICashFlowEntryRepository, CashFlowEntryRepository>();
+            services.AddScoped<ICashFlowCategoryRepository, CashFlowCategoryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {

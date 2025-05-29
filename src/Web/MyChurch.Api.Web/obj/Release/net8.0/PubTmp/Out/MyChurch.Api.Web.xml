@@ -111,6 +111,45 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.CreateFeedPost(MyChurch.Application.Feed.Post.Commands.CreateFeedPost.CreateFeedPostCommand)">
+            <summary>
+            Cria um novo Post
+            </summary>
+            <response code="200">Sucesso: Post criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.UpdateFeedPost(System.Int32,MyChurch.Application.Feed.Post.Commands.UpdateFeedPost.UpdateFeedPostCommand)">
+            <summary>
+            Atualiza um Post
+            </summary>
+            <response code="200">Sucesso: Post Atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.GetAllFeedPosts">
+            <summary>
+            Atualiza um Post
+            </summary>
+            <response code="200">Sucesso: Post Atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.GetFeedPostById(System.Int32)">
+            <summary>
+            Retorna um Post pelo Id
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.AddLike(System.Int32)">
+            <summary>
+            Adiciona um Like ao Post
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.RemoveLike(System.Int32)">
+            <summary>
+            Remove o Like do Post
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateMember(MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand)">
             <summary>
             Create a new Member

@@ -179,6 +179,91 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("asset", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("cash_flow_categories", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("category_id");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ChurchId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("cash_flow_entries", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
                     b.Property<int>("Id")
@@ -689,6 +774,42 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowCategory", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany("CashFlowCategories")
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowEntry", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.CashFlowCategory", "Category")
+                        .WithMany("CashFlowEntries")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany("CashFlowEntries")
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany("CashFlowEntries")
+                        .HasForeignKey("MemberId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Address", "Address")
@@ -829,9 +950,18 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowCategory", b =>
+                {
+                    b.Navigation("CashFlowEntries");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Church", b =>
                 {
                     b.Navigation("Assets");
+
+                    b.Navigation("CashFlowCategories");
+
+                    b.Navigation("CashFlowEntries");
 
                     b.Navigation("Events");
 
@@ -856,6 +986,8 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
+                    b.Navigation("CashFlowEntries");
+
                     b.Navigation("Donations");
                 });
 

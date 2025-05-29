@@ -25,7 +25,8 @@
         public DateTime? Updated { get; set; }
         public ICollection<Event> Events { get; set; }
         public List<Asset> Assets { get; set; }
-
+        public ICollection<CashFlowCategory> CashFlowCategories { get; set; }
+        public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
 
         // Assinatura da igreja  
         public Subscription Subscription { get; set; }
