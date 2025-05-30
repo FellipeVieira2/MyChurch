@@ -8,8 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "MyChurch.Infrastructure/1.0.0": {
         "dependencies": {
-          "AWSSDK.Extensions.NETCore.Setup": "3.7.400",
-          "AWSSDK.S3": "3.7.415.25",
+          "AWSSDK.Extensions.NETCore.Setup": "4.0.1",
+          "AWSSDK.S3": "4.0.0.7",
+          "AWSSDK.SimpleEmail": "4.0.0.4",
           "Microsoft.EntityFrameworkCore": "9.0.3",
           "Microsoft.EntityFrameworkCore.Abstractions": "9.0.3",
           "Microsoft.EntityFrameworkCore.Design": "9.0.3",
@@ -22,36 +23,47 @@
           "MyChurch.Infrastructure.dll": {}
         }
       },
-      "AWSSDK.Core/3.7.402.26": {
+      "AWSSDK.Core/4.0.0.5": {
         "runtime": {
           "lib/net8.0/AWSSDK.Core.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.402.26"
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.5"
           }
         }
       },
-      "AWSSDK.Extensions.NETCore.Setup/3.7.400": {
+      "AWSSDK.Extensions.NETCore.Setup/4.0.1": {
         "dependencies": {
-          "AWSSDK.Core": "3.7.402.26",
+          "AWSSDK.Core": "4.0.0.5",
           "Microsoft.Extensions.Configuration.Abstractions": "9.0.3",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.3",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.3"
         },
         "runtime": {
           "lib/net8.0/AWSSDK.Extensions.NETCore.Setup.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.400.0"
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
           }
         }
       },
-      "AWSSDK.S3/3.7.415.25": {
+      "AWSSDK.S3/4.0.0.7": {
         "dependencies": {
-          "AWSSDK.Core": "3.7.402.26"
+          "AWSSDK.Core": "4.0.0.5"
         },
         "runtime": {
           "lib/net8.0/AWSSDK.S3.dll": {
-            "assemblyVersion": "3.3.0.0",
-            "fileVersion": "3.7.415.25"
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.7"
+          }
+        }
+      },
+      "AWSSDK.SimpleEmail/4.0.0.4": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.0.5"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.SimpleEmail.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.4"
           }
         }
       },
@@ -741,26 +753,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AWSSDK.Core/3.7.402.26": {
+    "AWSSDK.Core/4.0.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pChqa8AqDplFfVvJoI1JbxkYuBRmp+UAjNRBnNsh18jEoW/mbazIucJjaKpAKFdSWgQMfinpiU2tWWvlnbq6iQ==",
-      "path": "awssdk.core/3.7.402.26",
-      "hashPath": "awssdk.core.3.7.402.26.nupkg.sha512"
+      "sha512": "sha512-NG31J9azTmY1GKOZd+MFGLUsuD472AGz4BUceTiw0pdYkexD+xJ8kA87hDp/OTk2b6xgrhkQIpnttzIekkMSvw==",
+      "path": "awssdk.core/4.0.0.5",
+      "hashPath": "awssdk.core.4.0.0.5.nupkg.sha512"
     },
-    "AWSSDK.Extensions.NETCore.Setup/3.7.400": {
+    "AWSSDK.Extensions.NETCore.Setup/4.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-i4ta6n+QuGKt1RBCIbRU2wohz5DYJ+wRPR9EI7YkzC8eaWSbmMXTNL+s4HpYUsoxM7uyUrYoW0gC52/9KnK7xw==",
-      "path": "awssdk.extensions.netcore.setup/3.7.400",
-      "hashPath": "awssdk.extensions.netcore.setup.3.7.400.nupkg.sha512"
+      "sha512": "sha512-avdsCcQSdw7iQpHAyKwcA15DmpwUXFZ2jV8YjNgIQq6T4hiJ8/ucFgAwxamibvUB3Wd06FXkWXh2AK8pWGfflA==",
+      "path": "awssdk.extensions.netcore.setup/4.0.1",
+      "hashPath": "awssdk.extensions.netcore.setup.4.0.1.nupkg.sha512"
     },
-    "AWSSDK.S3/3.7.415.25": {
+    "AWSSDK.S3/4.0.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-UhM0VH1NubDx/j1YWDvnY2T1KKpw8kbx63Hd9YWXcjYY0vQIo8CNANwD/+Lg65gATGs+s6MPeFvdqjtQV+oG4Q==",
-      "path": "awssdk.s3/3.7.415.25",
-      "hashPath": "awssdk.s3.3.7.415.25.nupkg.sha512"
+      "sha512": "sha512-dFELsA+Y7aXmvCTL83+oIWmr+0s/GpkqCKZK1ac7HPdYQFv+QHEAhrXdCJknsCKqK+v0yefkLzuKuSSP6k4tmA==",
+      "path": "awssdk.s3/4.0.0.7",
+      "hashPath": "awssdk.s3.4.0.0.7.nupkg.sha512"
+    },
+    "AWSSDK.SimpleEmail/4.0.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-71snT1yq3NQRtd7pkiJEiC+XvFX7gYK7EjII0AhaHMPtrItR2z4UHeZCqd7pgNFTJ8tfyUSN7oIQrTAyh+ehwQ==",
+      "path": "awssdk.simpleemail/4.0.0.4",
+      "hashPath": "awssdk.simpleemail.4.0.0.4.nupkg.sha512"
     },
     "FluentValidation/11.11.0": {
       "type": "package",

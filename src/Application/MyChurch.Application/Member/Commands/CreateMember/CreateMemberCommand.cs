@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.S3;
+using MyChurch.Infrastructure.Utils.SES;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
@@ -65,6 +66,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
+
 
         public CreateMemberCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateMemberCommandHandler> logger, IS3Helper s3Helper)
         {
@@ -129,6 +131,20 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Member created with ID: {MemberId}", member.Id);
+
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "Emails", "WelcomeMemberTemplate.html");
+
+            var htmlTemplatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "AccountConfirmation.html");
+
+            //var link = $"https://www.mychurchlab.net/conta/criar-senha?token={hash}";
+            //var htmlContent = await File.ReadAllTextAsync(htmlTemplatePath, cancellationToken);
+            //htmlContent = htmlContent.Replace("{{link}}", link);
+
+            //await _emailService.EnviarEmailAsync(
+            //    destinatario: member.Email,
+            //    assunto: "Bem-vindo à nossa igreja!",
+            //    corpoHtml: htmlContent
+            //);
 
             return member.Id;
         }

@@ -45,6 +45,7 @@ namespace MyChurch.Application.Member.Queries.GetMemberById
             var member = await _unitOfWork.Members.Query()
                 .AsNoTrackingWithIdentityResolution()
                 .Include(m => m.Church)
+                .ThenInclude(x => x.Address)
                 .FirstOrDefaultAsync(m => m.Id == request.Id && m.ChurchId == churchId, cancellationToken);
 
             if (member == null)

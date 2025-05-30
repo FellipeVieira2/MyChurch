@@ -88,6 +88,76 @@
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Notes">
             <summary>Notes</summary>
         </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand.Name">
+            <summary>Nome da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand.Description">
+            <summary>Descrição da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Amount">
+            <summary>Valor do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Date">
+            <summary>Data do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Description">
+            <summary>Descrição</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Type">
+            <summary>Tipo: Entrada ou Saída</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.CategoryId">
+            <summary>ID da Categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Name">
+            <summary>Nome da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Description">
+            <summary>Descrição da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Amount">
+            <summary>Valor do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Date">
+            <summary>Data do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Description">
+            <summary>Descrição</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Type">
+            <summary>Tipo: Entrada ou Saída</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.CategoryId">
+            <summary>ID da Categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Amount">
+            <summary>Filtro por valor exato</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Date">
+            <summary>Filtro por data exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.StartDate">
+            <summary>Filtro por data inicial (>=)</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.EndDate" -->
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Type">
+            <summary>Filtro por tipo (Entrada/Saída)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.CategoryId">
+            <summary>Filtro por categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Name">
             <summary>Nome da Igreja</summary>
             <example>Igreja Pentecostal</example>

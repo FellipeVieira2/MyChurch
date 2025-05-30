@@ -1,6 +1,7 @@
 using System.Text;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
 using Amazon.S3;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -38,7 +39,19 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.InjectInfra(builder.Configuration);
+var awsConfig = builder.Configuration.GetSection("AWS");
+var awsCredentials = new BasicAWSCredentials(
+    awsConfig["AccessKey"],
+    awsConfig["SecretKey"]);
+var awsRegion = RegionEndpoint.GetBySystemName(awsConfig["Region"]);
+
+builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
+{
+    Credentials = awsCredentials,
+    Region = awsRegion
+});
 builder.Services.InjectS3(builder.Configuration);
+
 builder.Services.InjectApplication();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
@@ -80,11 +93,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 builder.Services.AddFluentValidationRulesToSwagger();
-builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
-{
-    Region = RegionEndpoint.USEast2
-});
 
 var app = builder.Build();
 

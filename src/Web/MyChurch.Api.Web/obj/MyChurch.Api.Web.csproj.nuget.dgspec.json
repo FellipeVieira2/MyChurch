@@ -309,11 +309,15 @@
           "dependencies": {
             "AWSSDK.Extensions.NETCore.Setup": {
               "target": "Package",
-              "version": "[3.7.400, )"
+              "version": "[4.0.1, )"
             },
             "AWSSDK.S3": {
               "target": "Package",
-              "version": "[3.7.415.25, )"
+              "version": "[4.0.0.7, )"
+            },
+            "AWSSDK.SimpleEmail": {
+              "target": "Package",
+              "version": "[4.0.0.4, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -421,7 +425,7 @@
           "dependencies": {
             "AWSSDK.Extensions.NETCore.Setup": {
               "target": "Package",
-              "version": "[3.7.400, )"
+              "version": "[4.0.0.4, )"
             },
             "FluentValidation.AspNetCore": {
               "target": "Package",

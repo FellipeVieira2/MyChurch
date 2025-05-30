@@ -50,7 +50,6 @@ namespace MyChurch.Infrastructure
                 SecretKey = configuration["S3Settings:SecretKey"]
             };
             services.AddSingleton(aWSS3Config);
-            services.AddAWSService<IAmazonS3>();
 
             services.AddScoped<IS3Helper, S3Helper>();
             return services;

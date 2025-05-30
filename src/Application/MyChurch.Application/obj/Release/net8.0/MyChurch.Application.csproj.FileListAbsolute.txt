@@ -20,3 +20,4 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.A
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\obj\Release\net8.0\ref\MyChurch.Application.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Release\net8.0\Mychurch.Common.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Release\net8.0\Mychurch.Common.pdb
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Application\MyChurch.Application\bin\Release\net8.0\Templates\AccountConfirmation.html

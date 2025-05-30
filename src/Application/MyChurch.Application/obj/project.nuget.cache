@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "rxw69KENW3I=",
+  "dgSpecHash": "YKlYuKA6rv0=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Application\\MyChurch.Application\\MyChurch.Application.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.core\\3.7.402.26\\awssdk.core.3.7.402.26.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.400\\awssdk.extensions.netcore.setup.3.7.400.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.s3\\3.7.415.25\\awssdk.s3.3.7.415.25.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.core\\4.0.0.5\\awssdk.core.4.0.0.5.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.extensions.netcore.setup\\4.0.1\\awssdk.extensions.netcore.setup.4.0.1.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.s3\\4.0.0.7\\awssdk.s3.4.0.0.7.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.simpleemail\\4.0.0.4\\awssdk.simpleemail.4.0.0.4.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",

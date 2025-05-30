@@ -41,7 +41,6 @@ namespace MyChurch.Application.Dtos
                 BaptizedDate = member.BaptizedDate,
                 IsTither = member.IsTither,
                 ChurchId = member.ChurchId,
-                Church = member.Church != null ? ChurchDto.New(member.Church) : null,
                 Role = member.Role,
                 Created = member.Created,
                 Updated = member.Updated,

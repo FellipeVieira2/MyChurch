@@ -24,4 +24,10 @@
     <ProjectReference Include="..\..\Infrastructure\MyChurch.Infrastructure\MyChurch.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Templates\AccountConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
