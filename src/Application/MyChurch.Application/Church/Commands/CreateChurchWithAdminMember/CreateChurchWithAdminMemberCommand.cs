@@ -1,15 +1,20 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Mychurch.Common.WebClients.Asaas;
+using Mychurch.Common.WebClients.Models.Requests;
+using MyChurch.Application.Subscription.Commands.CreateSubscription;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
+using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.Extensions;
 using MyChurch.Infrastructure.Utils.S3;
 
 
 namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 {
-    public class CreateChurchWithAdminMemberCommand : IRequest<int>
+    public class CreateChurchWithAdminMemberCommand : IRequest<CreateChurchWithAdminResultDto>
     {
         // Dados da Igreja
 
@@ -28,6 +33,10 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         /// <summary>ID do Plano</summary>
         /// <example>1</example>
         public int PlanId { get; set; }
+
+        /// <summary>BillingType</summary>
+        /// <example>PIX</example>
+        public string BillingType { get; set; } // Ex:"PIX", "CREDIT_CARD"
 
         /// <summary>Logo da Igreja (Base64)</summary>
         /// <example>Base64</example>
@@ -52,6 +61,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         /// <summary>Foto do Administrador (Base64)</summary>
         /// <example>Base64</example>
         public string? AdminPhoto { get; set; }
+        public string Document { get; set; }
 
         /// <summary>Telefone do Administrador</summary>
         /// <example>19999999999</example>
@@ -102,43 +112,67 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             /// <summary>Bairro</summary>
             /// <example>São João</example>
             public string Neighborhood { get; set; }
+            public string Number { get; set; }
         }
     }
-
-
-    public class CreateChurchWithAdminMemberCommandHandler : IRequestHandler<CreateChurchWithAdminMemberCommand, int>
+    public class CreateChurchWithAdminMemberCommandHandler : IRequestHandler<CreateChurchWithAdminMemberCommand, CreateChurchWithAdminResultDto>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateChurchWithAdminMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
+        private readonly IAsaasWebClient _asaasWebClient;
+        private readonly ISender _sender;
 
         public CreateChurchWithAdminMemberCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateChurchWithAdminMemberCommandHandler> logger,
-            IS3Helper s3Helper)
+            IS3Helper s3Helper,
+            IAsaasWebClient asaasWebClient,
+            ISender sender)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
+            _asaasWebClient = asaasWebClient;
+            _sender = sender;
         }
 
-        public async Task<int> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
+        public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
         {
-            // 1. Cria a entidade Address
+            // Validação de duplicidade de email, telefone e documento do admin
+            var exists = await _unitOfWork.Members.Query()
+                .AnyAsync(m =>
+                    (!string.IsNullOrEmpty(request.AdminEmail) && m.Email == request.AdminEmail) ||
+                    m.Phone == request.AdminPhone ||
+                    m.Document == request.AdminDocument,
+                    cancellationToken);
+
+            if (exists)
+                ValidationException.ThrowException("Member", "Já existe um membro cadastrado com este e-mail, telefone ou documento.");
+
+            // 1. Cria a entidade Address com todos os campos
             var address = new Address(
                 street: request.Address.Street,
                 city: request.Address.City,
                 state: request.Address.State,
                 zipCode: request.Address.ZipCode,
                 country: request.Address.Country,
-                neighborhood: request.Address.Neighborhood);
+                neighborhood: request.Address.Neighborhood
+            )
+            {
+                Number = request.Address.Number
+            };
 
-            // 2. Cria a entidade Church
+            // 2. Cria a entidade Church com todos os campos disponíveis
             var church = new Domain.Entities.Church(
                 name: request.Name,
-                address: address,
                 phone: request.Phone,
-                description: request.Description);
+                address: address,
+                description: request.Description
+            )
+            {
+                Document = request.Document,
+            };
 
             // 3. Faz upload do logo se necessário
             if (!string.IsNullOrEmpty(request.Logo))
@@ -175,10 +209,8 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             // 7. Criptografa e salva a senha do admin
             if (!string.IsNullOrWhiteSpace(request.AdminPassword))
             {
-                // Gera um hash único para o admin (pode ser um guid, por exemplo)
                 var hash = Guid.NewGuid().ToString("N");
                 adminMember.PasswordHash = hash;
-                // Usa o método de extensão Encrypt igual ao ActiveMemberPasswordCommand
                 adminMember.Password = request.AdminPassword.Encrypt(hash);
             }
 
@@ -186,11 +218,41 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             _unitOfWork.Members.Create(adminMember);
             await _unitOfWork.CommitAsync();
 
+            // 9. Cria o cliente no Asaas e salva o AsaasCustomerId
+            church.AsaasCustomerId = await CreateAsaasCustomerAsync(church, request.AdminEmail, cancellationToken);
+            _unitOfWork.Churchs.Update(church);
+            await _unitOfWork.CommitAsync();
+
+            string? checkoutUrl = null;
+
+            // Se o plano selecionado não for o Descubra (ID 1), já inicia o fluxo de contratação real
+            var subscriptionCommand = new MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand
+            {
+                UserId = adminMember.Id,
+                PlanId = request.PlanId,
+                BillingType = request.BillingType, // ou outro tipo conforme sua lógica
+                FirstPaymentDate = DateTime.UtcNow
+            };
+
+            // Chama o fluxo de assinatura e obtém o link de checkout
+            checkoutUrl = await _sender.Send(new CreateSubscriptionCommand()
+            {
+                BillingType = request.BillingType,
+                Email = request.AdminEmail,
+                FirstPaymentDate = DateTime.UtcNow,
+                PlanId = request.PlanId,
+                Role = "Admin",
+                UserId = adminMember.Id
+            }, cancellationToken);
+
             _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
 
-            return church.Id;
+            return new CreateChurchWithAdminResultDto
+            {
+                ChurchId = church.Id,
+                CheckoutUrl = checkoutUrl
+            };
         }
-
         private async Task<string> UploadLogoAsync(string logoBase64, CancellationToken cancellationToken)
         {
             if (logoBase64.Contains(','))
@@ -213,6 +275,22 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             var photoUrl = await _s3Helper.UploadFileAsync(photoStream, $"{Guid.NewGuid()}photo.jpg", "image/jpeg", cancellationToken);
 
             return photoUrl;
+        }
+        private async Task<string> CreateAsaasCustomerAsync(Domain.Entities.Church church, string emailAdmin, CancellationToken cancellationToken)
+        {
+            var customer = new AsaasCustomerRequestDto
+            {
+                Name = church.Name,
+                Email = emailAdmin,
+                MobilePhone = church.Phone,
+                AddressNumber = church.Address.Number,
+                CpfCnpj = church.Document,
+                ExternalReference = church.Id.ToString(),
+                PostalCode = church.Address.ZipCode,
+
+            };
+            var asaasCustomer = await _asaasWebClient.CriarClienteAsync(customer);
+            return asaasCustomer.Id;
         }
     }
 }

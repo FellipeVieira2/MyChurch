@@ -18,6 +18,7 @@
         public DateTime EndDate { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
+        public string ExternalReference { get; set; }
 
         // Pagamentos vinculados à assinatura  
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();

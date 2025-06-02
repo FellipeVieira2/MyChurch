@@ -40,46 +40,51 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
             /// <summary>Neighborhood</summary>
             /// <example>São João</example>
             public string? Neighborhood { get; set; }
+            /// <summary>Number</summary>
+            public string? Number
+            {
+                get; set;
+            }
+
         }
-
-    }
-    public class UpdateChurchCommandHandler : IRequestHandler<UpdateChurchCommand, ChurchDto>
-    {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<UpdateChurchCommandHandler> _logger;
-
-        public UpdateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateChurchCommandHandler> logger)
+        public class UpdateChurchCommandHandler : IRequestHandler<UpdateChurchCommand, ChurchDto>
         {
-            _unitOfWork = unitOfWork;
-            _logger = logger;
-        }
+            private readonly IUnitOfWork _unitOfWork;
+            private readonly ILogger<UpdateChurchCommandHandler> _logger;
 
-        public async Task<ChurchDto> Handle(UpdateChurchCommand request, CancellationToken cancellationToken)
-        {
-            var member = await _unitOfWork.Members.Query().FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
-            if (member == null || member.ChurchId != request.Id)
+            public UpdateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateChurchCommandHandler> logger)
             {
-                _logger.LogWarning("User does not have permission to update this church.");
-                ValidationException.ThrowException("Update","You do not have permission to update this church.");
+                _unitOfWork = unitOfWork;
+                _logger = logger;
             }
 
-            var church = await _unitOfWork.Churchs.Query().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-            if (church == null)
+            public async Task<ChurchDto> Handle(UpdateChurchCommand request, CancellationToken cancellationToken)
             {
-                _logger.LogWarning("Church not found with ID: {Id}", request.Id);
-                ValidationException.ThrowException("Update", "Church not found.");
+                var member = await _unitOfWork.Members.Query().FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+                if (member == null || member.ChurchId != request.Id)
+                {
+                    _logger.LogWarning("User does not have permission to update this church.");
+                    ValidationException.ThrowException("Update", "You do not have permission to update this church.");
+                }
+
+                var church = await _unitOfWork.Churchs.Query().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+                if (church == null)
+                {
+                    _logger.LogWarning("Church not found with ID: {Id}", request.Id);
+                    ValidationException.ThrowException("Update", "Church not found.");
+                }
+
+                church.Update(request.Name, request.Phone);
+                if (request.Address != null)
+                {
+                    church.Address.Update(request.Address.Street, request.Address.City, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood, request.Address.State, request.Address.Number);
+                }
+
+                _unitOfWork.Churchs.Update(church);
+                await _unitOfWork.CommitAsync();
+
+                return ChurchDto.New(church);
             }
-
-            church.Update(request.Name, request.Phone);
-            if (request.Address != null)
-            {
-                church.Address.Update(request.Address.Street, request.Address.City, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood, request.Address.State);
-            }
-
-            _unitOfWork.Churchs.Update(church);
-            await _unitOfWork.CommitAsync();
-
-            return ChurchDto.New(church);
         }
     }
 }

@@ -31,6 +31,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(a => a.Number)
+                .HasColumnName("number")
+                .HasColumnType("varchar(20)")
+                .IsRequired(false);
+
+            builder
                 .Property(a => a.State)
                 .HasColumnName("state")
                 .HasColumnType("varchar(100)")

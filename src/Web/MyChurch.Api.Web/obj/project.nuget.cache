@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "RK6FGqRFD48=",
+  "dgSpecHash": "8BlrzRCSTjA=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
   "expectedPackageFiles": [
@@ -116,8 +116,10 @@
     {
       "code": "NU1603",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "MyChurch.Api.Web depende de AWSSDK.Extensions.NETCore.Setup (>= 4.0.0.4) mas AWSSDK.Extensions.NETCore.Setup 4.0.0.4 não foi encontrado. AWSSDK.Extensions.NETCore.Setup 4.0.1 foi resolvido.",
+      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
       "libraryId": "AWSSDK.Extensions.NETCore.Setup",
       "targetGraphs": [
         "net8.0"
@@ -126,8 +128,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "O pacote 'Microsoft.Identity.Web' 3.2.0 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-rpq8-q44m-2rpg",
+      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
       "libraryId": "Microsoft.Identity.Web",
       "targetGraphs": [
         "net8.0"

@@ -20,11 +20,12 @@
         public string ZipCode { get; set; }
         public string Country { get; set; }
         public string Neighborhood { get; set; }
+        public string? Number { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
         public Church Church { get; set; }
 
-        public void Update(string? street, string? city, string? zipCode, string? country, string? neighborhood, string? state)
+        public void Update(string? street, string? city, string? zipCode, string? country, string? neighborhood, string? state, string number)
         {
             Street = street ?? Street;
             State = state ?? State;
@@ -33,6 +34,7 @@
             Country = country ?? Country;
             Neighborhood = neighborhood ?? Neighborhood;
             Updated = DateTime.UtcNow;
+            Number = number ?? Number;
         }
     }
 }

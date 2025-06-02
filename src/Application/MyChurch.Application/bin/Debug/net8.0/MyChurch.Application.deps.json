@@ -340,6 +340,9 @@
         }
       },
       "Mychurch.Common/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.3"
+        },
         "runtime": {
           "Mychurch.Common.dll": {
             "assemblyVersion": "1.0.0.0",

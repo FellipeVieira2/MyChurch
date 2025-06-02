@@ -1190,7 +1190,13 @@
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Int32",

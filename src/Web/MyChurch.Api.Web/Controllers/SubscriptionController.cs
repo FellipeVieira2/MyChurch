@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyChurch.Application.Subscription.Commands.CreateSubscription;
 // Importe os comandos/queries corretos para Subscription
-// using MyChurch.Application.Subscription.Commands.CreateSubscription;
 // using MyChurch.Application.Subscription.Commands.UpdateSubscription;
 // using MyChurch.Application.Subscription.Queries.GetSubscription;
 
@@ -16,11 +16,10 @@ namespace MyChurch.Api.Web.Controllers
         /// <response code="400">Falha: Requisição inválida</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
-        public async Task<IActionResult> CreateSubscription(/*[FromBody] CreateSubscriptionCommand command*/)
+        public async Task<IActionResult> CreateSubscription([FromBody] CreateSubscriptionCommand command)
         {
-            // var result = await Mediator.Send(command);
-            // return Ok(result);
-            return Ok(); // Remova após implementar
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
 
         /// <summary>

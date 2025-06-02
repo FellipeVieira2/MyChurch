@@ -50,6 +50,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(s => s.ExternalReference)
+                .HasColumnName("external_reference")
+                .HasColumnType("varchar(100)")
+                .IsRequired(false);
+
+            builder
                 .Property(s => s.Updated)
                 .HasColumnName("updated")
                 .HasColumnType("timestamp")

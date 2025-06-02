@@ -10,3 +10,4 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\Mychurc
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\refint\Mychurch.Common.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.pdb
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\ref\Mychurch.Common.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.csproj.AssemblyReference.cache

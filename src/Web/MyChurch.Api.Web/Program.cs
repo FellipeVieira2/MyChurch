@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Mychurch.Common.WebClients.Asaas;
 using MyChurch.Api.Web.Configuration;
 using MyChurch.Api.Web.Filters;
 using MyChurch.Api.Web.Middleware;
 using MyChurch.Application;
+using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +41,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.InjectInfra(builder.Configuration);
+builder.Services.AddScoped<IAsaasWebClient, AsaasWebClient>();
+
 var awsConfig = builder.Configuration.GetSection("AWS");
 var awsCredentials = new BasicAWSCredentials(
     awsConfig["AccessKey"],
@@ -51,8 +55,8 @@ builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
     Region = awsRegion
 });
 builder.Services.InjectS3(builder.Configuration);
-
 builder.Services.InjectApplication();
+builder.Services.AddHttpClient<IAsaasWebClient, AsaasWebClient>();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
 builder.Services.AddControllersWithViews(options => options.Filters.Add<ApiExceptionFilterAttribute>());
@@ -105,7 +109,44 @@ app.UseSwaggerUI(options =>
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("_myAllowSpecificOrigins");
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (FluentValidation.ValidationException ex)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        context.Response.ContentType = "application/json";
 
+        var errors = ex.Errors
+            .GroupBy(e => e.PropertyName)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(e => e.ErrorMessage).ToArray()
+            );
+
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            errors
+        });
+
+        await context.Response.WriteAsync(result);
+    }
+    catch (ValidationException ex)
+    {
+        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        context.Response.ContentType = "application/json";
+
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            errors = ex.Errors
+        });
+
+        await context.Response.WriteAsync(result);
+    }
+});
 // Registrar o middleware JWT
 app.UseMiddleware<JwtMiddleware>();
 

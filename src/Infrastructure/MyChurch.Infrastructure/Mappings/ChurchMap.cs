@@ -59,6 +59,16 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("updated")
                 .HasColumnType("timestamp")
                 .IsRequired(false);
+            builder .Property(x => x.Document)
+                .HasColumnName("document")
+                .HasColumnType("varchar(20)")
+                .IsRequired(false);
+
+            builder
+                .Property(x => x.AsaasCustomerId)
+                .HasColumnName("asaas_customer_id")
+                .HasColumnType("varchar(50)")
+                .IsRequired(false);
 
             builder
                 .HasOne(x => x.Address)

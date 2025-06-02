@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Mychurch.Common.WebClients.Asaas;
+using Mychurch.Common.WebClients.Models.Requests;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Infrastructure.Utils.S3;
@@ -22,9 +24,12 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
         /// <summary>PlanId</summary>
         /// <example>1</example>
         public int PlanId { get; set; }
+        /// <summary>Document</summary>
+        public string Document { get; set; }
         /// <summary>Logo</summary>
         /// <example>Base64</example>
         public string? Logo { get; set; }
+
         public AddressChurchCreate Address { get; set; }
 
         public class AddressChurchCreate
@@ -47,6 +52,9 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
             /// <summary>Neighborhood</summary>
             /// <example>São João</example>
             public string Neighborhood { get; set; }
+            /// <summary>Number</summary>
+            public string Number { get; set; }
+
         }
     }
 
@@ -55,12 +63,13 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateChurchCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
-
-        public CreateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateChurchCommandHandler> logger, IS3Helper s3Helper)
+        private readonly IAsaasWebClient _asaasWebClient;
+        public CreateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateChurchCommandHandler> logger, IS3Helper s3Helper, IAsaasWebClient asaasWebClient)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
+            _asaasWebClient = asaasWebClient;
         }
 
         public async Task<int> Handle(CreateChurchCommand request, CancellationToken cancellationToken)
@@ -80,19 +89,31 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
             return church.Id;
         }
 
-        private Domain.Entities.Church MapToChurchEntity(CreateChurchCommand request)
+        private static Domain.Entities.Church MapToChurchEntity(CreateChurchCommand request)
         {
-            return new Domain.Entities.Church(
+            var address = new Address(
+                street: request.Address.Street,
+                city: request.Address.City,
+                state: request.Address.State,
+                zipCode: request.Address.ZipCode,
+                country: request.Address.Country,
+                neighborhood: request.Address.Neighborhood
+            )
+            {
+                Number = request.Address.Number
+            };
+
+            var church = new Domain.Entities.Church(
                 name: request.Name,
-                address: new Address(
-                    street: request.Address.Street,
-                    city: request.Address.City,
-                    state: request.Address.State,
-                    zipCode: request.Address.ZipCode,
-                    country: request.Address.Country,
-                    neighborhood: request.Address.Neighborhood),
                 phone: request.Phone,
-                description: request.Description);
+                address: address,
+                description: request.Description
+            )
+            {
+                Document = request.Document,
+            };
+
+            return church;
         }
 
         private async Task<string> UploadLogoAsync(string logoBase64, CancellationToken cancellationToken)
@@ -107,6 +128,22 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
             var logoUrl = await _s3Helper.UploadFileAsync(logoStream, $"{Guid.NewGuid()}logo.jpg", "image/jpeg", cancellationToken);
 
             return logoUrl;
+        }
+
+        private async Task<string> CreateAsaasCustomerAsync(Domain.Entities.Church church, CancellationToken cancellationToken)
+        {
+            var customer = new AsaasCustomerRequestDto
+            {
+                Name = church.Name,
+                MobilePhone = church.Phone,
+                AddressNumber = church.Address.Number,
+                CpfCnpj = church.Document,
+                ExternalReference = church.Id.ToString(),
+                PostalCode = church.Address.ZipCode,
+
+            };
+            var asaasCustomer = await _asaasWebClient.CriarClienteAsync(customer);
+            return asaasCustomer.Id;
         }
     }
 }

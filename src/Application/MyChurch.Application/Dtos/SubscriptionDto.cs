@@ -17,7 +17,7 @@ namespace MyChurch.Application.Dtos
         // Pagamentos vinculados à assinatura  
         public ICollection<PaymentDto> Payments { get; set; } = new List<PaymentDto>();
 
-        public static SubscriptionDto New(Subscription subscription)
+        public static SubscriptionDto New(Domain.Entities.Subscription subscription)
         {
             return new SubscriptionDto
             {

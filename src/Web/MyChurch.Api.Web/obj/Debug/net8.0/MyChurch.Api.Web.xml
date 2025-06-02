@@ -242,7 +242,7 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription">
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>
             Cria uma nova assinatura
             </summary>

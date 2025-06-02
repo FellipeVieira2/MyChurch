@@ -67,6 +67,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("neighborhood");
 
+                    b.Property<string>("Number")
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("number");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
@@ -277,6 +281,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("address_id");
 
+                    b.Property<string>("AsaasCustomerId")
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("asaas_customer_id");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
                         .HasColumnName("created");
@@ -285,6 +293,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("document");
 
                     b.Property<string>("LogoFileName")
                         .HasColumnType("varchar(200)")
@@ -725,6 +737,10 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp")
                         .HasColumnName("end_date");
+
+                    b.Property<string>("ExternalReference")
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("external_reference");
 
                     b.Property<int>("PlanId")
                         .HasColumnType("int")

@@ -2010,6 +2010,25 @@
           "Subscription"
         ],
         "summary": "Cria uma nova assinatura",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscriptionCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscriptionCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscriptionCommand"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Sucesso: Assinatura criada",
@@ -2168,6 +2187,11 @@
             "description": "Neighborhood",
             "nullable": true,
             "example": "São João"
+          },
+          "number": {
+            "type": "string",
+            "description": "Number",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2210,6 +2234,11 @@
             "description": "Neighborhood",
             "nullable": true,
             "example": "São João"
+          },
+          "number": {
+            "type": "string",
+            "description": "Number",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2252,6 +2281,10 @@
             "description": "Bairro",
             "nullable": true,
             "example": "São João"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2710,6 +2743,11 @@
             "format": "int32",
             "example": 1
           },
+          "document": {
+            "type": "string",
+            "description": "Document",
+            "nullable": true
+          },
           "logo": {
             "type": "string",
             "description": "Logo",
@@ -2749,6 +2787,12 @@
             "format": "int32",
             "example": 1
           },
+          "billingType": {
+            "type": "string",
+            "description": "BillingType",
+            "nullable": true,
+            "example": "PIX"
+          },
           "logo": {
             "type": "string",
             "description": "Logo da Igreja (Base64)",
@@ -2781,6 +2825,10 @@
             "description": "Foto do Administrador (Base64)",
             "nullable": true,
             "example": "Base64"
+          },
+          "document": {
+            "type": "string",
+            "nullable": true
           },
           "adminPhone": {
             "type": "string",
@@ -2972,6 +3020,25 @@
             "description": "Observações",
             "nullable": true,
             "example": "Participa do grupo de jovens"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateSubscriptionCommand": {
+        "type": "object",
+        "properties": {
+          "planId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "billingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstPaymentDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false
