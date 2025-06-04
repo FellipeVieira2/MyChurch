@@ -27,6 +27,11 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IFeedLikeRepository, FeedLikeRepository>();
             services.AddScoped<ICashFlowEntryRepository, CashFlowEntryRepository>();
             services.AddScoped<ICashFlowCategoryRepository, CashFlowCategoryRepository>();
+            services.AddScoped<IHymnRepository, HymnRepository>();
+            services.AddScoped<IVersionRepository, VersionRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IChapterRepository, ChapterRepository>();
+            services.AddScoped<IVerseRepository, VerseRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {

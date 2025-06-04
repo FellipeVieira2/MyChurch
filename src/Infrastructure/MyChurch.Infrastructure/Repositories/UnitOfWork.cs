@@ -28,6 +28,11 @@ namespace MyChurch.Infrastructure.Repositories
         public IFeedLikeRepository FeedLikes { get; }
         public ICashFlowEntryRepository CashFlowEntries { get; }
         public ICashFlowCategoryRepository CashFlowCategories { get; }
+        public IVerseRepository Verses { get; }
+        public IVersionRepository Versions { get; }
+        public IBookRepository Books { get; }
+        public IChapterRepository Chapters { get; }
+        public IHymnRepository Hymns { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -43,7 +48,12 @@ namespace MyChurch.Infrastructure.Repositories
             IFeedPostRepository feedPosts,
             IFeedLikeRepository feedLikes,
             ICashFlowEntryRepository cashFlowEntries,
-            ICashFlowCategoryRepository cashFlowCategories)
+            ICashFlowCategoryRepository cashFlowCategories,
+            IVerseRepository verses,
+            IVersionRepository versions,
+            IBookRepository books,
+            IChapterRepository chapters,
+            IHymnRepository hymns)
         {
             Churchs = churchs;
             Donations = donations;
@@ -60,6 +70,11 @@ namespace MyChurch.Infrastructure.Repositories
             FeedLikes = feedLikes;
             CashFlowEntries = cashFlowEntries;
             CashFlowCategories = cashFlowCategories;
+            Verses = verses;
+            Versions = versions;
+            Books = books;
+            Chapters = chapters;
+            Hymns = hymns;
         }
 
         public async Task<bool> CommitAsync()

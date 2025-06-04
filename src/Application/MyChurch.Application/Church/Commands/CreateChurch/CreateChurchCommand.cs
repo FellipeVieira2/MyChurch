@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Mychurch.Common.WebClients.Asaas;
-using Mychurch.Common.WebClients.Models.Requests;
+using Mychurch.Common.WebClients.Asaas.Models.Requests;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Infrastructure.Utils.S3;

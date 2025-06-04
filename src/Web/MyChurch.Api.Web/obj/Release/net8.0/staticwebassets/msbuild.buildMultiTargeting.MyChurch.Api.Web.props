@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\MyChurch.Api.Web.props" />
-</Project>

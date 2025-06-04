@@ -19,6 +19,8 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
         public string? Name { get; set; }
         /// <summary>Value</summary>
         public decimal? Value { get; set; }
+        /// <summary>Quantity</summary>
+        public int? Quantity { get; set; }
         /// <summary>Description</summary>
         public string? Description { get; set; }
         /// <summary>Photo (Base64)</summary>
@@ -106,6 +108,9 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
             if (request.Value.HasValue)
                 asset.Value = request.Value.Value;
 
+            if (request.Quantity.HasValue)
+                asset.Quantity = request.Quantity.Value;
+
             if (!string.IsNullOrEmpty(request.Description))
                 asset.Description = request.Description;
 
@@ -166,4 +171,3 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
         }
     }
 }
-

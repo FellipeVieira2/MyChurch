@@ -16,6 +16,11 @@
         IFeedLikeRepository FeedLikes { get; }
         ICashFlowEntryRepository CashFlowEntries { get; }
         ICashFlowCategoryRepository CashFlowCategories { get; }
+        IVersionRepository Versions { get; }
+        IBookRepository Books { get; }
+        IChapterRepository Chapters { get; }
+        IVerseRepository Verses { get; }
+        IHymnRepository Hymns { get; }
         Task<bool> CommitAsync();
 
     }

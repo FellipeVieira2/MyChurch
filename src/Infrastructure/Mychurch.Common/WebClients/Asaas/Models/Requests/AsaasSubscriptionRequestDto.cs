@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mychurch.Common.WebClients.Models.Requests
+namespace Mychurch.Common.WebClients.Asaas.Models.Requests
 {
     public class AsaasSubscriptionRequestDto
     {

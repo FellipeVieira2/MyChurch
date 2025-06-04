@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Mychurch.Common.WebClients.Models.Requests
+namespace Mychurch.Common.WebClients.Asaas.Models.Requests
 {
     public class AsaasCustomerRequestDto
     {

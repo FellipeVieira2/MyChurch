@@ -62,7 +62,8 @@ namespace MyChurch.Application.Member.Commands.Login
             return new LoginDto
             {
                 Token = token,
-                Role = member.Role.ToString()
+                Role = member.Role.ToString(),
+                Member = MemberDto.New(member)
             };
         }
 

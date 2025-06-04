@@ -39,6 +39,38 @@
             <response code="204">Sucesso: Ativo excluído</response>
             <response code="404">Falha: Não encontrado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVersions">
+            <summary>
+            Lista todas as versões da Bíblia disponíveis.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetBooks(System.Int32)">
+            <summary>
+            Lista todos os livros de uma versão da Bíblia.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetChapters(System.Int32)">
+            <summary>
+            Lista todos os capítulos de um livro.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerse(System.Int32,System.Int32)">
+            <summary>
+            Retorna um versículo específico de um capítulo.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerses(System.Int32)">
+            <summary>
+            Lista todos os versículos de um capítulo.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleVersionController.ImportBibleVersion(MyChurch.Application.Bible.Commands.ImportBibleVersion.ImportBibleVersionCommand)">
+            <summary>
+            Importa uma versão da Bíblia a partir de um arquivo JSON.
+            </summary>
+            <param name="command">Command para importação da versão da Bíblia</param>
+            <returns></returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.CreateCashFlowEntry(MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand)">
             <summary>
             Cria um novo lançamento de fluxo de caixa
@@ -177,6 +209,14 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.DeleteFeedPost(System.Int32)">
+            <summary>
+            Remove um Post
+            </summary>
+            <response code="204">Sucesso: Post removido</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.FeedController.GetAllFeedPosts">
             <summary>
             Atualiza um Post
@@ -224,6 +264,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
             <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetBirthdayMembers(MyChurch.Application.Member.Queries.GetBirthdayMembers.BirthdayFilterType)">
+            <summary>
+            Lista os membros aniversariantes filtrando por dia, semana ou mês
+            </summary>
+            <param name="filterType">Day, Week ou Month</param>
+            <response code="200">Sucesso: Lista de aniversariantes</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
             <summary>

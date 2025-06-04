@@ -16,6 +16,8 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
         public string Name { get; set; } = null!;
         /// <summary>Value</summary>
         public decimal Value { get; set; }
+        /// <summary>Quantity</summary>
+        public int Quantity { get; set; }
         /// <summary>Description</summary>
         public string Description { get; set; } = null!;
         /// <summary>Photo (Base64)</summary>
@@ -77,6 +79,7 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
             {
                 Name = request.Name,
                 Value = request.Value,
+                Quantity = request.Quantity,
                 Description = request.Description,
                 Type = request.Type,
                 IdentificationCode = request.IdentificationCode,

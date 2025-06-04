@@ -10,6 +10,9 @@
         <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Value">
             <summary>Value</summary>
         </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Quantity">
+            <summary>Quantity</summary>
+        </member>
         <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Description">
             <summary>Description</summary>
         </member>
@@ -51,6 +54,9 @@
         </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Value">
             <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Quantity">
+            <summary>Quantity</summary>
         </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Description">
             <summary>Description</summary>

@@ -6,6 +6,7 @@ using Amazon.S3;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Mychurch.Common.WebClients.Asaas;
@@ -59,7 +60,6 @@ builder.Services.InjectApplication();
 builder.Services.AddHttpClient<IAsaasWebClient, AsaasWebClient>();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
-builder.Services.AddControllersWithViews(options => options.Filters.Add<ApiExceptionFilterAttribute>());
 builder.Services.AddCors(delegate (CorsOptions options)
 {
     options.AddPolicy("_myAllowSpecificOrigins", delegate (CorsPolicyBuilder policy)
@@ -106,47 +106,40 @@ app.UseSwaggerUI(options =>
     options.DefaultModelsExpandDepth(-1);
 });
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+
+        context.Response.ContentType = "application/json";
+
+        if (exception is MyChurch.Domain.Exceptions.ValidationException validationEx)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            var result = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                errors = validationEx.Errors
+            });
+            await context.Response.WriteAsync(result);
+        }
+        else
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            var result = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                errors = "Internal Server Error."
+            });
+            await context.Response.WriteAsync(result);
+        }
+    });
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("_myAllowSpecificOrigins");
-app.Use(async (context, next) =>
-{
-    try
-    {
-        await next();
-    }
-    catch (FluentValidation.ValidationException ex)
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        context.Response.ContentType = "application/json";
 
-        var errors = ex.Errors
-            .GroupBy(e => e.PropertyName)
-            .ToDictionary(
-                g => g.Key,
-                g => g.Select(e => e.ErrorMessage).ToArray()
-            );
-
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            errors
-        });
-
-        await context.Response.WriteAsync(result);
-    }
-    catch (ValidationException ex)
-    {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-        context.Response.ContentType = "application/json";
-
-        var result = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            errors = ex.Errors
-        });
-
-        await context.Response.WriteAsync(result);
-    }
-});
 // Registrar o middleware JWT
 app.UseMiddleware<JwtMiddleware>();
 

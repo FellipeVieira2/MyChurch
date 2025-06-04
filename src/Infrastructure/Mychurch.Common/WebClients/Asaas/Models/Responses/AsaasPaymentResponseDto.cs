@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Mychurch.Common.WebClients.Models.Responses
+namespace Mychurch.Common.WebClients.Asaas.Models.Responses
 {
     public class AsaasPaymentResponseDto
     {

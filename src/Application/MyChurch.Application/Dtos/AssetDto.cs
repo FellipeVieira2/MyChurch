@@ -8,6 +8,8 @@ namespace MyChurch.Application.Dtos
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public decimal Value { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotalValue { get; set; }
         public string Description { get; set; } = null!;
         public string Photo { get; set; } = null!;
         public AssetType Type { get; set; }
@@ -30,6 +32,8 @@ namespace MyChurch.Application.Dtos
                 Id = asset.Id,
                 Name = asset.Name,
                 Value = asset.Value,
+                Quantity = asset.Quantity,
+                TotalValue = asset.Value * asset.Quantity,
                 Description = asset.Description,
                 Photo = asset.Photo,
                 Type = asset.Type,

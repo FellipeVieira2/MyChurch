@@ -6,6 +6,7 @@ using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
 using MyChurch.Application.Member.Queries.GetAllMembers;
+using MyChurch.Application.Member.Queries.GetBirthdayMembers;
 using MyChurch.Application.Member.Queries.GetMemberById;
 
 namespace MyChurch.Api.Web.Controllers
@@ -63,6 +64,23 @@ namespace MyChurch.Api.Web.Controllers
             }
 
             return Ok(member);
+        }
+
+        /// <summary>
+        /// Lista os membros aniversariantes filtrando por dia, semana ou mês
+        /// </summary>
+        /// <param name="filterType">Day, Week ou Month</param>
+        /// <response code="200">Sucesso: Lista de aniversariantes</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpGet("birthdays")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MemberDto>))]
+        public async Task<IActionResult> GetBirthdayMembers([FromQuery] BirthdayFilterType filterType)
+        {
+            var query = AuthorizationRequestCreate<GetBirthdayMembersQuery>();
+            query.FilterType = filterType;
+            var result = await Mediator.Send(query);
+            return Ok(result);
         }
 
         /// <summary>

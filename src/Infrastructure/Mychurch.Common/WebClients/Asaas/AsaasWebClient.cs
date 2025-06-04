@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Mychurch.Common.WebClients.Models.Requests;
-using Mychurch.Common.WebClients.Models.Responses;
+using Mychurch.Common.WebClients.Asaas.Models.Requests;
+using Mychurch.Common.WebClients.Asaas.Models.Responses;
 
 namespace Mychurch.Common.WebClients.Asaas
 {

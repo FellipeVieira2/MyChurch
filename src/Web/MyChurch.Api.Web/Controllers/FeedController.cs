@@ -7,6 +7,7 @@ using MyChurch.Application.Event.Commands.DeleteEvent;
 using MyChurch.Application.Feed.Like.Commands.AddFeedLike;
 using MyChurch.Application.Feed.Like.Commands.RemoveFeedLike;
 using MyChurch.Application.Feed.Post.Commands.CreateFeedPost;
+using MyChurch.Application.Feed.Post.Commands.DeleteFeedPost;
 using MyChurch.Application.Feed.Post.Commands.UpdateFeedPost;
 using MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts;
 using MyChurch.Application.Feed.Post.Queries.GetFeedPostById;
@@ -47,7 +48,24 @@ namespace MyChurch.Api.Web.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
-        
+
+        /// <summary>
+        /// Remove um Post
+        /// </summary>
+        /// <response code="204">Sucesso: Post removido</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteFeedPost([FromRoute] int id)
+        {
+            var command = AuthorizationRequestCreate<DeleteFeedPostCommand>();
+            command.PostId = id;
+            await Mediator.Send(command);
+            return NoContent();
+        }
+
         /// <summary>
         /// Atualiza um Post
         /// </summary>

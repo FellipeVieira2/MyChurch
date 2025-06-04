@@ -10,6 +10,9 @@
         <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Value">
             <summary>Value</summary>
         </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Quantity">
+            <summary>Quantity</summary>
+        </member>
         <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Description">
             <summary>Description</summary>
         </member>
@@ -51,6 +54,9 @@
         </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Value">
             <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Quantity">
+            <summary>Quantity</summary>
         </member>
         <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Description">
             <summary>Description</summary>
@@ -174,6 +180,10 @@
             <summary>ID do Plano</summary>
             <example>1</example>
         </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.BillingType">
+            <summary>BillingType</summary>
+            <example>PIX</example>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.Logo">
             <summary>Logo da Igreja (Base64)</summary>
             <example>Base64</example>
@@ -258,6 +268,9 @@
             <summary>PlanId</summary>
             <example>1</example>
         </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Document">
+            <summary>Document</summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Logo">
             <summary>Logo</summary>
             <example>Base64</example>
@@ -285,6 +298,9 @@
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Neighborhood">
             <summary>Neighborhood</summary>
             <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Number">
+            <summary>Number</summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
             <summary>Name</summary>
@@ -317,6 +333,9 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Neighborhood">
             <summary>Neighborhood</summary>
             <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
+            <summary>Number</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Name">
             <summary>Name</summary>

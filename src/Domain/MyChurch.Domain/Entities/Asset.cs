@@ -7,6 +7,7 @@ namespace MyChurch.Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public decimal Value { get; set; }
+        public int Quantity { get; set; }
         public string Description { get; set; } = null!;
         public string Photo { get; set; } = null!;
         public AssetType Type { get; set; }
@@ -26,23 +27,25 @@ namespace MyChurch.Domain.Entities
         public string Notes { get; set; } = null!; // Observações
 
         public void Update(
-            string name,
-            decimal value,
-            string description,
-            string photo,
-            AssetType type,
-            string identificationCode,
-            string condition,
-            DateTime? purchaseDate,
-            string location,
-            string responsible,
-            DateTime? lastMaintenance,
-            DateTime? nextMaintenance,
-            DateTime? warrantyUntil,
-            string notes)
+           string name,
+           decimal value,
+           int quantity,
+           string description,
+           string photo,
+           AssetType type,
+           string identificationCode,
+           string condition,
+           DateTime? purchaseDate,
+           string location,
+           string responsible,
+           DateTime? lastMaintenance,
+           DateTime? nextMaintenance,
+           DateTime? warrantyUntil,
+           string notes)
         {
             Name = name;
             Value = value;
+            Quantity = quantity;
             Description = description;
             Photo = photo;
             Type = type;

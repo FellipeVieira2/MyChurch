@@ -32,6 +32,13 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(a => a.Quantity)
+                .HasColumnName("quantity")
+                .HasColumnType("int")
+                .HasDefaultValue(1)
+                .IsRequired();
+
+            builder
                 .Property(a => a.Description)
                 .HasColumnName("description")
                 .HasColumnType("text")

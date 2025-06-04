@@ -4,11 +4,13 @@ using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
 using System;
+using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.Feed.Post.Commands.UpdateFeedPost
 {
     public class UpdateFeedPostCommand : JwtMemberDto, IRequest<FeedPostDto>
     {
+        [JsonIgnore]
         public int PostId { get; set; }
         public string Content { get; set; }
     }

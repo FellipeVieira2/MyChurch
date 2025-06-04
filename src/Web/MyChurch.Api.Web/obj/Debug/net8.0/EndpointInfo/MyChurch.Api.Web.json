@@ -366,6 +366,234 @@
         }
       }
     },
+    "/api/Bible/versions": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todas as versões da Bíblia disponíveis.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bible/versions/{versionId}/books": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todos os livros de uma versão da Bíblia.",
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bible/books/{bookId}/chapters": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todos os capítulos de um livro.",
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bible/chapters/{chapterId}/verses/{verseNumber}": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Retorna um versículo específico de um capítulo.",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "verseNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Bible/chapters/{chapterId}/verses": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todos os versículos de um capítulo.",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/BibleVersion/import": {
+      "post": {
+        "tags": [
+          "BibleVersion"
+        ],
+        "summary": "Importa uma versão da Bíblia a partir de um arquivo JSON.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "Abbreviation": {
+                    "type": "string"
+                  },
+                  "Language": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "Publisher": {
+                    "type": "string"
+                  },
+                  "PublicationYear": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "Name": {
+                  "style": "form"
+                },
+                "Abbreviation": {
+                  "style": "form"
+                },
+                "Language": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "Publisher": {
+                  "style": "form"
+                },
+                "PublicationYear": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/CashFlow": {
       "post": {
         "tags": [
@@ -1571,6 +1799,34 @@
             "description": "Falha: Não autorizado"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Feed"
+        ],
+        "summary": "Remove um Post",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sucesso: Post removido"
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
       }
     },
     "/api/File/storage": {
@@ -1952,6 +2208,58 @@
           },
           "401": {
             "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Member/birthdays": {
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Lista os membros aniversariantes filtrando por dia, semana ou mês",
+        "parameters": [
+          {
+            "name": "filterType",
+            "in": "query",
+            "description": "Day, Week ou Month",
+            "schema": {
+              "$ref": "#/components/schemas/BirthdayFilterType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Lista de aniversariantes",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
           }
         }
       }
@@ -2338,6 +2646,14 @@
             "type": "number",
             "format": "double"
           },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalValue": {
+            "type": "number",
+            "format": "double"
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -2412,6 +2728,15 @@
           8,
           9,
           99
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "BirthdayFilterType": {
+        "enum": [
+          0,
+          1,
+          2
         ],
         "type": "integer",
         "format": "int32"
@@ -2598,6 +2923,11 @@
             "type": "number",
             "description": "Value",
             "format": "double"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Quantity",
+            "format": "int32"
           },
           "description": {
             "maxLength": 500,
@@ -3564,6 +3894,12 @@
             "format": "double",
             "nullable": true
           },
+          "quantity": {
+            "type": "integer",
+            "description": "Quantity",
+            "format": "int32",
+            "nullable": true
+          },
           "description": {
             "type": "string",
             "description": "Description",
@@ -3745,10 +4081,6 @@
       "UpdateFeedPostCommand": {
         "type": "object",
         "properties": {
-          "postId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "content": {
             "type": "string",
             "nullable": true
