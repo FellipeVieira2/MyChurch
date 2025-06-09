@@ -145,12 +145,34 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
+            <summary>
+            Dashboard com indicadores da igreja
+            </summary>
+            <response code="200">Sucesso: Dados consolidados</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
             <summary>
             Update a Church
             </summary>
             <response code="200">Success: Returned Church</response>
             <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
+            <summary>
+            Create a new Donation
+            </summary>
+            <response code="200">Success: Donation Created</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.GetAllPaidDonations(MyChurch.Application.Donation.Queries.GetAllPaidDonations.GetAllPaidDonationsQuery)">
+            <summary>
+            Get all paid donations for the logged member (paginated)
+            </summary>
+            <response code="200">Success: List of paid donations</response>
             <response code="401">Failure: Unauthorized</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.EventController.CreateEvent(MyChurch.Application.Event.Commands.CreateEvent.CreateEventCommand)">

@@ -72,12 +72,6 @@ namespace MyChurch.Infrastructure.Mappings
                 .WithMany()
                 .HasForeignKey(s => s.PlanId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder
-                .HasMany(s => s.Payments)
-                .WithOne(p => p.Subscription)
-                .HasForeignKey(p => p.SubscriptionId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

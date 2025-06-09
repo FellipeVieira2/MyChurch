@@ -45,7 +45,7 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
             {
                 get; set;
             }
-
+            public string? Complement { get; set; }
         }
         public class UpdateChurchCommandHandler : IRequestHandler<UpdateChurchCommand, ChurchDto>
         {
@@ -77,7 +77,15 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
                 church.Update(request.Name, request.Phone);
                 if (request.Address != null)
                 {
-                    church.Address.Update(request.Address.Street, request.Address.City, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood, request.Address.State, request.Address.Number);
+                    church.Address.Update(
+                        request.Address.Street,
+                        request.Address.City,
+                        request.Address.ZipCode,
+                        request.Address.Country,
+                        request.Address.Neighborhood,
+                        request.Address.State,
+                        request.Address.Number,
+                        request.Address.Complement);
                 }
 
                 _unitOfWork.Churchs.Update(church);

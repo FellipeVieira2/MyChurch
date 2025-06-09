@@ -1,24 +1,35 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mychurch.Common.WebClients.Asaas;
+using Mychurch.Common.WebClients.Asaas.Models.Requests;
+using Mychurch.Common.WebClients.Asaas.Models.Responses;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using System;
 
 namespace MyChurch.Application.Subscription.Commands.CreateSubscription
 {
-    public class CreateSubscriptionCommand : JwtMemberDto, IRequest<string>
+    public class CreateSubscriptionCommand : JwtMemberDto, IRequest<CreateSubscriptionResultDto>
     {
         public int PlanId { get; set; }
         public string BillingType { get; set; } // Ex:"PIX", "CREDIT_CARD"
         public DateTime? FirstPaymentDate { get; set; }
-    }
 
-    public class CreateSubscriptionCommandHandler : IRequestHandler<CreateSubscriptionCommand, string>
+        // Adicione os campos para cartão de crédito
+        public CreditCardDto? CreditCard { get; set; }
+        public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
+    }
+    public class CreateSubscriptionResultDto
+    {
+        public string? CheckoutUrl { get; set; }
+        public string? PixQrCode { get; set; }
+        public string Payload { get; set; }
+    }
+    public class CreateSubscriptionCommandHandler : IRequestHandler<CreateSubscriptionCommand, CreateSubscriptionResultDto>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAsaasWebClient _asaasWebClient;
@@ -34,7 +45,7 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
             _logger = logger;
         }
 
-        public async Task<string> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
+        public async Task<CreateSubscriptionResultDto> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
         {
             // Busca o membro logado para obter o ChurchId
             var loggedMember = await _unitOfWork.Members.Query()
@@ -79,18 +90,38 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
             }
 
             // Monta o request para o Asaas
-            var cobrancaRequest = new
+            var cobrancaRequest = new AsaasChargeRequestDto
             {
-                customer = church.AsaasCustomerId,
-                value = plan.Price,
-                billingType = request.BillingType,
-                dueDate = (request.FirstPaymentDate ?? DateTime.UtcNow.Date).ToString("yyyy-MM-dd"),
-                description = $"Assinatura do plano {plan.Name}",
-                externalReference = $"{church.Id}-{plan.Id}-{DateTime.UtcNow:yyyyMMddHHmmss}"
+                AsaasCustomerId = church.AsaasCustomerId,
+                Value = plan.Price,
+                BillingType = request.BillingType,
+                DueDate = (request.FirstPaymentDate ?? DateTime.UtcNow.Date),
+                Description = $"Assinatura do plano {plan.Name}",
+                ExternalReference = $"{church.Id}-{plan.Id}-{DateTime.UtcNow:yyyyMMddHHmmss}"
             };
+
+            if (request.BillingType == "CREDIT_CARD")
+            {
+                cobrancaRequest.CreditCard = request.CreditCard;
+                cobrancaRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+            }
+
 
             // Cria a cobrança no Asaas
             var cobrancaResponse = await _asaasWebClient.CriarCobrancaAsync(cobrancaRequest);
+
+            PixQrCodeResponseDto? pixQrCode = null;
+            if (request.BillingType == "PIX" && !string.IsNullOrEmpty(transactionId))
+            {
+                try
+                {
+                    pixQrCode = await _asaasWebClient.GerarPixQrCodeAsync(transactionId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Erro ao buscar QRCode PIX no Asaas.");
+                }
+            }
 
             // Extrai o link do checkout e o id da cobrança
             checkoutUrl = cobrancaResponse.InvoiceUrl ?? cobrancaResponse?.BankSlipUrl;
@@ -116,19 +147,32 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
 
             // Salva o pagamento localmente
             var payment = new Payment(
-                   subscriptionId: paidSubscription.Id,
                    amount: plan.Price,
                    date: DateTime.UtcNow,
                    paymentStatus: PaymentStatus.Pending.ToString(),
-                   transactionId: transactionId
+                   transactionId: transactionId,
+                   request.BillingType
                );
 
             _unitOfWork.Payments.Create(payment);
+
+            // Salva o token do cartão de crédito se for cartão
+            if (request.BillingType == "CREDIT_CARD")
+            {
+                loggedMember.CreditCardHash = cobrancaResponse.CreditCard?.CreditCardToken;
+                _unitOfWork.Members.Update(loggedMember);
+            }
+
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Assinatura solicitada para a igreja {ChurchId} no plano {PlanId}. Link: {CheckoutUrl}", church.Id, plan.Id, checkoutUrl);
 
-            return checkoutUrl;
+            return new CreateSubscriptionResultDto
+            {
+                CheckoutUrl = checkoutUrl,
+                PixQrCode = pixQrCode.EncodedImage,
+                Payload = pixQrCode.Payload
+            };
         }
     }
 }

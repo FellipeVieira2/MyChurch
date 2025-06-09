@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.Member.Commands.UpdateMember
@@ -20,9 +21,9 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public bool? IsBaptized { get; set; }
         public DateTime? BaptizedDate { get; set; }
         public bool? IsTither { get; set; }
-        public string? MaritalStatus { get; set; }
+        public MaritalStatus? MaritalStatus { get; set; }
         public DateTime? MemberSince { get; set; }
-        public string? Ministry { get; set; }
+        public Ministry? Ministry { get; set; }
         public bool? IsActive { get; set; }
         public string? Notes { get; set; }
         public string? Photo { get; set; }
@@ -87,14 +88,14 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
             if (request.IsTither.HasValue)
                 member.IsTither = request.IsTither.Value;
 
-            if (!string.IsNullOrEmpty(request.MaritalStatus))
+            if (!string.IsNullOrEmpty(request.MaritalStatus.ToString()))
                 member.MaritalStatus = request.MaritalStatus;
 
             if (request.MemberSince.HasValue)
                 member.MemberSince = request.MemberSince;
 
-            if (!string.IsNullOrEmpty(request.Ministry))
-                member.Ministry = request.Ministry;
+            if (!string.IsNullOrEmpty(request.Ministry.ToString()))
+                member.Ministry = request.Ministry.ToString();
 
             if (request.IsActive.HasValue)
                 member.IsActive = request.IsActive.Value;

@@ -69,19 +69,24 @@ namespace Mychurch.Common.WebClients.Asaas
         }
 
         // PIX: Geração de QRCode
-        public async Task<object> GerarPixQrCodeAsync(string paymentId)
+        public async Task<PixQrCodeResponseDto> GerarPixQrCodeAsync(string paymentId)
         {
             var response = await _httpClient.GetAsync($"payments/{paymentId}/pixQrCode");
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Erro ao criar QrCode: {errorContent}");
+            }
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<object>(_jsonOptions);
+            return await response.Content.ReadFromJsonAsync<PixQrCodeResponseDto>(_jsonOptions);
         }
 
         // ASSINATURAS (RECORRÊNCIA)
-        public async Task<object> CriarAssinaturaAsync(object assinaturaRequest)
+        public async Task<AsaasSubscriptionResponseDto> CriarAssinaturaAsync(object assinaturaRequest)
         {
             var response = await _httpClient.PostAsJsonAsync("subscriptions", assinaturaRequest, _jsonOptions);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<object>(_jsonOptions);
+            return await response.Content.ReadFromJsonAsync<AsaasSubscriptionResponseDto>(_jsonOptions);
         }
 
         public async Task<object> ConsultarAssinaturaAsync(string id)

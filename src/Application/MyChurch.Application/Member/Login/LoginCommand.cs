@@ -35,7 +35,7 @@ namespace MyChurch.Application.Member.Commands.Login
         public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var member = await _unitOfWork.Members.Query()
-                .FirstOrDefaultAsync(x => x.Email == request.Identifier || x.Phone == request.Identifier || x.Document == request.Identifier);
+                .FirstOrDefaultAsync(x => x.Email == request.Identifier || x.Phone == request.Identifier || x.Documents.Any(x => x.Number == request.Identifier));
 
             if (member is null)
             {

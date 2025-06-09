@@ -90,7 +90,7 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
                 query = query.Where(m => EF.Functions.Like(m.Name, $"%{request.Name}%"));
 
             if (!string.IsNullOrWhiteSpace(request.Document))
-                query = query.Where(m => EF.Functions.Like(m.Document, $"%{request.Document}%"));
+                query = query.Where(m => m.Documents.Any(x => x.Number == request.Document));
 
             if (!string.IsNullOrWhiteSpace(request.Email))
                 query = query.Where(m => EF.Functions.Like(m.Email, $"%{request.Email}%"));
@@ -112,10 +112,10 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
                 query = query.Where(m => m.IsActive == request.IsActive.Value);
 
             if (!string.IsNullOrWhiteSpace(request.Ministry))
-                query = query.Where(m => EF.Functions.Like(m.Ministry, $"%{request.Ministry}%"));
+                query = query.Where(m => EF.Functions.Like(m.Ministry.ToString(), $"%{request.Ministry}%"));
 
             if (!string.IsNullOrWhiteSpace(request.MaritalStatus))
-                query = query.Where(m => EF.Functions.Like(m.MaritalStatus, $"%{request.MaritalStatus}%"));
+                query = query.Where(m => EF.Functions.Like(m.MaritalStatus.ToString(), $"%{request.MaritalStatus}%"));
 
             if (request.MemberSince.HasValue)
                 query = query.Where(m => m.MemberSince.HasValue && m.MemberSince.Value.Date == request.MemberSince.Value.Date);

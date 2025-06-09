@@ -21,6 +21,7 @@
         IChapterRepository Chapters { get; }
         IVerseRepository Verses { get; }
         IHymnRepository Hymns { get; }
+        IMemberDocumetRepository MemberDocuments { get; }
         Task<bool> CommitAsync();
 
     }

@@ -31,6 +31,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("decimal(10,2)")
                 .IsRequired();
 
+            builder.Property(d => d.PlatformFee)
+                .HasColumnName("platform_fee")
+                .HasColumnType("decimal(10,2)")
+                .HasDefaultValue(0)
+                .IsRequired();
+
             builder
                 .Property(d => d.Date)
                 .HasColumnName("date")

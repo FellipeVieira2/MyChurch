@@ -53,6 +53,21 @@ namespace MyChurch.Api.Web.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+        /// <summary>
+        /// Dashboard com indicadores da igreja
+        /// </summary>
+        /// <response code="200">Sucesso: Dados consolidados</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpGet("dashboard")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetChurchDashboard()
+        {
+            var command = AuthorizationRequestCreate<GetChurchDashboardQuery>();
+
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
 
         /// <summary>
         /// Update a Church

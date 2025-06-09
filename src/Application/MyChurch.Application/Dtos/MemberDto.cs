@@ -7,7 +7,7 @@ namespace MyChurch.Application.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Document { get; set; }
+        public List<MemberDocumentDto> Document { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? Photo { get; set; }
@@ -32,7 +32,7 @@ namespace MyChurch.Application.Dtos
             {
                 Id = member.Id,
                 Name = member.Name,
-                Document = member.Document,
+                Document = [.. member.Documents.Select(MemberDocumentDto.New)],
                 Email = member.Email,
                 Phone = member.Phone,
                 Photo = member.Photo,
@@ -44,9 +44,9 @@ namespace MyChurch.Application.Dtos
                 Role = member.Role,
                 Created = member.Created,
                 Updated = member.Updated,
-                MaritalStatus = member.MaritalStatus,
+                MaritalStatus = member.MaritalStatus?.ToString(),
                 MemberSince = member.MemberSince,
-                Ministry = member.Ministry,
+                Ministry = member.Ministry?.ToString(),
                 IsActive = member.IsActive,
                 Notes = member.Notes
             };

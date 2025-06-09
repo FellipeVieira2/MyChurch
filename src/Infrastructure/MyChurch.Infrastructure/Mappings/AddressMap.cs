@@ -73,6 +73,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
+                .HasMany(a => a.Members)
+                .WithOne(m => m.Address)
+                .HasForeignKey(m => m.AddressId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder
                 .HasOne(a => a.Church)
                 .WithOne(c => c.Address)
                 .HasForeignKey<Church>(c => c.AddressId)

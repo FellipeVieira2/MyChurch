@@ -33,6 +33,7 @@ namespace MyChurch.Infrastructure.Repositories
         public IBookRepository Books { get; }
         public IChapterRepository Chapters { get; }
         public IHymnRepository Hymns { get; }
+        public IMemberDocumetRepository MemberDocuments { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -53,7 +54,8 @@ namespace MyChurch.Infrastructure.Repositories
             IVersionRepository versions,
             IBookRepository books,
             IChapterRepository chapters,
-            IHymnRepository hymns)
+            IHymnRepository hymns,
+            IMemberDocumetRepository memberDocuments)
         {
             Churchs = churchs;
             Donations = donations;
@@ -75,6 +77,7 @@ namespace MyChurch.Infrastructure.Repositories
             Books = books;
             Chapters = chapters;
             Hymns = hymns;
+            MemberDocuments = memberDocuments;
         }
 
         public async Task<bool> CommitAsync()

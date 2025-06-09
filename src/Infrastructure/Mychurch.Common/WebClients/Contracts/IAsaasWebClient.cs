@@ -10,8 +10,8 @@ namespace Mychurch.Common.WebClients.Asaas
         Task<AsaasPaymentResponseDto> CriarCobrancaAsync(object cobrancaRequest);
         Task<object> ConsultarCobrancaAsync(string id);
         Task<object> CancelarCobrancaAsync(string id);
-        Task<object> GerarPixQrCodeAsync(string paymentId);
-        Task<object> CriarAssinaturaAsync(object assinaturaRequest);
+        Task<PixQrCodeResponseDto> GerarPixQrCodeAsync(string paymentId);
+        Task<AsaasSubscriptionResponseDto> CriarAssinaturaAsync(object assinaturaRequest);
         Task<object> ConsultarAssinaturaAsync(string id);
         Task<object> CancelarAssinaturaAsync(string id);
         Task<object> CriarTransferenciaAsync(object transferenciaRequest);

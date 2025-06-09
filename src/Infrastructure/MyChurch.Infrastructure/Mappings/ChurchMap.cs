@@ -31,6 +31,13 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(c => c.PlatformFee)
+                .HasColumnName("platform_fee")
+                .HasColumnType("decimal(5,4)")
+                .HasDefaultValue(0.05m)
+                .IsRequired();
+
+            builder
                 .Property(x => x.LogoFileName)
                 .HasColumnName("logo_file_name")
                 .HasColumnType("varchar(200)")
@@ -59,7 +66,7 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("updated")
                 .HasColumnType("timestamp")
                 .IsRequired(false);
-            builder .Property(x => x.Document)
+            builder.Property(x => x.Document)
                 .HasColumnName("document")
                 .HasColumnType("varchar(20)")
                 .IsRequired(false);

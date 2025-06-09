@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Mychurch.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+076bdc33abe56c4ddc6cee0f4eceece2b3cf6a22")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+231dac33b9665675414fdf9a5c898bcae4849e05")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mychurch.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Mychurch.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

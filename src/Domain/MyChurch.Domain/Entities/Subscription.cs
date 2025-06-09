@@ -20,7 +20,6 @@
         public DateTime? Updated { get; set; }
         public string ExternalReference { get; set; }
 
-        // Pagamentos vinculados à assinatura  
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
     }
 }

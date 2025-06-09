@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mychurch.Common.WebClients.Asaas.Models.Requests;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Mychurch.Common.WebClients.Asaas.Models.Responses
@@ -100,6 +101,8 @@ namespace Mychurch.Common.WebClients.Asaas.Models.Responses
 
         [JsonPropertyName("lastBankSlipViewedDate")]
         public DateTime? LastBankSlipViewedDate { get; set; }
+        [JsonPropertyName("creditCard")]
+        public CreditCardPaymentDto? CreditCard { get; set; }
 
         [JsonPropertyName("discount")]
         public DiscountDto Discount { get; set; }
@@ -121,6 +124,16 @@ namespace Mychurch.Common.WebClients.Asaas.Models.Responses
 
         [JsonPropertyName("refunds")]
         public string? Refunds { get; set; }
+
+        public class CreditCardPaymentDto
+        {
+            [JsonPropertyName("creditCardNumber")]
+            public string? CreditCardNumber { get; set; }
+            [JsonPropertyName("creditCardBrand")]
+            public string? CreditCardBrand { get; set; }
+            [JsonPropertyName("creditCardToken")]
+            public string? CreditCardToken { get; set; }
+        }
     }
 
     public class DiscountDto

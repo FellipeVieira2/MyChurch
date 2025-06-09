@@ -20,12 +20,6 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
-                .Property(p => p.SubscriptionId)
-                .HasColumnName("subscription_id")
-                .HasColumnType("int")
-                .IsRequired();
-
-            builder
                 .Property(p => p.Amount)
                 .HasColumnName("amount")
                 .HasColumnType("decimal(10,2)")
@@ -50,9 +44,33 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(p => p.SubscriptionId)
+                .HasColumnName("subscription_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
+                .Property(p => p.DonationId)
+                .HasColumnName("donation_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
+                .Property(p => p.BillingType)
+                .HasColumnName("billing_type")
+                .HasColumnType("varchar(30)")
+                .IsRequired(false);
+
+            builder
                 .HasOne(p => p.Subscription)
                 .WithMany(s => s.Payments)
                 .HasForeignKey(p => p.SubscriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(p => p.Donation)
+                .WithMany(d => d.Payments)
+                .HasForeignKey(p => p.DonationId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

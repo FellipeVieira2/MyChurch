@@ -196,9 +196,8 @@
             <summary>Email do Administrador</summary>
             <example>joao@email.com</example>
         </member>
-        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminDocument">
-            <summary>Documento do Administrador</summary>
-            <example>12345678900</example>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminDocuments">
+            <summary>Documentos do Administrador</summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand.AdminPhoto">
             <summary>Foto do Administrador (Base64)</summary>
@@ -345,10 +344,6 @@
             <summary>Email</summary>
             <example>fvsouza623@gmail.com</example>
         </member>
-        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Document">
-            <summary>Document</summary>
-            <example>45570179836</example>
-        </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Photo">
             <summary>Photo</summary>
             <example>base64</example>
@@ -396,6 +391,9 @@
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Notes">
             <summary>Observações</summary>
             <example>Participa do grupo de jovens</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Documents">
+            <summary>Documentos do membro</summary>
         </member>
         <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
             <summary>

@@ -18,7 +18,8 @@
         public string? LogoFileName { get; set; } 
         public string? Description { get; set; }
         public int AddressId { get; set; }
-        public Address Address { get; set; } 
+        public Address Address { get; set; }
+        public decimal PlatformFee { get; set; } = 0.05m; // valor padrão 5%
         public string Phone { get; set; } 
         public ICollection<Member>? Members { get; set; }
         public DateTime Created { get; set; }

@@ -10,7 +10,8 @@ using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.Extensions;
 using MyChurch.Infrastructure.Utils.S3;
-
+using System.Collections.Generic;
+using MyChurch.Application.Dtos;
 
 namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 {
@@ -54,9 +55,8 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         /// <example>joao@email.com</example>
         public string? AdminEmail { get; set; }
 
-        /// <summary>Documento do Administrador</summary>
-        /// <example>12345678900</example>
-        public string AdminDocument { get; set; }
+        /// <summary>Documentos do Administrador</summary>
+        public List<MemberDocumentDto> AdminDocuments { get; set; } = new();
 
         /// <summary>Foto do Administrador (Base64)</summary>
         /// <example>Base64</example>
@@ -86,6 +86,10 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         /// <summary>Senha do Administrador</summary>
         /// <example>SenhaForte123!</example>
         public string AdminPassword { get; set; }
+
+        // Adicione os campos para cartão de crédito
+        public CreditCardDto? CreditCard { get; set; }
+        public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
 
         public class AddressChurchWithAdminCreate
         {
@@ -139,12 +143,12 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 
         public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
         {
-            // Validação de duplicidade de email, telefone e documento do admin
+            // Validação de duplicidade de email, telefone e documentos do admin
             var exists = await _unitOfWork.Members.Query()
                 .AnyAsync(m =>
                     (!string.IsNullOrEmpty(request.AdminEmail) && m.Email == request.AdminEmail) ||
                     m.Phone == request.AdminPhone ||
-                    m.Document == request.AdminDocument,
+                    m.Documents.Any(x => request.AdminDocuments.Any(d => d.Number == x.Number)),
                     cancellationToken);
 
             if (exists)
@@ -189,7 +193,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             {
                 Name = request.AdminName,
                 Email = request.AdminEmail,
-                Document = request.AdminDocument,
                 Phone = request.AdminPhone,
                 BirthDate = request.AdminBirthDate,
                 IsBaptized = request.AdminIsBaptized,
@@ -197,7 +200,13 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 IsTither = request.AdminIsTither,
                 ChurchId = church.Id,
                 Role = UserRole.Admin,
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                // Novo: lista de documentos
+                Documents = request.AdminDocuments?.Select(d => new MemberDocument
+                {
+                    Type = d.Type,
+                    Number = d.Number
+                }).ToList() ?? new List<MemberDocument>()
             };
 
             // 6. Faz upload da foto do admin se necessário
@@ -235,22 +244,28 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             };
 
             // Chama o fluxo de assinatura e obtém o link de checkout
-            checkoutUrl = await _sender.Send(new CreateSubscriptionCommand()
+            var checkoutResult = await _sender.Send(new CreateSubscriptionCommand()
             {
                 BillingType = request.BillingType,
                 Email = request.AdminEmail,
                 FirstPaymentDate = DateTime.UtcNow,
                 PlanId = request.PlanId,
                 Role = "Admin",
-                UserId = adminMember.Id
+                UserId = adminMember.Id,
+                CreditCard = request.CreditCard,
+                CreditCardHolderInfo = request.CreditCardHolderInfo
             }, cancellationToken);
+
 
             _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
 
             return new CreateChurchWithAdminResultDto
             {
                 ChurchId = church.Id,
-                CheckoutUrl = checkoutUrl
+                CheckoutUrl = checkoutResult.CheckoutUrl,
+                PixQrCode = checkoutResult.PixQrCode,
+                Payload = checkoutResult.Payload
+
             };
         }
         private async Task<string> UploadLogoAsync(string logoBase64, CancellationToken cancellationToken)

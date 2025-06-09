@@ -7,6 +7,7 @@ using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
+using System.Collections.Generic;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
@@ -18,9 +19,6 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         /// <summary>Email</summary>
         /// <example>fvsouza623@gmail.com</example>
         public string? Email { get; set; }
-        /// <summary>Document</summary>
-        /// <example>45570179836</example>
-        public string Document { get; set; }
         /// <summary>Photo</summary>
         /// <example>base64</example>
         public string? Photo { get; set; }
@@ -59,6 +57,9 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         /// <summary>Observações</summary>
         /// <example>Participa do grupo de jovens</example>
         public string? Notes { get; set; }
+
+        /// <summary>Documentos do membro</summary>
+        public List<MemberDocumentDto> Documents { get; set; } = new();
     }
 
     public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, int>
@@ -93,17 +94,17 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             var exists = await _unitOfWork.Members.Query()
                 .AnyAsync(m =>
                     m.ChurchId == churchId &&
-                    (m.Document == request.Document || (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email)),
+                    (m.Documents.Any(x => request.Documents.Any(d => d.Number == x.Number)) ||
+                     (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email)),
                     cancellationToken);
 
             if (exists)
-                ValidationException.ThrowException("Member", "This Member does not exist.");
+                ValidationException.ThrowException("Member", "This Member already exists.");
 
             var member = new Domain.Entities.Member
             {
                 Name = request.Name,
                 Email = request.Email,
-                Document = request.Document,
                 Phone = request.Phone,
                 BirthDate = request.BirthDate,
                 IsBaptized = request.IsBaptized,
@@ -112,11 +113,17 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 ChurchId = churchId,
                 Role = request.RoleMember,
                 Created = DateTime.UtcNow,
-                MaritalStatus = request.MaritalStatus,
+                MaritalStatus = Enum.Parse<MaritalStatus>(request.MaritalStatus),
                 MemberSince = request.MemberSince,
-                Ministry = request.Ministry,
+                Ministry = Enum.Parse<Ministry>(request.Ministry).ToString(),
                 IsActive = request.IsActive,
-                Notes = request.Notes
+                Notes = request.Notes,
+                // Mapeamento dos documentos
+                Documents = request.Documents?.Select(d => new Domain.Entities.MemberDocument
+                {
+                    Type = d.Type,
+                    Number = d.Number
+                }).ToList() ?? new List<Domain.Entities.MemberDocument>()
             };
 
             var hash = Guid.NewGuid().ToString("N");

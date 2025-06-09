@@ -7,6 +7,8 @@
         public Member Member { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
+        public decimal PlatformFee { get; set; }
 
+        public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
     }
 }

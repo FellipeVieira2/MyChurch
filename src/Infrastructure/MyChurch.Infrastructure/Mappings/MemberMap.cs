@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Infrastructure.Mappings
 {
@@ -29,12 +30,6 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(m => m.Email)
                 .HasColumnName("email")
                 .HasColumnType("varchar(200)")
-                .IsRequired(false);
-
-            builder
-                .Property(m => m.Document)
-                .HasColumnName("document")
-                .HasColumnType("varchar(50)")
                 .IsRequired(false);
 
             builder
@@ -68,6 +63,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(m => m.BirthCity)
+                .HasColumnName("birth_city")
+                .HasColumnType("varchar(100)")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.BirthState)
+                .HasColumnName("birth_state")
+                .HasColumnType("varchar(100)")
+                .IsRequired(false);
+
+            builder
                 .Property(m => m.IsBaptized)
                 .HasColumnName("is_baptized")
                 .HasColumnType("boolean")
@@ -81,9 +88,16 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
+                .Property(m => m.CreditCardHash)
+                .HasColumnName("credit_card_hash")
+                .HasColumnType("varchar(500)")
+                .IsRequired(false);
+
+            builder
                 .Property(m => m.IsTither)
                 .HasColumnName("is_tither")
                 .HasColumnType("boolean")
+                .HasDefaultValue(false)
                 .IsRequired();
 
             builder
@@ -92,11 +106,14 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
-            // Novos campos
             builder
                 .Property(m => m.MaritalStatus)
                 .HasColumnName("marital_status")
                 .HasColumnType("varchar(50)")
+                .HasConversion(
+                    v => v.HasValue ? v.Value.ToString() : null, // Enum para string
+                    v => string.IsNullOrEmpty(v) ? null : Enum.Parse<MaritalStatus>(v) // String para Enum
+                )
                 .IsRequired(false);
 
             builder
@@ -123,6 +140,20 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("notes")
                 .HasColumnType("varchar(1000)")
                 .IsRequired(false);
+
+            // Novo campo AddressId
+            builder
+                .Property(m => m.AddressId)
+                .HasColumnName("address_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            // Relacionamento Address
+            builder
+                .HasOne(m => m.Address)
+                .WithMany(a => a.Members)
+                .HasForeignKey(m => m.AddressId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .Property(m => m.Role)
@@ -153,6 +184,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .WithOne(d => d.Member)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(m => m.CashFlowEntries)
+                .WithOne(cfe => cfe.Member)
+                .HasForeignKey(cfe => cfe.MemberId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .HasMany(m => m.Events)

@@ -1187,6 +1187,22 @@
         }
       }
     },
+    "/api/Church/dashboard": {
+      "get": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Dashboard com indicadores da igreja",
+        "responses": {
+          "200": {
+            "description": "Sucesso: Dados consolidados"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
     "/api/Church/{id}": {
       "get": {
         "tags": [
@@ -1291,6 +1307,101 @@
           },
           "400": {
             "description": "Failure: Invalid Request"
+          },
+          "401": {
+            "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Donation": {
+      "post": {
+        "tags": [
+          "Donation"
+        ],
+        "summary": "Create a new Donation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDonationCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDonationCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDonationCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success: Donation Created"
+          },
+          "400": {
+            "description": "Failure: Invalid Request"
+          },
+          "401": {
+            "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Donation/paid": {
+      "get": {
+        "tags": [
+          "Donation"
+        ],
+        "summary": "Get all paid donations for the logged member (paginated)",
+        "parameters": [
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Value",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success: List of paid donations"
           },
           "401": {
             "description": "Failure: Unauthorized"
@@ -2443,6 +2554,21 @@
           }
         }
       }
+    },
+    "/api/Webhook/asaas": {
+      "post": {
+        "tags": [
+          "Webhook"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2499,6 +2625,10 @@
           "number": {
             "type": "string",
             "description": "Number",
+            "nullable": true
+          },
+          "complement": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -3144,11 +3274,13 @@
             "nullable": true,
             "example": "joao@email.com"
           },
-          "adminDocument": {
-            "type": "string",
-            "description": "Documento do Administrador",
-            "nullable": true,
-            "example": "12345678900"
+          "adminDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDocumentDto"
+            },
+            "description": "Documentos do Administrador",
+            "nullable": true
           },
           "adminPhoto": {
             "type": "string",
@@ -3194,6 +3326,41 @@
             "description": "Senha do Administrador",
             "nullable": true,
             "example": "SenhaForte123!"
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCardDto"
+          },
+          "creditCardHolderInfo": {
+            "$ref": "#/components/schemas/CreditCardHolderInfoDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateDonationCommand": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "billingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCardDto"
+          },
+          "creditCardHolderInfo": {
+            "$ref": "#/components/schemas/CreditCardHolderInfoDto"
           }
         },
         "additionalProperties": false
@@ -3258,6 +3425,7 @@
       },
       "CreateMemberCommand": {
         "required": [
+          "documents",
           "name"
         ],
         "type": "object",
@@ -3274,13 +3442,6 @@
             "description": "Email",
             "nullable": true,
             "example": "fvsouza623@gmail.com"
-          },
-          "document": {
-            "maxLength": 20,
-            "type": "string",
-            "description": "Document",
-            "nullable": true,
-            "example": "45570179836"
           },
           "photo": {
             "type": "string",
@@ -3350,6 +3511,13 @@
             "description": "Observações",
             "nullable": true,
             "example": "Participa do grupo de jovens"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDocumentDto"
+            },
+            "description": "Documentos do membro"
           }
         },
         "additionalProperties": false
@@ -3368,6 +3536,68 @@
           "firstPaymentDate": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "creditCard": {
+            "$ref": "#/components/schemas/CreditCardDto"
+          },
+          "creditCardHolderInfo": {
+            "$ref": "#/components/schemas/CreditCardHolderInfoDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditCardDto": {
+        "type": "object",
+        "properties": {
+          "holderName": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiryMonth": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiryYear": {
+            "type": "string",
+            "nullable": true
+          },
+          "ccv": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreditCardHolderInfoDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "cpfCnpj": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -3629,6 +3859,53 @@
         },
         "additionalProperties": false
       },
+      "MaritalStatus": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "MemberDocumentDto": {
+        "required": [
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "memberId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "$ref": "#/components/schemas/MemberDocumentType"
+          },
+          "number": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDocumentType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          99
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "MemberDto": {
         "type": "object",
         "properties": {
@@ -3641,7 +3918,10 @@
             "nullable": true
           },
           "document": {
-            "type": "string",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDocumentDto"
+            },
             "nullable": true
           },
           "email": {
@@ -3744,6 +4024,18 @@
           }
         },
         "additionalProperties": false
+      },
+      "Ministry": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "PaymentDto": {
         "type": "object",
@@ -4122,8 +4414,7 @@
             "nullable": true
           },
           "maritalStatus": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/MaritalStatus"
           },
           "memberSince": {
             "type": "string",
@@ -4131,8 +4422,7 @@
             "nullable": true
           },
           "ministry": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/Ministry"
           },
           "isActive": {
             "type": "boolean",
