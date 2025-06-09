@@ -2375,6 +2375,82 @@
         }
       }
     },
+    "/api/Member/credit-cards": {
+      "put": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Get all Credit Cards",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Número da página (começa em 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Tamanho da página",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success: Credit Cards",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failure: Member Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failure: Invalid Request"
+          },
+          "401": {
+            "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
     "/api/Member/active/password/{hash}": {
       "patch": {
         "tags": [
@@ -2686,39 +2762,27 @@
         "properties": {
           "street": {
             "type": "string",
-            "description": "Rua",
-            "nullable": true,
-            "example": "Piracicaba"
+            "nullable": true
           },
           "city": {
             "type": "string",
-            "description": "Cidade",
-            "nullable": true,
-            "example": "Araras"
+            "nullable": true
           },
           "state": {
             "type": "string",
-            "description": "Estado",
-            "nullable": true,
-            "example": "SP"
+            "nullable": true
           },
           "zipCode": {
             "type": "string",
-            "description": "CEP",
-            "nullable": true,
-            "example": "13609090"
+            "nullable": true
           },
           "country": {
             "type": "string",
-            "description": "País",
-            "nullable": true,
-            "example": "Brasil"
+            "nullable": true
           },
           "neighborhood": {
             "type": "string",
-            "description": "Bairro",
-            "nullable": true,
-            "example": "São João"
+            "nullable": true
           },
           "number": {
             "type": "string",
@@ -3225,68 +3289,49 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Nome da Igreja",
-            "nullable": true,
-            "example": "Igreja Pentecostal"
+            "nullable": true
           },
           "description": {
             "type": "string",
-            "description": "Descrição da Igreja",
-            "nullable": true,
-            "example": "Igreja Pentecostal"
+            "nullable": true
           },
           "phone": {
             "type": "string",
-            "description": "Telefone da Igreja",
-            "nullable": true,
-            "example": "19987250777"
+            "nullable": true
           },
           "planId": {
             "type": "integer",
-            "description": "ID do Plano",
-            "format": "int32",
-            "example": 1
+            "format": "int32"
           },
           "billingType": {
             "type": "string",
-            "description": "BillingType",
-            "nullable": true,
-            "example": "PIX"
+            "nullable": true
           },
           "logo": {
             "type": "string",
-            "description": "Logo da Igreja (Base64)",
-            "nullable": true,
-            "example": "Base64"
+            "nullable": true
           },
           "address": {
             "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
           },
           "adminName": {
             "type": "string",
-            "description": "Nome do Administrador",
-            "nullable": true,
-            "example": "João da Silva"
+            "nullable": true
           },
           "adminEmail": {
             "type": "string",
-            "description": "Email do Administrador",
-            "nullable": true,
-            "example": "joao@email.com"
+            "nullable": true
           },
           "adminDocuments": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MemberDocumentDto"
             },
-            "description": "Documentos do Administrador",
             "nullable": true
           },
           "adminPhoto": {
             "type": "string",
-            "description": "Foto do Administrador (Base64)",
-            "nullable": true,
-            "example": "Base64"
+            "nullable": true
           },
           "document": {
             "type": "string",
@@ -3294,44 +3339,37 @@
           },
           "adminPhone": {
             "type": "string",
-            "description": "Telefone do Administrador",
-            "nullable": true,
-            "example": "19999999999"
+            "nullable": true
           },
           "adminBirthDate": {
             "type": "string",
-            "description": "Data de Nascimento do Administrador",
-            "format": "date-time",
-            "example": "1990-01-01"
+            "format": "date-time"
           },
           "adminIsBaptized": {
-            "type": "boolean",
-            "description": "Administrador é Batizado?",
-            "example": true
+            "type": "boolean"
           },
           "adminBaptizedDate": {
             "type": "string",
-            "description": "Data do Batismo do Administrador",
             "format": "date-time",
-            "nullable": true,
-            "example": "2010-05-20"
+            "nullable": true
           },
           "adminIsTither": {
-            "type": "boolean",
-            "description": "Administrador é Dizimista?",
-            "example": true
+            "type": "boolean"
           },
           "adminPassword": {
             "type": "string",
-            "description": "Senha do Administrador",
-            "nullable": true,
-            "example": "SenhaForte123!"
+            "nullable": true
           },
           "creditCard": {
             "$ref": "#/components/schemas/CreditCardDto"
           },
           "creditCardHolderInfo": {
             "$ref": "#/components/schemas/CreditCardHolderInfoDto"
+          },
+          "creditCardInfoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3361,6 +3399,11 @@
           },
           "creditCardHolderInfo": {
             "$ref": "#/components/schemas/CreditCardHolderInfoDto"
+          },
+          "creditCardInfoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3543,6 +3586,11 @@
           },
           "creditCardHolderInfo": {
             "$ref": "#/components/schemas/CreditCardHolderInfoDto"
+          },
+          "creditCardInfoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -313,6 +313,12 @@
             Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
             </summary>
         </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Name">
             <summary>Filtro por nome (contém)</summary>
         </member>

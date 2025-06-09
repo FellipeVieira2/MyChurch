@@ -5,6 +5,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
+using MyChurch.Application.Member.Queries.GetAllCreditCardsMember;
 using MyChurch.Application.Member.Queries.GetAllMembers;
 using MyChurch.Application.Member.Queries.GetBirthdayMembers;
 using MyChurch.Application.Member.Queries.GetMemberById;
@@ -96,10 +97,28 @@ namespace MyChurch.Api.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetMember([FromRoute] int id, [FromBody] UpdateMemberCommand command)
         {
+
             command.Id = id;
             var member = await Mediator.Send(command);
 
             return Ok(member);
+        }
+
+        /// <summary>
+        /// Get all Credit Cards
+        /// </summary>
+        /// <response code="200">Success: Credit Cards</response>
+        /// <response code="400">Failure: Invalid Request</response>
+        /// <response code="401">Failure: Unauthorized</response>
+        /// <response code="404">Failure: Member Not Found</response>
+        [HttpGet("credit-cards")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllCreditCards([FromQuery] GetAllCreditCardsMemberQuery query)
+        {
+            var result = await Mediator.Send(query);
+            return Ok(result);
         }
 
         /// <summary>

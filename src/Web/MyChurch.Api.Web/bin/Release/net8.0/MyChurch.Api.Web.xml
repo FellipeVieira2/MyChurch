@@ -304,6 +304,15 @@
             <response code="401">Failure: Unauthorized</response>
             <response code="404">Failure: Member Not Found</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllCreditCards(MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery)">
+            <summary>
+            Get all Credit Cards
+            </summary>
+            <response code="200">Success: Credit Cards</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+            <response code="404">Failure: Member Not Found</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
             <summary>
             Lista membros da igreja com filtros e paginação (apenas para Admin)
