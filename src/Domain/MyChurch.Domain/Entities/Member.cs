@@ -34,12 +34,11 @@ namespace MyChurch.Domain.Entities
 
         // Novo: lista de documentos
         public ICollection<MemberDocument> Documents { get; set; } = new List<MemberDocument>();
-
+        public ICollection<CreditCardInfo> CreditCardInfos { get; set; } = new List<CreditCardInfo>();
         public Church Church { get; set; }
         public UserRole Role { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
-        public string? CreditCardHash { get; set; }
         public ICollection<Donation> Donations { get; set; }
         public ICollection<Event> Events { get; set; }
         public ICollection<CashFlowEntry> CashFlowEntries { get; set; }

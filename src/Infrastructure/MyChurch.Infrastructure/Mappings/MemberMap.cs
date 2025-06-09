@@ -88,12 +88,6 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
-                .Property(m => m.CreditCardHash)
-                .HasColumnName("credit_card_hash")
-                .HasColumnType("varchar(500)")
-                .IsRequired(false);
-
-            builder
                 .Property(m => m.IsTither)
                 .HasColumnName("is_tither")
                 .HasColumnType("boolean")
@@ -190,6 +184,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .WithOne(cfe => cfe.Member)
                 .HasForeignKey(cfe => cfe.MemberId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder
+                .HasMany(m => m.CreditCardInfos)
+                .WithOne(c => c.Member)
+                .HasForeignKey(c => c.MemberId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(m => m.Documents)
+                .WithOne(d => d.Member)
+                .HasForeignKey(d => d.MemberId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(m => m.Events)

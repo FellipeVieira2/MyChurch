@@ -18,107 +18,44 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
     public class CreateChurchWithAdminMemberCommand : IRequest<CreateChurchWithAdminResultDto>
     {
         // Dados da Igreja
-
-        /// <summary>Nome da Igreja</summary>
-        /// <example>Igreja Pentecostal</example>
         public string Name { get; set; }
-
-        /// <summary>Descrição da Igreja</summary>
-        /// <example>Igreja Pentecostal</example>
         public string Description { get; set; }
-
-        /// <summary>Telefone da Igreja</summary>
-        /// <example>19987250777</example>
         public string Phone { get; set; }
-
-        /// <summary>ID do Plano</summary>
-        /// <example>1</example>
         public int PlanId { get; set; }
-
-        /// <summary>BillingType</summary>
-        /// <example>PIX</example>
         public string BillingType { get; set; } // Ex:"PIX", "CREDIT_CARD"
-
-        /// <summary>Logo da Igreja (Base64)</summary>
-        /// <example>Base64</example>
         public string? Logo { get; set; }
-
         public AddressChurchWithAdminCreate Address { get; set; }
 
         // Dados do Admin
-
-        /// <summary>Nome do Administrador</summary>
-        /// <example>João da Silva</example>
         public string AdminName { get; set; }
-
-        /// <summary>Email do Administrador</summary>
-        /// <example>joao@email.com</example>
         public string? AdminEmail { get; set; }
-
-        /// <summary>Documentos do Administrador</summary>
         public List<MemberDocumentDto> AdminDocuments { get; set; } = new();
-
-        /// <summary>Foto do Administrador (Base64)</summary>
-        /// <example>Base64</example>
         public string? AdminPhoto { get; set; }
         public string Document { get; set; }
-
-        /// <summary>Telefone do Administrador</summary>
-        /// <example>19999999999</example>
         public string AdminPhone { get; set; }
-
-        /// <summary>Data de Nascimento do Administrador</summary>
-        /// <example>1990-01-01</example>
         public DateTime AdminBirthDate { get; set; }
-
-        /// <summary>Administrador é Batizado?</summary>
-        /// <example>true</example>
         public bool AdminIsBaptized { get; set; }
-
-        /// <summary>Data do Batismo do Administrador</summary>
-        /// <example>2010-05-20</example>
         public DateTime? AdminBaptizedDate { get; set; }
-
-        /// <summary>Administrador é Dizimista?</summary>
-        /// <example>true</example>
         public bool AdminIsTither { get; set; }
-
-        /// <summary>Senha do Administrador</summary>
-        /// <example>SenhaForte123!</example>
         public string AdminPassword { get; set; }
 
-        // Adicione os campos para cartão de crédito
+        // Cartão de crédito
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
+        public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
 
         public class AddressChurchWithAdminCreate
         {
-            /// <summary>Rua</summary>
-            /// <example>Piracicaba</example>
             public string Street { get; set; }
-
-            /// <summary>Cidade</summary>
-            /// <example>Araras</example>
             public string City { get; set; }
-
-            /// <summary>Estado</summary>
-            /// <example>SP</example>
             public string State { get; set; }
-
-            /// <summary>CEP</summary>
-            /// <example>13609090</example>
             public string ZipCode { get; set; }
-
-            /// <summary>País</summary>
-            /// <example>Brasil</example>
             public string Country { get; set; }
-
-            /// <summary>Bairro</summary>
-            /// <example>São João</example>
             public string Neighborhood { get; set; }
             public string Number { get; set; }
         }
     }
+
     public class CreateChurchWithAdminMemberCommandHandler : IRequestHandler<CreateChurchWithAdminMemberCommand, CreateChurchWithAdminResultDto>
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -154,7 +91,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             if (exists)
                 ValidationException.ThrowException("Member", "Já existe um membro cadastrado com este e-mail, telefone ou documento.");
 
-            // 1. Cria a entidade Address com todos os campos
+            // 1. Cria a entidade Address
             var address = new Address(
                 street: request.Address.Street,
                 city: request.Address.City,
@@ -167,7 +104,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 Number = request.Address.Number
             };
 
-            // 2. Cria a entidade Church com todos os campos disponíveis
+            // 2. Cria a entidade Church
             var church = new Domain.Entities.Church(
                 name: request.Name,
                 phone: request.Phone,
@@ -201,7 +138,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 ChurchId = church.Id,
                 Role = UserRole.Admin,
                 Created = DateTime.Now,
-                // Novo: lista de documentos
                 Documents = request.AdminDocuments?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
@@ -232,42 +168,32 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             _unitOfWork.Churchs.Update(church);
             await _unitOfWork.CommitAsync();
 
-            string? checkoutUrl = null;
-
-            // Se o plano selecionado não for o Descubra (ID 1), já inicia o fluxo de contratação real
-            var subscriptionCommand = new MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand
+            // 10. Monta o comando de assinatura
+            var subscriptionCommand = new CreateSubscriptionCommand
             {
                 UserId = adminMember.Id,
                 PlanId = request.PlanId,
-                BillingType = request.BillingType, // ou outro tipo conforme sua lógica
-                FirstPaymentDate = DateTime.UtcNow
+                BillingType = request.BillingType,
+                FirstPaymentDate = DateTime.UtcNow,
+                CreditCard = request.CreditCard,
+                CreditCardHolderInfo = request.CreditCardHolderInfo,
+                CreditCardInfoId = request.CreditCardInfoId
             };
 
-            // Chama o fluxo de assinatura e obtém o link de checkout
-            var checkoutResult = await _sender.Send(new CreateSubscriptionCommand()
-            {
-                BillingType = request.BillingType,
-                Email = request.AdminEmail,
-                FirstPaymentDate = DateTime.UtcNow,
-                PlanId = request.PlanId,
-                Role = "Admin",
-                UserId = adminMember.Id,
-                CreditCard = request.CreditCard,
-                CreditCardHolderInfo = request.CreditCardHolderInfo
-            }, cancellationToken);
-
+            // 11. Chama o fluxo de assinatura
+            var checkoutResult = await _sender.Send(subscriptionCommand, cancellationToken);
 
             _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
 
             return new CreateChurchWithAdminResultDto
             {
                 ChurchId = church.Id,
-                CheckoutUrl = checkoutResult.CheckoutUrl,
-                PixQrCode = checkoutResult.PixQrCode,
-                Payload = checkoutResult.Payload
-
+                CheckoutUrl = checkoutResult?.CheckoutUrl,
+                PixQrCode = checkoutResult?.PixQrCode,
+                Payload = checkoutResult?.Payload
             };
         }
+
         private async Task<string> UploadLogoAsync(string logoBase64, CancellationToken cancellationToken)
         {
             if (logoBase64.Contains(','))
@@ -302,7 +228,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 CpfCnpj = church.Document,
                 ExternalReference = church.Id.ToString(),
                 PostalCode = church.Address.ZipCode,
-
             };
             var asaasCustomer = await _asaasWebClient.CriarClienteAsync(customer);
             return asaasCustomer.Id;

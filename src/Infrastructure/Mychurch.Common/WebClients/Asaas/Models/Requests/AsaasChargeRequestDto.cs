@@ -21,5 +21,7 @@ namespace Mychurch.Common.WebClients.Asaas.Models.Requests
 
         [JsonPropertyName("creditCardHolderInfo")]
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
+        [JsonPropertyName("creditCardToken")]
+        public string CreditCardToken { get; set; }
     }
 }

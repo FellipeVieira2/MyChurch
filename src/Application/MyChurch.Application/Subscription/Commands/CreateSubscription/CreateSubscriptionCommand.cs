@@ -19,9 +19,9 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
         public string BillingType { get; set; } // Ex:"PIX", "CREDIT_CARD"
         public DateTime? FirstPaymentDate { get; set; }
 
-        // Adicione os campos para cartão de crédito
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
+        public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
     }
     public class CreateSubscriptionResultDto
     {
@@ -100,22 +100,37 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                 ExternalReference = $"{church.Id}-{plan.Id}-{DateTime.UtcNow:yyyyMMddHHmmss}"
             };
 
+            // Se for cartão de crédito, pode ser novo ou já cadastrado
             if (request.BillingType == "CREDIT_CARD")
             {
-                cobrancaRequest.CreditCard = request.CreditCard;
-                cobrancaRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
-            }
+                if (request.CreditCardInfoId.HasValue)
+                {
+                    // Busca o cartão já cadastrado
+                    var cardInfo = await _unitOfWork.CreditCardInfos.Query()
+                        .FirstOrDefaultAsync(c => c.Id == request.CreditCardInfoId.Value && c.MemberId == loggedMember.Id, cancellationToken);
 
+                    if (cardInfo == null)
+                        ValidationException.ThrowException("CreditCard", "Cartão não encontrado para este usuário.");
+
+                    cobrancaRequest.CreditCardToken = cardInfo.CardHash;
+                    cobrancaRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+                }
+                else
+                {
+                    cobrancaRequest.CreditCard = request.CreditCard;
+                    cobrancaRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+                }
+            }
 
             // Cria a cobrança no Asaas
             var cobrancaResponse = await _asaasWebClient.CriarCobrancaAsync(cobrancaRequest);
 
             PixQrCodeResponseDto? pixQrCode = null;
-            if (request.BillingType == "PIX" && !string.IsNullOrEmpty(transactionId))
+            if (request.BillingType == "PIX" && !string.IsNullOrEmpty(cobrancaResponse.Id))
             {
                 try
                 {
-                    pixQrCode = await _asaasWebClient.GerarPixQrCodeAsync(transactionId);
+                    pixQrCode = await _asaasWebClient.GerarPixQrCodeAsync(cobrancaResponse.Id);
                 }
                 catch (Exception ex)
                 {
@@ -156,12 +171,24 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
 
             _unitOfWork.Payments.Create(payment);
 
-            // Salva o token do cartão de crédito se for cartão
-            if (request.BillingType == "CREDIT_CARD")
+            // Salva cartão novo se for cartão de crédito e não foi usado um já cadastrado
+            if (request.BillingType == "CREDIT_CARD" && !request.CreditCardInfoId.HasValue && cobrancaResponse.CreditCard != null)
             {
-                loggedMember.CreditCardHash = cobrancaResponse.CreditCard?.CreditCardToken;
-                _unitOfWork.Members.Update(loggedMember);
+                var last4 = request.CreditCard?.Number?.Length >= 4
+                    ? request.CreditCard.Number[^4..]
+                    : "";
+
+                var cardInfo = new CreditCardInfo()
+                {
+                    CardBrand = cobrancaResponse.CreditCard.CreditCardBrand,
+                    CardHash = cobrancaResponse.CreditCard.CreditCardToken,
+                    Created = DateTime.UtcNow,
+                    Last4Digits = last4,
+                    MemberId = loggedMember.Id
+                };
+                _unitOfWork.CreditCardInfos.Create(cardInfo);
             }
+
 
             await _unitOfWork.CommitAsync();
 
@@ -170,8 +197,8 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
             return new CreateSubscriptionResultDto
             {
                 CheckoutUrl = checkoutUrl,
-                PixQrCode = pixQrCode.EncodedImage,
-                Payload = pixQrCode.Payload
+                PixQrCode = pixQrCode?.EncodedImage,
+                Payload = pixQrCode?.Payload
             };
         }
     }

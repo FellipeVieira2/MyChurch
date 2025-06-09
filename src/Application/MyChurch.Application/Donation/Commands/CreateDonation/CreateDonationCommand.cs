@@ -20,8 +20,8 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
         public DateTime? DueDate { get; set; }
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
+        public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
     }
-
 
     public class CreateDonationResultDto
     {
@@ -80,10 +80,29 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
                 Description = request.Description ?? $"Doação de {member.Name}",
                 ExternalReference = Guid.NewGuid().ToString()
             };
+
+            // Se for cartão de crédito, pode ser novo ou já cadastrado
             if (request.BillingType == "CREDIT_CARD")
             {
-                chargeRequest.CreditCard = request.CreditCard;
-                chargeRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+                if (request.CreditCardInfoId.HasValue)
+                {
+                    // Busca o cartão já cadastrado
+                    var cardInfo = await _unitOfWork.CreditCardInfos.Query()
+                        .FirstOrDefaultAsync(c => c.Id == request.CreditCardInfoId.Value && c.MemberId == member.Id, cancellationToken);
+
+                    if (cardInfo == null)
+                        ValidationException.ThrowException("CreditCard", "Cartão não encontrado para este usuário.");
+
+                    // Envia apenas o token/hash do cartão já salvo
+                    chargeRequest.CreditCardToken = cardInfo.CardHash;
+                    // O Asaas pode exigir também o CreditCardHolderInfo
+                    chargeRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+                }
+                else
+                {
+                    chargeRequest.CreditCard = request.CreditCard;
+                    chargeRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
+                }
             }
 
             // 3. Criar cobrança no Asaas
@@ -157,10 +176,24 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             donation.Amount -= platformFeeValue;
             donation.PlatformFee = platformFeeValue;
 
-            if (request.BillingType == "CREDIT_CARD")
+            // Salva cartão novo se for cartão de crédito e não foi usado um já cadastrado
+            if (request.BillingType == "CREDIT_CARD" && !request.CreditCardInfoId.HasValue && asaasPayment.CreditCard != null)
             {
-                member.CreditCardHash = asaasPayment.CreditCard?.CreditCardToken;
+                var last4 = request.CreditCard?.Number?.Length >= 4
+                    ? request.CreditCard.Number[^4..]
+                    : "";
+
+                var cardInfo = new CreditCardInfo()
+                {
+                    CardBrand = asaasPayment.CreditCard.CreditCardBrand,
+                    CardHash = asaasPayment.CreditCard.CreditCardToken,
+                    Created = DateTime.UtcNow,
+                    Last4Digits = last4,
+                    MemberId = member.Id
+                };
+                _unitOfWork.CreditCardInfos.Create(cardInfo);
             }
+
             _unitOfWork.Members.Update(member);
             // 6. Persistir no banco
             _unitOfWork.Donations.Create(donation);

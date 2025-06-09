@@ -33,6 +33,7 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IChapterRepository, ChapterRepository>();
             services.AddScoped<IVerseRepository, VerseRepository>();
             services.AddScoped<IMemberDocumetRepository, MemberDocumentRepository>();
+            services.AddScoped<ICreditCardInfoRepository, CreditCardInfoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {

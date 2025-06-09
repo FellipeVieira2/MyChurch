@@ -532,6 +532,45 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("church", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.CreditCardInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CardBrand")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("card_brand");
+
+                    b.Property<string>("CardHash")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("card_hash");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<string>("Last4Digits")
+                        .IsRequired()
+                        .HasColumnType("varchar(4)")
+                        .HasColumnName("last4digits");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("credit_card_info", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Donation", b =>
                 {
                     b.Property<int>("Id")
@@ -781,10 +820,6 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
                         .HasColumnName("created");
-
-                    b.Property<string>("CreditCardHash")
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("credit_card_hash");
 
                     b.Property<string>("Email")
                         .HasColumnType("varchar(200)")
@@ -1140,6 +1175,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.CreditCardInfo", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany("CreditCardInfos")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Donation", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Member", "Member")
@@ -1352,6 +1398,8 @@ namespace MyChurch.Infrastructure.Migrations
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
                     b.Navigation("CashFlowEntries");
+
+                    b.Navigation("CreditCardInfos");
 
                     b.Navigation("Documents");
 

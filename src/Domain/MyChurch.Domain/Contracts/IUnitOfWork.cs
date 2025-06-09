@@ -22,6 +22,7 @@
         IVerseRepository Verses { get; }
         IHymnRepository Hymns { get; }
         IMemberDocumetRepository MemberDocuments { get; }
+        ICreditCardInfoRepository CreditCardInfos { get; }
         Task<bool> CommitAsync();
 
     }
