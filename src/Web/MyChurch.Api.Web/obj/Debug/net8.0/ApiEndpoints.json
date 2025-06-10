@@ -795,6 +795,32 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
+    "Method": "UpdateBankingInfo",
+    "RelativePath": "api/Church/banking-info",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.Dtos.BankingInfoDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "GetChurchDashboard",
     "RelativePath": "api/Church/dashboard",
     "HttpMethod": "GET",
@@ -906,6 +932,44 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.DonationController",
+    "Method": "TransferChurchBalance",
+    "RelativePath": "api/Donation/transfer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Donation.Commands.TransferChurchBalance.TransferChurchBalanceCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.DonationController",
+    "Method": "GetTransferBalance",
+    "RelativePath": "api/Donation/transfer-balance",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "System.Void",
@@ -1509,7 +1573,7 @@
     "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
     "Method": "GetAllCreditCards",
     "RelativePath": "api/Member/credit-cards",
-    "HttpMethod": "PUT",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -1557,6 +1621,52 @@
           "text/json"
         ],
         "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PastorBotController",
+    "Method": "Explain",
+    "RelativePath": "api/PastorBot/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PastorBotController",
+    "Method": "VerseOfTheDay",
+    "RelativePath": "api/PastorBot/verseoftheday",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.PastorBot.Commands.VerseOfTheDay.VerseOfTheDayResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
       }
     ]
   },

@@ -214,6 +214,33 @@
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Number">
             <summary>Number</summary>
         </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.BankName">
+            <summary>Banco</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.Agency">
+            <summary>Agência</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.Account">
+            <summary>Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.AccountDigit">
+            <summary>Dígito da Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.AccountType">
+            <summary>Tipo de Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.HolderName">
+            <summary>Titular</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.HolderDocument">
+            <summary>Documento do Titular</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKey">
+            <summary>Chave PIX</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKeyType">
+            <summary>Tipo da Chave PIX</summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>
@@ -308,10 +335,29 @@
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Documents">
             <summary>Documentos do membro</summary>
         </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberDocumentDtoCreate.Type">
+            <summary>Tipo do documento</summary>
+            <example>CPF</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberDocumentDtoCreate.Number">
+            <summary>Número do documento</summary>
+            <example>12345678901</example>
+        </member>
         <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
             </summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.Documents">
+            <summary>Documentos do membro</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.MemberDocumentDtoUpdate.Type">
+            <summary>Tipo do documento</summary>
+            <example>CPF</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.MemberDocumentDtoUpdate.Number">
+            <summary>Número do documento</summary>
+            <example>12345678901</example>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery.PageNumber">
             <summary>Número da página (começa em 1)</summary>

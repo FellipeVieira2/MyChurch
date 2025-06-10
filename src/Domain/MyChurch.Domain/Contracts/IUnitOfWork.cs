@@ -23,6 +23,9 @@
         IHymnRepository Hymns { get; }
         IMemberDocumetRepository MemberDocuments { get; }
         ICreditCardInfoRepository CreditCardInfos { get; }
+        IBankingInfoRepository BankingInfos { get; }
+        ITransferHistoryRepository TransferHistories { get; }
+        IVerseOfTheDayRepository VerseOfTheDays { get; }
         Task<bool> CommitAsync();
 
     }

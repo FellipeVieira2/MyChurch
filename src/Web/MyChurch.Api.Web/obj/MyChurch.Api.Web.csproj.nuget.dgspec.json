@@ -61,6 +61,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "DotnetGeminiSDK": {
+              "target": "Package",
+              "version": "[1.0.14, )"
+            },
             "FluentValidation": {
               "target": "Package",
               "version": "[11.11.0, )"
@@ -431,6 +435,10 @@
             "AWSSDK.Extensions.NETCore.Setup": {
               "target": "Package",
               "version": "[4.0.0.4, )"
+            },
+            "DotnetGeminiSDK": {
+              "target": "Package",
+              "version": "[1.0.14, )"
             },
             "FluentValidation.AspNetCore": {
               "target": "Package",

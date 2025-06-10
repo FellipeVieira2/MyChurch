@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.S3;
@@ -59,7 +60,17 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         public string? Notes { get; set; }
 
         /// <summary>Documentos do membro</summary>
-        public List<MemberDocumentDto> Documents { get; set; } = new();
+        public List<MemberDocumentDtoCreate>? Documents { get; set; } = new();
+
+        public class MemberDocumentDtoCreate
+        {
+            /// <summary>Tipo do documento</summary>
+            /// <example>CPF</example>
+            public MemberDocumentType Type { get; set; }
+            /// <summary>Número do documento</summary>
+            /// <example>12345678901</example>
+            public string Number { get; set; }
+        }
     }
 
     public class CreateMemberCommandHandler : IRequestHandler<CreateMemberCommand, int>

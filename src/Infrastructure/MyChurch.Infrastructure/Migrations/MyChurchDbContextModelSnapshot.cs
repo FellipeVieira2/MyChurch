@@ -193,6 +193,79 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("asset", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.BankingInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Account")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("account");
+
+                    b.Property<string>("AccountDigit")
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("account_digit");
+
+                    b.Property<string>("AccountType")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("account_type");
+
+                    b.Property<string>("Agency")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("agency");
+
+                    b.Property<string>("BankName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("bank_name");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<string>("HolderDocument")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("holder_document");
+
+                    b.Property<string>("HolderName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("holder_name");
+
+                    b.Property<string>("PixKey")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("pix_key");
+
+                    b.Property<string>("PixKeyType")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("pix_key_type");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("banking_info", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Book", b =>
                 {
                     b.Property<int>("Id")
@@ -588,6 +661,9 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("date");
 
+                    b.Property<bool>("IsTransferred")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("MemberId")
                         .HasColumnType("int")
                         .HasColumnName("member_id");
@@ -597,6 +673,9 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("decimal(10,2)")
                         .HasDefaultValue(0m)
                         .HasColumnName("platform_fee");
+
+                    b.Property<DateTime?>("TransferredAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -1068,6 +1147,76 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("subscription", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.TransferHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("completed_at");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<DateTime>("RequestedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("requested_at");
+
+                    b.Property<string>("Status")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("transfer_history", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.VerseOfTheDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("reference");
+
+                    b.Property<string>("VerseText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("verse_text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("verses_of_the_day", "postgres");
+                });
+
             modelBuilder.Entity("EventParticipants", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Event", null)
@@ -1087,6 +1236,17 @@ namespace MyChurch.Infrastructure.Migrations
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
                         .WithMany("Assets")
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.BankingInfo", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
                         .HasForeignKey("ChurchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1331,6 +1491,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
 
                     b.Navigation("Plan");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.TransferHistory", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Address", b =>

@@ -7,6 +7,10 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyChurch.Application.Member.Commands.UpdateMember
 {
@@ -27,6 +31,19 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public bool? IsActive { get; set; }
         public string? Notes { get; set; }
         public string? Photo { get; set; }
+
+        /// <summary>Documentos do membro</summary>
+        public List<MemberDocumentDtoUpdate>? Documents { get; set; } = new();
+
+        public class MemberDocumentDtoUpdate
+        {
+            /// <summary>Tipo do documento</summary>
+            /// <example>CPF</example>
+            public MemberDocumentType Type { get; set; }
+            /// <summary>Número do documento</summary>
+            /// <example>12345678901</example>
+            public string Number { get; set; }
+        }
     }
 
     public class UpdateMemberCommandHandler : IRequestHandler<UpdateMemberCommand, MemberDto>
@@ -58,6 +75,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
 
             // Busca o membro a ser atualizado e valida se pertence à mesma igreja
             var member = await _unitOfWork.Members.Query()
+                .Include(m => m.Documents)
                 .FirstOrDefaultAsync(m => m.Id == request.Id && m.ChurchId == churchId, cancellationToken);
 
             if (member == null)
@@ -88,13 +106,13 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
             if (request.IsTither.HasValue)
                 member.IsTither = request.IsTither.Value;
 
-            if (!string.IsNullOrEmpty(request.MaritalStatus.ToString()))
+            if (request.MaritalStatus.HasValue)
                 member.MaritalStatus = request.MaritalStatus;
 
             if (request.MemberSince.HasValue)
                 member.MemberSince = request.MemberSince;
 
-            if (!string.IsNullOrEmpty(request.Ministry.ToString()))
+            if (request.Ministry.HasValue)
                 member.Ministry = request.Ministry.ToString();
 
             if (request.IsActive.HasValue)
@@ -105,6 +123,23 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
 
             if (!string.IsNullOrEmpty(request.Photo))
                 member.Photo = request.Photo;
+
+            // Atualização dos documentos
+            if (request.Documents != null && request.Documents.Any())
+            {
+                // Remove documentos antigos
+                member.Documents.Clear();
+
+                // Adiciona os novos documentos
+                foreach (var doc in request.Documents)
+                {
+                    member.Documents.Add(new MemberDocument
+                    {
+                        Type = doc.Type,
+                        Number = doc.Number
+                    });
+                }
+            }
 
             _unitOfWork.Members.Update(member);
             await _unitOfWork.CommitAsync();

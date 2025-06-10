@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
 using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
+using MyChurch.Application.Church.Commands.UpdateBankingInfo;
 using MyChurch.Application.Church.Commands.UpdateChurch;
 using MyChurch.Application.Church.Queries.GetChurch;
 using MyChurch.Application.Dtos;
@@ -53,6 +54,23 @@ namespace MyChurch.Api.Web.Controllers
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Atualiza os dados bancários da igreja
+        /// </summary>
+        /// <response code="200">Sucesso: Dados bancários atualizados</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPut("banking-info")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankingInfoDto))]
+        public async Task<IActionResult> UpdateBankingInfo([FromBody] UpdateBankingInfoCommand command)
+        {
+            // ChurchId será resolvido pelo membro logado no handler
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Dashboard com indicadores da igreja
         /// </summary>

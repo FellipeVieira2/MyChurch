@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MyChurch.Application.Dtos;
+using static MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
@@ -54,7 +55,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         }
     }
 
-    public class MemberDocumentDtoValidator : AbstractValidator<MemberDocumentDto>
+    public class MemberDocumentDtoValidator : AbstractValidator<MemberDocumentDtoCreate>
     {
         public MemberDocumentDtoValidator()
         {

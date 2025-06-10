@@ -34,6 +34,9 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IVerseRepository, VerseRepository>();
             services.AddScoped<IMemberDocumetRepository, MemberDocumentRepository>();
             services.AddScoped<ICreditCardInfoRepository, CreditCardInfoRepository>();
+            services.AddScoped<IBankingInfoRepository, BankingInfoRepository>();
+            services.AddScoped<ITransferHistoryRepository, TransferHistoryRepository>();
+            services.AddScoped<IVerseOfTheDayRepository, VerseOfTheDayRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {

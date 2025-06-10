@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Donation.Commands.CreateDonation;
+using MyChurch.Application.Donation.Commands.TransferChurchBalance;
 using MyChurch.Application.Donation.Queries.GetAllPaidDonations;
+using MyChurch.Application.Donation.Queries.GetChurchTransferBalance;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -41,6 +43,31 @@ namespace MyChurch.Api.Web.Controllers
             request.PageSize = query.PageSize;
 
             var result = await Mediator.Send(request);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Valor disponível para repasse para a igreja
+        /// </summary>
+        [HttpGet("transfer-balance")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTransferBalance()
+        {
+            var query = AuthorizationRequestCreate<GetChurchTransferBalanceQuery>();
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Efetua retirada do valor disponível para a conta da igreja
+        /// </summary>
+        [HttpPost("transfer")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> TransferChurchBalance([FromBody] TransferChurchBalanceCommand command)
+        {
+            var result = await Mediator.Send(command);
             return Ok(result);
         }
     }

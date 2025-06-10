@@ -3,6 +3,7 @@ using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
+using DotnetGeminiSDK;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -68,6 +69,11 @@ builder.Services.AddCors(delegate (CorsOptions options)
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
     });
+});
+builder.Services.AddGeminiClient(config =>
+{
+    config.ApiKey = builder.Configuration["Gemini:ApiKey"];
+    config.TextBaseUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash";
 });
 
 // Configurar Swagger para suportar JWT

@@ -145,6 +145,14 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateBankingInfo(MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand)">
+            <summary>
+            Atualiza os dados bancários da igreja
+            </summary>
+            <response code="200">Sucesso: Dados bancários atualizados</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
             <summary>
             Dashboard com indicadores da igreja
@@ -174,6 +182,16 @@
             </summary>
             <response code="200">Success: List of paid donations</response>
             <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.GetTransferBalance">
+            <summary>
+            Valor disponível para repasse para a igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.TransferChurchBalance(MyChurch.Application.Donation.Commands.TransferChurchBalance.TransferChurchBalanceCommand)">
+            <summary>
+            Efetua retirada do valor disponível para a conta da igreja
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.EventController.CreateEvent(MyChurch.Application.Event.Commands.CreateEvent.CreateEventCommand)">
             <summary>
@@ -320,6 +338,12 @@
             <response code="200">Sucesso: Lista paginada de membros</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.VerseOfTheDay">
+            <summary>
+            Returns the verse of the day.
+            </summary>
+            <returns>Bible verse of the day in JSON format.</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>

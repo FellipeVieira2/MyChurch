@@ -35,6 +35,9 @@ namespace MyChurch.Infrastructure.Repositories
         public IHymnRepository Hymns { get; }
         public IMemberDocumetRepository MemberDocuments { get; }
         public ICreditCardInfoRepository CreditCardInfos { get; }
+        public IBankingInfoRepository BankingInfos { get; }
+        public ITransferHistoryRepository TransferHistories { get; }
+        public IVerseOfTheDayRepository VerseOfTheDays { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -57,7 +60,10 @@ namespace MyChurch.Infrastructure.Repositories
             IChapterRepository chapters,
             IHymnRepository hymns,
             IMemberDocumetRepository memberDocuments,
-            ICreditCardInfoRepository creditCardInfos)
+            ICreditCardInfoRepository creditCardInfos,
+            IBankingInfoRepository bankingInfos,
+            ITransferHistoryRepository transferHistories,
+            IVerseOfTheDayRepository verseOfTheDays)
         {
             Churchs = churchs;
             Donations = donations;
@@ -81,6 +87,9 @@ namespace MyChurch.Infrastructure.Repositories
             Hymns = hymns;
             MemberDocuments = memberDocuments;
             CreditCardInfos = creditCardInfos;
+            BankingInfos = bankingInfos;
+            TransferHistories = transferHistories;
+            VerseOfTheDays = verseOfTheDays;
         }
 
         public async Task<bool> CommitAsync()

@@ -1314,6 +1314,61 @@
         }
       }
     },
+    "/api/Church/banking-info": {
+      "put": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Atualiza os dados bancários da igreja",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: Dados bancários atualizados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankingInfoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankingInfoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankingInfoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
     "/api/Donation": {
       "post": {
         "tags": [
@@ -1348,6 +1403,38 @@
           },
           "401": {
             "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Donation/transfer": {
+      "post": {
+        "tags": [
+          "Donation"
+        ],
+        "summary": "Efetua retirada do valor disponível para a conta da igreja",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferChurchBalanceCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferChurchBalanceCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferChurchBalanceCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -1405,6 +1492,19 @@
           },
           "401": {
             "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Donation/transfer-balance": {
+      "get": {
+        "tags": [
+          "Donation"
+        ],
+        "summary": "Valor disponível para repasse para a igreja",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -2376,7 +2476,7 @@
       }
     },
     "/api/Member/credit-cards": {
-      "put": {
+      "get": {
         "tags": [
           "Member"
         ],
@@ -2495,6 +2595,86 @@
           },
           "401": {
             "description": "Failure: error"
+          }
+        }
+      }
+    },
+    "/api/PastorBot/ask": {
+      "post": {
+        "tags": [
+          "PastorBot"
+        ],
+        "summary": "Ask to Pastor.",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskPastorBotCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskPastorBotCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskPastorBotCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskPastorBotResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskPastorBotResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AskPastorBotResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PastorBot/verseoftheday": {
+      "get": {
+        "tags": [
+          "PastorBot"
+        ],
+        "summary": "Returns the verse of the day.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerseOfTheDayResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerseOfTheDayResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerseOfTheDayResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -2825,6 +3005,26 @@
         },
         "additionalProperties": false
       },
+      "AskPastorBotCommand": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AskPastorBotResponse": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AssetDto": {
         "type": "object",
         "properties": {
@@ -2925,6 +3125,48 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "BankingInfoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bankName": {
+            "type": "string",
+            "nullable": true
+          },
+          "agency": {
+            "type": "string",
+            "nullable": true
+          },
+          "account": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountType": {
+            "type": "string",
+            "nullable": true
+          },
+          "holderName": {
+            "type": "string",
+            "nullable": true
+          },
+          "holderDocument": {
+            "type": "string",
+            "nullable": true
+          },
+          "pixKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "pixKeyType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "BirthdayFilterType": {
         "enum": [
@@ -3558,7 +3800,7 @@
           "documents": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MemberDocumentDto"
+              "$ref": "#/components/schemas/MemberDocumentDtoCreate"
             },
             "description": "Documentos do membro"
           }
@@ -3918,9 +4160,6 @@
         "format": "int32"
       },
       "MemberDocumentDto": {
-        "required": [
-          "number"
-        ],
         "type": "object",
         "properties": {
           "id": {
@@ -3935,9 +4174,42 @@
             "$ref": "#/components/schemas/MemberDocumentType"
           },
           "number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDocumentDtoCreate": {
+        "required": [
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MemberDocumentType"
+          },
+          "number": {
             "maxLength": 50,
             "minLength": 1,
-            "type": "string"
+            "type": "string",
+            "description": "Número do documento",
+            "example": "12345678901"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDocumentDtoUpdate": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MemberDocumentType"
+          },
+          "number": {
+            "type": "string",
+            "description": "Número do documento",
+            "nullable": true,
+            "example": "12345678901"
           }
         },
         "additionalProperties": false
@@ -4220,6 +4492,16 @@
         },
         "additionalProperties": false
       },
+      "TransferChurchBalanceCommand": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateAssetCommand": {
         "type": "object",
         "properties": {
@@ -4300,6 +4582,57 @@
           "notes": {
             "type": "string",
             "description": "Notes",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateBankingInfoCommand": {
+        "type": "object",
+        "properties": {
+          "bankName": {
+            "type": "string",
+            "description": "Banco",
+            "nullable": true
+          },
+          "agency": {
+            "type": "string",
+            "description": "Agência",
+            "nullable": true
+          },
+          "account": {
+            "type": "string",
+            "description": "Conta",
+            "nullable": true
+          },
+          "accountDigit": {
+            "type": "string",
+            "description": "Dígito da Conta",
+            "nullable": true
+          },
+          "accountType": {
+            "type": "string",
+            "description": "Tipo de Conta",
+            "nullable": true
+          },
+          "holderName": {
+            "type": "string",
+            "description": "Titular",
+            "nullable": true
+          },
+          "holderDocument": {
+            "type": "string",
+            "description": "Documento do Titular",
+            "nullable": true
+          },
+          "pixKey": {
+            "type": "string",
+            "description": "Chave PIX",
+            "nullable": true
+          },
+          "pixKeyType": {
+            "type": "string",
+            "description": "Tipo da Chave PIX",
             "nullable": true
           }
         },
@@ -4483,6 +4816,14 @@
           "photo": {
             "type": "string",
             "nullable": true
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDocumentDtoUpdate"
+            },
+            "description": "Documentos do membro",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4501,6 +4842,20 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "VerseOfTheDayResponse": {
+        "type": "object",
+        "properties": {
+          "verseText": {
+            "type": "string",
+            "nullable": true
+          },
+          "reference": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {

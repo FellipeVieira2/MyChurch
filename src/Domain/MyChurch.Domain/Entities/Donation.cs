@@ -9,6 +9,9 @@
         public DateTime Date { get; set; }
         public decimal PlatformFee { get; set; }
 
+        public bool IsTransferred { get; set; } = false;
+        public DateTime? TransferredAt { get; set; }
+
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
     }
 }
