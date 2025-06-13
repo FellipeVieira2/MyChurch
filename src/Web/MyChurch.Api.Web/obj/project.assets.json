@@ -5929,6 +5929,7 @@
       "AWSSDK.Extensions.NETCore.Setup >= 4.0.0.4",
       "DotnetGeminiSDK >= 1.0.14",
       "FluentValidation.AspNetCore >= 11.3.0",
+      "MediatR >= 12.4.1",
       "MicroElements.Swashbuckle.FluentValidation >= 6.1.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.12",
       "Microsoft.AspNetCore.Authentication.OpenIdConnect >= 8.0.12",
@@ -5938,6 +5939,7 @@
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.21.0",
       "MyChurch.Application >= 1.0.0",
       "MyChurch.Infrastructure >= 1.0.0",
+      "Mychurch.Common >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.6.2"
     ]
   },
@@ -5977,6 +5979,9 @@
             "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Application\\MyChurch.Application\\MyChurch.Application.csproj": {
               "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Application\\MyChurch.Application\\MyChurch.Application.csproj"
             },
+            "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj": {
+              "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj"
+            },
             "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {
               "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj"
             }
@@ -6010,6 +6015,10 @@
           "FluentValidation.AspNetCore": {
             "target": "Package",
             "version": "[11.3.0, )"
+          },
+          "MediatR": {
+            "target": "Package",
+            "version": "[12.4.1, )"
           },
           "MicroElements.Swashbuckle.FluentValidation": {
             "target": "Package",
@@ -6071,7 +6080,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

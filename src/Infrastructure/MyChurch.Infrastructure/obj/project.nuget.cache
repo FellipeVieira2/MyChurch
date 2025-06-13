@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7swXnOGkgdA=",
+  "dgSpecHash": "3DxBy1yOkac=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -56,5 +56,15 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\system.text.json\\9.0.3\\system.text.json.9.0.3.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Ocorreu um erro ao obter os dados de vulnerabilidade do pacote: Não é possível carregar o índice de serviço para a origem https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json.",
+      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
+      "targetGraphs": []
+    }
+  ]
 }

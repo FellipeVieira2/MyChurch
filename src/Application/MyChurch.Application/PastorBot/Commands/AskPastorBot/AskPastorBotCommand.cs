@@ -28,9 +28,11 @@ namespace MyChurch.Application.PastorBot.Commands.AskPastorBot
 
         public async Task<AskPastorBotResponse> Handle(AskPastorBotCommand request, CancellationToken cancellationToken)
         {
-            var prompt = $@"Você é um pastor Reformado. Responda à seguinte pergunta de acordo com a tradição reformada, em português brasileiro, de forma clara, fundamentada biblicamente e pastoral. 
-Retorne a resposta em um JSON exatamente neste formato: {{ ""answer"":""<sua resposta aqui, use \n para quebras de linha>"" }}.
-Pergunta: {request.Question}";
+            var prompt = $@"Você é um pastor Reformado. Responda à seguinte pergunta de acordo com a tradição reformada,
+                            em português brasileiro(vão te enviar perguntas em linguagem informal, com termos usados regionalmente no brasil),
+                            de forma clara, fundamentada biblicamente e pastoral. 
+                            Retorne a resposta em um JSON exatamente neste formato: {{ ""answer"":""<sua resposta aqui, use \n para quebras de linha>"" }}.
+                            Pergunta: {request.Question}";
 
             var response = await _geminiClient.TextPrompt(prompt);
 

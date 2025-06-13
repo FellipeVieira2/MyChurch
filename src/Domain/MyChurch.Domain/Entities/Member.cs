@@ -35,6 +35,7 @@ namespace MyChurch.Domain.Entities
         // Novo: lista de documentos
         public ICollection<MemberDocument> Documents { get; set; } = new List<MemberDocument>();
         public ICollection<CreditCardInfo> CreditCardInfos { get; set; } = new List<CreditCardInfo>();
+        public ICollection<PrayerRequest> PrayerRequests { get; set; } = new List<PrayerRequest>();
         public Church Church { get; set; }
         public UserRole Role { get; set; }
         public DateTime Created { get; set; }

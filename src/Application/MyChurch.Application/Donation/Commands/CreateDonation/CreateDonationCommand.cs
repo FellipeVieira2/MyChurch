@@ -16,11 +16,12 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
     {
         public decimal Value { get; set; }
         public string? Description { get; set; }
-        public string? BillingType { get; set; } = "PIX"; // Default para PIX, pode ser "BOLETO", "CREDIT_CARD", etc.
+        public string? BillingType { get; set; } = "PIX";
         public DateTime? DueDate { get; set; }
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
-        public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
+        public int? CreditCardInfoId { get; set; }
+        public int? WorshipServiceId { get; set; } // <-- Adicione este campo
     }
 
     public class CreateDonationResultDto
@@ -198,6 +199,18 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             // 6. Persistir no banco
             _unitOfWork.Donations.Create(donation);
             await _unitOfWork.CommitAsync();
+
+            // Relacionamento doação-culto
+            if (request.WorshipServiceId.HasValue)
+            {
+                var donationWorship = new Domain.Entities.DonationWorshipService
+                {
+                    DonationId = donation.Id,
+                    WorshipServiceId = request.WorshipServiceId.Value
+                };
+                _unitOfWork.DonationWorshipServices.Create(donationWorship);
+                await _unitOfWork.CommitAsync();
+            }
 
             return new CreateDonationResultDto
             {

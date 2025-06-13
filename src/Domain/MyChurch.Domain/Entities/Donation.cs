@@ -13,5 +13,6 @@
         public DateTime? TransferredAt { get; set; }
 
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
+        public ICollection<DonationWorshipService> DonationWorshipServices { get; set; } = new List<DonationWorshipService>();
     }
 }

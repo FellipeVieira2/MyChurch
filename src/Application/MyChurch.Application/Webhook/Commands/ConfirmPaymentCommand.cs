@@ -40,9 +40,9 @@ namespace MyChurch.Application.Webhook.Commands
             {
                 var payment = await _unitOfWork.Payments.Query()
                     .Include(p => p.Subscription)
-                    .ThenInclude(s => s.Plan)
+                        .ThenInclude(s => s.Plan)
                     .Include(p => p.Subscription)
-                    .ThenInclude(s => s.Church)
+                        .ThenInclude(s => s.Church)
                     .FirstOrDefaultAsync(p => p.TransactionId == request.PaymentId, cancellationToken);
 
                 if (payment == null)
@@ -95,7 +95,7 @@ namespace MyChurch.Application.Webhook.Commands
                     }
                 }
                 // Se for pagamento de assinatura e status for Completed
-                if (payment.Subscription != null && request.Status == PaymentStatus.Completed)
+                if (payment.Subscription != null && request.Status == PaymentStatus.Completed || request.Status == PaymentStatus.Received)
                 {
                     var subscription = payment.Subscription;
 
@@ -110,7 +110,8 @@ namespace MyChurch.Application.Webhook.Commands
                             value = subscription.Plan.Price,
                             nextDueDate = DateTime.UtcNow.AddMonths(1).ToString("yyyy-MM-dd"),
                             description = $"Assinatura do plano {subscription.Plan.Name}",
-                            externalReference = $"sub-{subscription.Id}-{Guid.NewGuid()}"
+                            externalReference = $"sub-{subscription.Id}-{Guid.NewGuid()}",
+                            cycle = "MONTHLY"
                         };
 
                         // Cria assinatura no Asaas

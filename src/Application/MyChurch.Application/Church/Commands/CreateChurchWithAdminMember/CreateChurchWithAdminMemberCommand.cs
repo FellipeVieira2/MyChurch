@@ -29,7 +29,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         // Dados do Admin
         public string AdminName { get; set; }
         public string? AdminEmail { get; set; }
-        public List<MemberDocumentDto> AdminDocuments { get; set; } = new();
+        public List<MemberDocumentDtoCreateChurch> AdminDocuments { get; set; } = new();
         public string? AdminPhoto { get; set; }
         public string Document { get; set; }
         public string AdminPhone { get; set; }
@@ -52,6 +52,12 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             public string ZipCode { get; set; }
             public string Country { get; set; }
             public string Neighborhood { get; set; }
+            public string Number { get; set; }
+        }
+
+        public class MemberDocumentDtoCreateChurch
+        {
+            public MemberDocumentType Type { get; set; } // Ex: "CPF", "RG", "Título de Eleitor"
             public string Number { get; set; }
         }
     }
@@ -80,16 +86,8 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 
         public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
         {
-            // Validação de duplicidade de email, telefone e documentos do admin
-            var exists = await _unitOfWork.Members.Query()
-                .AnyAsync(m =>
-                    (!string.IsNullOrEmpty(request.AdminEmail) && m.Email == request.AdminEmail) ||
-                    m.Phone == request.AdminPhone ||
-                    m.Documents.Any(x => request.AdminDocuments.Any(d => d.Number == x.Number)),
-                    cancellationToken);
-
-            if (exists)
-                ValidationException.ThrowException("Member", "Já existe um membro cadastrado com este e-mail, telefone ou documento.");
+            // Extrai os números dos documentos do admin para uma lista
+            var adminDocumentNumbers = request.AdminDocuments?.Select(d => d.Number).ToList() ?? new List<string>();
 
             // 1. Cria a entidade Address
             var address = new Address(
@@ -99,11 +97,12 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 zipCode: request.Address.ZipCode,
                 country: request.Address.Country,
                 neighborhood: request.Address.Neighborhood
+                
             )
             {
                 Number = request.Address.Number
             };
-
+            address.Complement = "N/A";
             // 2. Cria a entidade Church
             var church = new Domain.Entities.Church(
                 name: request.Name,

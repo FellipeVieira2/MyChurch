@@ -4,6 +4,7 @@ using Mychurch.Common.WebClients.Asaas;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Exceptions;
 using System;
 using System.Linq;
 using System.Threading;
@@ -33,10 +34,10 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (member == null)
-                throw new UnauthorizedAccessException("Usuário não encontrado.");
+                ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
             if (member.Role != Domain.Enum.UserRole.Admin)
-                throw new UnauthorizedAccessException("Apenas administradores podem efetuar retiradas.");
+                ValidationException.ThrowException("Member", "Apenas administradores podem efetuar retiradas.");
 
             var churchId = member.ChurchId;
 
@@ -45,7 +46,7 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                 .FirstOrDefaultAsync(b => b.ChurchId == churchId, cancellationToken);
 
             if (bankingInfo == null)
-                throw new InvalidOperationException("Dados bancários da igreja não cadastrados.");
+                ValidationException.ThrowException("Church" ,"Dados bancários da igreja não cadastrados.");
 
             // Busca as doações disponíveis para repasse
             var donations = await _unitOfWork.Donations.Query()
@@ -57,7 +58,7 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
             decimal totalAvailable = donations.Sum(d => d.Amount);
 
             if (totalAvailable <= 0)
-                throw new InvalidOperationException("Não há valor disponível para repasse.");
+                ValidationException.ThrowException("Church","Não há valor disponível para repasse.");
 
             // Preferencialmente transfere por PIX se houver chave cadastrada
             object transferenciaRequest;
@@ -78,14 +79,16 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                     value = totalAvailable,
                     bankAccount = new
                     {
-                        bankName = bankingInfo.BankName,
+                        bank = new { code = bankingInfo.BankCode },
                         ownerName = bankingInfo.HolderName,
                         cpfCnpj = bankingInfo.HolderDocument,
                         agency = bankingInfo.Agency,
                         account = bankingInfo.Account,
                         accountDigit = bankingInfo.AccountDigit,
-                        accountType = bankingInfo.AccountType
+                        bankAccountType = bankingInfo.AccountType
                     },
+                    operationType = "TED",
+
                     description = request.Notes
                 };
             }
@@ -102,6 +105,7 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                     donation.IsTransferred = true;
                     donation.TransferredAt = DateTime.UtcNow;
                     amountToTransfer -= donation.Amount;
+                    _unitOfWork.Donations.Update(donation);
                 }
                 // Caso queira permitir repasse parcial, ajuste aqui
             }

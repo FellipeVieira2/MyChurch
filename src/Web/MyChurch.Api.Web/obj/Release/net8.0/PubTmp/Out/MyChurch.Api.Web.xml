@@ -233,6 +233,22 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetAllWorship(MyChurch.Application.Event.Queires.GetAllWorship.GetAllWorshipQuery)">
+            <summary>
+            Lista eventos para o calendário do mês/ano informado (inclui recorrentes)
+            </summary>
+            <response code="200">Sucesso: Lista de eventos</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetWorshipById(System.Int32)">
+            <summary>
+            Busca um culto (WorshipService) por ID
+            </summary>
+            <response code="200">Sucesso: Culto retornado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.FeedController.CreateFeedPost(MyChurch.Application.Feed.Post.Commands.CreateFeedPost.CreateFeedPostCommand)">
             <summary>
             Cria um novo Post
@@ -339,6 +355,13 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Explain(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
+            <summary>
+            Ask to Pastor.
+            </summary>
+            <param name="command"></param>
+            <returns>Explanation, context, and application in JSON format.</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.VerseOfTheDay">
             <summary>
             Returns the verse of the day.
@@ -372,6 +395,71 @@
             </summary>
             <response code="200">Sucesso: Assinatura cancelada</response>
             <response code="404">Falha: Não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.HighlightBibleReading(System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Destaca a leitura bíblica para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinishBibleReading(System.Int32,System.Int32)">
+            <summary>
+            Finaliza a leitura bíblica atual pelo id da atividade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32)">
+            <summary>
+            Apresenta um hino para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentOffering(System.Int32)">
+            <summary>
+            Apresenta o momento da oferta para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinishOffering(System.Int32,System.Int32)">
+            <summary>
+            Finaliza o momento da oferta pelo id da atividade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinalizeWorship(System.Int32)">
+            <summary>
+            Finaliza o culto e notifica todos os membros
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.StartWorship(System.Int32)">
+            <summary>
+            Inicia o culto e notifica todos os membros
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.GetActiveActivities(System.Int32)">
+            <summary>
+            Retorna as atividades ativas do culto em andamento e registra a presença do usuário
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.AddScheduleItem(System.Int32,MyChurch.Application.WorshipService.Commands.ManageSchedule.AddWorshipScheduleItemCommand)">
+            <summary>
+            Adiciona um item ao cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.UpdateScheduleItem(System.Int32,System.Int32,MyChurch.Application.WorshipService.Commands.ManageSchedule.UpdateWorshipScheduleItemCommand)">
+            <summary>
+            Atualiza um item do cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RemoveScheduleItem(System.Int32,System.Int32)">
+            <summary>
+            Remove um item do cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.CreatePrayerRequest(System.Int32,MyChurch.Application.WorshipService.Commands.PrayerRequest.CreatePrayerRequestCommand)">
+            <summary>
+            Envia um pedido de oração para o culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.GetPrayerRequests(System.Int32)">
+            <summary>
+            Lista os pedidos de oração do culto
+            </summary>
         </member>
     </members>
 </doc>

@@ -26,7 +26,14 @@
         IBankingInfoRepository BankingInfos { get; }
         ITransferHistoryRepository TransferHistories { get; }
         IVerseOfTheDayRepository VerseOfTheDays { get; }
+        IWorshipActivityBibleRepository WorshipActivityBibles { get; }
+        IWorshipActivityHymnRepository WorshipActivityHymns { get; }
+        IWorshipActivityRepository WorshipActivities { get; }
+        IWorshipServiceRepository WorshipServices { get; }
+        IWorshipPresenceRepository WorshipPresences { get; }
+        IWorshipScheduleRepository WorshipSchedules { get; }
+        IDonationWorshipServiceRepository DonationWorshipServices { get; }
+        IPrayerRequestRepository PrayerRequests { get; }
         Task<bool> CommitAsync();
-
     }
 }

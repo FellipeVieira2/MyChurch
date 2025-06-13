@@ -23,6 +23,10 @@ namespace MyChurch.Infrastructure.Mappings
             builder.Property(x => x.BankName)
                 .HasColumnName("bank_name")
                 .HasMaxLength(100);
+
+            builder.Property(x => x.BankCode)
+                .HasColumnName("bank_code")
+                .HasMaxLength(10);
             builder
                 .Property(x => x.AccountDigit)
                 .HasColumnName("account_digit")

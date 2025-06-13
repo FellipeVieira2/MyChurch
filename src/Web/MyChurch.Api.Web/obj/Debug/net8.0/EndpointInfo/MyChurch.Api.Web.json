@@ -1769,6 +1769,160 @@
         }
       }
     },
+    "/api/Event/worship": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Lista eventos para o calendário do mês/ano informado (inclui recorrentes)",
+        "parameters": [
+          {
+            "name": "Title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Theme",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "StartTime",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "EndTime",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "OnlyPast",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/WorshipServiceStatus"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Lista de eventos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorshipServiceDtoPagedResultDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorshipServiceDtoPagedResultDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorshipServiceDtoPagedResultDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/Event/worship/{id}": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "Busca um culto (WorshipService) por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Culto retornado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorshipServiceDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorshipServiceDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorshipServiceDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
     "/api/Feed": {
       "post": {
         "tags": [
@@ -2825,6 +2979,452 @@
           }
         }
       }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/bible-reading/highlight": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Destaca a leitura bíblica para todos os membros do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "versionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "bookId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "chapterId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "verseId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/bible-reading/{activityId}/finish": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Finaliza a leitura bíblica atual pelo id da atividade",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/hymn/{activityId}/present": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Apresenta um hino para todos os membros do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/offering/present": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Apresenta o momento da oferta para todos os membros do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/offering/{activityId}/finish": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Finaliza o momento da oferta pelo id da atividade",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "activityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/finalize": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Finaliza o culto e notifica todos os membros",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/start": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Inicia o culto e notifica todos os membros",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/schedule/add": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Adiciona um item ao cronograma do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWorshipScheduleItemCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWorshipScheduleItemCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWorshipScheduleItemCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/prayer-request": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Envia um pedido de oração para o culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePrayerRequestCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePrayerRequestCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePrayerRequestCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/active-activities": {
+      "get": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Retorna as atividades ativas do culto em andamento e registra a presença do usuário",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/prayer-requests/list": {
+      "get": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Lista os pedidos de oração do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/schedule/update/{id}": {
+      "put": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Atualiza um item do cronograma do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorshipScheduleItemCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorshipScheduleItemCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorshipScheduleItemCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/schedule/remove/{id}": {
+      "delete": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Remove um item do cronograma do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2835,6 +3435,24 @@
           "password": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddWorshipScheduleItemCommand": {
+        "type": "object",
+        "properties": {
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3567,7 +4185,7 @@
           "adminDocuments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MemberDocumentDto"
+              "$ref": "#/components/schemas/MemberDocumentDtoCreateChurch"
             },
             "nullable": true
           },
@@ -3646,6 +4264,11 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3693,6 +4316,13 @@
           "frequency": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "eventType": {
+            "$ref": "#/components/schemas/EventType"
+          },
+          "worshipTheme": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -3803,6 +4433,20 @@
               "$ref": "#/components/schemas/MemberDocumentDtoCreate"
             },
             "description": "Documentos do membro"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePrayerRequestCommand": {
+        "type": "object",
+        "properties": {
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "request": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4067,6 +4711,15 @@
         "type": "integer",
         "format": "int32"
       },
+      "EventType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "FeedPostDto": {
         "type": "object",
         "properties": {
@@ -4195,6 +4848,19 @@
             "type": "string",
             "description": "Número do documento",
             "example": "12345678901"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDocumentDtoCreateChurch": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MemberDocumentType"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4747,6 +5413,10 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "worshipTheme": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4828,6 +5498,28 @@
         },
         "additionalProperties": false
       },
+      "UpdateWorshipScheduleItemCommand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "UserRole": {
         "enum": [
           0,
@@ -4856,6 +5548,219 @@
           }
         },
         "additionalProperties": false
+      },
+      "WorshipActivityBibleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bibleVersionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chapterId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "verseStart": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "verseEnd": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipActivityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isCurrent": {
+            "type": "boolean"
+          },
+          "bibles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorshipActivityBibleDto"
+            },
+            "nullable": true
+          },
+          "hymns": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorshipActivityHymnDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipActivityHymnDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hymnId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hymnTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "hymnNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipScheduleItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipServiceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "eventId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "theme": {
+            "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/WorshipServiceStatus"
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorshipActivityDto"
+            },
+            "nullable": true
+          },
+          "schedule": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorshipScheduleItemDto"
+            },
+            "nullable": true
+          },
+          "presencesCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipServiceDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorshipServiceDto"
+            },
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorshipServiceStatus": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
       }
     },
     "securitySchemes": {

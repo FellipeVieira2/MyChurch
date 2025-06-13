@@ -76,7 +76,6 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
                 {
                     ChurchId = churchId
                 };
-                _unitOfWork.BankingInfos.Create(bankingInfo);
             }
 
             bankingInfo.BankName = request.BankName;
@@ -89,7 +88,7 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
             bankingInfo.PixKey = request.PixKey;
             bankingInfo.PixKeyType = request.PixKeyType;
 
-            _unitOfWork.BankingInfos.Update(bankingInfo);
+            _unitOfWork.BankingInfos.Create(bankingInfo);
             await _unitOfWork.CommitAsync();
 
             return BankingInfoDto.New(bankingInfo);

@@ -39,6 +39,24 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]))
     };
+
+    // *** CORREÇÃO 2: Habilitar leitura do token da query string para o SignalR ***
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            // Se a requisição for para um hub e tiver o token, configure o contexto
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/ws/worship"))) // Verifique o caminho do seu Hub aqui
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -50,8 +68,11 @@ var awsCredentials = new BasicAWSCredentials(
     awsConfig["AccessKey"],
     awsConfig["SecretKey"]);
 var awsRegion = RegionEndpoint.GetBySystemName(awsConfig["Region"]);
-
-builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
+builder.Services.AddSignalR(hubOptions => {
+    hubOptions.EnableDetailedErrors = true;
+    hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(10);
+    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(15); // Aumentado para dar mais margem
+}); builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
 {
     Credentials = awsCredentials,
     Region = awsRegion
@@ -65,9 +86,16 @@ builder.Services.AddCors(delegate (CorsOptions options)
 {
     options.AddPolicy("_myAllowSpecificOrigins", delegate (CorsPolicyBuilder policy)
     {
-        policy.AllowAnyOrigin();
-        policy.AllowAnyHeader();
-        policy.AllowAnyMethod();
+        policy.WithOrigins(
+            "https://www.mychurchlab.net", // produção
+            "http://localhost:3000",       // desenvolvimento local
+            "https://localhost:3000",    // se usar https localmente
+            "https://localhost:7265/",     // se usar https localmente
+            "http://localhost:7265/"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials(); // Essencial para SignalR com autenticação
     });
 });
 builder.Services.AddGeminiClient(config =>
@@ -124,30 +152,28 @@ app.UseExceptionHandler(errorApp =>
         if (exception is MyChurch.Domain.Exceptions.ValidationException validationEx)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            var result = System.Text.Json.JsonSerializer.Serialize(new
-            {
-                errors = validationEx.Errors
-            });
+            var result = System.Text.Json.JsonSerializer.Serialize(new { errors = validationEx.Errors });
             await context.Response.WriteAsync(result);
         }
         else
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            var result = System.Text.Json.JsonSerializer.Serialize(new
-            {
-                errors = "Internal Server Error."
-            });
+            var result = System.Text.Json.JsonSerializer.Serialize(new { errors = "Internal Server Error." });
             await context.Response.WriteAsync(result);
         }
     });
 });
 
+// *** CORREÇÃO 1: ORDEM CORRETA DOS MIDDLEWARES ***
+app.UseCors("_myAllowSpecificOrigins");
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("_myAllowSpecificOrigins");
 
 // Registrar o middleware JWT
 app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
+app.MapHub<WorshipServiceHub>("/ws/worship"); // Mapeamento de endpoints por último
+
 app.Run();

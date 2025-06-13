@@ -38,6 +38,15 @@ namespace MyChurch.Infrastructure.Repositories
         public IBankingInfoRepository BankingInfos { get; }
         public ITransferHistoryRepository TransferHistories { get; }
         public IVerseOfTheDayRepository VerseOfTheDays { get; }
+        // Repositories for worship activities
+        public IWorshipActivityBibleRepository WorshipActivityBibles { get; }
+        public IWorshipActivityHymnRepository WorshipActivityHymns { get; }
+        public IWorshipActivityRepository WorshipActivities { get; }
+        public IWorshipServiceRepository WorshipServices { get; }
+        public IWorshipPresenceRepository WorshipPresences { get; }
+        public IWorshipScheduleRepository WorshipSchedules { get; }
+        public IDonationWorshipServiceRepository DonationWorshipServices { get; }
+        public IPrayerRequestRepository PrayerRequests { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -63,7 +72,15 @@ namespace MyChurch.Infrastructure.Repositories
             ICreditCardInfoRepository creditCardInfos,
             IBankingInfoRepository bankingInfos,
             ITransferHistoryRepository transferHistories,
-            IVerseOfTheDayRepository verseOfTheDays)
+            IVerseOfTheDayRepository verseOfTheDays,
+            IWorshipActivityBibleRepository worshipActivityBibles,
+            IWorshipActivityHymnRepository worshipActivityHymns,
+            IWorshipActivityRepository worshipActivities,
+            IWorshipServiceRepository worshipServices,
+            IWorshipPresenceRepository worshipPresences,
+            IWorshipScheduleRepository worshipSchedules,
+            IDonationWorshipServiceRepository donationWorshipServices,
+            IPrayerRequestRepository prayerRequests)
         {
             Churchs = churchs;
             Donations = donations;
@@ -90,6 +107,14 @@ namespace MyChurch.Infrastructure.Repositories
             BankingInfos = bankingInfos;
             TransferHistories = transferHistories;
             VerseOfTheDays = verseOfTheDays;
+            WorshipActivityBibles = worshipActivityBibles;
+            WorshipActivityHymns = worshipActivityHymns;
+            WorshipActivities = worshipActivities;
+            WorshipServices = worshipServices;
+            WorshipPresences = worshipPresences;
+            WorshipSchedules = worshipSchedules;
+            DonationWorshipServices = donationWorshipServices;
+            PrayerRequests = prayerRequests;
         }
 
         public async Task<bool> CommitAsync()

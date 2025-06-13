@@ -222,6 +222,11 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("character varying(20)")
                         .HasColumnName("agency");
 
+                    b.Property<string>("BankCode")
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("bank_code");
+
                     b.Property<string>("BankName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -684,6 +689,23 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("donation", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.DonationWorshipService", b =>
+                {
+                    b.Property<int>("DonationId")
+                        .HasColumnType("int")
+                        .HasColumnName("donation_id");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("DonationId", "WorshipServiceId");
+
+                    b.HasIndex("WorshipServiceId");
+
+                    b.ToTable("donation_worship_service", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -706,6 +728,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<int>("EventType")
+                        .HasColumnType("integer")
+                        .HasColumnName("event_type");
+
                     b.Property<DateTime>("FinishDate")
                         .HasColumnType("timestamp")
                         .HasColumnName("finish_date");
@@ -723,6 +749,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)")
                         .HasColumnName("title");
+
+                    b.Property<int?>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
 
                     b.HasKey("Id");
 
@@ -1100,6 +1130,45 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("plan", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.PrayerRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_read");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<string>("Request")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("request");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("WorshipServiceId");
+
+                    b.ToTable("prayer_request", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.Property<int>("Id")
@@ -1215,6 +1284,221 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("verses_of_the_day", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text")
+                        .HasColumnName("content");
+
+                    b.Property<bool>("IsCurrent")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_current");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorshipServiceId");
+
+                    b.ToTable("worship_activities", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivityBible", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BibleVersionId")
+                        .HasColumnType("integer")
+                        .HasColumnName("bible_version_id");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer")
+                        .HasColumnName("book_id");
+
+                    b.Property<int>("ChapterId")
+                        .HasColumnType("integer")
+                        .HasColumnName("chapter_id");
+
+                    b.Property<int?>("VerseEnd")
+                        .HasColumnType("integer")
+                        .HasColumnName("verse_end");
+
+                    b.Property<int>("VerseStart")
+                        .HasColumnType("integer")
+                        .HasColumnName("verse_start");
+
+                    b.Property<int>("WorshipActivityId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_activity_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorshipActivityId");
+
+                    b.ToTable("worship_activity_bibles", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivityHymn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HymnId")
+                        .HasColumnType("integer")
+                        .HasColumnName("hymn_id");
+
+                    b.Property<string>("HymnNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("hymn_number");
+
+                    b.Property<string>("HymnTitle")
+                        .HasColumnType("text")
+                        .HasColumnName("hymn_title");
+
+                    b.Property<int>("WorshipActivityId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_activity_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorshipActivityId");
+
+                    b.ToTable("worship_activity_hymns", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipPresence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer")
+                        .HasColumnName("member_id");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("timestamp");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorshipServiceId");
+
+                    b.ToTable("worship_presences", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipScheduleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorshipServiceId");
+
+                    b.ToTable("worship_schedule_items", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("integer")
+                        .HasColumnName("church_id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime?>("EndTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_time");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_time");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Theme")
+                        .HasColumnType("text")
+                        .HasColumnName("theme");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("worship_services", "postgres");
                 });
 
             modelBuilder.Entity("EventParticipants", b =>
@@ -1357,6 +1641,25 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.DonationWorshipService", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Donation", "Donation")
+                        .WithMany("DonationWorshipServices")
+                        .HasForeignKey("DonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", "WorshipService")
+                        .WithMany("DonationWorshipServices")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Donation");
+
+                    b.Navigation("WorshipService");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -1474,6 +1777,25 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Subscription");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.PrayerRequest", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany("PrayerRequests")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", "WorshipService")
+                        .WithMany("PrayerRequests")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("WorshipService");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -1502,6 +1824,70 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", "WorshipService")
+                        .WithMany("Activities")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorshipService");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivityBible", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.WorshipActivity", "WorshipActivity")
+                        .WithMany("Bibles")
+                        .HasForeignKey("WorshipActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorshipActivity");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivityHymn", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.WorshipActivity", "WorshipActivity")
+                        .WithMany("Hymns")
+                        .HasForeignKey("WorshipActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorshipActivity");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipPresence", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", null)
+                        .WithMany("Presences")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipScheduleItem", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", "WorshipService")
+                        .WithMany("Schedule")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorshipService");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipService", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithMany("WorshipServices")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Address", b =>
@@ -1550,6 +1936,8 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Donation", b =>
                 {
+                    b.Navigation("DonationWorshipServices");
+
                     b.Navigation("Payments");
                 });
 
@@ -1559,6 +1947,8 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.Navigation("Recurrence")
                         .IsRequired();
+
+                    b.Navigation("WorshipServices");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.FeedPost", b =>
@@ -1575,11 +1965,33 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Documents");
 
                     b.Navigation("Donations");
+
+                    b.Navigation("PrayerRequests");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>
+                {
+                    b.Navigation("Bibles");
+
+                    b.Navigation("Hymns");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipService", b =>
+                {
+                    b.Navigation("Activities");
+
+                    b.Navigation("DonationWorshipServices");
+
+                    b.Navigation("PrayerRequests");
+
+                    b.Navigation("Presences");
+
+                    b.Navigation("Schedule");
                 });
 #pragma warning restore 612, 618
         }

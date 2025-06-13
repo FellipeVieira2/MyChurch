@@ -48,6 +48,11 @@ namespace MyChurch.Infrastructure.Mappings
                 .WithMany(m => m.Donations)
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(d => d.DonationWorshipServices)
+                .WithOne(dws => dws.Donation)
+                .HasForeignKey(dws => dws.DonationId);
         }
     }
 }

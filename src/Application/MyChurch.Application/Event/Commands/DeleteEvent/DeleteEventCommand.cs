@@ -31,12 +31,22 @@ namespace MyChurch.Application.Event.Commands.DeleteEvent
 
             int churchId = loggedMember.ChurchId;
 
-            // Busca o evento
+            // Busca o evento e inclui os cultos relacionados
             var ev = await _unitOfWork.Events.Query()
+                .Include(e => e.WorshipServices)
                 .FirstOrDefaultAsync(e => e.Id == request.Id && e.ChurchId == churchId, cancellationToken);
 
             if (ev is null)
                 ValidationException.ThrowException("Event", "Event not found or does not belong to your church.");
+
+            // Remove todos os WorshipServices relacionados ao evento
+            if (ev.WorshipServices != null && ev.WorshipServices.Any())
+            {
+                foreach (var worshipService in ev.WorshipServices.ToList())
+                {
+                    _unitOfWork.WorshipServices.Delete(worshipService);
+                }
+            }
 
             _unitOfWork.Events.Delete(ev);
             await _unitOfWork.CommitAsync();

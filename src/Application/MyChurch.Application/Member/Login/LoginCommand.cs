@@ -79,7 +79,7 @@ namespace MyChurch.Application.Member.Commands.Login
                     new Claim(ClaimTypes.Email, member.Email),
                     new Claim(ClaimTypes.Role, member.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(24),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

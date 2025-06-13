@@ -6,6 +6,7 @@ using MyChurch.Application.Church.Commands.UpdateChurch;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Application.Church.Queries.GetChurch
 {
@@ -30,13 +31,19 @@ namespace MyChurch.Application.Church.Queries.GetChurch
             var church = await _unitOfWork.Churchs.Query().AsNoTrackingWithIdentityResolution()
                 .Include(c => c.Address)
                 .Include(c => c.Members)
+                .Include(c => c.Subscription)
+                    .ThenInclude(x => x.Plan)
                 .FirstOrDefaultAsync(c => c.Id == request.Id && c.Members.Any(x => x.Id == request.UserId), cancellationToken);
             if (church == null)
             {
                 _logger.LogError("Church not found");
                 ValidationException.ThrowException("Get", "You do not have permission to update this church.");
             }
-            return new ChurchDto
+
+            var member = church.Members.FirstOrDefault(x => x.Id == request.UserId);
+            var isAdmin = member != null && member.Role == UserRole.Admin;
+
+            var dto = new ChurchDto
             {
                 Id = church.Id,
                 Name = church.Name,
@@ -45,7 +52,16 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 Logo = church.LogoFileName,
                 Address = AddressDto.New(church.Address),
                 Members = church.Members.Select(MemberDto.New).ToList(),
+                Subscription = church.Subscription != null ? SubscriptionDto.New(church.Subscription) : null
             };
+
+            if (!isAdmin)
+            {
+                dto.Members = null;
+                dto.Subscription = null;
+            }
+
+            return dto;
         }
     }
 }

@@ -22,6 +22,9 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
         // Recorrência
         public EventRecurrenceType? RecurrenceType { get; set; }
         public int? Frequency { get; set; }
+
+        // Tema do culto (opcional, para atualização de WorshipService)
+        public string? WorshipTheme { get; set; }
     }
 
     public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, int>
@@ -46,6 +49,7 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
 
             // Busca o evento e valida se pertence à igreja do usuário
             var eventEntity = await _unitOfWork.Events.Query()
+                .Include(e => e.WorshipServices)
                 .FirstOrDefaultAsync(x => x.Id == request.Id && x.ChurchId == churchId, cancellationToken);
 
             if (eventEntity == null)
@@ -63,6 +67,24 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
                 eventEntity.Location = request.Location;
             if (request.RequiresParticipantList.HasValue)
                 eventEntity.RequiresParticipantList = request.RequiresParticipantList.Value;
+
+            // Atualiza WorshipService(s) se existirem (um para cada ocorrência do evento)
+            if (eventEntity.WorshipServices != null && eventEntity.WorshipServices.Any())
+            {
+                foreach (var worshipService in eventEntity.WorshipServices)
+                {
+                    if (request.Title != null)
+                        worshipService.Title = request.Title;
+                    if (request.Description != null)
+                        worshipService.Description = request.Description;
+                    if (request.WorshipTheme != null)
+                        worshipService.Theme = request.WorshipTheme;
+                    if (request.Date.HasValue)
+                        worshipService.StartTime = request.Date.Value;
+                    if (request.FinishDate.HasValue)
+                        worshipService.EndTime = request.FinishDate.Value;
+                }
+            }
 
             // Recorrência
             if (request.RecurrenceType.HasValue && request.RecurrenceType != EventRecurrenceType.None && request.Frequency.HasValue)

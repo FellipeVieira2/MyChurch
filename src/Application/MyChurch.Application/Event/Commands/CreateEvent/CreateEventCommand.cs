@@ -23,6 +23,12 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
         // Recorrência
         public EventRecurrenceType? RecurrenceType { get; set; }
         public int? Frequency { get; set; }
+
+        // Tipo de evento
+        public EventType EventType { get; set; } = EventType.General;
+
+        // Tema do culto (opcional)
+        public string? WorshipTheme { get; set; }
     }
 
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, int>
@@ -45,6 +51,7 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
 
             int churchId = loggedMember.ChurchId;
 
+            // Cria o evento principal
             var entity = new Domain.Entities.Event
             {
                 Title = request.Title,
@@ -53,7 +60,8 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                 FinishDate = request.FinishDate,
                 Location = request.Location,
                 ChurchId = churchId,
-                RequiresParticipantList = request.RequiresParticipantList
+                RequiresParticipantList = request.RequiresParticipantList,
+                EventType = request.EventType // Salva o tipo do evento
             };
 
             _unitOfWork.Events.Create(entity);
@@ -70,7 +78,26 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                 _unitOfWork.EventRecurrences.Create(recurrence);
             }
 
+            // Commit para garantir que o Event tenha Id gerado
             await _unitOfWork.CommitAsync();
+
+            // Se for culto, cria WorshipService relacionado ao Event
+            if (request.EventType == EventType.WorshipService)
+            {
+                var worshipService = new Domain.Entities.WorshipService
+                {
+                    ChurchId = churchId,
+                    Title = request.Title,
+                    Theme = request.WorshipTheme,
+                    StartTime = request.Date,
+                    EndTime = request.FinishDate,
+                    Description = request.Description,
+                    EventId = entity.Id
+                };
+                _unitOfWork.WorshipServices.Create(worshipService);
+                await _unitOfWork.CommitAsync();
+            }
+
             return entity.Id;
         }
     }
