@@ -12,5 +12,6 @@
         public Member Member { get; set; }
         public Church Church { get; set; }
         public ICollection<FeedLike> Likes { get; set; }
+        public ICollection<FeedPostImage> Images { get; set; } = new List<FeedPostImage>();
     }
 }

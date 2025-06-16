@@ -50,8 +50,23 @@ namespace MyChurch.Application.PastorBot.Commands.VerseOfTheDay
                 };
             }
 
-            // Se não existir, busca na API Gemini
-            var prompt = @"Você é um pastor Reformado. Retorne apenas um versículo bíblico motivacional do dia em português brasileiro, sem explicações ou comentários adicionais. O resultado deve ser um JSON exatamente neste formato: { ""verseText"":""{texto do versiculo}"", ""reference"": ""livro capitulo:versiculo"" }";
+            // Busca as últimas 10 referências de versículos já sorteados
+            var last10References = await _unitOfWork
+                .VerseOfTheDays.Query()
+                .OrderByDescending(v => v.Date)
+                .Take(10)
+                .Select(v => v.Reference)
+                .ToListAsync(cancellationToken);
+
+            var referenciasString = string.Join(", ", last10References.Select(r => $"\"{r}\""));
+            var referenciasPrompt = last10References.Count > 0
+                ? $"Não repita nenhum dos seguintes versículos: {referenciasString}. "
+                : string.Empty;
+
+            // Prompt dinâmico
+            var prompt = $@"Você é um pastor Reformado. Retorne apenas um versículo bíblico motivacional do dia, sorteando entre muitos que se encaixam nas especificações, em português brasileiro. {referenciasPrompt}Sem explicações ou comentários adicionais. O resultado deve ser um JSON exatamente neste formato:
+{{ ""verseText"":""texto do versiculo"", ""reference"": ""livro capitulo:versiculo"" }}";
+
             var response = await _geminiClient.TextPrompt(prompt);
 
             var raw = response.Candidates.First().Content.Parts.First().Text;

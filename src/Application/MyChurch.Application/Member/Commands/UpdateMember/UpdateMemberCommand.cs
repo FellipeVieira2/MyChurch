@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
@@ -7,10 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.Member.Commands.UpdateMember
 {
@@ -31,6 +27,10 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public bool? IsActive { get; set; }
         public string? Notes { get; set; }
         public string? Photo { get; set; }
+        public string? BirthCity { get; set; } 
+        public string? BirthState { get; set; }
+        public AddressMemberUpdate Address { get; set; }
+
 
         /// <summary>Documentos do membro</summary>
         public List<MemberDocumentDtoUpdate>? Documents { get; set; } = new();
@@ -43,6 +43,16 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
             /// <summary>Número do documento</summary>
             /// <example>12345678901</example>
             public string Number { get; set; }
+        }
+        public class AddressMemberUpdate
+        {
+            public string? Street { get; set; }
+            public string? City { get; set; }
+            public string? State { get; set; }
+            public string? ZipCode { get; set; }
+            public string? Country { get; set; }
+            public string? Neighborhood { get; set; }
+            public string? Number { get; set; }
         }
     }
 
@@ -84,53 +94,61 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                 ValidationException.ThrowException("Member", "Member not found or does not belong to your church.");
             }
 
-            // Atualização parcial dos campos
-            if (!string.IsNullOrEmpty(request.Name))
-                member.Name = request.Name;
+            // Atualização centralizada via domínio
+            member.Update(
+                request.Name,
+                request.Email,
+                request.Phone,
+                request.BirthDate,
+                request.IsBaptized,
+                request.BaptizedDate,
+                request.IsTither,
+                request.MaritalStatus,
+                request.MemberSince,
+                request.Ministry?.ToString(),
+                request.IsActive,
+                request.Notes,
+                request.Photo,
+                request.BirthCity,
+                request.BirthState
+            );
 
-            if (!string.IsNullOrEmpty(request.Email))
-                member.Email = request.Email;
-
-            if (!string.IsNullOrEmpty(request.Phone))
-                member.Phone = request.Phone;
-
-            if (request.BirthDate.HasValue)
-                member.BirthDate = request.BirthDate.Value;
-
-            if (request.IsBaptized.HasValue)
-                member.IsBaptized = request.IsBaptized.Value;
-
-            if (request.BaptizedDate.HasValue)
-                member.BaptizedDate = request.BaptizedDate;
-
-            if (request.IsTither.HasValue)
-                member.IsTither = request.IsTither.Value;
-
-            if (request.MaritalStatus.HasValue)
-                member.MaritalStatus = request.MaritalStatus;
-
-            if (request.MemberSince.HasValue)
-                member.MemberSince = request.MemberSince;
-
-            if (request.Ministry.HasValue)
-                member.Ministry = request.Ministry.ToString();
-
-            if (request.IsActive.HasValue)
-                member.IsActive = request.IsActive.Value;
-
-            if (!string.IsNullOrEmpty(request.Notes))
-                member.Notes = request.Notes;
-
-            if (!string.IsNullOrEmpty(request.Photo))
-                member.Photo = request.Photo;
+            // Atualização do endereço (apenas campos enviados)
+            if (request.Address != null)
+            {
+                if (member.Address == null)
+                {
+                    member.Address = new Address(
+                        request.Address.Street ?? string.Empty,
+                        request.Address.City ?? string.Empty,
+                        request.Address.State ?? string.Empty,
+                        request.Address.ZipCode ?? string.Empty,
+                        request.Address.Country ?? string.Empty,
+                        request.Address.Neighborhood ?? string.Empty
+                    )
+                    {
+                        Number = request.Address.Number
+                    };
+                }
+                else
+                {
+                    member.Address.Update(
+                        request.Address.Street,
+                        request.Address.City,
+                        request.Address.ZipCode,
+                        request.Address.Country,
+                        request.Address.Neighborhood,
+                        request.Address.State,
+                        request.Address.Number,
+                        member.Address.Complement
+                    );
+                }
+            }
 
             // Atualização dos documentos
             if (request.Documents != null && request.Documents.Any())
             {
-                // Remove documentos antigos
                 member.Documents.Clear();
-
-                // Adiciona os novos documentos
                 foreach (var doc in request.Documents)
                 {
                     member.Documents.Add(new MemberDocument

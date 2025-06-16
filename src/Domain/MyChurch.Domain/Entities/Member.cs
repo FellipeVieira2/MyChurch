@@ -43,5 +43,39 @@ namespace MyChurch.Domain.Entities
         public ICollection<Donation> Donations { get; set; }
         public ICollection<Event> Events { get; set; }
         public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
+
+        public void Update(
+            string? name = null,
+            string? email = null,
+            string? phone = null,
+            DateTime? birthDate = null,
+            bool? isBaptized = null,
+            DateTime? baptizedDate = null,
+            bool? isTither = null,
+            MaritalStatus? maritalStatus = null,
+            DateTime? memberSince = null,
+            string? ministry = null,
+            bool? isActive = null,
+            string? notes = null,
+            string? photo = null,
+            string? birthCity = null,
+            string? birthState = null)
+        {
+            Name = name ?? Name;
+            Email = email ?? Email;
+            Phone = phone ?? Phone;
+            if (birthDate.HasValue) BirthDate = birthDate.Value;
+            if (isBaptized.HasValue) IsBaptized = isBaptized.Value;
+            if (baptizedDate.HasValue) BaptizedDate = baptizedDate;
+            if (isTither.HasValue) IsTither = isTither.Value;
+            if (maritalStatus.HasValue) MaritalStatus = maritalStatus;
+            if (memberSince.HasValue) MemberSince = memberSince;
+            Ministry = ministry ?? Ministry;
+            if (isActive.HasValue) IsActive = isActive.Value;
+            Notes = notes ?? Notes;
+            Photo = photo ?? Photo;
+            BirthCity = birthCity ?? BirthCity;
+            BirthState = birthState ?? BirthState;
+        }
     }
 }

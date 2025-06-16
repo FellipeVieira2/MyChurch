@@ -99,6 +99,40 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("address", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.AdminNotice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("AdminNotices", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Asset", b =>
                 {
                     b.Property<int>("Id")
@@ -893,6 +927,35 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("feed_posts", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedPostImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<int>("FeedPostId")
+                        .HasColumnType("integer")
+                        .HasColumnName("feed_post_id");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("file_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeedPostId");
+
+                    b.ToTable("feed_post_images", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
                 {
                     b.Property<int>("Id")
@@ -1516,6 +1579,24 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.AdminNotice", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Asset", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -1729,6 +1810,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
 
                     b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.FeedPostImage", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.FeedPost", "FeedPost")
+                        .WithMany("Images")
+                        .HasForeignKey("FeedPostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FeedPost");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
@@ -1953,6 +2045,8 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.FeedPost", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Likes");
                 });
 

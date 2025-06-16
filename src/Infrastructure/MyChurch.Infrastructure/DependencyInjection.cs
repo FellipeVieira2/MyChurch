@@ -44,8 +44,10 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IWorshipServiceRepository, WorshipServiceRepository>();
             services.AddScoped<IWorshipScheduleRepository, WorshipScheduleRepository>();
             services.AddScoped<IDonationWorshipServiceRepository, DonationWorshipServiceRepository>();
+            services.AddScoped<IFeedPostImageRepository, FeedPostImageRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPrayerRequestRepository, PrayerRequestRepository>();
+            services.AddScoped<IAdminNoticeRepository, AdminNoticeRepository>();
             services.AddDbContext<MyChurchDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(connectionString));

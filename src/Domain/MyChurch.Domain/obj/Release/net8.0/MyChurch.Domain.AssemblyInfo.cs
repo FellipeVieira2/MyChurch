@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyChurch.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dbb70da5eac054753f9399930c75830a951da393")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bca93a08df64444696bddf0bf503631742869a3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyChurch.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyChurch.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -461,5 +461,10 @@
             Lista os pedidos de oração do culto
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.SendAdminNotice(System.Int32,MyChurch.Application.WorshipActivity.Commands.SendAdminNoticeCommand)">
+            <summary>
+            Envia um aviso administrativo para todos do culto
+            </summary>
+        </member>
     </members>
 </doc>

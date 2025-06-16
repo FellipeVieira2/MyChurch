@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using Mychurch.Common.Utils.Objects;
+using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts
 {
@@ -28,7 +29,7 @@ namespace MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (loggedMember == null)
-                throw new UnauthorizedAccessException("Usuário não encontrado.");
+                ValidationException.ThrowException("Post","Usuário não encontrado.");
 
             int churchId = loggedMember.ChurchId;
 
@@ -45,12 +46,23 @@ namespace MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
+            List<FeedPostDto> posts = [];
+            foreach (var item in items)
+            {
+                var post = FeedPostDto.New(item);
+                if (item.Likes.Any(x => x.MemberId == loggedMember.Id))
+                {
+                    post.LikedForMember = true;
+                }
+                posts.Add(post);
+            }
+
             return new PagedResultDto<FeedPostDto>
             {
                 TotalCount = total,
                 PageNumber = request.Page,
                 PageSize = request.PageSize,
-                Items = items.Select(FeedPostDto.New).ToList()
+                Items = posts
             };
         }
     }

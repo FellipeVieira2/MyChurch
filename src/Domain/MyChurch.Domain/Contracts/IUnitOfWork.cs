@@ -34,6 +34,8 @@
         IWorshipScheduleRepository WorshipSchedules { get; }
         IDonationWorshipServiceRepository DonationWorshipServices { get; }
         IPrayerRequestRepository PrayerRequests { get; }
+        IFeedPostImageRepository FeedPostImages { get; }
+        IAdminNoticeRepository AdminNotices { get; }
         Task<bool> CommitAsync();
     }
 }

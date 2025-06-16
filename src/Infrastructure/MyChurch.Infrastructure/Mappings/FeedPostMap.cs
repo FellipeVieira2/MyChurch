@@ -46,6 +46,10 @@ namespace MyChurch.Infrastructure.Configurations
             builder.HasMany(x => x.Likes)
                 .WithOne(x => x.FeedPost)
                 .HasForeignKey(x => x.FeedPostId);
+
+            builder.HasMany(x => x.Images)
+                .WithOne(x => x.FeedPost)
+                .HasForeignKey(x => x.FeedPostId);
         }
     }
 }

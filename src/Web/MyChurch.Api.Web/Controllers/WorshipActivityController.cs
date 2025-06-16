@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using MyChurch.Api.Web.Middleware;
 using MyChurch.Application.WorshipActivity.Commands;
 using MyChurch.Application.WorshipService.Commands.ManageSchedule;
@@ -19,10 +20,12 @@ namespace MyChurch.Api.Web.Controllers
     public class WorshipActivityController : BaseController
     {
         private readonly IHubContext<WorshipServiceHub> _hubContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public WorshipActivityController(IHubContext<WorshipServiceHub> hubContext)
+        public WorshipActivityController(IHubContext<WorshipServiceHub> hubContext, IUnitOfWork unitOfWork)
         {
             _hubContext = hubContext;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -234,6 +237,25 @@ namespace MyChurch.Api.Web.Controllers
             query.WorshipServiceId = worshipServiceId;
             var result = await Mediator.Send(query);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Envia um aviso administrativo para todos do culto
+        /// </summary>
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{worshipServiceId}/admin-notice")]
+        public async Task<IActionResult> SendAdminNotice(int worshipServiceId, [FromBody] SendAdminNoticeCommand command)
+        {
+            // Busca o culto para obter o ChurchId
+            var worshipService = await _unitOfWork.WorshipServices.Query().FirstOrDefaultAsync(ws => ws.Id == worshipServiceId);
+            if (worshipService == null)
+                return NotFound("Culto não encontrado.");
+
+            command.ChurchId = worshipService.ChurchId;
+            var noticeId = await Mediator.Send(command);
+            await _hubContext.Clients.Group($"worship_{worshipServiceId}")
+                .SendAsync("AdminNoticeReceived", new { noticeId });
+            return Ok(new { noticeId });
         }
     }
 }

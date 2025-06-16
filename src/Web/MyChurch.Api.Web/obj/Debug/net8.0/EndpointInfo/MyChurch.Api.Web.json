@@ -3293,6 +3293,49 @@
         }
       }
     },
+    "/api/WorshipActivity/{worshipServiceId}/admin-notice": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Envia um aviso administrativo para todos do culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendAdminNoticeCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendAdminNoticeCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendAdminNoticeCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/WorshipActivity/{worshipServiceId}/active-activities": {
       "get": {
         "tags": [
@@ -3617,6 +3660,40 @@
             "nullable": true
           },
           "neighborhood": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressMemberUpdate": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "neighborhood": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
             "type": "string",
             "nullable": true
           }
@@ -4220,6 +4297,32 @@
             "type": "string",
             "nullable": true
           },
+          "adminBirthCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminBirthState": {
+            "type": "string",
+            "nullable": true
+          },
+          "ministry": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberSince": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminAddress": {
+            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
+          },
+          "maritalStatus": {
+            "$ref": "#/components/schemas/MaritalStatus"
+          },
           "creditCard": {
             "$ref": "#/components/schemas/CreditCardDto"
           },
@@ -4334,6 +4437,13 @@
           "content": {
             "type": "string",
             "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4426,6 +4536,17 @@
             "description": "Observações",
             "nullable": true,
             "example": "Participa do grupo de jovens"
+          },
+          "birthCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthState": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
           },
           "documents": {
             "type": "array",
@@ -4754,6 +4875,9 @@
           "likesCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "likedForMember": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -5113,6 +5237,20 @@
           }
         },
         "additionalProperties": { }
+      },
+      "SendAdminNoticeCommand": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageBase64": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "SubscriptionDto": {
         "type": "object",
@@ -5486,6 +5624,17 @@
           "photo": {
             "type": "string",
             "nullable": true
+          },
+          "birthCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthState": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressMemberUpdate"
           },
           "documents": {
             "type": "array",

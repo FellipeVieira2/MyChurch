@@ -31,7 +31,7 @@ namespace MyChurch.Domain.Entities
         // Relacionamento com Member
         public ICollection<Member> Members { get; set; } = new List<Member>();
 
-        public void Update(string? street, string? city, string? zipCode, string? country, string? neighborhood, string? state, string number, string complement)
+        public void Update(string? street, string? city, string? zipCode, string? country, string? neighborhood, string? state, string? number, string? complement)
         {
             Street = street ?? Street;
             State = state ?? State;

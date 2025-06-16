@@ -7,9 +7,6 @@ namespace MyChurch.Infrastructure
     {
         public MyChurchDbContext(DbContextOptions<MyChurchDbContext> options) : base(options) { }
 
-        public DbSet<DonationWorshipService> DonationWorshipServices { get; set; }
-        public DbSet<PrayerRequest> PrayerRequests { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("unaccent");

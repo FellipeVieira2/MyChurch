@@ -13,7 +13,7 @@ namespace MyChurch.Application.Dtos
         public DateTime? Updated { get; set; }
         public MemberDto Member { get; set; }
         public int LikesCount { get; set; }
-
+        public bool LikedForMember { get; set; } = false;
         public static FeedPostDto New(FeedPost post)
         {
             return new FeedPostDto
@@ -26,6 +26,7 @@ namespace MyChurch.Application.Dtos
                 Updated = post.Updated,
                 Member = post.Member != null ? MemberDto.New(post.Member) : null,
                 LikesCount = post.Likes?.Count ?? 0
+
             };
         }
     }

@@ -38,12 +38,19 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         public DateTime? AdminBaptizedDate { get; set; }
         public bool AdminIsTither { get; set; }
         public string AdminPassword { get; set; }
+        public string? AdminBirthCity { get; set; } // Novo: cidade de nascimento do admin
+        public string? AdminBirthState { get; set; } // Novo: estado de nascimento do admin
+        public string? Ministry { get; set; }
+        public DateTime MemberSince { get; set; }
+        public string Notes { get; set; }
+        public AddressChurchWithAdminCreate AdminAddress { get; set; }
+        public MaritalStatus? MaritalStatus { get; set; }
 
         // Cartão de crédito
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
         public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
-
+        
         public class AddressChurchWithAdminCreate
         {
             public string Street { get; set; }
@@ -137,11 +144,28 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 ChurchId = church.Id,
                 Role = UserRole.Admin,
                 Created = DateTime.Now,
+                BirthCity = request.AdminBirthCity,
+                BirthState = request.AdminBirthState,
+                Ministry = request.Ministry,
+                MaritalStatus = request.MaritalStatus,
+                Notes = request.Notes,
+                MemberSince = request.MemberSince,
+                Address = new Address(
+                    street: request.AdminAddress.Street,
+                    city: request.AdminAddress.City,
+                    state: request.AdminAddress.State,
+                    zipCode: request.AdminAddress.ZipCode,
+                    country: request.AdminAddress.Country,
+                    neighborhood: request.AdminAddress.Neighborhood
+                )
+                {
+                    Number = request.AdminAddress.Number
+                },
                 Documents = request.AdminDocuments?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
                     Number = d.Number
-                }).ToList() ?? new List<MemberDocument>()
+                }).ToList() ?? []
             };
 
             // 6. Faz upload da foto do admin se necessário

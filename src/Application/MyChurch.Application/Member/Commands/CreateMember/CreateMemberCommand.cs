@@ -9,6 +9,7 @@ using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
 using System.Collections.Generic;
+using static MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
@@ -58,10 +59,22 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         /// <summary>Observações</summary>
         /// <example>Participa do grupo de jovens</example>
         public string? Notes { get; set; }
+        public string? BirthCity { get; set; } // Novo: cidade de nascimento do admin
+        public string? BirthState { get; set; } // Novo: estado de nascimento do admin
+        public AddressChurchWithAdminCreate Address { get; set; }
 
         /// <summary>Documentos do membro</summary>
         public List<MemberDocumentDtoCreate>? Documents { get; set; } = new();
-
+        public class AddressMemberCreate
+        {
+            public string Street { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string ZipCode { get; set; }
+            public string Country { get; set; }
+            public string Neighborhood { get; set; }
+            public string Number { get; set; }
+        }
         public class MemberDocumentDtoCreate
         {
             /// <summary>Tipo do documento</summary>
@@ -129,12 +142,16 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 Ministry = Enum.Parse<Ministry>(request.Ministry).ToString(),
                 IsActive = request.IsActive,
                 Notes = request.Notes,
+                BirthCity = request.BirthCity,
+                BirthState = request.BirthState,
+                Address = new Address(request.Address.Street, request.Address.City, request.Address.State, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood) 
+                {Number = request.Address.Number },
                 // Mapeamento dos documentos
-                Documents = request.Documents?.Select(d => new Domain.Entities.MemberDocument
+                Documents = request.Documents?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
                     Number = d.Number
-                }).ToList() ?? new List<Domain.Entities.MemberDocument>()
+                }).ToList() ?? new List<MemberDocument>()
             };
 
             var hash = Guid.NewGuid().ToString("N");

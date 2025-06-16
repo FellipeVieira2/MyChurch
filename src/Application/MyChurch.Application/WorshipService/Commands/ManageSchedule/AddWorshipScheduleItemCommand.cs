@@ -1,8 +1,6 @@
 using MediatR;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MyChurch.Application.WorshipService.Commands.ManageSchedule
 {
@@ -16,7 +14,11 @@ namespace MyChurch.Application.WorshipService.Commands.ManageSchedule
     public class AddWorshipScheduleItemCommandHandler : IRequestHandler<AddWorshipScheduleItemCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public AddWorshipScheduleItemCommandHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+        public AddWorshipScheduleItemCommandHandler(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
         public async Task<int> Handle(AddWorshipScheduleItemCommand request, CancellationToken cancellationToken)
         {
             var item = new WorshipScheduleItem
