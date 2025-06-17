@@ -5,10 +5,12 @@ using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
+using MyChurch.Application.Member.Commands.CreateMemberImportFile;
 using MyChurch.Application.Member.Queries.GetAllCreditCardsMember;
 using MyChurch.Application.Member.Queries.GetAllMembers;
 using MyChurch.Application.Member.Queries.GetBirthdayMembers;
 using MyChurch.Application.Member.Queries.GetMemberById;
+using MyChurch.Application.Member.Queries.GetMemberCounts;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -134,6 +136,47 @@ namespace MyChurch.Api.Web.Controllers
         {
             var result = await Mediator.Send(query);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Importa membros por arquivo CSV
+        /// </summary>
+        /// <param name="file">Arquivo CSV</param>
+        /// <response code="200">Sucesso: IDs dos membros criados</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPost("import-csv")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<int>))]
+        public async Task<IActionResult> ImportMembersCsv([FromForm] RecieveCsvFile file)
+        {
+            var command = AuthorizationRequestCreate<CreateMemberImportFileCommand>();
+            command.CsvFile = file.CsvFile;
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Retorna o total de membros, total ativos e total inativos
+        /// </summary>
+        /// <response code="200">Sucesso: Totais de membros</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpGet("counts")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberCountDto))]
+        public async Task<IActionResult> GetMemberCounts()
+        {
+            var query = AuthorizationRequestCreate<GetMemberCountsQuery>();
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        public class RecieveCsvFile()
+        {
+            public IFormFile CsvFile
+            {
+                get; set;
+            }
         }
     }
 }

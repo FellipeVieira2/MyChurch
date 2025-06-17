@@ -49,6 +49,7 @@ namespace MyChurch.Infrastructure.Repositories
         public IPrayerRequestRepository PrayerRequests { get; }
         public IFeedPostImageRepository FeedPostImages { get; }
         public IAdminNoticeRepository AdminNotices { get; }
+        public IHymnVerseRepository HymnVerses { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -84,7 +85,8 @@ namespace MyChurch.Infrastructure.Repositories
             IDonationWorshipServiceRepository donationWorshipServices,
             IPrayerRequestRepository prayerRequests,
             IFeedPostImageRepository feedPostImages,
-            IAdminNoticeRepository adminNotices)
+            IAdminNoticeRepository adminNotices,
+            IHymnVerseRepository hymnVerses)
         {
             Churchs = churchs;
             Donations = donations;
@@ -121,6 +123,7 @@ namespace MyChurch.Infrastructure.Repositories
             PrayerRequests = prayerRequests;
             FeedPostImages = feedPostImages;
             AdminNotices = adminNotices;
+            HymnVerses = hymnVerses;
         }
 
         public async Task<bool> CommitAsync()

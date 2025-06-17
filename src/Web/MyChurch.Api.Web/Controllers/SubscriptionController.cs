@@ -4,9 +4,12 @@ using MyChurch.Application.Subscription.Commands.CreateSubscription;
 // Importe os comandos/queries corretos para Subscription
 // using MyChurch.Application.Subscription.Commands.UpdateSubscription;
 // using MyChurch.Application.Subscription.Queries.GetSubscription;
+using System.Threading.Tasks;
 
 namespace MyChurch.Api.Web.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class SubscriptionController : BaseController
     {
         /// <summary>
@@ -68,6 +71,21 @@ namespace MyChurch.Api.Web.Controllers
             // await Mediator.Send(command);
             // return Ok();
             return Ok(); // Remova após implementar
+        }
+
+        /// <summary>
+        /// Troca o plano da igreja (upgrade/downgrade)
+        /// </summary>
+        /// <response code="200">Sucesso: Plano alterado</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPost("change-plan")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChangeChurchPlanResultDto))]
+        public async Task<IActionResult> ChangePlan([FromBody] ChangeChurchPlanCommand command)
+        {
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
     }
 }

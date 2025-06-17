@@ -115,37 +115,41 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             await ValidatePlanMemberLimitAsync(churchId, cancellationToken);
 
             // Validação de duplicidade (documento/email)
+            var documentNumbers = request.Documents?.Select(d => d.Number).ToList() ?? new List<string>();
             var exists = await _unitOfWork.Members.Query()
                 .AnyAsync(m =>
                     m.ChurchId == churchId &&
-                    (m.Documents.Any(x => request.Documents.Any(d => d.Number == x.Number)) ||
-                     (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email)),
+                    (m.Documents.Any(x => documentNumbers.Contains(x.Number)) ||
+                     (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email) || (request.Name == m.Name)),
                     cancellationToken);
-
+            if (request.Name == "Quercio Goes Santos ")
+            {
+                var teste = "x";
+            }
             if (exists)
                 ValidationException.ThrowException("Member", "This Member already exists.");
 
             var member = new Domain.Entities.Member
             {
                 Name = request.Name,
-                Email = request.Email,
+                Email = request?.Email,
                 Phone = request.Phone,
                 BirthDate = request.BirthDate,
                 IsBaptized = request.IsBaptized,
-                BaptizedDate = request.BaptizedDate,
+                BaptizedDate = request?.BaptizedDate,
                 IsTither = request.IsTither,
                 ChurchId = churchId,
                 Role = request.RoleMember,
                 Created = DateTime.UtcNow,
-                MaritalStatus = Enum.Parse<MaritalStatus>(request.MaritalStatus),
-                MemberSince = request.MemberSince,
-                Ministry = Enum.Parse<Ministry>(request.Ministry).ToString(),
+                MaritalStatus =request.MaritalStatus is not null ? Enum.Parse<MaritalStatus>(request.MaritalStatus) : null,
+                MemberSince = request?.MemberSince,
+                Ministry= string.IsNullOrWhiteSpace(request.Ministry) ? null : Enum.Parse<Ministry>(request?.Ministry).ToString(),
                 IsActive = request.IsActive,
                 Notes = request.Notes,
                 BirthCity = request.BirthCity,
                 BirthState = request.BirthState,
-                Address = new Address(request.Address.Street, request.Address.City, request.Address.State, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood) 
-                {Number = request.Address.Number },
+                Address =request.Address is not null ? new Address(request.Address.Street, request.Address.City, request.Address.State, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood) 
+                {Number = request.Address.Number } : null,
                 // Mapeamento dos documentos
                 Documents = request.Documents?.Select(d => new MemberDocument
                 {

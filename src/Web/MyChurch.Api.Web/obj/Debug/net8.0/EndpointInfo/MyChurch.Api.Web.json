@@ -2215,6 +2215,104 @@
         }
       }
     },
+    "/api/Hymn/import": {
+      "post": {
+        "tags": [
+          "Hymn"
+        ],
+        "summary": "Importa hinos a partir de um arquivo JSON no formato da Harpa.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "description": "Arquivo JSON no formato da Harpa",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Hymn/{number}": {
+      "get": {
+        "tags": [
+          "Hymn"
+        ],
+        "summary": "Busca um hino pelo número, retornando o coro e os versos.",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Member": {
       "post": {
         "tags": [
@@ -2413,6 +2511,74 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/Member/import-csv": {
+      "post": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Importa membros por arquivo CSV",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "CsvFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "CsvFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: IDs dos membros criados",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
                 }
               }
             }
@@ -2701,6 +2867,39 @@
           },
           "401": {
             "description": "Failure: Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/Member/counts": {
+      "get": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Retorna o total de membros, total ativos e total inativos",
+        "responses": {
+          "200": {
+            "description": "Sucesso: Totais de membros",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberCountDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberCountDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberCountDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
           }
         }
       }
@@ -4450,7 +4649,6 @@
       },
       "CreateMemberCommand": {
         "required": [
-          "documents",
           "name"
         ],
         "type": "object",
@@ -4553,7 +4751,8 @@
             "items": {
               "$ref": "#/components/schemas/MemberDocumentDtoCreate"
             },
-            "description": "Documentos do membro"
+            "description": "Documentos do membro",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4936,6 +5135,24 @@
         "type": "integer",
         "format": "int32"
       },
+      "MemberCountDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalActive": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalInactive": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "MemberDocumentDto": {
         "type": "object",
         "properties": {
@@ -5101,6 +5318,9 @@
           "notes": {
             "type": "string",
             "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressDto"
           }
         },
         "additionalProperties": false

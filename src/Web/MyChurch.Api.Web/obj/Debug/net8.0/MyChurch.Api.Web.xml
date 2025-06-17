@@ -296,6 +296,16 @@
             Remove o Like do Post
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.ImportHymns(MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand)">
+            <summary>
+            Importa hinos a partir de um arquivo JSON no formato da Harpa.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetHymnByNumber(System.Int32)">
+            <summary>
+            Busca um hino pelo número, retornando o coro e os versos.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateMember(MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand)">
             <summary>
             Create a new Member
@@ -353,6 +363,22 @@
             </summary>
             <response code="200">Sucesso: Lista paginada de membros</response>
             <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.ImportMembersCsv(MyChurch.Api.Web.Controllers.MemberController.RecieveCsvFile)">
+            <summary>
+            Importa membros por arquivo CSV
+            </summary>
+            <param name="file">Arquivo CSV</param>
+            <response code="200">Sucesso: IDs dos membros criados</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMemberCounts">
+            <summary>
+            Retorna o total de membros, total ativos e total inativos
+            </summary>
+            <response code="200">Sucesso: Totais de membros</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Explain(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">

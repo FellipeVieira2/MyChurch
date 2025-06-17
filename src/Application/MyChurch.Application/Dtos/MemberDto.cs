@@ -25,6 +25,7 @@ namespace MyChurch.Application.Dtos
         public string? Ministry { get; set; }
         public bool IsActive { get; set; }
         public string? Notes { get; set; }
+        public AddressDto Address { get; set; }
 
         public static MemberDto New(Domain.Entities.Member member)
         {
@@ -48,7 +49,8 @@ namespace MyChurch.Application.Dtos
                 MemberSince = member.MemberSince,
                 Ministry = member.Ministry?.ToString(),
                 IsActive = member.IsActive,
-                Notes = member.Notes
+                Notes = member.Notes,
+                Address =member.Address is not null ? AddressDto.New(member.Address) : null
             };
         }
     }

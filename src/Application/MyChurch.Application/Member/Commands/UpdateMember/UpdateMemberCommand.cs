@@ -29,7 +29,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public string? Photo { get; set; }
         public string? BirthCity { get; set; } 
         public string? BirthState { get; set; }
-        public AddressMemberUpdate Address { get; set; }
+        public AddressMemberUpdate? Address { get; set; }
 
 
         /// <summary>Documentos do membro</summary>

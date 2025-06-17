@@ -18,12 +18,10 @@ namespace MyChurch.Application.Member.Commands.CreateMember
 
             // Validação para lista de documentos
             RuleFor(x => x.Documents)
-                .NotNull().WithMessage("Pelo menos um documento deve ser informado.")
-                .Must(docs => docs.Count > 0).WithMessage("Pelo menos um documento deve ser informado.")
                 .ForEach(docRule =>
                 {
                     docRule.SetValidator(new MemberDocumentDtoValidator());
-                });
+                }).When(x => x.Documents is not null && x.Documents.Any());
 
             RuleFor(x => x.Phone)
                 .MaximumLength(20).WithMessage("O telefone não pode ter mais de 20 caracteres.");

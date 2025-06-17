@@ -1,0 +1,1 @@
+// Arquivo removido pois o handler agora está embutido no command, conforme padrão da solution.

@@ -380,17 +380,17 @@ namespace MyChurch.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Chorus")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)")
+                        .HasColumnName("chorus");
+
                     b.Property<string>("Language")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("language");
-
-                    b.Property<string>("Lyrics")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("character varying(4000)")
-                        .HasColumnName("lyrics");
 
                     b.Property<string>("LyricsAuthor")
                         .IsRequired()
@@ -417,6 +417,36 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("hymns", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.HymnVerse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HymnId")
+                        .HasColumnType("integer")
+                        .HasColumnName("hymn_id");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HymnId");
+
+                    b.ToTable("hymn_verses", "postgres");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Verse", b =>
@@ -1641,6 +1671,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.HymnVerse", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Bible.Hymn", "Hymn")
+                        .WithMany("HymnVerses")
+                        .HasForeignKey("HymnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hymn");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Verse", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Bible.Chapter", "Chapter")
@@ -1998,6 +2039,11 @@ namespace MyChurch.Infrastructure.Migrations
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Chapter", b =>
                 {
                     b.Navigation("Verses");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Hymn", b =>
+                {
+                    b.Navigation("HymnVerses");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Version", b =>

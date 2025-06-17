@@ -96,8 +96,6 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
 
                     // Envia apenas o token/hash do cartão já salvo
                     chargeRequest.CreditCardToken = cardInfo.CardHash;
-                    // O Asaas pode exigir também o CreditCardHolderInfo
-                    chargeRequest.CreditCardHolderInfo = request.CreditCardHolderInfo;
                 }
                 else
                 {

@@ -30,8 +30,8 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(x => x.Lyrics)
-                .HasColumnName("lyrics")
+            builder.Property(x => x.Chorus)
+                .HasColumnName("chorus")
                 .IsRequired()
                 .HasMaxLength(4000);
 
@@ -42,6 +42,11 @@ namespace MyChurch.Infrastructure.Mappings
             builder.Property(x => x.MelodyAuthor)
                 .HasColumnName("melody_author")
                 .HasMaxLength(100);
+
+            builder.HasMany(x => x.HymnVerses)
+                .WithOne(v => v.Hymn)
+                .HasForeignKey(v => v.HymnId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -70,6 +70,8 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
             // Busca o membro logado para obter o ChurchId
             var member = await _unitOfWork.Members.Query()
                 .AsNoTracking()
+                .Include(x => x.Address)
+                .Include(x => x.Documents)
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (member == null)
@@ -83,6 +85,8 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
             // Inicia a query base filtrando por igreja
             var query = _unitOfWork.Members.Query()
                 .AsNoTracking()
+                .Include(x => x.Address)
+                .Include(x => x.Documents)
                 .Where(m => m.ChurchId == churchId);
 
             // Filtros existentes

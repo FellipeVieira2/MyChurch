@@ -36,6 +36,7 @@
         IPrayerRequestRepository PrayerRequests { get; }
         IFeedPostImageRepository FeedPostImages { get; }
         IAdminNoticeRepository AdminNotices { get; }
+        IHymnVerseRepository HymnVerses { get; }
         Task<bool> CommitAsync();
     }
 }

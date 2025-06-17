@@ -276,6 +276,9 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
         </member>
+        <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
+            <summary>Arquivo JSON no formato da Harpa</summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Name">
             <summary>Name</summary>
             <example>Fellipe</example>

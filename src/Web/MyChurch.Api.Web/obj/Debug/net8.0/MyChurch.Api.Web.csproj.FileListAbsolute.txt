@@ -194,3 +194,4 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\o
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\bin\Debug\net8.0\CsvHelper.dll
