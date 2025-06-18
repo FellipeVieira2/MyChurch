@@ -53,6 +53,19 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasMany(d => d.DonationWorshipServices)
                 .WithOne(dws => dws.Donation)
                 .HasForeignKey(dws => dws.DonationId);
+
+            // Adiciona relacionamento com Campaign
+            builder
+                .Property(d => d.CampaignId)
+                .HasColumnName("campaign_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
+                .HasOne(d => d.Campaign)
+                .WithMany()
+                .HasForeignKey(d => d.CampaignId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

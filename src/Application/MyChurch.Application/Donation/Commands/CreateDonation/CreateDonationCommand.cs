@@ -22,6 +22,7 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
         public int? CreditCardInfoId { get; set; }
         public int? WorshipServiceId { get; set; } // <-- Adicione este campo
+        public int? CampaignId { get; set; } // Campanha de arrecadação
     }
 
     public class CreateDonationResultDto
@@ -196,6 +197,18 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             _unitOfWork.Members.Update(member);
             // 6. Persistir no banco
             _unitOfWork.Donations.Create(donation);
+
+            // Relacionamento com campanha de arrecadação
+            if (request.CampaignId.HasValue)
+            {
+                var campaign = await _unitOfWork.Campaigns.Query().FirstOrDefaultAsync(c => c.Id == request.CampaignId.Value, cancellationToken);
+                if (campaign != null)
+                {
+                    campaign.AddContribution(donation.Amount);
+                    donation.SetCampaign(campaign);
+                }
+            }
+
             await _unitOfWork.CommitAsync();
 
             // Relacionamento doação-culto

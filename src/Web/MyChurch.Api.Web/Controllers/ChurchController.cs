@@ -6,11 +6,16 @@ using MyChurch.Application.Church.Commands.UpdateBankingInfo;
 using MyChurch.Application.Church.Commands.UpdateChurch;
 using MyChurch.Application.Church.Queries.GetChurch;
 using MyChurch.Application.Dtos;
+using MediatR;
 
 namespace MyChurch.Api.Web.Controllers
 {
     public class ChurchController : BaseController
     {
+        // Adiciona construtor para testes
+        public ChurchController() : base() { }
+        public ChurchController(ISender mediator) : base(mediator) { }
+
         /// <summary>
         /// Create a new Church
         /// </summary>

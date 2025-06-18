@@ -48,8 +48,8 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
         public async Task<BankingInfoDto> Handle(UpdateBankingInfoCommand request, CancellationToken cancellationToken)
         {
             // Busca o membro logado
-            var member = await _unitOfWork.Members.Query()
-                .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+            var member = _unitOfWork.Members.Query()
+                .FirstOrDefault(m => m.Id == request.UserId);
 
             if (member == null)
             {
@@ -67,8 +67,8 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
             var churchId = member.ChurchId;
 
             // Busca ou cria o registro de dados bancários
-            var bankingInfo = await _unitOfWork.BankingInfos.Query()
-                .FirstOrDefaultAsync(b => b.ChurchId == churchId, cancellationToken);
+            var bankingInfo = _unitOfWork.BankingInfos.Query()
+                .FirstOrDefault(b => b.ChurchId == churchId);
 
             if (bankingInfo == null)
             {

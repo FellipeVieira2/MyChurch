@@ -44,6 +44,12 @@ namespace MyChurch.Domain.Entities
         public ICollection<Event> Events { get; set; }
         public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
 
+        public bool PendingApproval { get; set; }
+
+        // Família
+        public int? FamilyId { get; set; }
+        public virtual Family? Family { get; set; }
+
         public void Update(
             string? name = null,
             string? email = null,
@@ -76,6 +82,31 @@ namespace MyChurch.Domain.Entities
             Photo = photo ?? Photo;
             BirthCity = birthCity ?? BirthCity;
             BirthState = birthState ?? BirthState;
+        }
+
+        public void ApproveRegistration()
+        {
+            if (!PendingApproval)
+            {
+                // Opcional: lançar exceção ou ignorar
+                return;
+            }
+            PendingApproval = false;
+        }
+
+        public void ActivateAccount(string passwordHash)
+        {
+            if (IsActive) return;
+
+            PasswordHash = passwordHash;
+            IsActive = true;
+            // Supondo que exista um campo ActivationToken, limpe-o aqui se necessário
+            // ActivationToken = null;
+        }
+
+        public void MarkAsPendingApproval()
+        {
+            PendingApproval = true;
         }
     }
 }

@@ -146,8 +146,12 @@ namespace MyChurch.Application.Asset.Commands.UpdateAsset
 
             if (!string.IsNullOrEmpty(request.Photo))
             {
-                _logger.LogInformation("Atualizando foto do ativo. AssetId: {AssetId}", asset.Id);
-                asset.Photo = await UploadPhotoAsync(request.Photo, cancellationToken);
+                if (asset.Photo != request.Photo)
+                {
+                    _logger.LogInformation("Atualizando foto do ativo. AssetId: {AssetId}", asset.Id);
+                    asset.Photo = await UploadPhotoAsync(request.Photo, cancellationToken);
+                }
+                
             }
 
             _unitOfWork.Assets.Update(asset);

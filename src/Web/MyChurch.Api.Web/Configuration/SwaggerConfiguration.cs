@@ -3,6 +3,7 @@ using MyChurch.Api.Web.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using System.Reflection;
+using Serilog;
 
 namespace MyChurch.Api.Web.Configuration
 {

@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.Event.Commands.DeleteEvent
 {
     public class DeleteEventCommand : JwtMemberDto, IRequest<Unit>
     {
+        [JsonIgnore]
         public int Id { get; set; }
     }
 

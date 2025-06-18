@@ -1,0 +1,511 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyChurch.Api.Web</name>
+    </assembly>
+    <members>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.CreateAsset(MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand)">
+            <summary>
+            Cria um novo ativo patrimonial
+            </summary>
+            <response code="200">Sucesso: Ativo criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.UpdateAsset(System.Int32,MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand)">
+            <summary>
+            Atualiza um ativo patrimonial existente
+            </summary>
+            <response code="200">Sucesso: Ativo atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.GetAsset(System.Int32)">
+            <summary>
+            Busca um ativo patrimonial por ID
+            </summary>
+            <response code="200">Sucesso: Ativo retornado</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.GetAllAsset(MyChurch.Application.Asset.Queries.GetAllAssets.GetAllAssetsQuery)">
+            <summary>
+            Busca Lista de Ativos patrimonial
+            </summary>
+            <response code="200">Sucesso: Ativo retornado</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.AssetController.DeleteAsset(System.Int32)">
+            <summary>
+            Exclui um ativo patrimonial
+            </summary>
+            <response code="204">Sucesso: Ativo excluído</response>
+            <response code="404">Falha: Não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVersions">
+            <summary>
+            Lista todas as versões da Bíblia disponíveis.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetBooks(System.Int32)">
+            <summary>
+            Lista todos os livros de uma versão da Bíblia.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetChapters(System.Int32)">
+            <summary>
+            Lista todos os capítulos de um livro.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerse(System.Int32,System.Int32)">
+            <summary>
+            Retorna um versículo específico de um capítulo.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerses(System.Int32)">
+            <summary>
+            Lista todos os versículos de um capítulo.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleVersionController.ImportBibleVersion(MyChurch.Application.Bible.Commands.ImportBibleVersion.ImportBibleVersionCommand)">
+            <summary>
+            Importa uma versão da Bíblia a partir de um arquivo JSON.
+            </summary>
+            <param name="command">Command para importação da versão da Bíblia</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.CreateCashFlowEntry(MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand)">
+            <summary>
+            Cria um novo lançamento de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetChurchCashFlowBalance">
+            <summary>
+            Retorna o saldo consolidado do fluxo de caixa da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowEntry(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand)">
+            <summary>
+            Atualiza um lançamento de fluxo de caixa existente
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetCashFlowEntry(System.Int32)">
+            <summary>
+            Busca um lançamento de fluxo de caixa por ID
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowEntries(MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery)">
+            <summary>
+            Lista lançamentos de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowEntry(System.Int32)">
+            <summary>
+            Exclui um lançamento de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.CreateCashFlowCategory(MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand)">
+            <summary>
+            Cria uma nova categoria de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowCategory(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand)">
+            <summary>
+            Atualiza uma categoria de fluxo de caixa existente
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowCategory(System.Int32)">
+            <summary>
+            Exclui uma categoria de fluxo de caixa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories">
+            <summary>
+            Lista todas as categorias de fluxo de caixa da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
+            <summary>
+            Create a new Church
+            </summary>
+            <response code="200">Success: Church Created</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateChurch(System.Int32,MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand)">
+            <summary>
+            Update a Church
+            </summary>
+            <response code="200">Success: Church Updated</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurchWithAdmin(MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand)">
+            <summary>
+            Cria uma nova Igreja já com usuário Admin
+            </summary>
+            <response code="200">Sucesso: Igreja criada</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateBankingInfo(MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand)">
+            <summary>
+            Atualiza os dados bancários da igreja
+            </summary>
+            <response code="200">Sucesso: Dados bancários atualizados</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
+            <summary>
+            Dashboard com indicadores da igreja
+            </summary>
+            <response code="200">Sucesso: Dados consolidados</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
+            <summary>
+            Update a Church
+            </summary>
+            <response code="200">Success: Returned Church</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
+            <summary>
+            Create a new Donation
+            </summary>
+            <response code="200">Success: Donation Created</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.GetAllPaidDonations(MyChurch.Application.Donation.Queries.GetAllPaidDonations.GetAllPaidDonationsQuery)">
+            <summary>
+            Get all paid donations for the logged member (paginated)
+            </summary>
+            <response code="200">Success: List of paid donations</response>
+            <response code="401">Failure: Unauthorized</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.GetTransferBalance">
+            <summary>
+            Valor disponível para repasse para a igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.DonationController.TransferChurchBalance(MyChurch.Application.Donation.Commands.TransferChurchBalance.TransferChurchBalanceCommand)">
+            <summary>
+            Efetua retirada do valor disponível para a conta da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.CreateEvent(MyChurch.Application.Event.Commands.CreateEvent.CreateEventCommand)">
+            <summary>
+            Cria um novo evento
+            </summary>
+            <response code="200">Sucesso: Evento criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.UpdateEvent(System.Int32,MyChurch.Application.Event.Commands.UpdateEvent.UpdateEventCommand)">
+            <summary>
+            Atualiza um evento existente
+            </summary>
+            <response code="200">Sucesso: Evento atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.DeleteEvent(System.Int32)">
+            <summary>
+            Deleta um evento existente
+            </summary>
+            <response code="204">Sucesso: Evento Deletado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetEvent(System.Int32)">
+            <summary>
+            Busca um evento por ID
+            </summary>
+            <response code="200">Sucesso: Evento retornado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetEventsForCalendar(MyChurch.Application.Event.Queires.GetEventsForCalendar.GetEventsForCalendarQuery)">
+            <summary>
+            Lista eventos para o calendário do mês/ano informado (inclui recorrentes)
+            </summary>
+            <response code="200">Sucesso: Lista de eventos</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetAllWorship(MyChurch.Application.Event.Queires.GetAllWorship.GetAllWorshipQuery)">
+            <summary>
+            Lista eventos para o calendário do mês/ano informado (inclui recorrentes)
+            </summary>
+            <response code="200">Sucesso: Lista de eventos</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.GetWorshipById(System.Int32)">
+            <summary>
+            Busca um culto (WorshipService) por ID
+            </summary>
+            <response code="200">Sucesso: Culto retornado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.CreateFeedPost(MyChurch.Application.Feed.Post.Commands.CreateFeedPost.CreateFeedPostCommand)">
+            <summary>
+            Cria um novo Post
+            </summary>
+            <response code="200">Sucesso: Post criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.UpdateFeedPost(System.Int32,MyChurch.Application.Feed.Post.Commands.UpdateFeedPost.UpdateFeedPostCommand)">
+            <summary>
+            Atualiza um Post
+            </summary>
+            <response code="200">Sucesso: Post Atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.DeleteFeedPost(System.Int32)">
+            <summary>
+            Remove um Post
+            </summary>
+            <response code="204">Sucesso: Post removido</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.GetAllFeedPosts">
+            <summary>
+            Atualiza um Post
+            </summary>
+            <response code="200">Sucesso: Post Atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.GetFeedPostById(System.Int32)">
+            <summary>
+            Retorna um Post pelo Id
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.AddLike(System.Int32)">
+            <summary>
+            Adiciona um Like ao Post
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FeedController.RemoveLike(System.Int32)">
+            <summary>
+            Remove o Like do Post
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.ImportHymns(MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand)">
+            <summary>
+            Importa hinos a partir de um arquivo JSON no formato da Harpa.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetHymnByNumber(System.Int32)">
+            <summary>
+            Busca um hino pelo número, retornando o coro e os versos.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateMember(MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand)">
+            <summary>
+            Create a new Member
+            </summary>
+            <response code="200">Success: Member Created</response>
+            <response code="400">Failure: Invalid Requet</response>
+            <response code="401">Failure: error</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.ActivePassword(System.String,MyChurch.Application.Member.Commands.ActiveMemberPassword.ActiveMemberPasswordCommand)">
+            <summary>
+            Active Password
+            </summary>
+            <response code="204">Success: Password Activaded</response>
+            <response code="400">Failure: Invalid Requet</response>
+            <response code="401">Failure: error</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32)">
+            <summary>
+            Get Member by ID
+            </summary>
+            <response code="200">Success: Member Retrieved</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+            <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetBirthdayMembers(MyChurch.Application.Member.Queries.GetBirthdayMembers.BirthdayFilterType)">
+            <summary>
+            Lista os membros aniversariantes filtrando por dia, semana ou mês
+            </summary>
+            <param name="filterType">Day, Week ou Month</param>
+            <response code="200">Sucesso: Lista de aniversariantes</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
+            <summary>
+            Update Member by ID
+            </summary>
+            <response code="200">Success: Member Updated</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+            <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllCreditCards(MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery)">
+            <summary>
+            Get all Credit Cards
+            </summary>
+            <response code="200">Success: Credit Cards</response>
+            <response code="400">Failure: Invalid Request</response>
+            <response code="401">Failure: Unauthorized</response>
+            <response code="404">Failure: Member Not Found</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
+            <summary>
+            Lista membros da igreja com filtros e paginação (apenas para Admin)
+            </summary>
+            <response code="200">Sucesso: Lista paginada de membros</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.ImportMembersCsv(MyChurch.Api.Web.Controllers.MemberController.RecieveCsvFile)">
+            <summary>
+            Importa membros por arquivo CSV
+            </summary>
+            <param name="file">Arquivo CSV</param>
+            <response code="200">Sucesso: IDs dos membros criados</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMemberCounts">
+            <summary>
+            Retorna o total de membros, total ativos e total inativos
+            </summary>
+            <response code="200">Sucesso: Totais de membros</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.ApproveRegistration(System.String)">
+            <summary>
+            Aprova o cadastro de um membro (apenas para administradores)
+            </summary>
+            <response code="204">Sucesso: Membro aprovado</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Explain(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
+            <summary>
+            Ask to Pastor.
+            </summary>
+            <param name="command"></param>
+            <returns>Explanation, context, and application in JSON format.</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.VerseOfTheDay">
+            <summary>
+            Returns the verse of the day.
+            </summary>
+            <returns>Bible verse of the day in JSON format.</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
+            <summary>
+            Cria uma nova assinatura
+            </summary>
+            <response code="200">Sucesso: Assinatura criada</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.UpdateSubscription(System.Int32)">
+            <summary>
+            Atualiza uma assinatura existente
+            </summary>
+            <response code="200">Sucesso: Assinatura atualizada</response>
+            <response code="400">Falha: Requisição inválida</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.GetSubscription(System.Int32)">
+            <summary>
+            Busca uma assinatura por ID
+            </summary>
+            <response code="200">Sucesso: Assinatura retornada</response>
+            <response code="404">Falha: Não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CancelSubscription(System.Int32)">
+            <summary>
+            Cancela uma assinatura
+            </summary>
+            <response code="200">Sucesso: Assinatura cancelada</response>
+            <response code="404">Falha: Não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.ChangePlan(MyChurch.Application.Subscription.Commands.CreateSubscription.ChangeChurchPlanCommand)">
+            <summary>
+            Troca o plano da igreja (upgrade/downgrade)
+            </summary>
+            <response code="200">Sucesso: Plano alterado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.HighlightBibleReading(System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Destaca a leitura bíblica para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinishBibleReading(System.Int32,System.Int32)">
+            <summary>
+            Finaliza a leitura bíblica atual pelo id da atividade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32)">
+            <summary>
+            Apresenta um hino para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentOffering(System.Int32)">
+            <summary>
+            Apresenta o momento da oferta para todos os membros do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinishOffering(System.Int32,System.Int32)">
+            <summary>
+            Finaliza o momento da oferta pelo id da atividade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.FinalizeWorship(System.Int32)">
+            <summary>
+            Finaliza o culto e notifica todos os membros
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.StartWorship(System.Int32)">
+            <summary>
+            Inicia o culto e notifica todos os membros
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.GetActiveActivities(System.Int32)">
+            <summary>
+            Retorna as atividades ativas do culto em andamento e registra a presença do usuário
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.AddScheduleItem(System.Int32,MyChurch.Application.WorshipService.Commands.ManageSchedule.AddWorshipScheduleItemCommand)">
+            <summary>
+            Adiciona um item ao cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.UpdateScheduleItem(System.Int32,System.Int32,MyChurch.Application.WorshipService.Commands.ManageSchedule.UpdateWorshipScheduleItemCommand)">
+            <summary>
+            Atualiza um item do cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RemoveScheduleItem(System.Int32,System.Int32)">
+            <summary>
+            Remove um item do cronograma do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.CreatePrayerRequest(System.Int32,MyChurch.Application.WorshipService.Commands.PrayerRequest.CreatePrayerRequestCommand)">
+            <summary>
+            Envia um pedido de oração para o culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.GetPrayerRequests(System.Int32)">
+            <summary>
+            Lista os pedidos de oração do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.SendAdminNotice(System.Int32,MyChurch.Application.WorshipActivity.Commands.SendAdminNoticeCommand)">
+            <summary>
+            Envia um aviso administrativo para todos do culto
+            </summary>
+        </member>
+    </members>
+</doc>

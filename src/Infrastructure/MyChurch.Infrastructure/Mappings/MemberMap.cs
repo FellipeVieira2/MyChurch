@@ -45,6 +45,16 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
+                .Property(x => x.FamilyId)
+                .HasColumnName("family_id")
+                .IsRequired(false);
+
+            builder
+                .Property(x => x.PendingApproval)
+                .HasColumnName("pending_approval")
+                .HasColumnType("boolean");
+
+            builder
                 .Property(m => m.Password)
                 .HasColumnName("password")
                 .HasColumnType("varchar(500)")

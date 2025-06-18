@@ -60,14 +60,14 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
 
             public async Task<ChurchDto> Handle(UpdateChurchCommand request, CancellationToken cancellationToken)
             {
-                var member = await _unitOfWork.Members.Query().FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+                var member = _unitOfWork.Members.Query().FirstOrDefault(m => m.Id == request.UserId);
                 if (member == null || member.ChurchId != request.Id)
                 {
                     _logger.LogWarning("User does not have permission to update this church.");
                     ValidationException.ThrowException("Update", "You do not have permission to update this church.");
                 }
 
-                var church = await _unitOfWork.Churchs.Query().FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+                var church = _unitOfWork.Churchs.Query().FirstOrDefault(c => c.Id == request.Id);
                 if (church == null)
                 {
                     _logger.LogWarning("Church not found with ID: {Id}", request.Id);

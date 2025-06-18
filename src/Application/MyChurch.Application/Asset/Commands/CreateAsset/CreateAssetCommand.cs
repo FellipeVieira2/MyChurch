@@ -41,7 +41,7 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
         /// <summary>Warranty Until</summary>
         public DateTime? WarrantyUntil { get; set; }
         /// <summary>Notes</summary>
-        public string Notes { get; set; } = null!;
+        public string? Notes { get; set; } = null!;
     }
 
     public class CreateAssetCommandHandler : IRequestHandler<CreateAssetCommand, int>

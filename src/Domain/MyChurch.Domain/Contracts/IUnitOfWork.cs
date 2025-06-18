@@ -37,6 +37,14 @@
         IFeedPostImageRepository FeedPostImages { get; }
         IAdminNoticeRepository AdminNotices { get; }
         IHymnVerseRepository HymnVerses { get; }
+        ICampaignRepository Campaigns { get; }
+        IFamilyRepository Families { get; }
+        IFamilyInvitationRepository FamilyInvitations { get; }
+        IChildRepository Children { get; }
+        IGroupRepository Groups { get; }
+        IChildGroupAssignmentRepository ChildGroupAssignments { get; }
+        IGroupMemberRepository GroupMembers { get; }
+        IGroupResourceRepository GroupResources { get; }
         Task<bool> CommitAsync();
     }
 }

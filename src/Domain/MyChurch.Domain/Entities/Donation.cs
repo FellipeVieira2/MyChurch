@@ -14,5 +14,15 @@
 
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
         public ICollection<DonationWorshipService> DonationWorshipServices { get; set; } = new List<DonationWorshipService>();
+
+        // Campanha de arrecadação
+        public int? CampaignId { get; private set; }
+        public Campaign? Campaign { get; private set; }
+
+        public void SetCampaign(Campaign campaign)
+        {
+            CampaignId = campaign.Id;
+            Campaign = campaign;
+        }
     }
 }

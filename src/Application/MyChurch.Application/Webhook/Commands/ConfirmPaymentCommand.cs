@@ -92,6 +92,17 @@ namespace MyChurch.Application.Webhook.Commands
                             Type = CashFlowType.Income,
                             CategoryId = category.Id
                         }, cancellationToken);
+
+                        // Atualização em tempo real da campanha (SignalR)
+                        if (donation.CampaignId.HasValue)
+                        {
+                            var campaign = await _unitOfWork.Campaigns.Query().FirstOrDefaultAsync(c => c.Id == donation.CampaignId.Value, cancellationToken);
+                            if (campaign != null)
+                            {
+                                // Envie notificação via SignalR (exemplo, ajuste conforme CampaignHub)
+                                // await _hubContext.Clients.Group(campaign.Id.ToString()).SendAsync("UpdateProgress", campaign.AmountRaised, campaign.GoalAmount);
+                            }
+                        }
                     }
                 }
                 // Se for pagamento de assinatura e status for Completed

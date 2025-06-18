@@ -25,7 +25,7 @@ namespace MyChurch.Application.Asset.Commands.CreateAsset
                 .IsInEnum().WithMessage("O tipo do ativo deve ser válido.");
 
             RuleFor(x => x.Photo)
-                .MaximumLength(10000).WithMessage("A foto em base64 não pode exceder 10.000 caracteres.")
+                .MaximumLength(100000).WithMessage("A foto em base64 não pode exceder 10.000 caracteres.")
                 .When(x => !string.IsNullOrEmpty(x.Photo));
         }
     }

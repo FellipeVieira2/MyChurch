@@ -249,6 +249,44 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="T:MyChurch.Api.Web.Controllers.FamilyController">
+            <summary>
+            Gerencia operações de família, convites e filhos.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FamilyController.SendSpouseInvitation(MyChurch.Application.Family.Commands.SendSpouseConnectionRequestCommand)">
+            <summary>
+            Envia convite de conexão de cônjuge para outro membro.
+            </summary>
+            <remarks>O usuário autenticado será o convidador.</remarks>
+            <response code="200">Sucesso: ID do convite criado</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FamilyController.AcceptSpouseInvitation(MyChurch.Application.Family.Commands.AcceptSpouseConnectionRequestCommand)">
+            <summary>
+            Aceita um convite de conexão de cônjuge.
+            </summary>
+            <response code="200">Sucesso</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FamilyController.DeclineSpouseInvitation(MyChurch.Application.Family.Commands.DeclineSpouseConnectionRequestCommand)">
+            <summary>
+            Recusa um convite de conexão de cônjuge.
+            </summary>
+            <response code="200">Sucesso</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.FamilyController.AddChild(MyChurch.Application.Family.Commands.AddChildToFamilyCommand)">
+            <summary>
+            Adiciona um filho à família do usuário autenticado.
+            </summary>
+            <response code="200">Sucesso: ID do filho criado</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.FeedController.CreateFeedPost(MyChurch.Application.Feed.Post.Commands.CreateFeedPost.CreateFeedPostCommand)">
             <summary>
             Cria um novo Post
@@ -295,6 +333,62 @@
             <summary>
             Remove o Like do Post
             </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.GroupController">
+            <summary>
+            Gerencia operações de grupos (células, ministérios, equipes, etc).
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.CreateGroup(MyChurch.Application.Group.Commands.CreateGroupCommand)">
+            <summary>
+            Cria um novo grupo (célula, ministério, equipe, etc).
+            </summary>
+            <remarks>O usuário autenticado será o líder do grupo.</remarks>
+            <response code="200">Sucesso: ID do grupo criado</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.AddMember(System.Int32,MyChurch.Application.Group.Commands.AddMemberToGroupCommand)">
+            <summary>
+            Adiciona um membro ao grupo (apenas líder pode adicionar).
+            </summary>
+            <response code="200">Sucesso</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.UpdateGroup(System.Int32,MyChurch.Application.Group.Commands.UpdateGroupCommand)">
+            <summary>
+            Atualiza os dados do grupo (apenas líder pode atualizar).
+            </summary>
+            <response code="200">Sucesso</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.RegisterAttendance(System.Int32,MyChurch.Application.Group.Commands.RegisterGroupAttendanceCommand)">
+            <summary>
+            Registra presença dos membros em uma reunião do grupo (apenas líder pode registrar).
+            </summary>
+            <remarks>Envia a lista de presenças dos membros para o evento/reunião do grupo.</remarks>
+            <response code="200">Sucesso</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.GetGroupDetails(System.Int32)">
+            <summary>
+            Obtém detalhes completos de um grupo.
+            </summary>
+            <param name="groupId">ID do grupo</param>
+            <response code="200">Sucesso: Detalhes do grupo</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Grupo não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.ListGroupResources(System.Int32)">
+            <summary>
+            Lista os recursos (arquivos, materiais) do grupo.
+            </summary>
+            <param name="groupId">ID do grupo</param>
+            <response code="200">Sucesso: Lista de recursos</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.HymnController.ImportHymns(MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand)">
             <summary>
@@ -381,6 +475,13 @@
             <response code="200">Sucesso: Totais de membros</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.ApproveRegistration(System.String)">
+            <summary>
+            Aprova o cadastro de um membro (apenas para administradores)
+            </summary>
+            <response code="204">Sucesso: Membro aprovado</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Explain(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
             <summary>
             Ask to Pastor.
@@ -421,6 +522,14 @@
             </summary>
             <response code="200">Sucesso: Assinatura cancelada</response>
             <response code="404">Falha: Não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.ChangePlan(MyChurch.Application.Subscription.Commands.CreateSubscription.ChangeChurchPlanCommand)">
+            <summary>
+            Troca o plano da igreja (upgrade/downgrade)
+            </summary>
+            <response code="200">Sucesso: Plano alterado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.HighlightBibleReading(System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32})">
             <summary>

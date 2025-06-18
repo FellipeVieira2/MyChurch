@@ -50,6 +50,14 @@ namespace MyChurch.Infrastructure.Repositories
         public IFeedPostImageRepository FeedPostImages { get; }
         public IAdminNoticeRepository AdminNotices { get; }
         public IHymnVerseRepository HymnVerses { get; }
+        public ICampaignRepository Campaigns { get; }
+        public IFamilyRepository Families { get; }
+        public IFamilyInvitationRepository FamilyInvitations { get; }
+        public IChildRepository Children { get; }
+        public IGroupRepository Groups { get; }
+        public IChildGroupAssignmentRepository ChildGroupAssignments { get; }
+        public IGroupMemberRepository GroupMembers { get; }
+        public IGroupResourceRepository GroupResources { get; }
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -86,7 +94,16 @@ namespace MyChurch.Infrastructure.Repositories
             IPrayerRequestRepository prayerRequests,
             IFeedPostImageRepository feedPostImages,
             IAdminNoticeRepository adminNotices,
-            IHymnVerseRepository hymnVerses)
+            IHymnVerseRepository hymnVerses,
+            ICampaignRepository campaigns,
+            IFamilyRepository families,
+            IFamilyInvitationRepository familyInvitations,
+            IChildRepository children,
+            IGroupRepository groups,
+            IChildGroupAssignmentRepository childGroupAssignments,
+            IGroupMemberRepository groupMembers,
+            IGroupResourceRepository groupResources
+        )
         {
             Churchs = churchs;
             Donations = donations;
@@ -124,6 +141,14 @@ namespace MyChurch.Infrastructure.Repositories
             FeedPostImages = feedPostImages;
             AdminNotices = adminNotices;
             HymnVerses = hymnVerses;
+            Campaigns = campaigns;
+            Families = families;
+            FamilyInvitations = familyInvitations;
+            Children = children;
+            Groups = groups;
+            ChildGroupAssignments = childGroupAssignments;
+            GroupMembers = groupMembers;
+            GroupResources = groupResources;
         }
 
         public async Task<bool> CommitAsync()

@@ -1,0 +1,414 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyChurch.Application</name>
+    </assembly>
+    <members>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Name">
+            <summary>Name</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Value">
+            <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Quantity">
+            <summary>Quantity</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Description">
+            <summary>Description</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Photo">
+            <summary>Photo (Base64)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Type">
+            <summary>Type</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.IdentificationCode">
+            <summary>Identification Code</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Condition">
+            <summary>Condition</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.PurchaseDate">
+            <summary>Purchase Date</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Location">
+            <summary>Location</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Responsible">
+            <summary>Responsible</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.LastMaintenance">
+            <summary>Last Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.NextMaintenance">
+            <summary>Next Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.WarrantyUntil">
+            <summary>Warranty Until</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand.Notes">
+            <summary>Notes</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Name">
+            <summary>Name</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Value">
+            <summary>Value</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Quantity">
+            <summary>Quantity</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Description">
+            <summary>Description</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Photo">
+            <summary>Photo (Base64)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Type">
+            <summary>Type</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.IdentificationCode">
+            <summary>Identification Code</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Condition">
+            <summary>Condition</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.PurchaseDate">
+            <summary>Purchase Date</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Location">
+            <summary>Location</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Responsible">
+            <summary>Responsible</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.LastMaintenance">
+            <summary>Last Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.NextMaintenance">
+            <summary>Next Maintenance</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.WarrantyUntil">
+            <summary>Warranty Until</summary>
+        </member>
+        <member name="P:MyChurch.Application.Asset.Commands.UpdateAsset.UpdateAssetCommand.Notes">
+            <summary>Notes</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand.Name">
+            <summary>Nome da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory.CreateCashFlowCategoryCommand.Description">
+            <summary>Descrição da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Amount">
+            <summary>Valor do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Date">
+            <summary>Data do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Description">
+            <summary>Descrição</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.Type">
+            <summary>Tipo: Entrada ou Saída</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.CategoryId">
+            <summary>ID da Categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Name">
+            <summary>Nome da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Description">
+            <summary>Descrição da categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Amount">
+            <summary>Valor do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Date">
+            <summary>Data do lançamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Description">
+            <summary>Descrição</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.Type">
+            <summary>Tipo: Entrada ou Saída</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand.CategoryId">
+            <summary>ID da Categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Amount">
+            <summary>Filtro por valor exato</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Date">
+            <summary>Filtro por data exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.StartDate">
+            <summary>Filtro por data inicial (>=)</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.EndDate" -->
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Type">
+            <summary>Filtro por tipo (Entrada/Saída)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.CategoryId">
+            <summary>Filtro por categoria</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
+            <summary>Name</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Description">
+            <summary>Description</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.PlanId">
+            <summary>PlanId</summary>
+            <example>1</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Document">
+            <summary>Document</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Logo">
+            <summary>Logo</summary>
+            <example>Base64</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Street">
+            <summary>Street</summary>
+            <example>Piracicaba</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.City">
+            <summary>City</summary>
+            <example>Araras</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.State">
+            <summary>State</summary>
+            <example>SP</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.ZipCode">
+            <summary>ZipCode</summary>
+            <example>13609090</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Country">
+            <summary>Country</summary>
+            <example>Brasil</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Neighborhood">
+            <summary>Neighborhood</summary>
+            <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Number">
+            <summary>Number</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.BankName">
+            <summary>Banco</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.Agency">
+            <summary>Agência</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.Account">
+            <summary>Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.AccountDigit">
+            <summary>Dígito da Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.AccountType">
+            <summary>Tipo de Conta</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.HolderName">
+            <summary>Titular</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.HolderDocument">
+            <summary>Documento do Titular</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKey">
+            <summary>Chave PIX</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKeyType">
+            <summary>Tipo da Chave PIX</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
+            <summary>Name</summary>
+            <example>Igreja Pentecostal</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Street">
+            <summary>Street</summary>
+            <example>Piracicaba</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.City">
+            <summary>City</summary>
+            <example>Araras</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.State">
+            <summary>State</summary>
+            <example>SP</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.ZipCode">
+            <summary>ZipCode</summary>
+            <example>13609090</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Country">
+            <summary>Country</summary>
+            <example>Brasil</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Neighborhood">
+            <summary>Neighborhood</summary>
+            <example>São João</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
+            <summary>Number</summary>
+        </member>
+        <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
+            <summary>Arquivo JSON no formato da Harpa</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Name">
+            <summary>Name</summary>
+            <example>Fellipe</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Email">
+            <summary>Email</summary>
+            <example>fvsouza623@gmail.com</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Photo">
+            <summary>Photo</summary>
+            <example>base64</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Phone">
+            <summary>Phone</summary>
+            <example>19987250777</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BirthDate">
+            <summary>BirthDate</summary>
+            <example>2023-10-14T00:00:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsBaptized">
+            <summary>IsBaptized</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.BaptizedDate">
+            <summary>BaptizedDate</summary>
+            <example>2023-10-14T00:00:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsTither">
+            <summary>IsTither</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.RoleMember">
+            <summary>Role</summary>
+            <example>Worker</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MaritalStatus">
+            <summary>Estado civil</summary>
+            <example>Solteiro</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberSince">
+            <summary>Membro desde</summary>
+            <example>2020-01-01T00:00:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Ministry">
+            <summary>Ministério</summary>
+            <example>Louvor</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.IsActive">
+            <summary>Membro ativo</summary>
+            <example>true</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Notes">
+            <summary>Observações</summary>
+            <example>Participa do grupo de jovens</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.Documents">
+            <summary>Documentos do membro</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberDocumentDtoCreate.Type">
+            <summary>Tipo do documento</summary>
+            <example>CPF</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand.MemberDocumentDtoCreate.Number">
+            <summary>Número do documento</summary>
+            <example>12345678901</example>
+        </member>
+        <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.Documents">
+            <summary>Documentos do membro</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.MemberDocumentDtoUpdate.Type">
+            <summary>Tipo do documento</summary>
+            <example>CPF</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.MemberDocumentDtoUpdate.Number">
+            <summary>Número do documento</summary>
+            <example>12345678901</example>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllCreditCardsMember.GetAllCreditCardsMemberQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Name">
+            <summary>Filtro por nome (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Document">
+            <summary>Filtro por documento (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Email">
+            <summary>Filtro por email (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.BirthDate">
+            <summary>Filtro por data de nascimento exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsBaptized">
+            <summary>Filtro se é batizado</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.BaptizedDate">
+            <summary>Filtro por data de batismo exata</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.RoleMember">
+            <summary>Filtro por papel (role)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsActive">
+            <summary>Filtro por membro ativo</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
+            <summary>Filtro por ministério (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MaritalStatus">
+            <summary>Filtro por estado civil (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MemberSince">
+            <summary>Filtro por data de entrada como membro</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Notes">
+            <summary>Filtro por observações (contém)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageNumber">
+            <summary>Número da página (começa em 1)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageSize">
+            <summary>Tamanho da página</summary>
+        </member>
+    </members>
+</doc>

@@ -11,6 +11,7 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
 {
     public class UpdateEventCommand : JwtMemberDto, IRequest<int>
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
@@ -50,6 +51,7 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
             // Busca o evento e valida se pertence à igreja do usuário
             var eventEntity = await _unitOfWork.Events.Query()
                 .Include(e => e.WorshipServices)
+                .Include(x => x.Recurrence)
                 .FirstOrDefaultAsync(x => x.Id == request.Id && x.ChurchId == churchId, cancellationToken);
 
             if (eventEntity == null)

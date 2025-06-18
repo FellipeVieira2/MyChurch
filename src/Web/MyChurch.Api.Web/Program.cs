@@ -17,8 +17,12 @@ using MyChurch.Api.Web.Middleware;
 using MyChurch.Application;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add Serilog configuration
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
@@ -175,5 +179,6 @@ app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
 app.MapHub<WorshipServiceHub>("/ws/worship"); // Mapeamento de endpoints por último
+app.MapHub<CampaignHub>("/campaignHub"); // Mapeia o CampaignHub para SignalR
 
 app.Run();
