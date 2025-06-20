@@ -45,6 +45,15 @@
         IChildGroupAssignmentRepository ChildGroupAssignments { get; }
         IGroupMemberRepository GroupMembers { get; }
         IGroupResourceRepository GroupResources { get; }
+        IJourneyRepository Journeys { get; }
+        IJourneyStageRepository JourneyStages { get; }
+        IMemberJourneyProgressRepository MemberJourneyProgresses { get; }
+        IMemberJourneyAssignmentRepository MemberJourneyAssignments { get; }
+        IAchievementRepository Achievements { get; }
+        IMemberAchievementRepository MemberAchievements { get; }
+        IDailyChallengeRepository DailyChallenges { get; }
+        IPastoralAlertRepository PastoralAlerts { get; }
+        IFaithLevelRepository FaithLevels { get; }
         Task<bool> CommitAsync();
     }
 }

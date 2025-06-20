@@ -57,6 +57,17 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
             services.AddScoped<IGroupResourceRepository, GroupResourceRepository>();
+
+            services.AddScoped<IJourneyRepository, JourneyRepository>();
+            services.AddScoped<IJourneyStageRepository, JourneyStageRepository>();
+            services.AddScoped<IMemberJourneyProgressRepository, MemberJourneyProgressRepository>();
+            services.AddScoped<IMemberJourneyAssignmentRepository, MemberJourneyAssignmentRepository>();
+            services.AddScoped<IAchievementRepository, AchievementRepository>();
+            services.AddScoped<IMemberAchievementRepository, MemberAchievementRepository>();
+            services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
+            services.AddScoped<IPastoralAlertRepository, PastoralAlertRepository>();
+            services.AddScoped<IFaithLevelRepository, FaithLevelRepository>();
+
             services.AddDbContext<MyChurchDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(connectionString));

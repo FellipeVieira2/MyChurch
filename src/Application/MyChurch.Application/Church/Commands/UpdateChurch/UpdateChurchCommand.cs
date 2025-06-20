@@ -67,7 +67,11 @@ namespace MyChurch.Application.Church.Commands.UpdateChurch
                     ValidationException.ThrowException("Update", "You do not have permission to update this church.");
                 }
 
-                var church = _unitOfWork.Churchs.Query().FirstOrDefault(c => c.Id == request.Id);
+                var church = _unitOfWork.Churchs.Query()
+                    .Include(x => x.Address)
+                    .Include(x => x.Subscription)
+                        .ThenInclude(x => x.Plan)
+                    .FirstOrDefault(c => c.Id == request.Id);
                 if (church == null)
                 {
                     _logger.LogWarning("Church not found with ID: {Id}", request.Id);

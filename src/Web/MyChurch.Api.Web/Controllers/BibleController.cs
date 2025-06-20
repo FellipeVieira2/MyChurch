@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Bible.Queries.GetAllBibleVersions;
 using MyChurch.Application.Bible.Queries.GetBooksByVersion;
 using MyChurch.Application.Bible.Queries.GetChaptersByBook;
+using MyChurch.Application.Bible.Queries.GetChaptersByBookName;
 using MyChurch.Application.Bible.Queries.GetVerseByChapterAndNumber;
 using MyChurch.Application.Bible.Queries.GetVersesByChapter;
+using MyChurch.Application.Bible.Queries.GetVersesByReference;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -50,6 +52,21 @@ namespace MyChurch.Api.Web.Controllers
             var result = await Mediator.Send(query);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Lista todos os capítulos de um livro pelo nome do livro e ID da versão.
+        /// </summary>
+        [HttpGet("versions/{versionId}/books/{bookName}/chapters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetChaptersByBookName(int versionId, string bookName)
+        {
+            var query = AuthorizationRequestCreate<GetChaptersByBookNameQuery>();
+            query.VersionId = versionId;
+            query.BookName = bookName;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Retorna um versículo específico de um capítulo.
         /// </summary>
@@ -76,6 +93,21 @@ namespace MyChurch.Api.Web.Controllers
         {
             var query = AuthorizationRequestCreate<GetVersesByChapterQuery>();
             query.ChapterId = chapterId;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista todos os versículos por referência bíblica (versão, livro e capítulo).
+        /// </summary>
+        [HttpGet("versions/{versionId}/books/{bookName}/chapters/{chapterNumber}/verses")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetVersesByReference(int versionId, string bookName, int chapterNumber)
+        {
+            var query = AuthorizationRequestCreate<GetVersesByReferenceQuery>();
+            query.VersionId = versionId;
+            query.BookName = bookName;
+            query.ChapterNumber = chapterNumber;
             var result = await Mediator.Send(query);
             return Ok(result);
         }

@@ -7,7 +7,6 @@ namespace MyChurch.Infrastructure
     {
         public MyChurchDbContext(DbContextOptions<MyChurchDbContext> options) : base(options) { }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("unaccent");

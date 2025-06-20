@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +35,15 @@ namespace MyChurch.Application.Member.Commands.Login
 
         public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
+            // Verifica se o identifier está no formato de CPF e remove pontos e traços
+            string normalizedIdentifier = NormalizeIdentifier(request.Identifier);
+            string originalIdentifier = request.Identifier;
+
             var member = await _unitOfWork.Members.Query()
-                .FirstOrDefaultAsync(x => x.Email == request.Identifier || x.Phone == request.Identifier || x.Documents.Any(x => x.Number == request.Identifier));
+                .FirstOrDefaultAsync(x => 
+                    x.Email == originalIdentifier || 
+                    x.Phone == originalIdentifier || 
+                    x.Documents.Any(d => d.Number == normalizedIdentifier));
 
             if (member is null)
             {
@@ -65,6 +73,18 @@ namespace MyChurch.Application.Member.Commands.Login
                 Role = member.Role.ToString(),
                 Member = MemberDto.New(member)
             };
+        }
+
+        private string NormalizeIdentifier(string identifier)
+        {
+            // Se o formato parecer um CPF (com pontos e traços), remova esses caracteres
+            if (Regex.IsMatch(identifier, @"^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$"))
+            {
+                return Regex.Replace(identifier, @"[^\d]", "");
+            }
+            
+            // Para outros formatos (como e-mail), retorne o identificador original
+            return identifier;
         }
 
         private string GenerateJwtToken(Domain.Entities.Member member)

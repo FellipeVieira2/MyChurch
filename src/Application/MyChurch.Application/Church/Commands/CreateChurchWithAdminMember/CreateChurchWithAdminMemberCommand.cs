@@ -12,6 +12,7 @@ using MyChurch.Infrastructure.Utils.Extensions;
 using MyChurch.Infrastructure.Utils.S3;
 using System.Collections.Generic;
 using MyChurch.Application.Dtos;
+using MyChurch.Infrastructure;
 
 namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 {
@@ -130,6 +131,13 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             // 4. Adiciona a igreja ao repositório
             _unitOfWork.Churchs.Create(church);
             await _unitOfWork.CommitAsync();
+
+            // Seed default journeys
+            var defaultJourneys = JourneySeedData.GetDefaultJourneys(church.Id);
+            foreach (var journey in defaultJourneys)
+            {
+                _unitOfWork.Journeys.Create(journey);
+            }
 
             // 5. Cria o membro admin
             var adminMember = new Domain.Entities.Member

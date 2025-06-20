@@ -11,7 +11,7 @@ namespace MyChurch.Application.Dtos
         public int MaxEvents { get; set; } // Quantidade de eventos permitidos  
         public int MaxStorageGB { get; set; } // Espaço de armazenamento  
 
-        public static PlanDto New(Plan plan)
+        public static PlanDto New(Domain.Entities.Plan plan)
         {
             return new PlanDto
             {

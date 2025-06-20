@@ -50,6 +50,13 @@ namespace MyChurch.Domain.Entities
         public int? FamilyId { get; set; }
         public virtual Family? Family { get; set; }
 
+        // Gamification and devotional progress
+        public int TotalFaithPoints { get; set; }
+        public int DevotionalStreak { get; set; }
+        public DateTime? LastCompletedActivityDate { get; set; }
+        public int? FaithLevelId { get; set; }
+        public virtual FaithLevel? FaithLevel { get; set; }
+
         public void Update(
             string? name = null,
             string? email = null,

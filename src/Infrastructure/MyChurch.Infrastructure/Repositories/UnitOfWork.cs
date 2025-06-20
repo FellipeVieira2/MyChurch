@@ -58,6 +58,16 @@ namespace MyChurch.Infrastructure.Repositories
         public IChildGroupAssignmentRepository ChildGroupAssignments { get; }
         public IGroupMemberRepository GroupMembers { get; }
         public IGroupResourceRepository GroupResources { get; }
+        public IJourneyRepository Journeys { get; }
+        public IJourneyStageRepository JourneyStages { get; }
+        public IMemberJourneyProgressRepository MemberJourneyProgresses { get; }
+        public IMemberJourneyAssignmentRepository MemberJourneyAssignments { get; }
+        public IAchievementRepository Achievements { get; }
+        public IMemberAchievementRepository MemberAchievements { get; }
+        public IDailyChallengeRepository DailyChallenges { get; }
+        public IPastoralAlertRepository PastoralAlerts { get; }
+        public IFaithLevelRepository FaithLevels { get; private set; }
+
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -102,7 +112,16 @@ namespace MyChurch.Infrastructure.Repositories
             IGroupRepository groups,
             IChildGroupAssignmentRepository childGroupAssignments,
             IGroupMemberRepository groupMembers,
-            IGroupResourceRepository groupResources
+            IGroupResourceRepository groupResources,
+            IJourneyRepository journeys,
+            IJourneyStageRepository journeyStages,
+            IMemberJourneyProgressRepository memberJourneyProgresses,
+            IMemberJourneyAssignmentRepository memberJourneyAssignments,
+            IAchievementRepository achievements,
+            IMemberAchievementRepository memberAchievements,
+            IDailyChallengeRepository dailyChallenges,
+            IPastoralAlertRepository pastoralAlerts,
+            IFaithLevelRepository faithLevels
         )
         {
             Churchs = churchs;
@@ -149,6 +168,15 @@ namespace MyChurch.Infrastructure.Repositories
             ChildGroupAssignments = childGroupAssignments;
             GroupMembers = groupMembers;
             GroupResources = groupResources;
+            Journeys = journeys;
+            JourneyStages = journeyStages;
+            MemberJourneyProgresses = memberJourneyProgresses;
+            MemberJourneyAssignments = memberJourneyAssignments;
+            Achievements = achievements;
+            MemberAchievements = memberAchievements;
+            DailyChallenges = dailyChallenges;
+            PastoralAlerts = pastoralAlerts;
+            FaithLevels = faithLevels;
         }
 
         public async Task<bool> CommitAsync()

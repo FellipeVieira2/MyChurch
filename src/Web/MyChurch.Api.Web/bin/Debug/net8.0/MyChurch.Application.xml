@@ -410,5 +410,53 @@
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageSize">
             <summary>Tamanho da página</summary>
         </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Name">
+            <summary>Nome do plano</summary>
+            <example>Premium</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Price">
+            <summary>Preço do plano</summary>
+            <example>99.90</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.MaxMembers">
+            <summary>Número máximo de membros permitidos</summary>
+            <example>500</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.MaxEvents">
+            <summary>Número máximo de eventos permitidos</summary>
+            <example>50</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.MaxStorageGB">
+            <summary>Espaço de armazenamento em GB</summary>
+            <example>10</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Branches">
+            <summary>Número de filiais permitidas</summary>
+            <example>3</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.Name">
+            <summary>Nome do plano</summary>
+            <example>Premium</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.Price">
+            <summary>Preço do plano</summary>
+            <example>99.90</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.MaxMembers">
+            <summary>Número máximo de membros permitidos</summary>
+            <example>500</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.MaxEvents">
+            <summary>Número máximo de eventos permitidos</summary>
+            <example>50</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.MaxStorageGB">
+            <summary>Espaço de armazenamento em GB</summary>
+            <example>10</example>
+        </member>
+        <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.Branches">
+            <summary>Número de filiais permitidas</summary>
+            <example>3</example>
+        </member>
     </members>
 </doc>

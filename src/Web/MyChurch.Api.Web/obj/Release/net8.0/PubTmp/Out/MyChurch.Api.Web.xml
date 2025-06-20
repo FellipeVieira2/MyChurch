@@ -54,6 +54,11 @@
             Lista todos os capítulos de um livro.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetChaptersByBookName(System.Int32,System.String)">
+            <summary>
+            Lista todos os capítulos de um livro pelo nome do livro e ID da versão.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerse(System.Int32,System.Int32)">
             <summary>
             Retorna um versículo específico de um capítulo.
@@ -62,6 +67,11 @@
         <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVerses(System.Int32)">
             <summary>
             Lista todos os versículos de um capítulo.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetVersesByReference(System.Int32,System.String,System.Int32)">
+            <summary>
+            Lista todos os versículos por referência bíblica (versão, livro e capítulo).
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.BibleVersionController.ImportBibleVersion(MyChurch.Application.Bible.Commands.ImportBibleVersion.ImportBibleVersionCommand)">
@@ -494,6 +504,47 @@
             Returns the verse of the day.
             </summary>
             <returns>Bible verse of the day in JSON format.</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PlanController.GetAll">
+            <summary>
+            Lista todos os planos disponíveis
+            </summary>
+            <response code="200">Sucesso: Lista de planos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PlanController.GetById(System.Int32)">
+            <summary>
+            Busca um plano por ID
+            </summary>
+            <response code="200">Sucesso: Plano encontrado</response>
+            <response code="404">Falha: Plano não encontrado</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PlanController.Create(MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand)">
+            <summary>
+            Cria um novo plano (somente para administradores da plataforma)
+            </summary>
+            <response code="200">Sucesso: ID do plano criado</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PlanController.Update(System.Int32,MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand)">
+            <summary>
+            Atualiza um plano existente (somente para administradores da plataforma)
+            </summary>
+            <response code="200">Sucesso: Plano atualizado</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Plano não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PlanController.Delete(System.Int32)">
+            <summary>
+            Exclui um plano (somente para administradores da plataforma)
+            </summary>
+            <response code="200">Sucesso: Plano excluído</response>
+            <response code="400">Falha: Plano em uso</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Plano não encontrado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>

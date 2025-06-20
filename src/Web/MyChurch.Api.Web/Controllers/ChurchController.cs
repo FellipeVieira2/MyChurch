@@ -14,7 +14,6 @@ namespace MyChurch.Api.Web.Controllers
     {
         // Adiciona construtor para testes
         public ChurchController() : base() { }
-        public ChurchController(ISender mediator) : base(mediator) { }
 
         /// <summary>
         /// Create a new Church

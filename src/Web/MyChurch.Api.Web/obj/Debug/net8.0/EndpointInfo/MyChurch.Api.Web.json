@@ -427,6 +427,38 @@
         }
       }
     },
+    "/api/Bible/versions/{versionId}/books/{bookName}/chapters": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todos os capítulos de um livro pelo nome do livro e ID da versão.",
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "bookName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Bible/chapters/{chapterId}/verses/{verseNumber}": {
       "get": {
         "tags": [
@@ -489,6 +521,47 @@
         "parameters": [
           {
             "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Bible/versions/{versionId}/books/{bookName}/chapters/{chapterNumber}/verses": {
+      "get": {
+        "tags": [
+          "Bible"
+        ],
+        "summary": "Lista todos os versículos por referência bíblica (versão, livro e capítulo).",
+        "parameters": [
+          {
+            "name": "versionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "bookName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chapterNumber",
             "in": "path",
             "required": true,
             "schema": {
@@ -2940,6 +3013,236 @@
         }
       }
     },
+    "/api/journeys": {
+      "post": {
+        "tags": [
+          "Journey"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJourneyCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJourneyCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJourneyCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/complete-stage/{id}": {
+      "post": {
+        "tags": [
+          "Journey"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteJourneyStageCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteJourneyStageCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteJourneyStageCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/complete-daily-challenge/{id}": {
+      "post": {
+        "tags": [
+          "Journey"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/generate-content": {
+      "post": {
+        "tags": [
+          "Journey"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateJourneyContentCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateJourneyContentCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateJourneyContentCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/verify-stage": {
+      "post": {
+        "tags": [
+          "Journey"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyJourneyStageCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyJourneyStageCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyJourneyStageCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/my-journeys": {
+      "get": {
+        "tags": [
+          "Journey"
+        ],
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/leaderboard": {
+      "get": {
+        "tags": [
+          "Journey"
+        ],
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/journeys/pastoral-alerts": {
+      "get": {
+        "tags": [
+          "Journey"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Member": {
       "post": {
         "tags": [
@@ -3818,6 +4121,317 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Plan": {
+      "post": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Cria um novo plano (somente para administradores da plataforma)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlanCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlanCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePlanCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: ID do plano criado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Dados inválidos"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Lista todos os planos disponíveis",
+        "responses": {
+          "200": {
+            "description": "Sucesso: Lista de planos",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/Plan/{id}": {
+      "get": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Busca um plano por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Plano encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Plano não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Atualiza um plano existente (somente para administradores da plataforma)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlanCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlanCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlanCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso: Plano atualizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Plano não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Dados inválidos"
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Plan"
+        ],
+        "summary": "Exclui um plano (somente para administradores da plataforma)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Plano excluído"
+          },
+          "400": {
+            "description": "Falha: Plano em uso",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Plano não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
           }
         }
       }
@@ -5178,6 +5792,16 @@
         },
         "additionalProperties": false
       },
+      "CompleteJourneyStageCommand": {
+        "type": "object",
+        "properties": {
+          "memberResponse": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateAssetCommand": {
         "required": [
           "description",
@@ -5652,6 +6276,62 @@
         },
         "additionalProperties": false
       },
+      "CreateJourneyCommand": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "iconUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateJourneyStageDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateJourneyStageDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/JourneyStageType"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "faithPointsAwarded": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateMemberCommand": {
         "required": [
           "name"
@@ -5758,6 +6438,48 @@
             },
             "description": "Documentos do membro",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreatePlanCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do plano",
+            "nullable": true,
+            "example": "Premium"
+          },
+          "price": {
+            "type": "number",
+            "description": "Preço do plano",
+            "format": "double",
+            "example": 99,9
+          },
+          "maxMembers": {
+            "type": "integer",
+            "description": "Número máximo de membros permitidos",
+            "format": "int32",
+            "example": 500
+          },
+          "maxEvents": {
+            "type": "integer",
+            "description": "Número máximo de eventos permitidos",
+            "format": "int32",
+            "example": 50
+          },
+          "maxStorageGB": {
+            "type": "integer",
+            "description": "Espaço de armazenamento em GB",
+            "format": "int32",
+            "example": 10
+          },
+          "branches": {
+            "type": "integer",
+            "description": "Número de filiais permitidas",
+            "format": "int32",
+            "example": 3
           }
         },
         "additionalProperties": false
@@ -6135,6 +6857,20 @@
         "type": "integer",
         "format": "int32"
       },
+      "GenerateJourneyContentCommand": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GroupDetailsDto": {
         "type": "object",
         "properties": {
@@ -6226,6 +6962,16 @@
           }
         },
         "additionalProperties": false
+      },
+      "JourneyStageType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "LoginCommand": {
         "type": "object",
@@ -7125,6 +7871,48 @@
         },
         "additionalProperties": false
       },
+      "UpdatePlanCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do plano",
+            "nullable": true,
+            "example": "Premium"
+          },
+          "price": {
+            "type": "number",
+            "description": "Preço do plano",
+            "format": "double",
+            "example": 99,9
+          },
+          "maxMembers": {
+            "type": "integer",
+            "description": "Número máximo de membros permitidos",
+            "format": "int32",
+            "example": 500
+          },
+          "maxEvents": {
+            "type": "integer",
+            "description": "Número máximo de eventos permitidos",
+            "format": "int32",
+            "example": 50
+          },
+          "maxStorageGB": {
+            "type": "integer",
+            "description": "Espaço de armazenamento em GB",
+            "format": "int32",
+            "example": 10
+          },
+          "branches": {
+            "type": "integer",
+            "description": "Número de filiais permitidas",
+            "format": "int32",
+            "example": 3
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateWorshipScheduleItemCommand": {
         "type": "object",
         "properties": {
@@ -7177,6 +7965,16 @@
             "minLength": 1,
             "type": "string",
             "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VerifyJourneyStageCommand": {
+        "type": "object",
+        "properties": {
+          "memberJourneyProgressId": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
