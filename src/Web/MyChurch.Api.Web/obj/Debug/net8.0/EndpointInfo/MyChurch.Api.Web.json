@@ -4095,6 +4095,56 @@
         }
       }
     },
+    "/api/PastorBot/explainverse": {
+      "post": {
+        "tags": [
+          "PastorBot"
+        ],
+        "summary": "Get theological explanation for a Bible verse.",
+        "requestBody": {
+          "description": "The verse reference and text",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplainBibleVerseCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplainBibleVerseCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplainBibleVerseCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplainBibleVerseResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplainBibleVerseResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplainBibleVerseResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/PastorBot/verseoftheday": {
       "get": {
         "tags": [
@@ -6776,6 +6826,38 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "ExplainBibleVerseCommand": {
+        "type": "object",
+        "properties": {
+          "verseReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "verseText": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExplainBibleVerseResponse": {
+        "type": "object",
+        "properties": {
+          "explanation": {
+            "type": "string",
+            "nullable": true
+          },
+          "context": {
+            "type": "string",
+            "nullable": true
+          },
+          "application": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "FeedPostDto": {
         "type": "object",

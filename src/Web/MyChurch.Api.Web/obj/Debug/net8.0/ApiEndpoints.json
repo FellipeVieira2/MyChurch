@@ -2507,6 +2507,32 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.PastorBotController",
+    "Method": "ExplainVerse",
+    "RelativePath": "api/PastorBot/explainverse",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.PastorBot.Commands.ExplainBibleVerse.ExplainBibleVerseCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.PastorBot.Commands.ExplainBibleVerse.ExplainBibleVerseResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PastorBotController",
     "Method": "VerseOfTheDay",
     "RelativePath": "api/PastorBot/verseoftheday",
     "HttpMethod": "GET",

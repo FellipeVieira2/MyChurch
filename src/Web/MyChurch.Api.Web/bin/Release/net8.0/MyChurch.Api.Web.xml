@@ -505,6 +505,13 @@
             </summary>
             <returns>Bible verse of the day in JSON format.</returns>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.ExplainVerse(MyChurch.Application.PastorBot.Commands.ExplainBibleVerse.ExplainBibleVerseCommand)">
+            <summary>
+            Get theological explanation for a Bible verse.
+            </summary>
+            <param name="command">The verse reference and text</param>
+            <returns>Theological explanation, context, and application in JSON format.</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.PlanController.GetAll">
             <summary>
             Lista todos os planos disponíveis

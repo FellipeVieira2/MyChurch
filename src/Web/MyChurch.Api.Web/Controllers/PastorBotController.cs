@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-//using MyChurch.Application.PastorBot.Commands.ExplainBiblePassage;
 using MyChurch.Application.PastorBot.Commands.AskPastorBot;
 using MyChurch.Application.PastorBot.Commands.VerseOfTheDay;
+using MyChurch.Application.PastorBot.Commands.ExplainBibleVerse;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -39,6 +39,19 @@ namespace MyChurch.Api.Web.Controllers
         public async Task<IActionResult> VerseOfTheDay()
         {
             var response = await _mediator.Send(new VerseOfTheDayCommand());
+            return Ok(response);
+        }
+        
+        /// <summary>
+        /// Get theological explanation for a Bible verse.
+        /// </summary>
+        /// <param name="command">The verse reference and text</param>
+        /// <returns>Theological explanation, context, and application in JSON format.</returns>
+        [HttpPost("explainverse")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExplainBibleVerseResponse))]
+        public async Task<IActionResult> ExplainVerse([FromBody] ExplainBibleVerseCommand command)
+        {
+            var response = await _mediator.Send(command);
             return Ok(response);
         }
     }
