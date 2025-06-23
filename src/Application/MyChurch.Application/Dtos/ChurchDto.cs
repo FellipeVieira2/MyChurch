@@ -1,5 +1,4 @@
-﻿
-namespace MyChurch.Application.Dtos
+﻿namespace MyChurch.Application.Dtos
 {
     public class ChurchDto
     {
@@ -13,6 +12,10 @@ namespace MyChurch.Application.Dtos
 
         // Assinatura da igreja  
         public SubscriptionDto Subscription { get; set; }
+        
+        // Banking information (only visible to admin users)
+        public BankingInfoDto BankingInfo { get; set; }
+
         public static ChurchDto New(Domain.Entities.Church church)
         {
             return new ChurchDto

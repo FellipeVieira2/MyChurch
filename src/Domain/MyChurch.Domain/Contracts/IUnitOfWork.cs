@@ -57,6 +57,9 @@
         IMemberFavoriteVerseRepository MemberFavoriteVerses { get; }
         IMemberConfigurationRepository MemberConfigurations { get; }
         IPreLaunchInterestRepository PreLaunchInterests { get; }
+        IBibleReadingPlanRepository BibleReadingPlans { get; }
+        IBibleReadingPlanStageRepository BibleReadingPlanStages { get; }
+        IMemberBibleReadingProgressRepository MemberBibleReadingProgresses { get; }
         Task<bool> CommitAsync();
     }
 }

@@ -1,11 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Entities.Bible;
 
 namespace MyChurch.Infrastructure
 {
     public class MyChurchDbContext : DbContext
     {
         public MyChurchDbContext(DbContextOptions<MyChurchDbContext> options) : base(options) { }
+
+        public DbSet<BibleReadingPlan> BibleReadingPlans { get; set; }
+        public DbSet<BibleReadingPlanStage> BibleReadingPlanStages { get; set; }
+        public DbSet<MemberBibleReadingProgress> MemberBibleReadingProgresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

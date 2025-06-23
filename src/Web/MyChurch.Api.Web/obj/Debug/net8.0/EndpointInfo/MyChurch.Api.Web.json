@@ -684,6 +684,295 @@
         }
       }
     },
+    "/api/BibleReadingPlan/assign/{planId}": {
+      "post": {
+        "tags": [
+          "BibleReadingPlan"
+        ],
+        "summary": "Atribui um plano de leitura bíblica a um membro",
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "ID do plano a ser atribuído",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sucesso: Plano atribuído"
+          },
+          "400": {
+            "description": "Falha: Requisição inválida",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/BibleReadingPlan/{planId}/complete-stage/{stageId}": {
+      "post": {
+        "tags": [
+          "BibleReadingPlan"
+        ],
+        "summary": "Marca uma etapa de leitura bíblica como concluída",
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "ID do plano de leitura",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "stageId",
+            "in": "path",
+            "description": "ID da etapa concluída",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Sucesso: Etapa marcada como concluída"
+          },
+          "400": {
+            "description": "Falha: Requisição inválida",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/BibleReadingPlan": {
+      "get": {
+        "tags": [
+          "BibleReadingPlan"
+        ],
+        "summary": "Lista todos os planos de leitura bíblica disponíveis",
+        "parameters": [
+          {
+            "name": "includeStages",
+            "in": "query",
+            "description": "Se true, inclui as etapas detalhadas de cada plano",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Lista de planos de leitura bíblica",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BibleReadingPlanDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BibleReadingPlanDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BibleReadingPlanDto"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/BibleReadingPlan/{id}": {
+      "get": {
+        "tags": [
+          "BibleReadingPlan"
+        ],
+        "summary": "Obtém detalhes de um plano de leitura bíblica específico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID do plano de leitura",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Detalhes do plano",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Plano não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/BibleReadingPlan/progress/{planId}": {
+      "get": {
+        "tags": [
+          "BibleReadingPlan"
+        ],
+        "summary": "Obtém o progresso do membro em um plano de leitura bíblica específico",
+        "parameters": [
+          {
+            "name": "planId",
+            "in": "path",
+            "description": "ID do plano de leitura",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso: Progresso do membro no plano",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanProgressDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanProgressDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibleReadingPlanProgressDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Falha: Requisição inválida",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
     "/api/BibleVersion/import": {
       "post": {
         "tags": [
@@ -3941,6 +4230,109 @@
         }
       }
     },
+    "/api/Member/{id}/change-password": {
+      "put": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Altera a senha de um membro (apenas para administradores)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminChangePasswordCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminChangePasswordCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminChangePasswordCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Sucesso: Senha alterada"
+          },
+          "400": {
+            "description": "Falha: Requisição inválida",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falha: Não autorizado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Falha: Membro não encontrado",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Member/{memberId}/approve": {
       "put": {
         "tags": [
@@ -5894,6 +6286,16 @@
         },
         "additionalProperties": false
       },
+      "AdminChangePasswordCommand": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AskPastorBotCommand": {
         "type": "object",
         "properties": {
@@ -6051,6 +6453,202 @@
             "nullable": true
           },
           "pixKeyType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BibleReadingPlanDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "durationInDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "isPublic": {
+            "type": "boolean"
+          },
+          "churchId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BibleReadingPlanStageDto"
+            },
+            "nullable": true
+          },
+          "totalStages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BibleReadingPlanProgressDto": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "$ref": "#/components/schemas/BibleReadingPlanDto"
+          },
+          "completedStages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalStages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "progressPercentage": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "nextStage": {
+            "$ref": "#/components/schemas/BibleReadingPlanStageDto"
+          },
+          "stages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BibleReadingPlanStageDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BibleReadingPlanStageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bibleReadingPlanId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "verseReferences": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCompleted": {
+            "type": "boolean"
+          },
+          "dateCompleted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "parsedReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BibleReference"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "navigableReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BibleReferenceInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "structuredReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChapterBasedReference"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BibleReference": {
+        "type": "object",
+        "properties": {
+          "book": {
+            "type": "string",
+            "nullable": true
+          },
+          "chapter": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startVerse": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "endVerse": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "endChapter": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BibleReferenceInfo": {
+        "type": "object",
+        "properties": {
+          "book": {
+            "type": "string",
+            "nullable": true
+          },
+          "chapter": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startVerse": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "endVerse": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "displayText": {
             "type": "string",
             "nullable": true
           }
@@ -6248,6 +6846,24 @@
         },
         "additionalProperties": false
       },
+      "ChapterBasedReference": {
+        "type": "object",
+        "properties": {
+          "book": {
+            "type": "string",
+            "nullable": true
+          },
+          "chapters": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChurchDto": {
         "type": "object",
         "properties": {
@@ -6283,6 +6899,9 @@
           },
           "subscription": {
             "$ref": "#/components/schemas/SubscriptionDto"
+          },
+          "bankingInfo": {
+            "$ref": "#/components/schemas/BankingInfoDto"
           }
         },
         "additionalProperties": false

@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Infrastructure.Utils.S3;
 using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.Member.Commands.UpdateMember
@@ -60,11 +61,13 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<UpdateMemberCommandHandler> _logger;
+        private readonly IS3Helper _s3Helper;
 
-        public UpdateMemberCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateMemberCommandHandler> logger)
+        public UpdateMemberCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateMemberCommandHandler> logger, IS3Helper s3Helper)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _s3Helper = s3Helper;
         }
 
         public async Task<MemberDto> Handle(UpdateMemberCommand request, CancellationToken cancellationToken)
@@ -94,6 +97,13 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                 ValidationException.ThrowException("Member", "Member not found or does not belong to your church.");
             }
 
+            // Verifica se há foto para upload
+            string? photoUrl = null;
+            if (!string.IsNullOrEmpty(request.Photo) && request.Photo != member.Photo)
+            {
+                photoUrl = await UploadPhotoAsync(request.Photo, cancellationToken);
+            }
+
             // Atualização centralizada via domínio
             member.Update(
                 request.Name,
@@ -108,7 +118,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                 request.Ministry?.ToString(),
                 request.IsActive,
                 request.Notes,
-                request.Photo,
+                photoUrl ?? request.Photo, // Usa a URL da foto uploada ou mantém a atual
                 request.BirthCity,
                 request.BirthState
             );
@@ -165,6 +175,18 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
             _logger.LogInformation("Membro atualizado com sucesso. MemberId: {MemberId}", member.Id);
 
             return MemberDto.New(member);
+        }
+
+        private async Task<string> UploadPhotoAsync(string photoBase64, CancellationToken cancellationToken)
+        {
+            if (photoBase64.Contains(','))
+                photoBase64 = photoBase64.Split(',')[1];
+
+            var photoBytes = Convert.FromBase64String(photoBase64);
+            using var photoStream = new MemoryStream(photoBytes);
+            var photoUrl = await _s3Helper.UploadFileAsync(photoStream, $"{Guid.NewGuid()}photo.jpg", "image/jpeg", cancellationToken);
+
+            return photoUrl;
         }
     }
 }

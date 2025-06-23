@@ -7,6 +7,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Domain.Enum;
+using Amazon.Runtime.Telemetry;
 
 namespace MyChurch.Application.Church.Queries.GetChurch
 {
@@ -30,7 +31,6 @@ namespace MyChurch.Application.Church.Queries.GetChurch
         {
             var church = await _unitOfWork.Churchs.Query().AsNoTrackingWithIdentityResolution()
                 .Include(c => c.Address)
-                .Include(c => c.Members)
                 .Include(c => c.Subscription)
                     .ThenInclude(x => x.Plan)
                 .FirstOrDefaultAsync(c => c.Id == request.Id && c.Members.Any(x => x.Id == request.UserId), cancellationToken);
@@ -40,8 +40,7 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 ValidationException.ThrowException("Get", "You do not have permission to update this church.");
             }
 
-            var member = church.Members.FirstOrDefault(x => x.Id == request.UserId);
-            var isAdmin = member != null && member.Role == UserRole.Admin;
+            var isAdmin = request.Role == UserRole.Admin.ToString();
 
             var dto = new ChurchDto
             {
@@ -51,7 +50,6 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 Phone = church.Phone,
                 Logo = church.LogoFileName,
                 Address = AddressDto.New(church.Address),
-                Members = church.Members.Select(MemberDto.New).ToList(),
                 Subscription = church.Subscription != null ? SubscriptionDto.New(church.Subscription) : null
             };
 
@@ -59,6 +57,20 @@ namespace MyChurch.Application.Church.Queries.GetChurch
             {
                 dto.Members = null;
                 dto.Subscription = null;
+            }
+            else
+            {
+                // If user is admin, include banking information
+                var bankingInfo = await _unitOfWork.BankingInfos.Query()
+                    .FirstOrDefaultAsync(b => b.ChurchId == church.Id, cancellationToken);
+                
+                if (bankingInfo != null)
+                {
+                    dto.BankingInfo = BankingInfoDto.New(bankingInfo);
+                }else
+                {
+                    dto.BankingInfo = null;
+                }
             }
 
             return dto;

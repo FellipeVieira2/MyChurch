@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Mychurch.Common.WebClients.Asaas;
@@ -141,6 +142,19 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddFluentValidationRulesToSwagger();
 
 var app = builder.Build();
+
+// Seed default Bible reading plans
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<MyChurchDbContext>();
+    
+    // Apply migrations
+    dbContext.Database.Migrate();
+    
+    // Seed data
+    BibleReadingPlanSeedData.SeedDefaultPlans(dbContext);
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>

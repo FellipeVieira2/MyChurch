@@ -89,6 +89,51 @@
             Remove um versículo dos favoritos do membro.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleReadingPlanController.GetAllPlans(System.Boolean)">
+            <summary>
+            Lista todos os planos de leitura bíblica disponíveis
+            </summary>
+            <param name="includeStages">Se true, inclui as etapas detalhadas de cada plano</param>
+            <response code="200">Sucesso: Lista de planos de leitura bíblica</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleReadingPlanController.GetPlanDetails(System.Int32)">
+            <summary>
+            Obtém detalhes de um plano de leitura bíblica específico
+            </summary>
+            <param name="id">ID do plano de leitura</param>
+            <response code="200">Sucesso: Detalhes do plano</response>
+            <response code="404">Falha: Plano não encontrado</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleReadingPlanController.AssignPlan(System.Int32)">
+            <summary>
+            Atribui um plano de leitura bíblica a um membro
+            </summary>
+            <param name="planId">ID do plano a ser atribuído</param>
+            <response code="204">Sucesso: Plano atribuído</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleReadingPlanController.CompleteStage(System.Int32,System.Int32)">
+            <summary>
+            Marca uma etapa de leitura bíblica como concluída
+            </summary>
+            <param name="planId">ID do plano de leitura</param>
+            <param name="stageId">ID da etapa concluída</param>
+            <response code="204">Sucesso: Etapa marcada como concluída</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleReadingPlanController.GetMemberProgress(System.Int32)">
+            <summary>
+            Obtém o progresso do membro em um plano de leitura bíblica específico
+            </summary>
+            <param name="planId">ID do plano de leitura</param>
+            <response code="200">Sucesso: Progresso do membro no plano</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.BibleVersionController.ImportBibleVersion(MyChurch.Application.Bible.Commands.ImportBibleVersion.ImportBibleVersionCommand)">
             <summary>
             Importa uma versão da Bíblia a partir de um arquivo JSON.
@@ -450,6 +495,15 @@
             <response code="204">Success: Password Activaded</response>
             <response code="400">Failure: Invalid Requet</response>
             <response code="401">Failure: error</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.AdminChangePassword(System.Int32,MyChurch.Application.Member.Commands.AdminChangePassword.AdminChangePasswordCommand)">
+            <summary>
+            Altera a senha de um membro (apenas para administradores)
+            </summary>
+            <response code="204">Sucesso: Senha alterada</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Membro não encontrado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32)">
             <summary>

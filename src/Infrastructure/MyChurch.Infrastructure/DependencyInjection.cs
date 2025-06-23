@@ -74,6 +74,11 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IMemberConfigurationRepository, MemberConfigurationRepository>();
             services.AddScoped<IPreLaunchInterestRepository, PreLaunchInterestRepository>();
 
+            // Bible Reading Plan repositories
+            services.AddScoped<IBibleReadingPlanRepository, BibleReadingPlanRepository>();
+            services.AddScoped<IBibleReadingPlanStageRepository, BibleReadingPlanStageRepository>();
+            services.AddScoped<IMemberBibleReadingProgressRepository, MemberBibleReadingProgressRepository>();
+
             services.AddDbContext<MyChurchDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(connectionString));

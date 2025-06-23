@@ -343,6 +343,99 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("banking_info", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.BibleReadingPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("DurationInDays")
+                        .HasColumnType("int")
+                        .HasColumnName("duration_in_days");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_default");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_public");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("bible_reading_plan", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.BibleReadingPlanStage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BibleReadingPlanId")
+                        .HasColumnType("int")
+                        .HasColumnName("bible_reading_plan_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int")
+                        .HasColumnName("order");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.Property<string>("VerseReferences")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("verse_references");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BibleReadingPlanId", "Order")
+                        .IsUnique();
+
+                    b.ToTable("bible_reading_plan_stage", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Book", b =>
                 {
                     b.Property<int>("Id")
@@ -485,6 +578,51 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasIndex("HymnId");
 
                     b.ToTable("hymn_verses", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberBibleReadingProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BibleReadingPlanId")
+                        .HasColumnType("int")
+                        .HasColumnName("bible_reading_plan_id");
+
+                    b.Property<int>("BibleReadingPlanStageId")
+                        .HasColumnType("int")
+                        .HasColumnName("bible_reading_plan_stage_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<DateTime>("DateCompleted")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("date_completed");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BibleReadingPlanId");
+
+                    b.HasIndex("BibleReadingPlanStageId");
+
+                    b.HasIndex("MemberId", "BibleReadingPlanStageId")
+                        .IsUnique();
+
+                    b.ToTable("member_bible_reading_progress", "postgres");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberFavoriteVerse", b =>
@@ -2464,6 +2602,27 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.BibleReadingPlan", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.BibleReadingPlanStage", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Bible.BibleReadingPlan", "BibleReadingPlan")
+                        .WithMany("BibleReadingPlanStages")
+                        .HasForeignKey("BibleReadingPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BibleReadingPlan");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Book", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Bible.Version", "Version")
@@ -2495,6 +2654,33 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Hymn");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberBibleReadingProgress", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Bible.BibleReadingPlan", "BibleReadingPlan")
+                        .WithMany("MemberBibleReadingProgresses")
+                        .HasForeignKey("BibleReadingPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Bible.BibleReadingPlanStage", "BibleReadingPlanStage")
+                        .WithMany()
+                        .HasForeignKey("BibleReadingPlanStageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BibleReadingPlan");
+
+                    b.Navigation("BibleReadingPlanStage");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberFavoriteVerse", b =>
@@ -2986,6 +3172,13 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.BibleReadingPlan", b =>
+                {
+                    b.Navigation("BibleReadingPlanStages");
+
+                    b.Navigation("MemberBibleReadingProgresses");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.Book", b =>

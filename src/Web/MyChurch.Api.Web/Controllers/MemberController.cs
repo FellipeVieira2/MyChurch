@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
+using MyChurch.Application.Member.Commands.AdminChangePassword;
 using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
 using MyChurch.Application.Member.Commands.CreateMemberImportFile;
@@ -44,6 +45,30 @@ namespace MyChurch.Api.Web.Controllers
             await Mediator.Send(command);
             return NoContent();
         }
+
+        /// <summary>
+        /// Altera a senha de um membro (apenas para administradores)
+        /// </summary>
+        /// <response code="204">Sucesso: Senha alterada</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        /// <response code="404">Falha: Membro não encontrado</response>
+        [HttpPut("{id}/change-password")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AdminChangePassword([FromRoute] int id, [FromBody] AdminChangePasswordCommand command)
+        {
+            var cmd = AuthorizationRequestCreate<AdminChangePasswordCommand>();
+            cmd.MemberId = id;
+            cmd.NewPassword = command.NewPassword;
+            
+            await Mediator.Send(cmd);
+            return NoContent();
+        }
+
         /// <summary>
         /// Get Member by ID
         /// </summary>
