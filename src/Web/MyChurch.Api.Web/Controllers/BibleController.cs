@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyChurch.Application.Bible.Commands.AddFavoriteVerse;
+using MyChurch.Application.Bible.Commands.RemoveFavoriteVerse;
 using MyChurch.Application.Bible.Queries.GetAllBibleVersions;
 using MyChurch.Application.Bible.Queries.GetBooksByVersion;
 using MyChurch.Application.Bible.Queries.GetChaptersByBook;
 using MyChurch.Application.Bible.Queries.GetChaptersByBookName;
+using MyChurch.Application.Bible.Queries.GetMemberFavoriteVerses;
 using MyChurch.Application.Bible.Queries.GetVerseByChapterAndNumber;
 using MyChurch.Application.Bible.Queries.GetVersesByChapter;
 using MyChurch.Application.Bible.Queries.GetVersesByReference;
@@ -110,6 +113,51 @@ namespace MyChurch.Api.Web.Controllers
             query.ChapterNumber = chapterNumber;
             var result = await Mediator.Send(query);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Lista todos os versículos favoritos do membro.
+        /// </summary>
+        [HttpGet("favorites")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFavoriteVerses()
+        {
+            var query = AuthorizationRequestCreate<GetMemberFavoriteVersesQuery>();
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Adiciona um versículo aos favoritos do membro.
+        /// </summary>
+        [HttpPost("favorites")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddFavoriteVerse([FromBody] AddFavoriteVerseCommand command)
+        {
+            var cmd = AuthorizationRequestCreate<AddFavoriteVerseCommand>();
+            cmd.VersionId = command.VersionId;
+            cmd.BookName = command.BookName;
+            cmd.ChapterNumber = command.ChapterNumber;
+            cmd.VerseNumber = command.VerseNumber;
+
+            var result = await Mediator.Send(cmd);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Remove um versículo dos favoritos do membro.
+        /// </summary>
+        [HttpDelete("favorites/{favoriteVerseId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveFavoriteVerse(int favoriteVerseId)
+        {
+            var command = AuthorizationRequestCreate<RemoveFavoriteVerseCommand>();
+            command.FavoriteVerseId = favoriteVerseId;
+            
+            await Mediator.Send(command);
+            return Ok();
         }
     }
 }

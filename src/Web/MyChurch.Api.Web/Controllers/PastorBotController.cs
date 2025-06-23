@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using MyChurch.Application.PastorBot.Commands.AskPastorBot;
 using MyChurch.Application.PastorBot.Commands.VerseOfTheDay;
@@ -8,15 +9,8 @@ namespace MyChurch.Api.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PastorBotController : ControllerBase
+    public class PastorBotController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public PastorBotController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         /// <summary>
         /// Ask to Pastor.
         /// </summary>
@@ -24,9 +18,11 @@ namespace MyChurch.Api.Web.Controllers
         /// <returns>Explanation, context, and application in JSON format.</returns>
         [HttpPost("ask")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AskPastorBotResponse))]
-        public async Task<IActionResult> Explain([FromBody] AskPastorBotCommand command)
+        public async Task<IActionResult> Ask([FromBody] AskPastorBotCommand command)
         {
-            var response = await _mediator.Send(command);
+            var req = AuthorizationRequestCreate<AskPastorBotCommand>();
+            req.Question = command.Question;
+            var response = await Mediator.Send(req);
             return Ok(response);
         }
 
@@ -38,7 +34,8 @@ namespace MyChurch.Api.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VerseOfTheDayResponse))]
         public async Task<IActionResult> VerseOfTheDay()
         {
-            var response = await _mediator.Send(new VerseOfTheDayCommand());
+            var req = AuthorizationRequestCreate<VerseOfTheDayCommand>();
+            var response = await Mediator.Send(req);
             return Ok(response);
         }
         
@@ -51,7 +48,10 @@ namespace MyChurch.Api.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExplainBibleVerseResponse))]
         public async Task<IActionResult> ExplainVerse([FromBody] ExplainBibleVerseCommand command)
         {
-            var response = await _mediator.Send(command);
+            var req = AuthorizationRequestCreate<ExplainBibleVerseCommand>();
+            req.VerseReference = command.VerseReference;
+            req.VerseText = command.VerseText;
+            var response = await Mediator.Send(req);
             return Ok(response);
         }
     }

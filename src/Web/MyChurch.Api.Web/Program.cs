@@ -1,4 +1,3 @@
-using System.Text;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
@@ -8,6 +7,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Mychurch.Common.WebClients.Asaas;
@@ -17,7 +17,10 @@ using MyChurch.Api.Web.Middleware;
 using MyChurch.Application;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Infrastructure;
+using MyChurch.Infrastructure.Utils.Postmark;
+using MyChurch.Infrastructure.Utils.SES;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +69,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.InjectInfra(builder.Configuration);
 builder.Services.AddScoped<IAsaasWebClient, AsaasWebClient>();
+builder.Services.AddScoped<IEmailService, PostmarkEmailService>();
 
 var awsConfig = builder.Configuration.GetSection("AWS");
 var awsCredentials = new BasicAWSCredentials(

@@ -6,10 +6,11 @@ using MyChurch.Domain.Contracts;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using MyChurch.Application.Dtos;
 
 namespace MyChurch.Application.PastorBot.Commands.VerseOfTheDay
 {
-    public class VerseOfTheDayCommand : IRequest<VerseOfTheDayResponse>
+    public class VerseOfTheDayCommand : JwtMemberDto, IRequest<VerseOfTheDayResponse>
     {
     }
 

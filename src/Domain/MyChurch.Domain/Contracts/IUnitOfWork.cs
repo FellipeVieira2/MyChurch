@@ -54,6 +54,9 @@
         IDailyChallengeRepository DailyChallenges { get; }
         IPastoralAlertRepository PastoralAlerts { get; }
         IFaithLevelRepository FaithLevels { get; }
+        IMemberFavoriteVerseRepository MemberFavoriteVerses { get; }
+        IMemberConfigurationRepository MemberConfigurations { get; }
+        IPreLaunchInterestRepository PreLaunchInterests { get; }
         Task<bool> CommitAsync();
     }
 }

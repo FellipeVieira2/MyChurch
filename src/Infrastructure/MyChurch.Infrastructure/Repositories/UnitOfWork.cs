@@ -67,6 +67,9 @@ namespace MyChurch.Infrastructure.Repositories
         public IDailyChallengeRepository DailyChallenges { get; }
         public IPastoralAlertRepository PastoralAlerts { get; }
         public IFaithLevelRepository FaithLevels { get; private set; }
+        public IMemberFavoriteVerseRepository MemberFavoriteVerses { get; }
+        public IMemberConfigurationRepository MemberConfigurations { get; }
+        public IPreLaunchInterestRepository PreLaunchInterests { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -121,8 +124,10 @@ namespace MyChurch.Infrastructure.Repositories
             IMemberAchievementRepository memberAchievements,
             IDailyChallengeRepository dailyChallenges,
             IPastoralAlertRepository pastoralAlerts,
-            IFaithLevelRepository faithLevels
-        )
+            IFaithLevelRepository faithLevels,
+            IMemberFavoriteVerseRepository memberFavoriteVerses,
+            IMemberConfigurationRepository memberConfigurations,
+            IPreLaunchInterestRepository preLaunchInterests)
         {
             Churchs = churchs;
             Donations = donations;
@@ -177,6 +182,9 @@ namespace MyChurch.Infrastructure.Repositories
             DailyChallenges = dailyChallenges;
             PastoralAlerts = pastoralAlerts;
             FaithLevels = faithLevels;
+            MemberFavoriteVerses = memberFavoriteVerses;
+            MemberConfigurations = memberConfigurations;
+            PreLaunchInterests = preLaunchInterests;
         }
 
         public async Task<bool> CommitAsync()

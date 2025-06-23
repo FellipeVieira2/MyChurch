@@ -1,11 +1,14 @@
 ﻿using Amazon.S3;
+using Amazon.SimpleEmail;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyChurch.Domain.Contracts;
 using MyChurch.Infrastructure.Repositories;
+using MyChurch.Infrastructure.Utils.Postmark;
 using MyChurch.Infrastructure.Utils.S3;
+using MyChurch.Infrastructure.Utils.SES;
 
 namespace MyChurch.Infrastructure
 {
@@ -67,6 +70,9 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IDailyChallengeRepository, DailyChallengeRepository>();
             services.AddScoped<IPastoralAlertRepository, PastoralAlertRepository>();
             services.AddScoped<IFaithLevelRepository, FaithLevelRepository>();
+            services.AddScoped<IMemberFavoriteVerseRepository, MemberFavoriteVerseRepository>();
+            services.AddScoped<IMemberConfigurationRepository, MemberConfigurationRepository>();
+            services.AddScoped<IPreLaunchInterestRepository, PreLaunchInterestRepository>();
 
             services.AddDbContext<MyChurchDbContext>(options =>
             {
@@ -76,6 +82,9 @@ namespace MyChurch.Infrastructure
 #endif
             });
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+            // Register email service (changed from GoogleEmailService to PostmarkEmailService)
+            services.AddScoped<IEmailService, PostmarkEmailService>();
 
             return services;
         }

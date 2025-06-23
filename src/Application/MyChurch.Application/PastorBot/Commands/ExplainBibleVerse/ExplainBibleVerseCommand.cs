@@ -1,12 +1,13 @@
 using DotnetGeminiSDK.Client.Interfaces;
 using MediatR;
+using MyChurch.Application.Dtos;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace MyChurch.Application.PastorBot.Commands.ExplainBibleVerse
 {
-    public class ExplainBibleVerseCommand : IRequest<ExplainBibleVerseResponse>
+    public class ExplainBibleVerseCommand : JwtMemberDto, IRequest<ExplainBibleVerseResponse>
     {
         public string VerseReference { get; set; } = string.Empty;
         public string VerseText { get; set; } = string.Empty;

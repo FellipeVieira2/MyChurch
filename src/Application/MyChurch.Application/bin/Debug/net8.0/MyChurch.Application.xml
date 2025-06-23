@@ -276,6 +276,30 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
         </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
+            <summary>Nome completo</summary>
+            <example>João Silva</example>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Email">
+            <summary>Email para contato</summary>
+            <example>joao.silva@email.com</example>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Phone">
+            <summary>Telefone</summary>
+            <example>(11) 98765-4321</example>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.ChurchName">
+            <summary>Nome da igreja</summary>
+            <example>Igreja Batista Central</example>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.ChurchRole">
+            <summary>Cargo/função na igreja</summary>
+            <example>Pastor</example>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Comments">
+            <summary>Comentários adicionais</summary>
+            <example>Gostaria de saber mais sobre os recursos de gestão financeira</example>
+        </member>
         <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
             <summary>Arquivo JSON no formato da Harpa</summary>
         </member>

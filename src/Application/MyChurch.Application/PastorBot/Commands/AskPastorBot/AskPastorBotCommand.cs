@@ -1,12 +1,13 @@
 ﻿using DotnetGeminiSDK.Client.Interfaces;
 using MediatR;
+using MyChurch.Application.Dtos;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace MyChurch.Application.PastorBot.Commands.AskPastorBot
 {
-    public class AskPastorBotCommand : IRequest<AskPastorBotResponse>
+    public class AskPastorBotCommand : JwtMemberDto, IRequest<AskPastorBotResponse>
     {
         public string Question { get; set; } = string.Empty;
     }

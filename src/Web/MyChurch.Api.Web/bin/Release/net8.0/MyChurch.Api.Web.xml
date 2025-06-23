@@ -74,6 +74,21 @@
             Lista todos os versículos por referência bíblica (versão, livro e capítulo).
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.GetFavoriteVerses">
+            <summary>
+            Lista todos os versículos favoritos do membro.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.AddFavoriteVerse(MyChurch.Application.Bible.Commands.AddFavoriteVerse.AddFavoriteVerseCommand)">
+            <summary>
+            Adiciona um versículo aos favoritos do membro.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.BibleController.RemoveFavoriteVerse(System.Int32)">
+            <summary>
+            Remove um versículo dos favoritos do membro.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.BibleVersionController.ImportBibleVersion(MyChurch.Application.Bible.Commands.ImportBibleVersion.ImportBibleVersionCommand)">
             <summary>
             Importa uma versão da Bíblia a partir de um arquivo JSON.
@@ -410,6 +425,16 @@
             Busca um hino pelo número, retornando o coro e os versos.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
+            <summary>
+            Obtém as configurações do membro autenticado.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.UpdateMemberConfiguration(MyChurch.Application.Member.Commands.UpdateMemberConfiguration.UpdateMemberConfigurationCommand)">
+            <summary>
+            Atualiza as configurações do membro autenticado.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.CreateMember(MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand)">
             <summary>
             Create a new Member
@@ -492,7 +517,7 @@
             <response code="204">Sucesso: Membro aprovado</response>
             <response code="404">Falha: Membro não encontrado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Explain(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Ask(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
             <summary>
             Ask to Pastor.
             </summary>
@@ -552,6 +577,21 @@
             <response code="400">Falha: Plano em uso</response>
             <response code="401">Falha: Não autorizado</response>
             <response code="404">Falha: Plano não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PreLaunchController.RegisterInterest(MyChurch.Application.Dtos.CreatePreLaunchInterestDto)">
+            <summary>
+            Registra um novo interesse no pré-lançamento
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PreLaunchController.ConfirmInterest(System.String)">
+            <summary>
+            Confirma o email de um interesse no pré-lançamento através do token
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.PreLaunchController.GetInterests(System.Nullable{System.Boolean})">
+            <summary>
+            Obtém todos os interesses no pré-lançamento (requer autenticação de administrador)
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>
