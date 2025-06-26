@@ -56,30 +56,39 @@ namespace MyChurch.Application.PastorBot.Commands.VerseOfTheDay
                 .VerseOfTheDays.Query()
                 .OrderByDescending(v => v.Date)
                 .Take(10)
-                .Select(v => v.Reference)
                 .ToListAsync(cancellationToken);
 
-            var referenciasString = string.Join(", ", last10References.Select(r => $"\"{r}\""));
             var referenciasPrompt = last10References.Count > 0
-                ? $"Não repita nenhum dos seguintes versículos: {referenciasString}. "
+                ? $"Não repita nenhum dos seguintes versículos: {JsonSerializer.Serialize(last10References)}. para entender a lista [Livro capitulo : Versiculo](nunca repita, tente ao maximo entender para nao repitir nunca esses que estão na lista) "
                 : string.Empty;
 
             // Prompt dinâmico
             var prompt = $@"Você é um pastor Reformado. Retorne apenas um versículo bíblico motivacional do dia, sorteando entre muitos que se encaixam nas especificações, em português brasileiro. {referenciasPrompt}Sem explicações ou comentários adicionais. O resultado deve ser um JSON exatamente neste formato:
 {{ ""verseText"":""texto do versiculo"", ""reference"": ""livro capitulo:versiculo"" }}";
 
-            var response = await _geminiClient.TextPrompt(prompt);
+            // Nova lógica: tentar até 5 vezes não repetir
+            const int maxTries = 5;
+            VerseOfTheDayResponse? result = null;
+            for (int attempt = 0; attempt < maxTries; attempt++)
+            {
+                var response = await _geminiClient.TextPrompt(prompt);
+                var raw = response.Candidates.First().Content.Parts.First().Text;
+                var cleaned = Regex.Replace(raw, @"^```(json)?|```$", string.Empty, RegexOptions.Multiline).Trim();
+                var match = Regex.Match(cleaned, @"\{[\s\S]*\}");
+                if (!match.Success)
+                    continue;
+                var json = match.Value;
+                result = JsonSerializer.Deserialize<VerseOfTheDayResponse>(json);
+                if (result == null)
+                    continue;
+                // Checa se reference já foi usada
+                if (!last10References.Any(x => x.Reference == result.Reference))
+                    break;
+                result = null; // repete se for repetido
+            }
 
-            var raw = response.Candidates.First().Content.Parts.First().Text;
-            var cleaned = Regex.Replace(raw, @"^```(json)?|```$", string.Empty, RegexOptions.Multiline).Trim();
-            var match = Regex.Match(cleaned, @"\{[\s\S]*\}");
-            if (!match.Success)
-                throw new Exception("Resposta do modelo em formato inesperado.");
-
-            var json = match.Value;
-            var result = JsonSerializer.Deserialize<VerseOfTheDayResponse>(json);
             if (result == null)
-                throw new Exception("Resposta do modelo em formato inesperado.");
+                throw new Exception("Não foi possível obter um versículo não repetido após várias tentativas.");
 
             // Salva no banco
             var entity = new Domain.Entities.VerseOfTheDay

@@ -24,6 +24,8 @@ namespace MyChurch.Application.Campaign.Queries
         public bool IsActive { get; set; }
         public string? CoverImageUrl { get; set; }
         public bool IsCompleted { get; set; }
+        public decimal PercentComplete { get; set; } // Percentual da campanha
+
     }
 
     public class GetAllActiveCampaignsQueryHandler : IRequestHandler<GetAllActiveCampaignsQuery, PagedResultDto<CampaignDto>>
@@ -58,7 +60,8 @@ namespace MyChurch.Application.Campaign.Queries
                     EndDate = c.EndDate,
                     IsActive = c.IsActive,
                     CoverImageUrl = c.CoverImageUrl,
-                    IsCompleted = c.IsCompleted
+                    IsCompleted = c.IsCompleted,
+                    PercentComplete = c.GoalAmount > 0 ? (c.AmountRaised / c.GoalAmount) * 100 : 0
                 })
                 .ToListAsync(cancellationToken);
             return new PagedResultDto<CampaignDto>(items, request.PageNumber, request.PageSize, totalCount);

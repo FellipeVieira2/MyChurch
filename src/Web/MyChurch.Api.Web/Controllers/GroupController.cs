@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using MyChurch.Application.Group.Commands;
-using MyChurch.Application.Group.Queries;
-using MyChurch.Application.Dtos;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MyChurch.Api.Web.Middleware;
+using MyChurch.Application.Group.Commands;
 
 namespace MyChurch.Api.Web.Controllers
 {
