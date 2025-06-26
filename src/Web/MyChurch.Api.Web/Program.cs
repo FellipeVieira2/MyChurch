@@ -198,5 +198,6 @@ app.UseMiddleware<JwtMiddleware>();
 app.MapControllers();
 app.MapHub<WorshipServiceHub>("/ws/worship"); // Mapeamento de endpoints por último
 app.MapHub<CampaignHub>("/campaignHub"); // Mapeia o CampaignHub para SignalR
+app.MapHub<GroupHub>("/hubs/group"); // Novo Hub para grupos pequenos
 
 app.Run();

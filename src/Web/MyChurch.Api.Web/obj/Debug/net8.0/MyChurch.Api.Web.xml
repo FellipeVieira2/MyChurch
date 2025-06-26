@@ -263,6 +263,16 @@
             Efetua retirada do valor disponível para a conta da igreja
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EngagementController.GetRanking(System.Int32,System.Int32)">
+            <summary>
+            Retorna o ranking de engajamento dos membros da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EngagementController.GetCommunityScore">
+            <summary>
+            Retorna o score médio de engajamento da comunidade
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.EventController.CreateEvent(MyChurch.Application.Event.Commands.CreateEvent.CreateEventCommand)">
             <summary>
             Cria um novo evento
@@ -443,21 +453,12 @@
             <response code="400">Falha: Dados inválidos</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.GroupController.GetGroupDetails(System.Int32)">
+        <member name="M:MyChurch.Api.Web.Controllers.GroupController.CreateGroupMeeting(MyChurch.Application.Group.Commands.CreateGroupMeetingCommand)">
             <summary>
-            Obtém detalhes completos de um grupo.
+            Cria uma nova reunião de grupo e notifica via websocket
             </summary>
-            <param name="groupId">ID do grupo</param>
-            <response code="200">Sucesso: Detalhes do grupo</response>
-            <response code="401">Falha: Não autorizado</response>
-            <response code="404">Falha: Grupo não encontrado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.GroupController.ListGroupResources(System.Int32)">
-            <summary>
-            Lista os recursos (arquivos, materiais) do grupo.
-            </summary>
-            <param name="groupId">ID do grupo</param>
-            <response code="200">Sucesso: Lista de recursos</response>
+            <response code="200">Sucesso: ID da reunião criada</response>
+            <response code="400">Falha: Dados inválidos</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.HymnController.ImportHymns(MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand)">

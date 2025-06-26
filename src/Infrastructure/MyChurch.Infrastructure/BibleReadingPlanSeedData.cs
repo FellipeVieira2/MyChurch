@@ -1,7 +1,4 @@
 using MyChurch.Domain.Entities.Bible;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace MyChurch.Infrastructure
 {

@@ -35,11 +35,11 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
         /// <summary>Filtro por membro ativo</summary>
         public bool? IsActive { get; set; }
 
-        /// <summary>Filtro por ministério (contém)</summary>
-        public string? Ministry { get; set; }
+        /// <summary>Filtro por ministério</summary>
+        public Ministry? Ministry { get; set; }
 
-        /// <summary>Filtro por estado civil (contém)</summary>
-        public string? MaritalStatus { get; set; }
+        /// <summary>Filtro por estado civil</summary>
+        public MaritalStatus? MaritalStatus { get; set; }
 
         /// <summary>Filtro por data de entrada como membro</summary>
         public DateTime? MemberSince { get; set; }
@@ -115,11 +115,11 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
             if (request.IsActive.HasValue)
                 query = query.Where(m => m.IsActive == request.IsActive.Value);
 
-            if (!string.IsNullOrWhiteSpace(request.Ministry))
-                query = query.Where(m => EF.Functions.Like(m.Ministry.ToString(), $"%{request.Ministry}%"));
+            if (request.Ministry.HasValue)
+                query = query.Where(m => m.Ministry == request.Ministry.Value.ToString());
 
-            if (!string.IsNullOrWhiteSpace(request.MaritalStatus))
-                query = query.Where(m => EF.Functions.Like(m.MaritalStatus.ToString(), $"%{request.MaritalStatus}%"));
+            if (request.MaritalStatus.HasValue)
+                query = query.Where(m => m.MaritalStatus == request.MaritalStatus.Value);
 
             if (request.MemberSince.HasValue)
                 query = query.Where(m => m.MemberSince.HasValue && m.MemberSince.Value.Date == request.MemberSince.Value.Date);

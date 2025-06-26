@@ -9,6 +9,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Application.Engagement;
 
 namespace MyChurch.Application.Donation.Commands.CreateDonation
 {
@@ -40,15 +41,18 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateDonationCommandHandler> _logger;
         private readonly IAsaasWebClient _asaasWebClient;
+        private readonly IEngagementService _engagementService;
 
         public CreateDonationCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateDonationCommandHandler> logger,
-            IAsaasWebClient asaasWebClient)
+            IAsaasWebClient asaasWebClient,
+            IEngagementService engagementService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _asaasWebClient = asaasWebClient;
+            _engagementService = engagementService;
         }
 
         public async Task<CreateDonationResultDto> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
@@ -210,6 +214,9 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             }
 
             await _unitOfWork.CommitAsync();
+
+            // Adiciona pontos de engajamento
+            await _engagementService.AddPointsForActionAsync(member.Id, member.ChurchId, EngagementEventType.DonationMade, donation.Id.ToString());
 
             // Relacionamento doação-culto
             if (request.WorshipServiceId.HasValue)

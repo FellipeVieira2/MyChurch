@@ -60,6 +60,9 @@
         IBibleReadingPlanRepository BibleReadingPlans { get; }
         IBibleReadingPlanStageRepository BibleReadingPlanStages { get; }
         IMemberBibleReadingProgressRepository MemberBibleReadingProgresses { get; }
+        IGroupMeetingRepository GroupMeetings { get; }
+        IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
+        IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
         Task<bool> CommitAsync();
     }
 }

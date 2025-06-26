@@ -1148,6 +1148,47 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("donation_worship_service", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.EngagementEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("EventReferenceId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("event_reference_id");
+
+                    b.Property<int>("EventType")
+                        .HasColumnType("int")
+                        .HasColumnName("event_type");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int")
+                        .HasColumnName("points");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.HasIndex("MemberId", "CreatedAt");
+
+                    b.ToTable("engagement_event", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -1514,6 +1555,91 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("group", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeeting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("MeetingDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("SummaryNotes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("GroupMeetings", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingAttendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GroupMeetingId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupMeetingId");
+
+                    b.ToTable("GroupMeetingAttendances", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingMemberNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("GroupMeetingId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LeaderId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupMeetingId");
+
+                    b.ToTable("GroupMeetingMemberNotes", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMember", b =>
                 {
                     b.Property<int>("Id")
@@ -1724,6 +1850,12 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(200)")
                         .HasColumnName("email");
+
+                    b.Property<int>("EngagementScore")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("engagement_score");
 
                     b.Property<int?>("FaithLevelId")
                         .HasColumnType("integer");
@@ -2842,6 +2974,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("WorshipService");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.EngagementEvent", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -2933,6 +3076,39 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Leader");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeeting", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingAttendance", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.GroupMeeting", "GroupMeeting")
+                        .WithMany("Attendances")
+                        .HasForeignKey("GroupMeetingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GroupMeeting");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingMemberNote", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.GroupMeeting", "GroupMeeting")
+                        .WithMany("MemberNotes")
+                        .HasForeignKey("GroupMeetingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GroupMeeting");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMember", b =>
@@ -3261,6 +3437,13 @@ namespace MyChurch.Infrastructure.Migrations
             modelBuilder.Entity("MyChurch.Domain.Entities.Group", b =>
                 {
                     b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeeting", b =>
+                {
+                    b.Navigation("Attendances");
+
+                    b.Navigation("MemberNotes");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Journey", b =>

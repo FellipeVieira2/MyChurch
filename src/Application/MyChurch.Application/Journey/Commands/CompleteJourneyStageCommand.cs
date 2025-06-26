@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Application.Engagement;
 using System;
 using System.Linq;
 using System.Text.Json;
@@ -27,11 +28,13 @@ namespace MyChurch.Application.Journey.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IGeminiClient _geminiClient;
+        private readonly IEngagementService _engagementService;
 
-        public CompleteJourneyStageCommandHandler(IUnitOfWork unitOfWork, IGeminiClient geminiClient)
+        public CompleteJourneyStageCommandHandler(IUnitOfWork unitOfWork, IGeminiClient geminiClient, IEngagementService engagementService)
         {
             _unitOfWork = unitOfWork;
             _geminiClient = geminiClient;
+            _engagementService = engagementService;
         }
 
         public async Task<Unit> Handle(CompleteJourneyStageCommand request, CancellationToken cancellationToken)
@@ -82,6 +85,9 @@ namespace MyChurch.Application.Journey.Commands
                 await UpdateFaithLevelAsync(member, cancellationToken);
                 _unitOfWork.Members.Update(member);
                 await CheckForAchievements(member, cancellationToken);
+
+                // Adiciona pontos de engajamento
+                await _engagementService.AddPointsForActionAsync(member.Id, member.ChurchId, EngagementEventType.JourneyStageCompleted, journeyStage.Id.ToString());
             }
             else
             {

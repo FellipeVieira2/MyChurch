@@ -17,7 +17,7 @@ namespace MyChurch.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<TEntity> ById(Guid id)
+        public async Task<TEntity> ById(int id)
            => await _context.Set<TEntity>().FindAsync(id);
 
         public async Task<IEnumerable<TEntity>> List()

@@ -61,6 +61,10 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
             services.AddScoped<IGroupResourceRepository, GroupResourceRepository>();
 
+            services.AddScoped<IGroupMeetingRepository, GroupMeetingRepository>();
+            services.AddScoped<IGroupMeetingAttendanceRepository, GroupMeetingAttendanceRepository>();
+            services.AddScoped<IGroupMeetingMemberNoteRepository, GroupMeetingMemberNoteRepository>();
+
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IJourneyStageRepository, JourneyStageRepository>();
             services.AddScoped<IMemberJourneyProgressRepository, MemberJourneyProgressRepository>();
@@ -78,6 +82,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IBibleReadingPlanRepository, BibleReadingPlanRepository>();
             services.AddScoped<IBibleReadingPlanStageRepository, BibleReadingPlanStageRepository>();
             services.AddScoped<IMemberBibleReadingProgressRepository, MemberBibleReadingProgressRepository>();
+
+            services.AddScoped<IEngagementEventRepository, EngagementEventRepository>();
 
             services.AddDbContext<MyChurchDbContext>(options =>
             {

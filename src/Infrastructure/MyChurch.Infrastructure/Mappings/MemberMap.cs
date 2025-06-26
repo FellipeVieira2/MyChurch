@@ -177,6 +177,14 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("timestamp")
                 .IsRequired(false);
 
+            // Engagement Score
+            builder
+                .Property(m => m.EngagementScore)
+                .HasColumnName("engagement_score")
+                .HasColumnType("int")
+                .HasDefaultValue(0)
+                .IsRequired();
+
             builder
                 .HasOne(m => m.Church)
                 .WithMany(c => c.Members)

@@ -3,6 +3,7 @@ using MediatR;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MyChurch.Domain.Behauviours;
+using MyChurch.Application.Engagement;
 
 namespace MyChurch.Application
 {
@@ -15,6 +16,7 @@ namespace MyChurch.Application
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddScoped<IEngagementService, EngagementService>();
 
             return services;
         }

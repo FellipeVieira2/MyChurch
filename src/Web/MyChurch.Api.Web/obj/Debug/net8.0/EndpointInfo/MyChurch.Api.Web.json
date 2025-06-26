@@ -2103,6 +2103,86 @@
         }
       }
     },
+    "/api/Engagement/ranking": {
+      "get": {
+        "tags": [
+          "Engagement"
+        ],
+        "summary": "Retorna o ranking de engajamento dos membros da igreja",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberEngagementRankingDtoPagedResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberEngagementRankingDtoPagedResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberEngagementRankingDtoPagedResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Engagement/community-score": {
+      "get": {
+        "tags": [
+          "Engagement"
+        ],
+        "summary": "Retorna o score médio de engajamento da comunidade",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityEngagementScoreDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityEngagementScoreDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityEngagementScoreDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Event": {
       "post": {
         "tags": [
@@ -3160,101 +3240,57 @@
         }
       }
     },
-    "/api/Group/details/{groupId}": {
-      "get": {
+    "/api/Group/meeting": {
+      "post": {
         "tags": [
           "Group"
         ],
-        "summary": "Obtém detalhes completos de um grupo.",
-        "parameters": [
-          {
-            "name": "groupId",
-            "in": "path",
-            "description": "ID do grupo",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+        "summary": "Cria uma nova reunião de grupo e notifica via websocket",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupMeetingCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupMeetingCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupMeetingCommand"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Sucesso: Detalhes do grupo",
+            "description": "Sucesso: ID da reunião criada",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GroupDetailsDto"
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GroupDetailsDto"
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GroupDetailsDto"
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
           },
-          "401": {
-            "description": "Falha: Não autorizado"
-          },
-          "404": {
-            "description": "Falha: Grupo não encontrado"
-          }
-        }
-      }
-    },
-    "/api/Group/resources/{groupId}": {
-      "get": {
-        "tags": [
-          "Group"
-        ],
-        "summary": "Lista os recursos (arquivos, materiais) do grupo.",
-        "parameters": [
-          {
-            "name": "groupId",
-            "in": "path",
-            "description": "ID do grupo",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucesso: Lista de recursos",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupResourceDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupResourceDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupResourceDto"
-                  }
-                }
-              }
-            }
+          "400": {
+            "description": "Falha: Dados inválidos"
           },
           "401": {
             "description": "Falha: Não autorizado"
@@ -3771,17 +3807,17 @@
           {
             "name": "Ministry",
             "in": "query",
-            "description": "Filtro por ministério (contém)",
+            "description": "Filtro por ministério",
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/Ministry"
             }
           },
           {
             "name": "MaritalStatus",
             "in": "query",
-            "description": "Filtro por estado civil (contém)",
+            "description": "Filtro por estado civil",
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/MaritalStatus"
             }
           },
           {
@@ -6906,6 +6942,16 @@
         },
         "additionalProperties": false
       },
+      "CommunityEngagementScoreDto": {
+        "type": "object",
+        "properties": {
+          "averageScore": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CompleteJourneyStageCommand": {
         "type": "object",
         "properties": {
@@ -7384,6 +7430,28 @@
             "type": "boolean"
           },
           "coverImageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateGroupMeetingCommand": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "meetingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "topic": {
+            "type": "string",
+            "nullable": true
+          },
+          "summaryNotes": {
             "type": "string",
             "nullable": true
           }
@@ -8059,73 +8127,6 @@
         },
         "additionalProperties": false
       },
-      "GroupDetailsDto": {
-        "type": "object",
-        "properties": {
-          "groupId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "leaderId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "acceptsNewMembers": {
-            "type": "boolean"
-          },
-          "coverImageUrl": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GroupResourceDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "groupId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "fileUrl": {
-            "type": "string",
-            "nullable": true
-          },
-          "uploadedByMemberId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "uploadedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
       "GroupType": {
         "enum": [
           1,
@@ -8438,6 +8439,58 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MemberDto"
+            },
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberEngagementRankingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "pictureUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "engagementScore": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberEngagementRankingDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberEngagementRankingDto"
             },
             "nullable": true
           },

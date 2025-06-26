@@ -73,6 +73,9 @@ namespace MyChurch.Infrastructure.Repositories
         public IBibleReadingPlanRepository BibleReadingPlans { get; }
         public IBibleReadingPlanStageRepository BibleReadingPlanStages { get; }
         public IMemberBibleReadingProgressRepository MemberBibleReadingProgresses { get; }
+        public IGroupMeetingRepository GroupMeetings { get; }
+        public IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
+        public IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -133,7 +136,10 @@ namespace MyChurch.Infrastructure.Repositories
             IPreLaunchInterestRepository preLaunchInterests,
             IBibleReadingPlanRepository bibleReadingPlans,
             IBibleReadingPlanStageRepository bibleReadingPlanStages,
-            IMemberBibleReadingProgressRepository memberBibleReadingProgresses)
+            IMemberBibleReadingProgressRepository memberBibleReadingProgresses,
+            IGroupMeetingRepository groupMeetings,
+            IGroupMeetingAttendanceRepository groupMeetingAttendances,
+            IGroupMeetingMemberNoteRepository groupMeetingMemberNotes)
         {
             Churchs = churchs;
             Donations = donations;
@@ -194,6 +200,9 @@ namespace MyChurch.Infrastructure.Repositories
             BibleReadingPlans = bibleReadingPlans;
             BibleReadingPlanStages = bibleReadingPlanStages;
             MemberBibleReadingProgresses = memberBibleReadingProgresses;
+            GroupMeetings = groupMeetings;
+            GroupMeetingAttendances = groupMeetingAttendances;
+            GroupMeetingMemberNotes = groupMeetingMemberNotes;
         }
 
         public async Task<bool> CommitAsync()

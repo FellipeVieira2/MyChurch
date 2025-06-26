@@ -57,6 +57,9 @@ namespace MyChurch.Domain.Entities
         public int? FaithLevelId { get; set; }
         public virtual FaithLevel? FaithLevel { get; set; }
 
+        // Engagement Score
+        public int EngagementScore { get; private set; }
+
         public void Update(
             string? name = null,
             string? email = null,
@@ -114,6 +117,11 @@ namespace MyChurch.Domain.Entities
         public void MarkAsPendingApproval()
         {
             PendingApproval = true;
+        }
+
+        public void SetEngagementScore(int newScore)
+        {
+            EngagementScore = newScore >= 0 ? newScore : 0;
         }
     }
 }

@@ -5,6 +5,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities.Bible;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Application.Engagement;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,11 +22,13 @@ namespace MyChurch.Application.BibleReadingPlan.Commands
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CompleteBibleReadingStageCommandHandler> _logger;
+        private readonly IEngagementService _engagementService;
 
-        public CompleteBibleReadingStageCommandHandler(IUnitOfWork unitOfWork, ILogger<CompleteBibleReadingStageCommandHandler> logger)
+        public CompleteBibleReadingStageCommandHandler(IUnitOfWork unitOfWork, ILogger<CompleteBibleReadingStageCommandHandler> logger, IEngagementService engagementService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _engagementService = engagementService;
         }
 
         public async Task<Unit> Handle(CompleteBibleReadingStageCommand request, CancellationToken cancellationToken)
@@ -101,6 +104,9 @@ namespace MyChurch.Application.BibleReadingPlan.Commands
             
             _unitOfWork.Members.Update(member);
             await _unitOfWork.CommitAsync();
+
+            // Adiciona pontos de engajamento
+            await _engagementService.AddPointsForActionAsync(member.Id, member.ChurchId, Domain.Enum.EngagementEventType.BibleReadingStageCompleted, progress.BibleReadingPlanStageId.ToString());
 
             _logger.LogInformation("Stage {StageId} marked as completed for Member {MemberId}", request.StageId, request.UserId);
             

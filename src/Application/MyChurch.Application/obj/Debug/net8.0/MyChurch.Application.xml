@@ -417,10 +417,10 @@
             <summary>Filtro por membro ativo</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
-            <summary>Filtro por ministério (contém)</summary>
+            <summary>Filtro por ministério</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MaritalStatus">
-            <summary>Filtro por estado civil (contém)</summary>
+            <summary>Filtro por estado civil</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MemberSince">
             <summary>Filtro por data de entrada como membro</summary>

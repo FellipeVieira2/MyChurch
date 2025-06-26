@@ -1358,6 +1358,57 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Web.Controllers.EngagementController",
+    "Method": "GetCommunityScore",
+    "RelativePath": "api/Engagement/community-score",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.Dtos.CommunityEngagementScoreDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.EngagementController",
+    "Method": "GetRanking",
+    "RelativePath": "api/Engagement/ranking",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pageNumber",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Mychurch.Common.Utils.Objects.PagedResultDto\u00601[[MyChurch.Application.Dtos.MemberEngagementRankingDto, MyChurch.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.EventController",
     "Method": "CreateEvent",
     "RelativePath": "api/Event",
@@ -1973,21 +2024,21 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.GroupController",
-    "Method": "GetGroupDetails",
-    "RelativePath": "api/Group/details/{groupId}",
-    "HttpMethod": "GET",
+    "Method": "CreateGroupMeeting",
+    "RelativePath": "api/Group/meeting",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "groupId",
-        "Type": "System.Int32",
+        "Name": "command",
+        "Type": "MyChurch.Application.Group.Commands.CreateGroupMeetingCommand",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "MyChurch.Application.Dtos.GroupDetailsDto",
+        "Type": "System.Int32",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -2020,32 +2071,6 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.GroupController",
-    "Method": "ListGroupResources",
-    "RelativePath": "api/Group/resources/{groupId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "groupId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[MyChurch.Application.Dtos.GroupResourceDto, MyChurch.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
         "StatusCode": 200
       }
     ]

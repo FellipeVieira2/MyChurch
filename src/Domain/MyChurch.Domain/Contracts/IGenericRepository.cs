@@ -5,7 +5,7 @@
         void Create(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
-        Task<TEntity> ById(Guid id);
+        Task<TEntity> ById(int id);
         Task<IEnumerable<TEntity>> List();
         IQueryable<TEntity> Query();
     }

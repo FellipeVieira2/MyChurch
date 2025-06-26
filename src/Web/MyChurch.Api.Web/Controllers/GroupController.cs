@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MyChurch.Application.Group.Commands;
 using MyChurch.Application.Group.Queries;
 using MyChurch.Application.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyChurch.Api.Web.Middleware;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -15,6 +17,13 @@ namespace MyChurch.Api.Web.Controllers
     [Route("api/[controller]")]
     public class GroupController : BaseController
     {
+        private readonly IHubContext<GroupHub> _hubContext;
+
+        public GroupController(IHubContext<GroupHub> hubContext)
+        {
+            _hubContext = hubContext;
+        }
+
         /// <summary>
         /// Cria um novo grupo (célula, ministério, equipe, etc).
         /// </summary>
@@ -56,10 +65,9 @@ namespace MyChurch.Api.Web.Controllers
         [HttpPut("{groupId}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateGroup([FromRoute]int groupId, [FromBody] UpdateGroupCommand command)
+        public async Task<IActionResult> UpdateGroup([FromRoute] int groupId, [FromBody] UpdateGroupCommand command)
         {
             command.GroupId = groupId;
-
             await Mediator.Send(command);
             return Ok();
         }
@@ -82,38 +90,20 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Obtém detalhes completos de um grupo.
+        /// Cria uma nova reunião de grupo e notifica via websocket
         /// </summary>
-        /// <param name="groupId">ID do grupo</param>
-        /// <response code="200">Sucesso: Detalhes do grupo</response>
+        /// <response code="200">Sucesso: ID da reunião criada</response>
+        /// <response code="400">Falha: Dados inválidos</response>
         /// <response code="401">Falha: Não autorizado</response>
-        /// <response code="404">Falha: Grupo não encontrado</response>
-        [HttpGet("details/{groupId}")]
+        [HttpPost("meeting")]
         [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GroupDetailsDto))]
-        public async Task<IActionResult> GetGroupDetails([FromRoute] int groupId)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        public async Task<IActionResult> CreateGroupMeeting([FromBody] CreateGroupMeetingCommand command)
         {
-            var query = AuthorizationRequestCreate<GetGroupDetailsQuery>();
-            query.GroupId = groupId;
-            var result = await Mediator.Send(query);
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Lista os recursos (arquivos, materiais) do grupo.
-        /// </summary>
-        /// <param name="groupId">ID do grupo</param>
-        /// <response code="200">Sucesso: Lista de recursos</response>
-        /// <response code="401">Falha: Não autorizado</response>
-        [HttpGet("resources/{groupId}")]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<GroupResourceDto>))]
-        public async Task<IActionResult> ListGroupResources([FromRoute] int groupId)
-        {
-            var query = AuthorizationRequestCreate<ListGroupResourcesQuery>();
-            query.GroupId = groupId;
-            var result = await Mediator.Send(query);
-            return Ok(result);
+            var meetingId = await Mediator.Send(command);
+            var newMeetingDto = new { Id = meetingId, command.GroupId, command.MeetingDate, command.Topic, command.SummaryNotes };
+            await _hubContext.Clients.Group(command.GroupId.ToString()).SendAsync("NewMeetingScheduled", newMeetingDto);
+            return Ok(meetingId);
         }
     }
 }
