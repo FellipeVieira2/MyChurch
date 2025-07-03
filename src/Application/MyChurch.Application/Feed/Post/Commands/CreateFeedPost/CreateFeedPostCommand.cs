@@ -48,11 +48,12 @@ namespace MyChurch.Application.Feed.Post.Commands.CreateFeedPost
                 using var photoStream = new MemoryStream(photoBytes);
 
                 var fileName = $"{Guid.NewGuid()}.jpg";
-                await _s3Helper.UploadFileAsync(photoStream, fileName, "image/jpeg");
+                // Upload e obtenção da URL do S3
+                var fileUrl = await _s3Helper.UploadFileAsync(photoStream, fileName, "image/jpeg", cancellationToken);
 
                 images.Add(new FeedPostImage
                 {
-                    FileName = fileName,
+                    FileName = fileUrl, // Salva a URL no FileName
                     Created = DateTime.UtcNow
                 });
             }

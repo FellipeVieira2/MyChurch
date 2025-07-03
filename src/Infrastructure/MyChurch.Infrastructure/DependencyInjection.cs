@@ -82,8 +82,10 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IBibleReadingPlanRepository, BibleReadingPlanRepository>();
             services.AddScoped<IBibleReadingPlanStageRepository, BibleReadingPlanStageRepository>();
             services.AddScoped<IMemberBibleReadingProgressRepository, MemberBibleReadingProgressRepository>();
+            services.AddScoped<IMemberBibleReadingAssignmentRepository, MemberBibleReadingAssignmentRepository>();
 
             services.AddScoped<IEngagementEventRepository, EngagementEventRepository>();
+            services.AddScoped<IUserActionHistoryRepository, UserActionHistoryRepository>();
 
             services.AddDbContext<MyChurchDbContext>(options =>
             {

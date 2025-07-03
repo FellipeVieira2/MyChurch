@@ -36,6 +36,7 @@ namespace MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts
             var query = _unitOfWork.FeedPosts.Query()
                 .Include(p => p.Member)
                 .Include(p => p.Likes)
+                .Include(p => p.Images)
                 .Where(p => p.ChurchId == churchId);
 
             var total = await query.CountAsync(cancellationToken);

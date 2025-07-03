@@ -5,19 +5,16 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MyChurch.Application.Event.Commands.CreateEvent
 {
     public class CreateEventCommand : JwtMemberDto, IRequest<int>
     {
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTime Date { get; set; }
         public DateTime FinishDate { get; set; }
-        public string Location { get; set; }
+        public string? Location { get; set; }
         public bool RequiresParticipantList { get; set; }
 
         // Recorrência
@@ -55,10 +52,10 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
             var entity = new Domain.Entities.Event
             {
                 Title = request.Title,
-                Description = request.Description,
+                Description = request.Description ?? "",
                 Date = request.Date,
                 FinishDate = request.FinishDate,
-                Location = request.Location,
+                Location = request.Location ?? "",
                 ChurchId = churchId,
                 RequiresParticipantList = request.RequiresParticipantList,
                 EventType = request.EventType // Salva o tipo do evento
@@ -91,7 +88,7 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                     Theme = request.WorshipTheme,
                     StartTime = request.Date,
                     EndTime = request.FinishDate,
-                    Description = request.Description,
+                    Description = request.Description ?? "",
                     EventId = entity.Id
                 };
                 _unitOfWork.WorshipServices.Create(worshipService);

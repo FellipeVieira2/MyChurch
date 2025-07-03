@@ -49,7 +49,7 @@ namespace MyChurch.Infrastructure.Utils.S3
             var response = await _s3Client.PutObjectAsync(putRequest, cancellationToken);
             _logger.LogInformation("File uploaded to S3 with key: {FileName}", fileName);
 
-            return fileName;
+            return $"https://mychurchbucketnet.s3.us-east-2.amazonaws.com/{fileName}";
         }
 
         public async Task<Stream> DownloadFileAsync(string fileName, CancellationToken cancellationToken = default)

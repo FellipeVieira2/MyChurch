@@ -2,13 +2,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Engagement;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities.Bible;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Application.Engagement;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MyChurch.Application.BibleReadingPlan.Commands
 {

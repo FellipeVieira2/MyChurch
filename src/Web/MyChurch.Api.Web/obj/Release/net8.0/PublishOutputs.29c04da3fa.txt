@@ -75,6 +75,7 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\o
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Npgsql.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Postmark.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\QRCoder.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Serilog.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Serilog.AspNetCore.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Serilog.Extensions.Hosting.dll

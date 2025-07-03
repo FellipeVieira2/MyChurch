@@ -238,6 +238,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GenerateOnboardingQrCode(System.Int32)">
+            <summary>
+            Força a geração do QRCode de onboarding para a igreja caso não exista
+            </summary>
+            <param name="id">Id da igreja</param>
+            <response code="200">QRCode base64</response>
+            <response code="404">Igreja não encontrada</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
             Create a new Donation
@@ -471,6 +479,11 @@
             Busca um hino pelo número, retornando o coro e os versos.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetAllHymnSummaries">
+            <summary>
+            Retorna uma lista de todos os hinos com número e título.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
             <summary>
             Obtém as configurações do membro autenticado.
@@ -694,7 +707,7 @@
             Finaliza a leitura bíblica atual pelo id da atividade
             </summary>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32)">
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32,System.Int32)">
             <summary>
             Apresenta um hino para todos os membros do culto
             </summary>

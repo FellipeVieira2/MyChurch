@@ -154,6 +154,7 @@ using (var scope = app.Services.CreateScope())
     
     // Seed data
     BibleReadingPlanSeedData.SeedDefaultPlans(dbContext);
+    MemberSeedData.SeedMembers(dbContext); // <-- Adiciona o seed de membros
 }
 
 app.UseSwagger();
@@ -194,6 +195,9 @@ app.UseAuthorization();
 
 // Registrar o middleware JWT
 app.UseMiddleware<JwtMiddleware>();
+
+// Registrar o middleware de histórico de ações do usuário
+app.UseMiddleware<UserActionHistoryMiddleware>();
 
 app.MapControllers();
 app.MapHub<WorshipServiceHub>("/ws/worship"); // Mapeamento de endpoints por último

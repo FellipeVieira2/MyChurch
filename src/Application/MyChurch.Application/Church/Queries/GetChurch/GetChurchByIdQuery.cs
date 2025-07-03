@@ -50,7 +50,8 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 Phone = church.Phone,
                 Logo = church.LogoFileName,
                 Address = AddressDto.New(church.Address),
-                Subscription = church.Subscription != null ? SubscriptionDto.New(church.Subscription) : null
+                Subscription = church.Subscription != null ? SubscriptionDto.New(church.Subscription) : null,
+                OnboardingQrCode = isAdmin ? church.OnboardingQrCode : null
             };
 
             if (!isAdmin)

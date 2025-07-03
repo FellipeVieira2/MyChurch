@@ -9,7 +9,6 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using System;
 
 namespace MyChurch.Application.Subscription.Commands.CreateSubscription
 {
@@ -168,6 +167,7 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                    transactionId: transactionId,
                    request.BillingType
                );
+            payment.SubscriptionId = paidSubscription.Id;
 
             _unitOfWork.Payments.Create(payment);
 

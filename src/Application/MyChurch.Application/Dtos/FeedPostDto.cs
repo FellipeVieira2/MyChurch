@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MyChurch.Domain.Entities;
 
 namespace MyChurch.Application.Dtos
@@ -14,6 +16,7 @@ namespace MyChurch.Application.Dtos
         public MemberDto Member { get; set; }
         public int LikesCount { get; set; }
         public bool LikedForMember { get; set; } = false;
+        public List<FeedPostImageDto> FeedPostImages { get; set; } = new List<FeedPostImageDto>();
         public static FeedPostDto New(FeedPost post)
         {
             return new FeedPostDto
@@ -25,8 +28,8 @@ namespace MyChurch.Application.Dtos
                 Created = post.Created,
                 Updated = post.Updated,
                 Member = post.Member != null ? MemberDto.New(post.Member) : null,
-                LikesCount = post.Likes?.Count ?? 0
-
+                LikesCount = post.Likes?.Count ?? 0,
+                FeedPostImages = post.Images != null ? post.Images.Select(FeedPostImageDto.New).ToList() : new List<FeedPostImageDto>()
             };
         }
     }

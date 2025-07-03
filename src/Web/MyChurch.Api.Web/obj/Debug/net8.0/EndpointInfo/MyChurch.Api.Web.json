@@ -1781,6 +1781,34 @@
         }
       }
     },
+    "/api/Church/{id}/generate-onboarding-qrcode": {
+      "post": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Força a geração do QRCode de onboarding para a igreja caso não exista",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QRCode base64"
+          },
+          "404": {
+            "description": "Igreja não encontrada"
+          }
+        }
+      }
+    },
     "/api/Church/dashboard": {
       "get": {
         "tags": [
@@ -3800,6 +3828,13 @@
             "name": "IsActive",
             "in": "query",
             "description": "Filtro por membro ativo",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PendingApproval",
+            "in": "query",
             "schema": {
               "type": "boolean"
             }
@@ -6464,6 +6499,10 @@
             "type": "string",
             "nullable": true
           },
+          "bankDigit": {
+            "type": "string",
+            "nullable": true
+          },
           "agency": {
             "type": "string",
             "nullable": true
@@ -6938,6 +6977,10 @@
           },
           "bankingInfo": {
             "$ref": "#/components/schemas/BankingInfoDto"
+          },
+          "onboardingQrCode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7287,11 +7330,6 @@
           },
           "creditCardHolderInfo": {
             "$ref": "#/components/schemas/CreditCardHolderInfoDto"
-          },
-          "creditCardInfoId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8070,6 +8108,13 @@
           },
           "likedForMember": {
             "type": "boolean"
+          },
+          "feedPostImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeedPostImageDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8100,6 +8145,28 @@
             "type": "integer",
             "format": "int32",
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeedPostImageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "feedPostId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -8694,6 +8761,10 @@
             "format": "date-time"
           },
           "maritalStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
             "type": "string",
             "nullable": true
           },

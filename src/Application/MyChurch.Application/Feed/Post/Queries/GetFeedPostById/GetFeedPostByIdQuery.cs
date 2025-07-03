@@ -29,10 +29,11 @@ namespace MyChurch.Application.Feed.Post.Queries.GetFeedPostById
             if (loggedMember == null)
                 throw new UnauthorizedAccessException("Usuário não encontrado.");
 
-            // Busca o post e inclui o autor e os likes
+            // Busca o post e inclui o autor, os likes e as imagens
             var post = await _unitOfWork.FeedPosts.Query()
                 .Include(p => p.Member)
                 .Include(p => p.Likes)
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == request.PostId && p.ChurchId == loggedMember.ChurchId, cancellationToken);
 
             if (post == null)

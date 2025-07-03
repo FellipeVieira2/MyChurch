@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,10 +59,25 @@ namespace MyChurch.Application.BibleReadingPlan.Commands
                 ValidationException.ThrowException("PlanId", "You do not have access to this reading plan.");
             }
 
-            // Nota: Não há nada específico para "atribuir" o plano ao membro além de verificar o acesso.
-            // O progresso será criado naturalmente quando o membro começar a ler e marcar etapas como concluídas.
-            // No entanto, poderíamos criar um registro de "MemberBibleReadingAssignment" se quisermos
-            // rastrear explicitamente quais planos um membro escolheu seguir.
+            // Verificar se já existe assignment
+            var alreadyAssigned = await _unitOfWork.MemberBibleReadingAssignments.Query()
+                .AnyAsync(a => a.MemberId == request.UserId && a.BibleReadingPlanId == request.PlanId, cancellationToken);
+            if (!alreadyAssigned)
+            {
+                var assignment = new MyChurch.Domain.Entities.Bible.MemberBibleReadingAssignment
+                {
+                    MemberId = request.UserId,
+                    BibleReadingPlanId = request.PlanId,
+                    AssignedAt = DateTime.UtcNow
+                };
+                _unitOfWork.MemberBibleReadingAssignments.Create(assignment);
+                await _unitOfWork.CommitAsync();
+                _logger.LogInformation("Assignment record created for Member {MemberId} and Plan {PlanId}", request.UserId, request.PlanId);
+            }
+            else
+            {
+                _logger.LogInformation("Assignment already exists for Member {MemberId} and Plan {PlanId}", request.UserId, request.PlanId);
+            }
 
             _logger.LogInformation("Bible Reading Plan {PlanId} successfully assigned to Member {MemberId}", request.PlanId, request.UserId);
             

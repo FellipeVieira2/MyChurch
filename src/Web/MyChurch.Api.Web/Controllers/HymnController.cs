@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using MyChurch.Application.Dtos;
 using MyChurch.Application.Hymn.Commands.ImportHymnJson;
+using MyChurch.Application.Hymn.Queries.GetAllHymnSummaries;
 using MyChurch.Application.Hymn.Queries.GetHymnByNumber;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyChurch.Api.Web.Controllers
@@ -25,7 +28,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Busca um hino pelo número, retornando o coro e os versos.
         /// </summary>
         [HttpGet("{number}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HymnDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetHymnByNumber(int number)
         {
@@ -33,6 +36,18 @@ namespace MyChurch.Api.Web.Controllers
             var result = await Mediator.Send(query);
             if (result == null)
                 return NotFound();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Retorna uma lista de todos os hinos com número e título.
+        /// </summary>
+        [HttpGet("summaries")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<HymnSummaryDto>))]
+        public async Task<IActionResult> GetAllHymnSummaries()
+        {
+            var query = new GetAllHymnSummariesQuery();
+            var result = await Mediator.Send(query);
             return Ok(result);
         }
     }

@@ -220,3 +220,4 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\b
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\bin\Release\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\bin\Release\net8.0\credentials\gmail-service-account.json
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\bin\Release\net8.0\Postmark.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\bin\Release\net8.0\QRCoder.dll

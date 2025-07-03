@@ -6,10 +6,7 @@ using Mychurch.Common.WebClients.Asaas.Models.Requests;
 using Mychurch.Common.WebClients.Asaas.Models.Responses;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
-using MyChurch.Domain.Entities;
-using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using System;
 
 namespace MyChurch.Application.Subscription.Commands.CreateSubscription
 {

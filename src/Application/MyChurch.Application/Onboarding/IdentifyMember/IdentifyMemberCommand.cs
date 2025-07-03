@@ -21,13 +21,13 @@ namespace MyChurch.Application.Onboarding.IdentifyMember
             public async Task<IdentifyMemberResultDto> Handle(IdentifyMemberCommand request, CancellationToken cancellationToken)
             {
                 var member = _unitOfWork.Members.Query()
-                    .FirstOrDefault(m => m.Documents.Any(d => d.Number == request.Identifier) && m.ChurchId.ToString() == request.ChurchId);
+                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) || m.Phone == request.Identifier || m.Email.ToLower() == request.Identifier.ToLower()) && m.ChurchId.ToString() == request.ChurchId);
 
                 if (member == null)
                 {
                     return new IdentifyMemberResultDto { Status = "NotFound" };
                 }
-                if (member.IsActive)
+                if (!string.IsNullOrEmpty(member.Password))
                 {
                     return new IdentifyMemberResultDto { Status = "AlreadyActive" };
                 }

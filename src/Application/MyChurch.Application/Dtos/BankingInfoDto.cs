@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string BankName { get; set; }
+        public string BankDigit { get; set; }
         public string Agency { get; set; }
         public string Account { get; set; }
         public string AccountType { get; set; }
@@ -24,7 +25,8 @@
                 HolderName = info.HolderName,
                 HolderDocument = info.HolderDocument,
                 PixKey = info.PixKey,
-                PixKeyType = info.PixKeyType
+                PixKeyType = info.PixKeyType,
+                BankDigit = info.BankCode ?? string.Empty
             };
         }
     }

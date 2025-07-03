@@ -5,6 +5,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using ValidationException = MyChurch.Domain.Exceptions.ValidationException;
+using MyChurch.Infrastructure.Utils.Extensions;
 
 namespace MyChurch.Application.Onboarding.RegisterForApproval
 {
@@ -17,6 +18,7 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
         public string Cpf { get; set; }
         public DateTime BirthDate { get; set; }
         public string? MaritalStatus { get; set; }
+        public string Password { get; set; }
         public AddressDto Address { get; set; }
 
         public class Validator : AbstractValidator<RegisterForApprovalCommand>
@@ -50,6 +52,8 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                 MaritalStatus? maritalStatus = null;
                 if (!string.IsNullOrEmpty(request.MaritalStatus) && Enum.TryParse<MaritalStatus>(request.MaritalStatus, out var ms))
                     maritalStatus = ms;
+
+                
                 var member = new MyChurch.Domain.Entities.Member
                 {
                     Name = request.Name,
@@ -68,9 +72,16 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                         request.Address.Neighborhood
                     )
                 };
+
+                if (!string.IsNullOrWhiteSpace(request.Password))
+                {
+                    var hash = Guid.NewGuid().ToString("N");
+                    member.PasswordHash = hash;
+                    member.Password = request.Password.Encrypt(hash);
+                }
                 member.Documents.Add(new MyChurch.Domain.Entities.MemberDocument { Number = request.Cpf });
-                // Seta o PendingApproval via reflexão já que o set é privado
-                typeof(MyChurch.Domain.Entities.Member).GetProperty("PendingApproval")?.SetValue(member, true);
+                member.PendingApproval = true;
+
                 _unitOfWork.Members.Create(member);
                 await _unitOfWork.CommitAsync();
             }

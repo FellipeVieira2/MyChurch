@@ -76,8 +76,23 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
                 {
                     ChurchId = churchId
                 };
+                UpdateBankingInfo(request, bankingInfo);
+                _unitOfWork.BankingInfos.Create(bankingInfo);
+                await _unitOfWork.CommitAsync();
+
+                return BankingInfoDto.New(bankingInfo);
             }
 
+            UpdateBankingInfo(request, bankingInfo);
+
+            _unitOfWork.BankingInfos.Update(bankingInfo);
+            await _unitOfWork.CommitAsync();
+
+            return BankingInfoDto.New(bankingInfo);
+        }
+
+        private static void UpdateBankingInfo(UpdateBankingInfoCommand request, BankingInfo bankingInfo)
+        {
             bankingInfo.BankName = request.BankName;
             bankingInfo.Agency = request.Agency;
             bankingInfo.Account = request.Account;
@@ -87,11 +102,6 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
             bankingInfo.HolderDocument = request.HolderDocument;
             bankingInfo.PixKey = request.PixKey;
             bankingInfo.PixKeyType = request.PixKeyType;
-
-            _unitOfWork.BankingInfos.Create(bankingInfo);
-            await _unitOfWork.CommitAsync();
-
-            return BankingInfoDto.New(bankingInfo);
         }
     }
 }

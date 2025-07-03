@@ -66,7 +66,9 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("updated")
                 .HasColumnType("timestamp")
                 .IsRequired(false);
-            builder.Property(x => x.Document)
+
+            builder
+                .Property(x => x.Document)
                 .HasColumnName("document")
                 .HasColumnType("varchar(20)")
                 .IsRequired(false);
@@ -75,6 +77,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(x => x.AsaasCustomerId)
                 .HasColumnName("asaas_customer_id")
                 .HasColumnType("varchar(50)")
+                .IsRequired(false);
+
+            builder
+                .Property(x => x.OnboardingQrCode)
+                .HasColumnName("onboarding_qrcode")
+                .HasColumnType("text")
                 .IsRequired(false);
 
             builder

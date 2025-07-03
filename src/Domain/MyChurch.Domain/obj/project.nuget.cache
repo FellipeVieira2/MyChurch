@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pdmN3UDjYr8=",
+  "dgSpecHash": "w5lxadKshIo=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
   "expectedPackageFiles": [
@@ -9,15 +9,5 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.3\\microsoft.extensions.dependencyinjection.abstractions.9.0.3.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Ocorreu um erro ao obter os dados de vulnerabilidade do pacote: Não é possível carregar o índice de serviço para a origem https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json.",
-      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }

@@ -9,6 +9,8 @@ namespace MyChurch.Domain.Enum
         Failed = 2,
         Cancelled = 3,
         [JsonPropertyName("RECEIVED")]
-        Received = 4
+        Received = 4,
+        [JsonPropertyName("CONFIRMED")]
+        Confirmed = 5
     }
 }

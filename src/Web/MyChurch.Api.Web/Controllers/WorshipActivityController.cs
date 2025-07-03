@@ -72,17 +72,18 @@ namespace MyChurch.Api.Web.Controllers
         /// Apresenta um hino para todos os membros do culto
         /// </summary>
         [Authorize(Roles = "Admin")]
-        [HttpPost("{worshipServiceId}/hymn/{activityId}/present")]
-        public async Task<IActionResult> PresentHymn(int worshipServiceId, int activityId)
+        [HttpPost("{worshipServiceId}/hymn/{number}/present/{verseNumber}")]
+        public async Task<IActionResult> PresentHymn(int worshipServiceId, int number, int verseNumber)
         {
             var command = new PresentHymnCommand
             {
                 WorshipServiceId = worshipServiceId,
-                ActivityId = activityId
+                HymnNumber = number,
+                VerseNumber = verseNumber
             };
-            await Mediator.Send(command);
+            var returned = await Mediator.Send(command);
             await _hubContext.Clients.Group($"worship_{worshipServiceId}")
-                .SendAsync("HymnPresented", new { activityId });
+                .SendAsync("HymnPresented", returned );
             return Ok();
         }
 

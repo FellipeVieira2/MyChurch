@@ -60,9 +60,14 @@
         IBibleReadingPlanRepository BibleReadingPlans { get; }
         IBibleReadingPlanStageRepository BibleReadingPlanStages { get; }
         IMemberBibleReadingProgressRepository MemberBibleReadingProgresses { get; }
+        IMemberBibleReadingAssignmentRepository MemberBibleReadingAssignments { get; }
         IGroupMeetingRepository GroupMeetings { get; }
         IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
         IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
+        IUserActionHistoryRepository UserActionHistories { get; }
         Task<bool> CommitAsync();
+        Task<IDisposable> BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }

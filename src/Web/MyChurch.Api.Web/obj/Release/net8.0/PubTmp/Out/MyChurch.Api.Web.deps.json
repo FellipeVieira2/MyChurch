@@ -960,6 +960,14 @@
           }
         }
       },
+      "QRCoder/1.6.0": {
+        "runtime": {
+          "lib/net6.0/QRCoder.dll": {
+            "assemblyVersion": "1.6.0.0",
+            "fileVersion": "1.6.0.0"
+          }
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
       "runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {},
@@ -1691,6 +1699,7 @@
           "MyChurch.Infrastructure": "1.0.0",
           "Mychurch.Common": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
+          "QRCoder": "1.6.0",
           "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
         "runtime": {
@@ -2390,6 +2399,13 @@
       "sha512": "sha512-xwMFygwU9GY5ro2c+kNjHUQtdXRPYVAN43twsM5RVriQdmNHRcC9NQ0RvPH/RozVeziPcjIWtiyTRN5B1/8hSg==",
       "path": "postmark/5.2.0",
       "hashPath": "postmark.5.2.0.nupkg.sha512"
+    },
+    "QRCoder/1.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XmPA81eo+oRxBuyVdswsSkTGTE1d3thfF11Z1PdD7oB56A6HU4G4AAOdySmGRMb/cljwlFTMWUtosGEnwpS6GA==",
+      "path": "qrcoder/1.6.0",
+      "hashPath": "qrcoder.1.6.0.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
       "type": "package",

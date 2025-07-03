@@ -1,10 +1,12 @@
-﻿using MyChurch.Domain.Contracts;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MyChurch.Domain.Contracts;
 
 namespace MyChurch.Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly MyChurchDbContext _context;
+        private IDbContextTransaction? _currentTransaction;
 
         public IChurchRepository Churchs { get; }        
 
@@ -76,6 +78,8 @@ namespace MyChurch.Infrastructure.Repositories
         public IGroupMeetingRepository GroupMeetings { get; }
         public IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
         public IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
+        public IMemberBibleReadingAssignmentRepository MemberBibleReadingAssignments { get; }
+        public IUserActionHistoryRepository UserActionHistories { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -139,7 +143,9 @@ namespace MyChurch.Infrastructure.Repositories
             IMemberBibleReadingProgressRepository memberBibleReadingProgresses,
             IGroupMeetingRepository groupMeetings,
             IGroupMeetingAttendanceRepository groupMeetingAttendances,
-            IGroupMeetingMemberNoteRepository groupMeetingMemberNotes)
+            IGroupMeetingMemberNoteRepository groupMeetingMemberNotes,
+            IMemberBibleReadingAssignmentRepository memberBibleReadingAssignments,
+            IUserActionHistoryRepository userActionHistories)
         {
             Churchs = churchs;
             Donations = donations;
@@ -203,6 +209,34 @@ namespace MyChurch.Infrastructure.Repositories
             GroupMeetings = groupMeetings;
             GroupMeetingAttendances = groupMeetingAttendances;
             GroupMeetingMemberNotes = groupMeetingMemberNotes;
+            MemberBibleReadingAssignments = memberBibleReadingAssignments;
+            UserActionHistories = userActionHistories;
+        }
+
+        public async Task<IDisposable> BeginTransactionAsync()
+        {
+            _currentTransaction = await _context.Database.BeginTransactionAsync();
+            return _currentTransaction;
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            if (_currentTransaction != null)
+            {
+                await _currentTransaction.CommitAsync();
+                await _currentTransaction.DisposeAsync();
+                _currentTransaction = null;
+            }
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            if (_currentTransaction != null)
+            {
+                await _currentTransaction.RollbackAsync();
+                await _currentTransaction.DisposeAsync();
+                _currentTransaction = null;
+            }
         }
 
         public async Task<bool> CommitAsync()

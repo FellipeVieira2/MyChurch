@@ -19,6 +19,10 @@ namespace MyChurch.Application.Dtos
 
         public static SubscriptionDto New(Domain.Entities.Subscription subscription)
         {
+            if (subscription == null)
+            {
+                return new SubscriptionDto();
+            }
             return new SubscriptionDto
             {
                 Id = subscription.Id,

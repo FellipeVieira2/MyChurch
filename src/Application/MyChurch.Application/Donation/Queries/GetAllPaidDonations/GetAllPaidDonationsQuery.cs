@@ -36,7 +36,8 @@ namespace MyChurch.Application.Donation.Queries.GetAllPaidDonations
 
             var query = _unitOfWork.Donations.Query()
                 .Include(d => d.Payments)
-                .Where(d => d.MemberId == request.UserId &&
+                .Include(d => d.Member)
+                .Where(d => d.MemberId == request.UserId && d.Member.ChurchId == loggedMember.ChurchId &&
                             d.Payments.Any(p =>
                                 p.PaymentStatus == PaymentStatus.Completed.ToString() ||
                                 p.PaymentStatus == PaymentStatus.Received.ToString() ||

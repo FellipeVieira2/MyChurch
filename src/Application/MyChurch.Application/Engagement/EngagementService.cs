@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Entities;

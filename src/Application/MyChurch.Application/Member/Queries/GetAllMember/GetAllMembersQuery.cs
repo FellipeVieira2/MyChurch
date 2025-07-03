@@ -34,6 +34,7 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
 
         /// <summary>Filtro por membro ativo</summary>
         public bool? IsActive { get; set; }
+        public bool PendingApproval { get; set; } = false;
 
         /// <summary>Filtro por ministério</summary>
         public Ministry? Ministry { get; set; }
@@ -126,6 +127,8 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
 
             if (!string.IsNullOrWhiteSpace(request.Notes))
                 query = query.Where(m => EF.Functions.Like(m.Notes, $"%{request.Notes}%"));
+
+            query = query.Where(m => m.PendingApproval == request.PendingApproval);
 
             // Conta o total de registros após os filtros
             var totalCount = await query.CountAsync(cancellationToken);

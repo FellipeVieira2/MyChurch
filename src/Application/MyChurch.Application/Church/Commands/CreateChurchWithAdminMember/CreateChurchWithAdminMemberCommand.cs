@@ -13,6 +13,7 @@ using MyChurch.Infrastructure.Utils.S3;
 using System.Collections.Generic;
 using MyChurch.Application.Dtos;
 using MyChurch.Infrastructure;
+using QRCoder;
 
 namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 {
@@ -43,14 +44,13 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         public string? AdminBirthState { get; set; } // Novo: estado de nascimento do admin
         public string? Ministry { get; set; }
         public DateTime MemberSince { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         public AddressChurchWithAdminCreate AdminAddress { get; set; }
         public MaritalStatus? MaritalStatus { get; set; }
 
         // Cartão de crédito
         public CreditCardDto? CreditCard { get; set; }
         public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
-        public int? CreditCardInfoId { get; set; } // Novo: permite usar cartão já cadastrado
         
         public class AddressChurchWithAdminCreate
         {
@@ -94,24 +94,95 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 
         public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
         {
-            // Extrai os números dos documentos do admin para uma lista
-            var adminDocumentNumbers = request.AdminDocuments?.Select(d => d.Number).ToList() ?? new List<string>();
+            using (await _unitOfWork.BeginTransactionAsync())
+            {
+                try
+                {
+                    ValidateAdminDocuments(request, cancellationToken);
+                    ValidateChurchDocument(request);
 
-            // 1. Cria a entidade Address
+                    var address = CreateAddress(request.Address);
+                    var church = await CreateChurchAsync(request, address, cancellationToken);
+                    await SeedDefaultJourneysAsync(church.Id);
+                    var adminMember = await CreateAdminMemberAsync(request, church.Id, cancellationToken);
+                    await SaveChurchAndAdminAsync(church, adminMember, cancellationToken);
+                    await UpdateChurchWithAsaasCustomerIdAsync(church, request.AdminEmail, cancellationToken);
+                    // Gera o QRCode de onboarding
+                    var onboardingUrl = $"https://www.mychurchlab.net/onboarding?church={church.Id}";
+                    church.OnboardingQrCode = GenerateQrCodeBase64(onboardingUrl);
+                    _unitOfWork.Churchs.Update(church);
+                    await _unitOfWork.CommitAsync();
+
+                    var subscriptionCommand = CreateSubscriptionCommand(request, adminMember.Id);
+                    var checkoutResult = await _sender.Send(subscriptionCommand, cancellationToken);
+
+                    await _unitOfWork.CommitTransactionAsync();
+
+                    _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
+
+                    return new CreateChurchWithAdminResultDto
+                    {
+                        ChurchId = church.Id,
+                        CheckoutUrl = checkoutResult?.CheckoutUrl,
+                        PixQrCode = checkoutResult?.PixQrCode,
+                        Payload = checkoutResult?.Payload
+                    };
+                }
+                catch
+                {
+                    await _unitOfWork.RollbackTransactionAsync();
+                    throw;
+                }
+            }
+        }
+
+        private static string OnlyDigits(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return string.Empty;
+            return new string(input.Where(char.IsDigit).ToArray());
+        }
+
+        private void ValidateAdminDocuments(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
+        {
+            var adminDocumentNumbers = request.AdminDocuments?.Select(d => OnlyDigits(d.Number)).ToList() ?? new List<string>();
+            var existingDocuments = _unitOfWork.MemberDocuments
+                .Query()
+                .Where(x => adminDocumentNumbers.Contains(x.Number))
+                .Select(x => x.Number)
+                .ToList();
+            if (existingDocuments.Any())
+            {
+                ValidationException.ThrowException("Church", "Document Already Used");
+            }
+        }
+
+        private void ValidateChurchDocument(CreateChurchWithAdminMemberCommand request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Document) || _unitOfWork.Churchs.Query().Any(x => x.Document == request.Document))
+            {
+                ValidationException.ThrowException("Church", "Church Document error");
+            }
+        }
+
+        private Address CreateAddress(CreateChurchWithAdminMemberCommand.AddressChurchWithAdminCreate addressDto)
+        {
             var address = new Address(
-                street: request.Address.Street,
-                city: request.Address.City,
-                state: request.Address.State,
-                zipCode: request.Address.ZipCode,
-                country: request.Address.Country,
-                neighborhood: request.Address.Neighborhood
-                
+                street: addressDto.Street,
+                city: addressDto.City,
+                state: addressDto.State,
+                zipCode: addressDto.ZipCode,
+                country: addressDto.Country,
+                neighborhood: addressDto.Neighborhood
             )
             {
-                Number = request.Address.Number
+                Number = addressDto.Number,
+                Complement = "N/A"
             };
-            address.Complement = "N/A";
-            // 2. Cria a entidade Church
+            return address;
+        }
+
+        private async Task<Domain.Entities.Church> CreateChurchAsync(CreateChurchWithAdminMemberCommand request, Address address, CancellationToken cancellationToken)
+        {
             var church = new Domain.Entities.Church(
                 name: request.Name,
                 phone: request.Phone,
@@ -119,27 +190,28 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 description: request.Description
             )
             {
-                Document = request.Document,
+                Document = OnlyDigits(request.Document),
             };
-
-            // 3. Faz upload do logo se necessário
             if (!string.IsNullOrEmpty(request.Logo))
             {
                 church.LogoFileName = await UploadLogoAsync(request.Logo, cancellationToken);
             }
-
-            // 4. Adiciona a igreja ao repositório
             _unitOfWork.Churchs.Create(church);
             await _unitOfWork.CommitAsync();
+            return church;
+        }
 
-            // Seed default journeys
-            var defaultJourneys = JourneySeedData.GetDefaultJourneys(church.Id);
+        private async Task SeedDefaultJourneysAsync(int churchId)
+        {
+            var defaultJourneys = JourneySeedData.GetDefaultJourneys(churchId);
             foreach (var journey in defaultJourneys)
             {
                 _unitOfWork.Journeys.Create(journey);
             }
+        }
 
-            // 5. Cria o membro admin
+        private async Task<Domain.Entities.Member> CreateAdminMemberAsync(CreateChurchWithAdminMemberCommand request, int churchId, CancellationToken cancellationToken)
+        {
             var adminMember = new Domain.Entities.Member
             {
                 Name = request.AdminName,
@@ -149,7 +221,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 IsBaptized = request.AdminIsBaptized,
                 BaptizedDate = request.AdminBaptizedDate,
                 IsTither = request.AdminIsTither,
-                ChurchId = church.Id,
+                ChurchId = churchId,
                 Role = UserRole.Admin,
                 Created = DateTime.Now,
                 BirthCity = request.AdminBirthCity,
@@ -158,70 +230,49 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 MaritalStatus = request.MaritalStatus,
                 Notes = request.Notes,
                 MemberSince = request.MemberSince,
-                Address = new Address(
-                    street: request.AdminAddress.Street,
-                    city: request.AdminAddress.City,
-                    state: request.AdminAddress.State,
-                    zipCode: request.AdminAddress.ZipCode,
-                    country: request.AdminAddress.Country,
-                    neighborhood: request.AdminAddress.Neighborhood
-                )
-                {
-                    Number = request.AdminAddress.Number
-                },
+                Address = CreateAddress(request.AdminAddress),
                 Documents = request.AdminDocuments?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
-                    Number = d.Number
+                    Number = OnlyDigits(d.Number)
                 }).ToList() ?? []
             };
-
-            // 6. Faz upload da foto do admin se necessário
             if (!string.IsNullOrEmpty(request.AdminPhoto))
             {
                 adminMember.Photo = await UploadPhotoAsync(request.AdminPhoto, cancellationToken);
             }
-
-            // 7. Criptografa e salva a senha do admin
             if (!string.IsNullOrWhiteSpace(request.AdminPassword))
             {
                 var hash = Guid.NewGuid().ToString("N");
                 adminMember.PasswordHash = hash;
                 adminMember.Password = request.AdminPassword.Encrypt(hash);
             }
+            return adminMember;
+        }
 
-            // 8. Adiciona o membro admin ao repositório
+        private async Task SaveChurchAndAdminAsync(Domain.Entities.Church church, Domain.Entities.Member adminMember, CancellationToken cancellationToken)
+        {
             _unitOfWork.Members.Create(adminMember);
             await _unitOfWork.CommitAsync();
+        }
 
-            // 9. Cria o cliente no Asaas e salva o AsaasCustomerId
-            church.AsaasCustomerId = await CreateAsaasCustomerAsync(church, request.AdminEmail, cancellationToken);
+        private async Task UpdateChurchWithAsaasCustomerIdAsync(Domain.Entities.Church church, string? adminEmail, CancellationToken cancellationToken)
+        {
+            church.AsaasCustomerId = await CreateAsaasCustomerAsync(church, adminEmail, cancellationToken);
             _unitOfWork.Churchs.Update(church);
             await _unitOfWork.CommitAsync();
+        }
 
-            // 10. Monta o comando de assinatura
-            var subscriptionCommand = new CreateSubscriptionCommand
+        private CreateSubscriptionCommand CreateSubscriptionCommand(CreateChurchWithAdminMemberCommand request, int adminMemberId)
+        {
+            return new CreateSubscriptionCommand
             {
-                UserId = adminMember.Id,
+                UserId = adminMemberId,
                 PlanId = request.PlanId,
                 BillingType = request.BillingType,
                 FirstPaymentDate = DateTime.UtcNow,
                 CreditCard = request.CreditCard,
                 CreditCardHolderInfo = request.CreditCardHolderInfo,
-                CreditCardInfoId = request.CreditCardInfoId
-            };
-
-            // 11. Chama o fluxo de assinatura
-            var checkoutResult = await _sender.Send(subscriptionCommand, cancellationToken);
-
-            _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
-
-            return new CreateChurchWithAdminResultDto
-            {
-                ChurchId = church.Id,
-                CheckoutUrl = checkoutResult?.CheckoutUrl,
-                PixQrCode = checkoutResult?.PixQrCode,
-                Payload = checkoutResult?.Payload
             };
         }
 
@@ -262,6 +313,15 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             };
             var asaasCustomer = await _asaasWebClient.CriarClienteAsync(customer);
             return asaasCustomer.Id;
+        }
+
+        private string GenerateQrCodeBase64(string url)
+        {
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrCodeData);
+            var qrCodeBytes = qrCode.GetGraphic(20);
+            return "data:image/png;base64," + Convert.ToBase64String(qrCodeBytes);
         }
     }
 }

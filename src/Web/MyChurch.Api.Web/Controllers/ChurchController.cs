@@ -1,3 +1,4 @@
+using QRCoder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
@@ -7,6 +8,10 @@ using MyChurch.Application.Church.Commands.UpdateChurch;
 using MyChurch.Application.Church.Queries.GetChurch;
 using MyChurch.Application.Dtos;
 using MediatR;
+using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Exceptions;
+using MyChurch.Domain.Entities;
+using MyChurch.Application.Church.Commands.GenerateOnboardingQrCode;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -106,6 +111,21 @@ namespace MyChurch.Api.Web.Controllers
                 command.Id = id;
             var church = await Mediator.Send(command);
             return Ok(church);
+        }
+
+        /// <summary>
+        /// Força a geração do QRCode de onboarding para a igreja caso não exista
+        /// </summary>
+        /// <param name="id">Id da igreja</param>
+        /// <response code="200">QRCode base64</response>
+        /// <response code="404">Igreja não encontrada</response>
+        [HttpPost("{id}/generate-onboarding-qrcode")]
+        public async Task<IActionResult> GenerateOnboardingQrCode(int id)
+        {
+            var qrCode = await Mediator.Send(new MyChurch.Application.Church.Commands.GenerateOnboardingQrCode.GenerateOnboardingQrCodeCommand(id));
+            if (string.IsNullOrEmpty(qrCode))
+                return NotFound("Igreja não encontrada");
+            return Ok(new { qrCode });
         }
     }
 }

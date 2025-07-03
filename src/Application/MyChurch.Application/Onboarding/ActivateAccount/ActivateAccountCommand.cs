@@ -33,14 +33,14 @@ namespace MyChurch.Application.Onboarding.ActivateAccount
             public async Task<string> Handle(ValidateMemberForActivationCommand request, CancellationToken cancellationToken)
             {
                 var member = _unitOfWork.Members.Query()
-                    .FirstOrDefault(m => m.Documents.Any(d => d.Number == request.Identifier) && !m.IsActive);
+                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) || m.Phone == request.Identifier || m.Email.ToLower() == request.Identifier.ToLower()) && string.IsNullOrEmpty(m.Password));
                 if (member == null)
                 {
-                    throw new MyChurch.Domain.Exceptions.ValidationException("Membro não encontrado ou já está ativo.");
+                    MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member","Membro não encontrado ou já está ativo.");
                 }
                 if (member.BirthDate != request.BirthDate)
                 {
-                    throw new MyChurch.Domain.Exceptions.ValidationException("Data de nascimento inválida.");
+                    MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member","Data de nascimento inválida.");
                 }
                 // Retorna o hash/token para ativação de senha
                 return member.PasswordHash;

@@ -580,6 +580,35 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("hymn_verses", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberBibleReadingAssignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AssignedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("assigned_at");
+
+                    b.Property<int>("BibleReadingPlanId")
+                        .HasColumnType("int")
+                        .HasColumnName("bible_reading_plan_id");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId", "BibleReadingPlanId")
+                        .IsUnique();
+
+                    b.ToTable("member_bible_reading_assignment", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Bible.MemberBibleReadingProgress", b =>
                 {
                     b.Property<int>("Id")
@@ -987,6 +1016,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)")
                         .HasColumnName("name");
+
+                    b.Property<string>("OnboardingQrCode")
+                        .HasColumnType("text")
+                        .HasColumnName("onboarding_qrcode");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -1581,7 +1614,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("GroupMeetings", (string)null);
+                    b.ToTable("GroupMeetings");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingAttendance", b =>
@@ -1605,7 +1638,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingAttendances", (string)null);
+                    b.ToTable("GroupMeetingAttendances");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingMemberNote", b =>
@@ -1637,7 +1670,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingMemberNotes", (string)null);
+                    b.ToTable("GroupMeetingMemberNotes");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMember", b =>
@@ -2434,6 +2467,37 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasIndex("ChurchId");
 
                     b.ToTable("transfer_history", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.UserActionHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionData")
+                        .HasColumnType("text")
+                        .HasColumnName("action_data");
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("action_type");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_action_history", "postgres");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.VerseOfTheDay", b =>

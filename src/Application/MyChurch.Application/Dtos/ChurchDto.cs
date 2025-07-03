@@ -16,6 +16,9 @@
         // Banking information (only visible to admin users)
         public BankingInfoDto BankingInfo { get; set; }
 
+        // Exibe apenas para admin
+        public string? OnboardingQrCode { get; set; }
+
         public static ChurchDto New(Domain.Entities.Church church)
         {
             return new ChurchDto
@@ -26,7 +29,9 @@
                 Phone = church.Phone,
                 Members = church.Members.Select(MemberDto.New).ToList(),
                 Subscription = SubscriptionDto.New(church.Subscription),
-                Description = church.Description
+                Description = church.Description,
+                Logo = church.LogoFileName,
+                OnboardingQrCode = church.OnboardingQrCode
             };
         }
     }

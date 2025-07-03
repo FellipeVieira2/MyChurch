@@ -11,6 +11,7 @@
         public int ChurchId { get; set; }
         public ChurchDto Church { get; set; }
         public bool RequiresParticipantList { get; set; }
+        public int EventType { get; set; } // Assuming EventType is an integer enum
         public ICollection<MemberDto> Participants { get; set; } = new List<MemberDto>();
 
         public EventRecurrenceDto? Recurrence { get; set; }
@@ -30,6 +31,7 @@
                 RequiresParticipantList = ev.RequiresParticipantList,
                 Participants = ev.Participants?.Select(MemberDto.New).ToList() ?? new List<MemberDto>(),
                 Recurrence = ev.Recurrence != null ? EventRecurrenceDto.New(ev.Recurrence) : null,
+                EventType = (int)ev.EventType, // Assuming EventType is an enum
                 Notifications = ev.Notifications?.Select(EventNotificationDto.New).ToList() ?? new List<EventNotificationDto>()
             };
         }

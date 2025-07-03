@@ -238,6 +238,14 @@
             <response code="400">Failure: Invalid Request</response>
             <response code="401">Failure: Unauthorized</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GenerateOnboardingQrCode(System.Int32)">
+            <summary>
+            Força a geração do QRCode de onboarding para a igreja caso não exista
+            </summary>
+            <param name="id">Id da igreja</param>
+            <response code="200">QRCode base64</response>
+            <response code="404">Igreja não encontrada</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
             Create a new Donation
