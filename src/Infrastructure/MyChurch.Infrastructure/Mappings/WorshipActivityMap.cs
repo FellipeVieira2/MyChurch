@@ -31,6 +31,11 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("order")
                 .IsRequired();
 
+            builder
+                .Property(x => x.DonationTime)
+                .HasColumnName("donation_time")
+                .IsRequired();
+
             builder.Property(x => x.IsCurrent)
                 .HasColumnName("is_current")
                 .IsRequired();

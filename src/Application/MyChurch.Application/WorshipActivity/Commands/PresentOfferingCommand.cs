@@ -26,6 +26,7 @@ namespace MyChurch.Application.WorshipActivity.Commands
 
         public async Task<int> Handle(PresentOfferingCommand request, CancellationToken cancellationToken)
         {
+
             if (request.Finish && request.ActivityId.HasValue)
             {
                 // Finaliza a atividade de oferta existente
@@ -35,22 +36,41 @@ namespace MyChurch.Application.WorshipActivity.Commands
                 if (activity == null)
                     ValidationException.ThrowException("WorshipActivity", "Atividade de oferta não encontrada para o culto.");
 
-                activity.IsCurrent = false;
+                activity.DonationTime = false;
                 await _unitOfWork.CommitAsync();
                 return activity.Id;
             }
             else
             {
-                // Cria nova atividade de oferta
-                var activity = new Domain.Entities.WorshipActivity
+                var activity = await _unitOfWork.WorshipActivities.Query()
+                .Include(a => a.Bibles)
+                .Include(a => a.Hymns)
+                .FirstOrDefaultAsync(a => a.WorshipServiceId == request.WorshipServiceId && a.IsCurrent, cancellationToken);
+
+                if (activity == null)
                 {
-                    WorshipServiceId = request.WorshipServiceId,
-                    Name = "Oferta",
-                    Order = 2,
-                    IsCurrent = true
-                };
-                _unitOfWork.WorshipActivities.Create(activity);
-                await _unitOfWork.CommitAsync();
+                    activity = new Domain.Entities.WorshipActivity
+                    {
+                        WorshipServiceId = request.WorshipServiceId,
+                        Name = "Louvor",
+                        Order = 1,
+                        IsCurrent = true,
+                        Bibles = [],
+                        DonationTime = true, // Marca como tempo de oferta
+                        Hymns = []
+                    };
+
+                    _unitOfWork.WorshipActivities.Create(activity);
+                    await _unitOfWork.CommitAsync();
+                }
+                else
+                {
+                    activity.DonationTime = true;
+                    _unitOfWork.WorshipActivities.Update(activity);
+                    await _unitOfWork.CommitAsync();
+                }
+
+
                 return activity.Id;
             }
         }

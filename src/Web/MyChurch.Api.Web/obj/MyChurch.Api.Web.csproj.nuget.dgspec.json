@@ -96,6 +96,10 @@
               "target": "Package",
               "version": "[1.6.0, )"
             },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.7.0, )"

@@ -56,6 +56,11 @@ namespace MyChurch.Application.Member.Commands.Login
                 _logger.LogWarning("Account not activated: {Identifier}", request.Identifier);
                 ValidationException.ThrowException("Login", "Account not activated. Please activate your account.");
             }
+            if (member.PendingApproval)
+            {
+                _logger.LogWarning("Account pending approval: {Identifier}", request.Identifier);
+                ValidationException.ThrowException("Login", "Account pending approval. Please wait for admin approval.");
+            }
 
             var encryptedPassword = request.Password.Encrypt(member.PasswordHash);
 

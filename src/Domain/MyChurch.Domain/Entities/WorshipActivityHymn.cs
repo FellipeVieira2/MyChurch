@@ -8,6 +8,7 @@ namespace MyChurch.Domain.Entities
         public int HymnId { get; set; } // FK para tabela de hinos
         public string? HymnTitle { get; set; }
         public string? HymnNumber { get; set; }
+        public int VerseNumber { get; set; }
 
         // Navegação
         public WorshipActivity WorshipActivity { get; set; }

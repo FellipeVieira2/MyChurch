@@ -2380,6 +2380,93 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("pre_launch_interests", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Presentation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdminUserId")
+                        .HasColumnType("int")
+                        .HasColumnName("admin_user_id");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<int>("CurrentSlideIndex")
+                        .HasColumnType("integer")
+                        .HasColumnName("current_slide_index");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsLive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_live");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminUserId");
+
+                    b.HasIndex("ChurchId");
+
+                    b.ToTable("presentations", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CachedDisplayText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("cached_display_text");
+
+                    b.Property<string>("CachedMediaUrl")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("cached_media_url");
+
+                    b.Property<string>("ContentReferenceJson")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("content_reference_json");
+
+                    b.Property<int>("ContentType")
+                        .HasColumnType("integer")
+                        .HasColumnName("content_type");
+
+                    b.Property<int>("OrderIndex")
+                        .HasColumnType("integer")
+                        .HasColumnName("order_index");
+
+                    b.Property<int>("PresentationId")
+                        .HasColumnType("integer")
+                        .HasColumnName("presentation_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PresentationId");
+
+                    b.ToTable("slides", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.Property<int>("Id")
@@ -2541,6 +2628,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("content");
 
+                    b.Property<bool>("DonationTime")
+                        .HasColumnType("boolean")
+                        .HasColumnName("donation_time");
+
                     b.Property<bool>("IsCurrent")
                         .HasColumnType("boolean")
                         .HasColumnName("is_current");
@@ -2625,6 +2716,10 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<string>("HymnTitle")
                         .HasColumnType("text")
                         .HasColumnName("hymn_title");
+
+                    b.Property<int>("VerseNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("verse_number");
 
                     b.Property<int>("WorshipActivityId")
                         .HasColumnType("integer")
@@ -3312,6 +3407,36 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("WorshipService");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Presentation", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "AdminUser")
+                        .WithMany()
+                        .HasForeignKey("AdminUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdminUser");
+
+                    b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Presentation", "Presentation")
+                        .WithMany("Slides")
+                        .HasForeignKey("PresentationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Presentation");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -3526,6 +3651,11 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Donations");
 
                     b.Navigation("PrayerRequests");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Presentation", b =>
+                {
+                    b.Navigation("Slides");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>

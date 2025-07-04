@@ -1,11 +1,9 @@
-using MediatR;
 using FluentValidation;
-using MyChurch.Application.Dtos;
+using MediatR;
 using MyChurch.Domain.Contracts;
-using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
-using ValidationException = MyChurch.Domain.Exceptions.ValidationException;
 using MyChurch.Infrastructure.Utils.Extensions;
+using ValidationException = MyChurch.Domain.Exceptions.ValidationException;
 
 namespace MyChurch.Application.Onboarding.RegisterForApproval
 {
@@ -19,8 +17,17 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
         public DateTime BirthDate { get; set; }
         public string? MaritalStatus { get; set; }
         public string Password { get; set; }
-        public AddressDto Address { get; set; }
+        public AddressRegisterForApproval Address { get; set; }
 
+        public class AddressRegisterForApproval
+        {
+            public string Street { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string ZipCode { get; set; }
+            public string Country { get; set; }
+            public string Neighborhood { get; set; }
+        }
         public class Validator : AbstractValidator<RegisterForApprovalCommand>
         {
             public Validator()
@@ -47,7 +54,7 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                 var exists = _unitOfWork.Members.Query().Any(m => m.Documents.Any(d => d.Number == request.Cpf));
                 if (exists)
                 {
-                    throw new ValidationException("Já existe um membro com este CPF.");
+                    ValidationException.ThrowException("User","Já existe um membro com este CPF.");
                 }
                 MaritalStatus? maritalStatus = null;
                 if (!string.IsNullOrEmpty(request.MaritalStatus) && Enum.TryParse<MaritalStatus>(request.MaritalStatus, out var ms))

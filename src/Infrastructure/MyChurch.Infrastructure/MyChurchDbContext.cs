@@ -17,6 +17,8 @@ namespace MyChurch.Infrastructure
         public DbSet<GroupMeetingMemberNote> GroupMeetingMemberNotes { get; set; }
         public DbSet<MemberBibleReadingAssignment> MemberBibleReadingAssignments { get; set; }
         public DbSet<UserActionHistory> UserActionHistories { get; set; }
+        public DbSet<Presentation> Presentations { get; set; }
+        public DbSet<Slide> Slides { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

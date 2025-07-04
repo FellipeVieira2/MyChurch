@@ -202,10 +202,24 @@ namespace MyChurch.Api.Web.Controllers
         /// <response code="204">Sucesso: Membro aprovado</response>
         /// <response code="404">Falha: Membro não encontrado</response>
         [HttpPut("{memberId}/approve")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ApproveRegistration(string memberId)
         {
             var command = new MyChurch.Application.Member.Commands.ApproveMemberRegistration.ApproveMemberRegistrationCommand { MemberId = memberId };
+            await Mediator.Send(command);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Reprova o cadastro de um membro (apenas para administradores)
+        /// </summary>
+        /// <response code="204">Sucesso: Membro reprovado</response>
+        /// <response code="404">Falha: Membro não encontrado</response>
+        [HttpPut("{memberId}/decline")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeclineRegistration(string memberId, [FromBody] string? reason = null)
+        {
+            var command = new MyChurch.Application.Member.Commands.ApproveMemberRegistration.DeclineMemberRegistrationCommand { MemberId = memberId, Reason = reason };
             await Mediator.Send(command);
             return NoContent();
         }

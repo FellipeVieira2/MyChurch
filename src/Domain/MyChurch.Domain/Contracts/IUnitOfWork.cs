@@ -65,6 +65,8 @@
         IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
         IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
         IUserActionHistoryRepository UserActionHistories { get; }
+        ISlideRepository Slides { get; }
+        IPresentationRepository Presentations { get; }
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

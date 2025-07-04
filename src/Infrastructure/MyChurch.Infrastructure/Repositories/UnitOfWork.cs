@@ -80,6 +80,8 @@ namespace MyChurch.Infrastructure.Repositories
         public IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
         public IMemberBibleReadingAssignmentRepository MemberBibleReadingAssignments { get; }
         public IUserActionHistoryRepository UserActionHistories { get; }
+        public IPresentationRepository Presentations { get; }
+        public ISlideRepository Slides { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -145,7 +147,9 @@ namespace MyChurch.Infrastructure.Repositories
             IGroupMeetingAttendanceRepository groupMeetingAttendances,
             IGroupMeetingMemberNoteRepository groupMeetingMemberNotes,
             IMemberBibleReadingAssignmentRepository memberBibleReadingAssignments,
-            IUserActionHistoryRepository userActionHistories)
+            IUserActionHistoryRepository userActionHistories,
+            IPresentationRepository presentations,
+            ISlideRepository slides)
         {
             Churchs = churchs;
             Donations = donations;
@@ -211,6 +215,8 @@ namespace MyChurch.Infrastructure.Repositories
             GroupMeetingMemberNotes = groupMeetingMemberNotes;
             MemberBibleReadingAssignments = memberBibleReadingAssignments;
             UserActionHistories = userActionHistories;
+            Presentations = presentations;
+            Slides = slides;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

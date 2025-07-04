@@ -24,6 +24,11 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("hymn_id")
                 .IsRequired();
 
+            builder
+                .Property(x => x.VerseNumber)
+                .HasColumnName("verse_number")
+                .IsRequired();
+
             builder.Property(x => x.HymnTitle)
                 .HasColumnName("hymn_title");
 

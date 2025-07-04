@@ -479,6 +479,11 @@
             Busca um hino pelo número, retornando o coro e os versos.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetAllHymnSummaries">
+            <summary>
+            Retorna uma lista de todos os hinos com número e título.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
             <summary>
             Obtém as configurações do membro autenticado.
@@ -702,7 +707,7 @@
             Finaliza a leitura bíblica atual pelo id da atividade
             </summary>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32)">
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.PresentHymn(System.Int32,System.Int32,System.Int32)">
             <summary>
             Apresenta um hino para todos os membros do culto
             </summary>

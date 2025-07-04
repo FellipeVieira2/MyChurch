@@ -5,6 +5,7 @@ using MyChurch.Application.Hymn.Queries.GetHymnByNumber;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Exceptions;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.WorshipActivity.Commands
@@ -50,27 +51,75 @@ namespace MyChurch.Application.WorshipActivity.Commands
                 ValidationException.ThrowException("WorshipService", "Culto não encontrado.");
             }
 
-            var currentActivities = await _unitOfWork.WorshipActivities.Query()
-                .Where(wa => wa.WorshipServiceId == request.WorshipServiceId && wa.IsCurrent)
-                .ToListAsync(cancellationToken);
+            var activity = await _unitOfWork.WorshipActivities.Query()
+                .Include(a => a.Bibles)
+                .Include(a => a.Hymns)
+                .FirstOrDefaultAsync(a => a.WorshipServiceId == request.WorshipServiceId && a.IsCurrent, cancellationToken);
 
-            foreach (var act in currentActivities)
+            if (activity == null)
             {
-                act.IsCurrent = false;
-                _unitOfWork.WorshipActivities.Update(act);
+                activity = new Domain.Entities.WorshipActivity
+                {
+                    WorshipServiceId = request.WorshipServiceId,
+                    Name = "Louvor",
+                    Order = 1,
+                    IsCurrent = true,
+                    Bibles = [],
+                    Hymns = []
+                };
+
+                _unitOfWork.WorshipActivities.Create(activity);
+                await _unitOfWork.CommitAsync();
             }
-
-            var newActivity = new Domain.Entities.WorshipActivity
+            else
             {
-                WorshipServiceId = request.WorshipServiceId,
-                IsCurrent = true,
-                Hymns = new List<WorshipActivityHymn> { new WorshipActivityHymn { HymnId = hymnDto.Id } }
-            };
+                activity.Name = "Louvor";
+                activity.Bibles.Clear();
+                activity.Hymns.Clear();
+            }
+            activity.Hymns.Add(new WorshipActivityHymn
+            {
+                HymnId = hymnDto.Id,
+                HymnNumber = hymnDto.Number.ToString(),
+                HymnTitle = hymnDto.Title,
+                VerseNumber = request.VerseNumber
+            });
 
-            _unitOfWork.WorshipActivities.Create(newActivity);
+            _unitOfWork.WorshipActivities.Update(activity);
+
             await _unitOfWork.CommitAsync();
 
-            return new { hymnDto, VerseFocus = request.VerseNumber };
+            // Buscar apresentação do culto
+            var presentation = await _unitOfWork.Presentations.Query().FirstOrDefaultAsync(p => p.Name == $"Culto_{request.WorshipServiceId}", cancellationToken);
+            int? presentationId = presentation?.Id;
+            int slideIndex = 0;
+            if (presentationId != null)
+            {
+                var contentReferenceJson = System.Text.Json.JsonSerializer.Serialize(new { HymnNumber = request.HymnNumber, StanzaNumber = request.VerseNumber });
+                var existingSlide = await _unitOfWork.Slides.Query()
+                    .FirstOrDefaultAsync(s => s.PresentationId == presentationId.Value
+                        && s.ContentType == MyChurch.Domain.Enum.SlideContentType.HymnStanza
+                        && s.ContentReferenceJson == contentReferenceJson, cancellationToken);
+                if (existingSlide != null)
+                {
+                    slideIndex = existingSlide.OrderIndex;
+                }
+                else
+                {
+                    var addSlide = new MyChurch.Application.Slide.Commands.AddSlideCommand
+                    {
+                        PresentationId = presentationId.Value,
+                        ContentType = MyChurch.Domain.Enum.SlideContentType.HymnStanza,
+                        ContentReferenceJson = contentReferenceJson,
+                        OrderIndex = await _unitOfWork.Slides.Query().CountAsync(s => s.PresentationId == presentationId.Value, cancellationToken)
+                    };
+                    // Não há contexto de usuário aqui, então Email/Role/UserId ficam nulos
+                    var slideDto = await _sender.Send(addSlide, cancellationToken);
+                    slideIndex = slideDto.OrderIndex;
+                }
+            }
+
+            return new { hymnDto, VerseFocus = request.VerseNumber, PresentationId = presentationId, SlideIndex = slideIndex };
         }
     }
 }

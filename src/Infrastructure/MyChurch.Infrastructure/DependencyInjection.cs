@@ -77,6 +77,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IMemberFavoriteVerseRepository, MemberFavoriteVerseRepository>();
             services.AddScoped<IMemberConfigurationRepository, MemberConfigurationRepository>();
             services.AddScoped<IPreLaunchInterestRepository, PreLaunchInterestRepository>();
+            services.AddScoped<ISlideRepository, SlideRepository>();
+            services.AddScoped<IPresentationRepository, PresentationRepository>();
 
             // Bible Reading Plan repositories
             services.AddScoped<IBibleReadingPlanRepository, BibleReadingPlanRepository>();

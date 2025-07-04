@@ -1,7 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Azure.Core;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +8,6 @@ using MyChurch.Application.WorshipService.Commands.ManageSchedule;
 using MyChurch.Application.WorshipService.Commands.PrayerRequest;
 using MyChurch.Application.WorshipService.Queries.PrayerRequest;
 using MyChurch.Domain.Contracts;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -35,18 +31,17 @@ namespace MyChurch.Api.Web.Controllers
         [HttpPost("{worshipServiceId}/bible-reading/highlight")]
         public async Task<IActionResult> HighlightBibleReading(int worshipServiceId, [FromQuery] int versionId, [FromQuery] int bookId, [FromQuery] int chapterId, [FromQuery] int? verseId)
         {
-            var command = new HighlightBibleReadingCommand
-            {
-                WorshipServiceId = worshipServiceId,
-                VersionId = versionId,
-                BookId = bookId,
-                ChapterId = chapterId,
-                VerseId = verseId
-            };
-            var activityId = await Mediator.Send(command);
+            var command = AuthorizationRequestCreate<HighlightBibleReadingCommand>();
+            command.WorshipServiceId = worshipServiceId;
+            command.VerseId = verseId;
+            command.BookId = bookId;
+            command.ChapterId = chapterId;
+            command.VersionId = versionId;
+
+            var result = await Mediator.Send(command);
             await _hubContext.Clients.Group($"worship_{worshipServiceId}")
-                .SendAsync("BibleReadingHighlighted", new { ActivityId = activityId, VersionId = versionId, BookId = bookId, ChapterId = chapterId, VerseId = verseId });
-            return Ok(new { ActivityId = activityId, VersionId = versionId, BookId = bookId, ChapterId = chapterId, VerseId = verseId });
+                .SendAsync("BibleReadingHighlighted", new { ActivityId = result.ActivityId, VersionId = versionId, BookId = bookId, ChapterId = chapterId, VerseId = verseId, PresentationId = result.PresentationId, SlideIndex = result.SlideIndex });
+            return Ok(new { ActivityId = result.ActivityId, VersionId = versionId, BookId = bookId, ChapterId = chapterId, VerseId = verseId, PresentationId = result.PresentationId, SlideIndex = result.SlideIndex });
         }
 
         /// <summary>

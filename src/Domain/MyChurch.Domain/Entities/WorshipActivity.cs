@@ -8,6 +8,7 @@
         public string? Content { get; set; } // Texto livre, instruções, etc.
         public int Order { get; set; }
         public bool IsCurrent { get; set; }
+        public bool DonationTime { get; set; } = false; // Indica se é o momento de oferta
 
         // Relacionamentos
         public WorshipService WorshipService { get; set; }

@@ -585,6 +585,13 @@
             <response code="204">Sucesso: Membro aprovado</response>
             <response code="404">Falha: Membro não encontrado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.DeclineRegistration(System.String,System.String)">
+            <summary>
+            Reprova o cadastro de um membro (apenas para administradores)
+            </summary>
+            <response code="204">Sucesso: Membro reprovado</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Ask(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
             <summary>
             Ask to Pastor.
