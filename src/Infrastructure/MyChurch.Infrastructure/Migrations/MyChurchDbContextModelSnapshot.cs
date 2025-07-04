@@ -1753,6 +1753,60 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("group_resource", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ImportedHymn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .HasColumnType("text")
+                        .HasColumnName("author");
+
+                    b.Property<string>("Lyrics")
+                        .HasColumnType("text")
+                        .HasColumnName("lyrics");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("imported_hymns", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ImportedHymnStanza", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ImportedHymnId")
+                        .HasColumnType("integer")
+                        .HasColumnName("imported_hymn_id");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImportedHymnId");
+
+                    b.ToTable("imported_hymn_stanzas", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Journey", b =>
                 {
                     b.Property<int>("Id")
@@ -3289,6 +3343,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Member");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ImportedHymnStanza", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.ImportedHymn", "ImportedHymn")
+                        .WithMany("Stanzas")
+                        .HasForeignKey("ImportedHymnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ImportedHymn");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.JourneyStage", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Journey", "Journey")
@@ -3633,6 +3698,11 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Attendances");
 
                     b.Navigation("MemberNotes");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ImportedHymn", b =>
+                {
+                    b.Navigation("Stanzas");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Journey", b =>

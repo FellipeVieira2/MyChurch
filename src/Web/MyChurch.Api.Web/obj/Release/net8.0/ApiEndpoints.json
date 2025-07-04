@@ -2178,6 +2178,115 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "GetAll",
+    "RelativePath": "api/ImportedHymn",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[MyChurch.Application.Dtos.ImportedHymnDto, MyChurch.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Create",
+    "RelativePath": "api/ImportedHymn",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.ImportedHymn.Commands.CreateImportedHymnCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "GetById",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.Dtos.ImportedHymnDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Update",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.ImportedHymn.Commands.UpdateImportedHymnCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Delete",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.JourneyController",
     "Method": "CreateJourney",
     "RelativePath": "api/journeys",
@@ -2340,6 +2449,22 @@
         "Name": "command",
         "Type": "MyChurch.Application.Journey.Commands.VerifyJourneyStageCommand",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.LyricsController",
+    "Method": "GetLyrics",
+    "RelativePath": "api/Lyrics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "url",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2617,6 +2742,27 @@
         "Name": "memberId",
         "Type": "System.String",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
+    "Method": "DeclineRegistration",
+    "RelativePath": "api/Member/{memberId}/decline",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "memberId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "reason",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -3765,6 +3911,32 @@
       },
       {
         "Name": "verseNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "PresentImportedHymn",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/imported-hymn/{importedHymnId}/present/{stanzaOrder}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "importedHymnId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "stanzaOrder",
         "Type": "System.Int32",
         "IsRequired": true
       }

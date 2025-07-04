@@ -3529,6 +3529,194 @@
         }
       }
     },
+    "/api/ImportedHymn": {
+      "post": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ImportedHymn/{id}": {
+      "get": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journeys": {
       "post": {
         "tags": [
@@ -3751,6 +3939,29 @@
       "get": {
         "tags": [
           "Journey"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Lyrics": {
+      "get": {
+        "tags": [
+          "Lyrics"
+        ],
+        "summary": "Realiza scraping de letras de músicas do Vagalume e importa como hino.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "description": "URL da página da música no Vagalume",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -4482,6 +4693,54 @@
           },
           "204": {
             "description": "Sucesso: Membro aprovado"
+          },
+          "404": {
+            "description": "Falha: Membro não encontrado"
+          }
+        }
+      }
+    },
+    "/api/Member/{memberId}/decline": {
+      "put": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Reprova o cadastro de um membro (apenas para administradores)",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "Sucesso: Membro reprovado"
           },
           "404": {
             "description": "Falha: Membro não encontrado"
@@ -6226,6 +6485,47 @@
         }
       }
     },
+    "/api/WorshipActivity/{worshipServiceId}/imported-hymn/{importedHymnId}/present/{stanzaOrder}": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "importedHymnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "stanzaOrder",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/WorshipActivity/{worshipServiceId}/offering/present": {
       "post": {
         "tags": [
@@ -6902,6 +7202,36 @@
             "nullable": true
           },
           "number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressRegisterForApproval": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "neighborhood": {
             "type": "string",
             "nullable": true
           }
@@ -8044,6 +8374,31 @@
         },
         "additionalProperties": false
       },
+      "CreateImportedHymnCommand": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateJourneyCommand": {
         "type": "object",
         "properties": {
@@ -8898,6 +9253,53 @@
         },
         "additionalProperties": false
       },
+      "ImportedHymnDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportedHymnStanzaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "JourneyStageType": {
         "enum": [
           1,
@@ -9488,7 +9890,7 @@
             "nullable": true
           },
           "address": {
-            "$ref": "#/components/schemas/AddressDto"
+            "$ref": "#/components/schemas/AddressRegisterForApproval"
           }
         },
         "additionalProperties": false
@@ -9541,7 +9943,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ],
         "type": "integer",
         "format": "int32"
@@ -9949,6 +10352,35 @@
           },
           "coverImageUrl": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateImportedHymnCommand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
             "nullable": true
           }
         },

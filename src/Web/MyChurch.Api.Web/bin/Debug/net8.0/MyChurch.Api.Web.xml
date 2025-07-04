@@ -484,6 +484,13 @@
             Retorna uma lista de todos os hinos com número e título.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.LyricsController.GetLyrics(System.String)">
+            <summary>
+            Realiza scraping de letras de músicas do Vagalume.
+            </summary>
+            <param name="url">URL da página da música no Vagalume</param>
+            <returns>Letra completa, estrofes e nome da música</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
             <summary>
             Obtém as configurações do membro autenticado.
@@ -583,6 +590,13 @@
             Aprova o cadastro de um membro (apenas para administradores)
             </summary>
             <response code="204">Sucesso: Membro aprovado</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.DeclineRegistration(System.String,System.String)">
+            <summary>
+            Reprova o cadastro de um membro (apenas para administradores)
+            </summary>
+            <response code="204">Sucesso: Membro reprovado</response>
             <response code="404">Falha: Membro não encontrado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Ask(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">

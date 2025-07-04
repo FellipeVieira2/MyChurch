@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.WorshipActivity.Commands
 {
-    public class PresentHymnCommand : IRequest<object>
+    public class PresentHymnCommand : JwtMemberDto, IRequest<object>
     {
         [JsonIgnore]
         public int WorshipServiceId { get; set; }
@@ -108,6 +108,9 @@ namespace MyChurch.Application.WorshipActivity.Commands
                 {
                     var addSlide = new MyChurch.Application.Slide.Commands.AddSlideCommand
                     {
+                        Email = request.Email,
+                        Role = request.Role,
+                        UserId = request.UserId,
                         PresentationId = presentationId.Value,
                         ContentType = MyChurch.Domain.Enum.SlideContentType.HymnStanza,
                         ContentReferenceJson = contentReferenceJson,

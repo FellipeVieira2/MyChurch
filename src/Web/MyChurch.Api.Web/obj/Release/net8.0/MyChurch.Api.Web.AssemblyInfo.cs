@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyChurch.Api.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5661d8b8548b9b73a0608ca62e49fa1dae4b6f9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7119efba71336073426d3e38afe4f35c12cf6c6")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyChurch.Api.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyChurch.Api.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

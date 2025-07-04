@@ -19,6 +19,8 @@ namespace MyChurch.Infrastructure
         public DbSet<UserActionHistory> UserActionHistories { get; set; }
         public DbSet<Presentation> Presentations { get; set; }
         public DbSet<Slide> Slides { get; set; }
+        public DbSet<ImportedHymn> ImportedHymns { get; set; }
+        public DbSet<ImportedHymnStanza> ImportedHymnStanzas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -484,6 +484,13 @@
             Retorna uma lista de todos os hinos com número e título.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.LyricsController.GetLyrics(System.String)">
+            <summary>
+            Realiza scraping de letras de músicas do Vagalume e importa como hino.
+            </summary>
+            <param name="url">URL da página da música no Vagalume</param>
+            <returns>Letra completa, estrofes, nome da música e id do hino importado</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
             <summary>
             Obtém as configurações do membro autenticado.

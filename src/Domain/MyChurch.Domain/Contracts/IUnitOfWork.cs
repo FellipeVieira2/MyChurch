@@ -67,6 +67,7 @@
         IUserActionHistoryRepository UserActionHistories { get; }
         ISlideRepository Slides { get; }
         IPresentationRepository Presentations { get; }
+        IImportedHymnRepository ImportedHymns { get; }
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

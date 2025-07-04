@@ -8,5 +8,6 @@ namespace MyChurch.Domain.Enum
         Announcement = 3,
         PrayerRequest = 4,
         Offering = 5,
+        ImportedHymnStanza = 6,
     }
 }

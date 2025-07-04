@@ -70,16 +70,30 @@ namespace MyChurch.Api.Web.Controllers
         [HttpPost("{worshipServiceId}/hymn/{number}/present/{verseNumber}")]
         public async Task<IActionResult> PresentHymn(int worshipServiceId, int number, int verseNumber)
         {
-            var command = new PresentHymnCommand
-            {
-                WorshipServiceId = worshipServiceId,
-                HymnNumber = number,
-                VerseNumber = verseNumber
-            };
+            var command = AuthorizationRequestCreate<PresentHymnCommand>();
+            command.HymnNumber = number;
+            command.WorshipServiceId = worshipServiceId;
+            command.VerseNumber = verseNumber;
+
             var returned = await Mediator.Send(command);
             await _hubContext.Clients.Group($"worship_{worshipServiceId}")
                 .SendAsync("HymnPresented", returned );
             return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{worshipServiceId}/imported-hymn/{importedHymnId}/present/{stanzaOrder}")]
+        public async Task<IActionResult> PresentImportedHymn(int worshipServiceId, int importedHymnId, int stanzaOrder)
+        {
+            var command = AuthorizationRequestCreate<PresentImportedHymnCommand>();
+            command.WorshipServiceId = worshipServiceId;
+            command.ImportedHymnId = importedHymnId;
+            command.StanzaOrder = stanzaOrder;
+
+            var result = await Mediator.Send(command);
+            await _hubContext.Clients.Group($"worship_{worshipServiceId}")
+                .SendAsync("ImportedHymnPresented", result);
+            return Ok(result);
         }
 
         /// <summary>

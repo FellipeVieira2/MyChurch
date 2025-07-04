@@ -23,6 +23,7 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\o
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Google.Apis.Auth.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Google.Apis.Core.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Google.Apis.Gmail.v1.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\HtmlAgilityPack.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\MediatR.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\MediatR.Contracts.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\MicroElements.OpenApi.FluentValidation.dll

@@ -22,7 +22,7 @@ namespace MyChurch.Application.Presentation.Services
             // Fundo escuro
             graphics.Clear(Color.FromArgb(40, 40, 40));
             // Fonte branca, grande, negrito
-            using var font = new Font("Arial", 54, FontStyle.Bold);
+            using var font = new Font("Arial", 30, FontStyle.Bold);
             using var brush = new SolidBrush(Color.White);
             // Sombra para melhor leitura
             using var shadowBrush = new SolidBrush(Color.FromArgb(128, 0, 0, 0));
@@ -38,19 +38,25 @@ namespace MyChurch.Application.Presentation.Services
             try
             {
                 // Corrige: base64 pode não ter vírgula se não for data URI
-                string base64 = MyChurchLogoBase64;
+                string base64 = MyChurchLogoBase64.Trim();
+                // Remove possíveis espaços em branco e quebras de linha
+                base64 = base64.Replace("\n", string.Empty).Replace("\r", string.Empty).Replace(" ", string.Empty);
                 int commaIdx = base64.IndexOf(",");
                 if (commaIdx >= 0)
                     base64 = base64[(commaIdx + 1)..];
                 byte[] logoBytes = Convert.FromBase64String(base64);
                 using var msLogo = new MemoryStream(logoBytes);
-                using var logo = Image.FromStream(msLogo);
+                using var logo = Image.FromStream(msLogo, true, true);
                 int logoHeight = 80;
                 int logoWidth = logo.Width * logoHeight / logo.Height;
                 int margin = 32;
                 graphics.DrawImage(logo, margin, height - logoHeight - margin, logoWidth, logoHeight);
             }
-            catch { /* Se falhar, ignora o logo */ }
+            catch (Exception ex)
+            {
+                // Se falhar, ignora o logo
+                // Opcional: logar ex.Message
+            }
 
             using var ms = new MemoryStream();
             bmp.Save(ms, ImageFormat.Png);

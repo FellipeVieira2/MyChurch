@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dAAi9jDKFYo=",
+  "dgSpecHash": "DEQez57hD6M=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,7 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\google.apis.auth\\1.70.0\\google.apis.auth.1.70.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\google.apis.core\\1.70.0\\google.apis.core.1.70.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\google.apis.gmail.v1\\1.69.0.3742\\google.apis.gmail.v1.1.69.0.3742.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\htmlagilitypack\\1.11.61\\htmlagilitypack.1.11.61.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",

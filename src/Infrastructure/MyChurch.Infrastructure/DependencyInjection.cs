@@ -88,6 +88,7 @@ namespace MyChurch.Infrastructure
 
             services.AddScoped<IEngagementEventRepository, EngagementEventRepository>();
             services.AddScoped<IUserActionHistoryRepository, UserActionHistoryRepository>();
+            services.AddScoped<IImportedHymnRepository, ImportedHymnRepository>();
 
             services.AddDbContext<MyChurchDbContext>(options =>
             {

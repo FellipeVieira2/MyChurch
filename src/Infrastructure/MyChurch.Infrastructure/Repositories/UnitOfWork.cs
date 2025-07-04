@@ -82,6 +82,7 @@ namespace MyChurch.Infrastructure.Repositories
         public IUserActionHistoryRepository UserActionHistories { get; }
         public IPresentationRepository Presentations { get; }
         public ISlideRepository Slides { get; }
+        public IImportedHymnRepository ImportedHymns { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -149,7 +150,8 @@ namespace MyChurch.Infrastructure.Repositories
             IMemberBibleReadingAssignmentRepository memberBibleReadingAssignments,
             IUserActionHistoryRepository userActionHistories,
             IPresentationRepository presentations,
-            ISlideRepository slides)
+            ISlideRepository slides,
+            IImportedHymnRepository importedHymns)
         {
             Churchs = churchs;
             Donations = donations;
@@ -217,6 +219,7 @@ namespace MyChurch.Infrastructure.Repositories
             UserActionHistories = userActionHistories;
             Presentations = presentations;
             Slides = slides;
+            ImportedHymns = importedHymns;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()
