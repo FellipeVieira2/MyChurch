@@ -40,6 +40,17 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
         // Verificação de presença
         public bool IsVerified { get; set; }
         public System.DateTime? VerifiedAt { get; set; }
+        
+        // Fotos da review
+        public List<ReviewPhotoSimpleDto> Photos { get; set; } = new();
+        public int PhotosCount { get; set; }
+    }
+
+    public class ReviewPhotoSimpleDto
+    {
+        public int PhotoId { get; set; }
+        public string PhotoUrl { get; set; } = string.Empty;
+        public string? Caption { get; set; }
     }
 
     public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, ReviewsResultDto>
@@ -55,6 +66,7 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
                 .Where(r => r.EntityId == request.EntityId && r.EntityType == request.EntityType)
                 .Include(r => r.Reviewer)
                 .Include(r => r.Votes)
+                .Include(r => r.Photos) // Incluir fotos
                 .AsNoTracking();
             var totalReviews = await query.CountAsync(cancellationToken);
             var averageScore = totalReviews > 0 ? await query.AverageAsync(r => r.Score, cancellationToken) : 0;
@@ -75,7 +87,14 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
                     NotHelpfulVotes = r.Votes.Count(v => !v.IsHelpful),
                     HelpfulnessScore = r.Votes.Count(v => v.IsHelpful) - r.Votes.Count(v => !v.IsHelpful),
                     IsVerified = r.IsVerified,
-                    VerifiedAt = r.VerifiedAt
+                    VerifiedAt = r.VerifiedAt,
+                    Photos = r.Photos.OrderBy(p => p.DisplayOrder).Select(p => new ReviewPhotoSimpleDto
+                    {
+                        PhotoId = p.Id,
+                        PhotoUrl = p.PhotoUrl,
+                        Caption = p.Caption
+                    }).ToList(),
+                    PhotosCount = r.Photos.Count
                 })
                 .ToListAsync(cancellationToken);
             return new ReviewsResultDto

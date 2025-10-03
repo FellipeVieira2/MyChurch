@@ -72,6 +72,7 @@
         IVisitorStatusHistoryRepository VisitorStatusHistories { get; }
         IReviewRepository Reviews { get; }
         IReviewVoteRepository ReviewVotes { get; }
+        IReviewPhotoRepository ReviewPhotos { get; }
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

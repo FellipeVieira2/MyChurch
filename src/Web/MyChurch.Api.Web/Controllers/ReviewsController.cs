@@ -5,6 +5,7 @@ using MyChurch.Application.Reviews.Commands.SubmitReview;
 using MyChurch.Application.Reviews.Commands.VoteReview;
 using MyChurch.Application.Reviews.Queries.GetReviews;
 using MyChurch.Application.Reviews.Queries.CanReviewChurch;
+using MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery;
 using System.Threading.Tasks;
 
 namespace MyChurch.Api.Web.Controllers
@@ -16,8 +17,9 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Envia uma avaliação para uma igreja ou entidade.
         /// Requer verificação de presença para igrejas.
+        /// Aceita até 5 fotos por review.
         /// </summary>
-        /// <param name="command">Dados da avaliação</param>
+        /// <param name="command">Dados da avaliação com fotos opcionais</param>
         /// <returns>Resultado da submissão</returns>
         [HttpPost]
         [Authorize]
@@ -31,14 +33,35 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Lista avaliações de uma entidade (ex: igreja).
+        /// Lista avaliações de uma entidade (ex: igreja) com fotos.
         /// </summary>
         /// <param name="query">Filtros de busca</param>
-        /// <returns>Lista paginada de avaliações</returns>
+        /// <returns>Lista paginada de avaliações com fotos</returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetReviews([FromQuery] GetReviewsQuery query)
         {
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Busca galeria de fotos de reviews de uma igreja.
+        /// </summary>
+        /// <param name="churchId">ID da igreja</param>
+        /// <param name="limit">Limite de fotos (padrão: 50)</param>
+        /// <returns>Galeria de fotos com informações dos revisores</returns>
+        [HttpGet("church/{churchId}/photos")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ChurchPhotoGalleryResult))]
+        public async Task<IActionResult> GetChurchPhotoGallery([FromRoute] int churchId, [FromQuery] int limit = 50)
+        {
+            var query = new GetChurchPhotoGalleryQuery 
+            { 
+                ChurchId = churchId,
+                Limit = limit
+            };
+            
             var result = await Mediator.Send(query);
             return Ok(result);
         }

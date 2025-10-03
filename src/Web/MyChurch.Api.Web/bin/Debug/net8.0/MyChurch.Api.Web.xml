@@ -700,16 +700,25 @@
             <summary>
             Envia uma avaliação para uma igreja ou entidade.
             Requer verificação de presença para igrejas.
+            Aceita até 5 fotos por review.
             </summary>
-            <param name="command">Dados da avaliação</param>
+            <param name="command">Dados da avaliação com fotos opcionais</param>
             <returns>Resultado da submissão</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetReviews(MyChurch.Application.Reviews.Queries.GetReviews.GetReviewsQuery)">
             <summary>
-            Lista avaliações de uma entidade (ex: igreja).
+            Lista avaliações de uma entidade (ex: igreja) com fotos.
             </summary>
             <param name="query">Filtros de busca</param>
-            <returns>Lista paginada de avaliações</returns>
+            <returns>Lista paginada de avaliações com fotos</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetChurchPhotoGallery(System.Int32,System.Int32)">
+            <summary>
+            Busca galeria de fotos de reviews de uma igreja.
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="limit">Limite de fotos (padrão: 50)</param>
+            <returns>Galeria de fotos com informações dos revisores</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.CanReviewChurch(System.Int32)">
             <summary>

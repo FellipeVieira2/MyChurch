@@ -482,6 +482,11 @@
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
         </member>
+        <member name="P:MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand.Photos">
+            <summary>
+            Lista de fotos em base64 para upload
+            </summary>
+        </member>
         <member name="T:MyChurch.Application.Reviews.Commands.VoteReview.VoteReviewCommand">
             <summary>
             Adiciona ou atualiza um voto em uma review (útil/não útil)
@@ -490,6 +495,11 @@
         <member name="T:MyChurch.Application.Reviews.Queries.CanReviewChurch.CanReviewChurchQuery">
             <summary>
             Verifica se um membro pode avaliar uma igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.GetChurchPhotoGalleryQuery">
+            <summary>
+            Busca galeria de fotos de reviews de uma igreja
             </summary>
         </member>
     </members>

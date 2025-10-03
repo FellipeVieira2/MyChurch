@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Services;
 using Microsoft.Extensions.Logging;
+using MyChurch.Infrastructure.Utils.S3;
 
 namespace MyChurch.Application.Reviews.Commands.SubmitReview
 {
@@ -16,7 +17,19 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
         public int ReviewerId { get; set; }
         public int Score { get; set; }
         public string Comment { get; set; } = string.Empty;
-        public bool SkipVerification { get; set; } = false; // Para testes ou admin bypass
+        public bool SkipVerification { get; set; } = false;
+        
+        /// <summary>
+        /// Lista de fotos em base64 para upload
+        /// </summary>
+        public List<ReviewPhotoDto>? Photos { get; set; }
+    }
+
+    public class ReviewPhotoDto
+    {
+        public string PhotoBase64 { get; set; } = string.Empty;
+        public string? Caption { get; set; }
+        public string? OriginalFileName { get; set; }
     }
 
     public class SubmitReviewResult
@@ -25,6 +38,7 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
         public string Message { get; set; } = string.Empty;
         public int? ReviewId { get; set; }
         public bool IsVerified { get; set; } = false;
+        public int PhotosUploaded { get; set; } = 0;
         public System.Collections.Generic.List<string> InappropriateWordsFound { get; set; } = new();
     }
 
@@ -33,15 +47,18 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
         private readonly IUnitOfWork _unitOfWork;
         private readonly IReviewVerificationService _verificationService;
         private readonly ILogger<SubmitReviewCommandHandler> _logger;
+        private readonly IS3Helper _s3Helper;
 
         public SubmitReviewCommandHandler(
             IUnitOfWork unitOfWork, 
             IReviewVerificationService verificationService,
-            ILogger<SubmitReviewCommandHandler> logger)
+            ILogger<SubmitReviewCommandHandler> logger,
+            IS3Helper s3Helper)
         {
             _unitOfWork = unitOfWork;
             _verificationService = verificationService;
             _logger = logger;
+            _s3Helper = s3Helper;
         }
 
         public async Task<SubmitReviewResult> Handle(SubmitReviewCommand request, CancellationToken cancellationToken)
@@ -98,8 +115,40 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
             _unitOfWork.Reviews.Create(review);
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation("Review created for {EntityType} {EntityId} by member {ReviewerId}. Verified: {IsVerified}", 
-                request.EntityType, request.EntityId, request.ReviewerId, isVerified);
+            // Upload de fotos
+            int photosUploaded = 0;
+            if (request.Photos != null && request.Photos.Any())
+            {
+                foreach (var photoDto in request.Photos.Take(5)) // Limita a 5 fotos por review
+                {
+                    try
+                    {
+                        var photoUrl = await UploadPhotoAsync(photoDto.PhotoBase64, cancellationToken);
+                        
+                        var reviewPhoto = new ReviewPhoto
+                        {
+                            ReviewId = review.Id,
+                            PhotoUrl = photoUrl,
+                            Caption = photoDto.Caption,
+                            OriginalFileName = photoDto.OriginalFileName,
+                            DisplayOrder = photosUploaded,
+                            UploadedAt = DateTime.UtcNow
+                        };
+
+                        _unitOfWork.ReviewPhotos.Create(reviewPhoto);
+                        photosUploaded++;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error uploading review photo for review {ReviewId}", review.Id);
+                    }
+                }
+
+                await _unitOfWork.CommitAsync();
+            }
+
+            _logger.LogInformation("Review created for {EntityType} {EntityId} by member {ReviewerId}. Verified: {IsVerified}, Photos: {PhotosCount}", 
+                request.EntityType, request.EntityId, request.ReviewerId, isVerified, photosUploaded);
 
             return new SubmitReviewResult 
             { 
@@ -108,8 +157,23 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
                     ? "Avaliação verificada enviada com sucesso!" 
                     : "Avaliação enviada com sucesso", 
                 ReviewId = review.Id,
-                IsVerified = isVerified
+                IsVerified = isVerified,
+                PhotosUploaded = photosUploaded
             };
+        }
+
+        private async Task<string> UploadPhotoAsync(string photoBase64, CancellationToken cancellationToken)
+        {
+            if (photoBase64.Contains(','))
+                photoBase64 = photoBase64.Split(',')[1];
+
+            var photoBytes = Convert.FromBase64String(photoBase64);
+            using var photoStream = new MemoryStream(photoBytes);
+            
+            var fileName = $"reviews/{Guid.NewGuid()}.jpg";
+            var photoUrl = await _s3Helper.UploadFileAsync(photoStream, fileName, "image/jpeg", cancellationToken);
+
+            return photoUrl;
         }
     }
 }

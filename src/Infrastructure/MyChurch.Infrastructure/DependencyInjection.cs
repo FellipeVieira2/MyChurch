@@ -89,6 +89,7 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IVisitorStatusHistoryRepository, VisitorStatusHistoryRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IReviewVoteRepository, ReviewVoteRepository>();
+            services.AddScoped<IReviewPhotoRepository, ReviewPhotoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
  
             services.AddDbContext<MyChurchDbContext>(options =>

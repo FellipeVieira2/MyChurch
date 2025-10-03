@@ -26,6 +26,9 @@ namespace MyChurch.Domain.Entities
         // Votos úteis/não úteis
         public ICollection<ReviewVote> Votes { get; set; } = new List<ReviewVote>();
         
+        // Fotos da review
+        public ICollection<ReviewPhoto> Photos { get; set; } = new List<ReviewPhoto>();
+        
         /// <summary>
         /// Calcula total de votos úteis (upvotes)
         /// </summary>
@@ -51,6 +54,14 @@ namespace MyChurch.Domain.Entities
         }
         
         /// <summary>
+        /// Retorna total de fotos na review
+        /// </summary>
+        public int GetPhotosCount()
+        {
+            return Photos?.Count ?? 0;
+        }
+        
+        /// <summary>
         /// Marca review como verificada por presença
         /// </summary>
         public void MarkAsVerified(int worshipPresenceId)
@@ -68,6 +79,23 @@ namespace MyChurch.Domain.Entities
             IsVerified = false;
             WorshipPresenceId = null;
             VerifiedAt = null;
+        }
+        
+        /// <summary>
+        /// Adiciona foto à review
+        /// </summary>
+        public void AddPhoto(string photoUrl, string? caption = null, string? originalFileName = null)
+        {
+            var displayOrder = Photos.Any() ? Photos.Max(p => p.DisplayOrder) + 1 : 0;
+            
+            Photos.Add(new ReviewPhoto
+            {
+                PhotoUrl = photoUrl,
+                Caption = caption,
+                OriginalFileName = originalFileName,
+                DisplayOrder = displayOrder,
+                UploadedAt = DateTime.UtcNow
+            });
         }
     }
 }
