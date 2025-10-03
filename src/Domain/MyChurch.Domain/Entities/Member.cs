@@ -10,8 +10,10 @@ namespace MyChurch.Domain.Entities
         public string Name { get; set; }
         public string? Email { get; set; }
         public string? Photo { get; set; }
+        
+        // 🔐 SEGURANÇA: Apenas PasswordHash deve ser usado - NUNCA armazenar senha em texto plano!
         public string? PasswordHash { get; set; }
-        public string? Password { get; set; }
+        
         public string? Phone { get; set; }
         public DateTime BirthDate { get; set; }
         public bool IsBaptized { get; set; }

@@ -6,7 +6,7 @@ using MyChurch.Domain.Entities;
 
 namespace MyChurch.Application.Onboarding.ActivateAccount
 {
-    // Novo comando: apenas validação de CPF + data de nascimento
+    // Comando de validação para ativação de conta
     public class ValidateMemberForActivationCommand : IRequest<string> // retorna o hash/token
     {
         public string Identifier { get; set; } // CPF
@@ -32,21 +32,34 @@ namespace MyChurch.Application.Onboarding.ActivateAccount
 
             public async Task<string> Handle(ValidateMemberForActivationCommand request, CancellationToken cancellationToken)
             {
+                // ?? SEGURANÇA: Verificar se conta ainda não foi ativada (PasswordHash vazio ou token temporário)
                 var member = _unitOfWork.Members.Query()
-                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) || m.Phone == request.Identifier || m.Email.ToLower() == request.Identifier.ToLower()) && string.IsNullOrEmpty(m.Password));
+                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) 
+                                       || m.Phone == request.Identifier 
+                                       || m.Email.ToLower() == request.Identifier.ToLower()) 
+                                       && string.IsNullOrEmpty(m.PasswordHash));
+                
                 if (member == null)
                 {
                     MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member","Membro não encontrado ou já está ativo.");
                 }
+                
                 if (member.BirthDate != request.BirthDate)
                 {
                     MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member","Data de nascimento inválida.");
                 }
+                
+                // Gerar novo token de ativação se necessário
+                if (string.IsNullOrEmpty(member.PasswordHash))
+                {
+                    member.PasswordHash = Guid.NewGuid().ToString("N");
+                    _unitOfWork.Members.Update(member);
+                    await _unitOfWork.CommitAsync();
+                }
+                
                 // Retorna o hash/token para ativação de senha
                 return member.PasswordHash;
             }
         }
     }
-
-    // Remove o comando antigo de ativação de conta (agora o fluxo é separado)
 }

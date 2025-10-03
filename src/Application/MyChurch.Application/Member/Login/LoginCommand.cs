@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Infrastructure.Utils.Extensions;
+using MyChurch.Domain.Services;
 
 namespace MyChurch.Application.Member.Commands.Login
 {
@@ -25,12 +25,18 @@ namespace MyChurch.Application.Member.Commands.Login
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<LoginCommandHandler> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public LoginCommandHandler(IUnitOfWork unitOfWork, ILogger<LoginCommandHandler> logger, IConfiguration configuration)
+        public LoginCommandHandler(
+            IUnitOfWork unitOfWork, 
+            ILogger<LoginCommandHandler> logger, 
+            IConfiguration configuration,
+            IPasswordHasher passwordHasher)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _configuration = configuration;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -43,7 +49,7 @@ namespace MyChurch.Application.Member.Commands.Login
                 .FirstOrDefaultAsync(x => 
                     x.Email == originalIdentifier || 
                     x.Phone == originalIdentifier || 
-                    x.Documents.Any(d => d.Number == normalizedIdentifier));
+                    x.Documents.Any(d => d.Number == normalizedIdentifier), cancellationToken);
 
             if (member is null)
             {
@@ -51,20 +57,21 @@ namespace MyChurch.Application.Member.Commands.Login
                 ValidationException.ThrowException("Login", "Invalid email/phone or password.");
             }
 
-            if (string.IsNullOrEmpty(member.Password))
+            // 🔐 VERIFICAÇÃO DE SEGURANÇA: Apenas PasswordHash deve existir
+            if (string.IsNullOrEmpty(member.PasswordHash))
             {
                 _logger.LogWarning("Account not activated: {Identifier}", request.Identifier);
                 ValidationException.ThrowException("Login", "Account not activated. Please activate your account.");
             }
+
             if (member.PendingApproval)
             {
                 _logger.LogWarning("Account pending approval: {Identifier}", request.Identifier);
                 ValidationException.ThrowException("Login", "Account pending approval. Please wait for admin approval.");
             }
 
-            var encryptedPassword = request.Password.Encrypt(member.PasswordHash);
-
-            if (member.Password != encryptedPassword)
+            // 🔐 SEGURANÇA: Verificar senha usando BCrypt
+            if (!_passwordHasher.VerifyPassword(request.Password, member.PasswordHash))
             {
                 _logger.LogWarning("Invalid password for identifier: {Identifier}", request.Identifier);
                 ValidationException.ThrowException("Login", "Invalid email/phone or password.");
@@ -101,7 +108,7 @@ namespace MyChurch.Application.Member.Commands.Login
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, member.Id.ToString()),
-                    new Claim(ClaimTypes.Email, member.Email),
+                    new Claim(ClaimTypes.Email, member.Email ?? string.Empty),
                     new Claim(ClaimTypes.Role, member.Role.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddHours(24),

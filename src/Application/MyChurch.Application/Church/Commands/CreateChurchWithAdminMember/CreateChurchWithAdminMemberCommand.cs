@@ -8,7 +8,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Infrastructure.Utils.Extensions;
+using MyChurch.Domain.Services;
 using MyChurch.Infrastructure.Utils.S3;
 using System.Collections.Generic;
 using MyChurch.Application.Dtos;
@@ -77,19 +77,22 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         private readonly IS3Helper _s3Helper;
         private readonly IAsaasWebClient _asaasWebClient;
         private readonly ISender _sender;
+        private readonly IPasswordHasher _passwordHasher;
 
         public CreateChurchWithAdminMemberCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateChurchWithAdminMemberCommandHandler> logger,
             IS3Helper s3Helper,
             IAsaasWebClient asaasWebClient,
-            ISender sender)
+            ISender sender,
+            IPasswordHasher passwordHasher)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
             _asaasWebClient = asaasWebClient;
             _sender = sender;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
@@ -237,16 +240,18 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                     Number = OnlyDigits(d.Number)
                 }).ToList() ?? []
             };
+            
             if (!string.IsNullOrEmpty(request.AdminPhoto))
             {
                 adminMember.Photo = await UploadPhotoAsync(request.AdminPhoto, cancellationToken);
             }
+            
+            // 🔐 SEGURANÇA: Gerar hash BCrypt da senha usando IPasswordHasher
             if (!string.IsNullOrWhiteSpace(request.AdminPassword))
             {
-                var hash = Guid.NewGuid().ToString("N");
-                adminMember.PasswordHash = hash;
-                adminMember.Password = request.AdminPassword.Encrypt(hash);
+                adminMember.PasswordHash = _passwordHasher.HashPassword(request.AdminPassword);
             }
+            
             return adminMember;
         }
 

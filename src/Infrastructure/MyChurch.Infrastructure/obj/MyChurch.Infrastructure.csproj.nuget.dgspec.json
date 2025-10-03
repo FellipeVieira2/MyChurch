@@ -436,6 +436,10 @@
               "target": "Package",
               "version": "[4.0.0.4, )"
             },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "Google.Apis.Auth": {
               "target": "Package",
               "version": "[1.70.0, )"

@@ -2,7 +2,6 @@ using FluentValidation;
 using MediatR;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
-using MyChurch.Infrastructure.Utils.Extensions;
 using ValidationException = MyChurch.Domain.Exceptions.ValidationException;
 
 namespace MyChurch.Application.Onboarding.RegisterForApproval
@@ -16,7 +15,6 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
         public string Cpf { get; set; }
         public DateTime BirthDate { get; set; }
         public string? MaritalStatus { get; set; }
-        public string Password { get; set; }
         public AddressRegisterForApproval Address { get; set; }
 
         public class AddressRegisterForApproval
@@ -28,6 +26,7 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
             public string Country { get; set; }
             public string Neighborhood { get; set; }
         }
+        
         public class Validator : AbstractValidator<RegisterForApprovalCommand>
         {
             public Validator()
@@ -56,11 +55,11 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                 {
                     ValidationException.ThrowException("User","Já existe um membro com este CPF.");
                 }
+                
                 MaritalStatus? maritalStatus = null;
                 if (!string.IsNullOrEmpty(request.MaritalStatus) && Enum.TryParse<MaritalStatus>(request.MaritalStatus, out var ms))
                     maritalStatus = ms;
 
-                
                 var member = new MyChurch.Domain.Entities.Member
                 {
                     Name = request.Name,
@@ -80,12 +79,10 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                     )
                 };
 
-                if (!string.IsNullOrWhiteSpace(request.Password))
-                {
-                    var hash = Guid.NewGuid().ToString("N");
-                    member.PasswordHash = hash;
-                    member.Password = request.Password.Encrypt(hash);
-                }
+                // ?? Criar token temporário para ativação futura
+                // A senha será definida quando o admin aprovar e o membro ativar a conta
+                member.PasswordHash = Guid.NewGuid().ToString("N"); // Token temporário
+                
                 member.Documents.Add(new MyChurch.Domain.Entities.MemberDocument { Number = request.Cpf });
                 member.PendingApproval = true;
 

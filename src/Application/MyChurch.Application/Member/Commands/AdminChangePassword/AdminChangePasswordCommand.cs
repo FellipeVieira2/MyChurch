@@ -6,7 +6,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Infrastructure.Utils.Extensions;
+using MyChurch.Domain.Services;
 
 namespace MyChurch.Application.Member.Commands.AdminChangePassword
 {
@@ -21,11 +21,16 @@ namespace MyChurch.Application.Member.Commands.AdminChangePassword
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AdminChangePasswordCommandHandler> _logger;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public AdminChangePasswordCommandHandler(IUnitOfWork unitOfWork, ILogger<AdminChangePasswordCommandHandler> logger)
+        public AdminChangePasswordCommandHandler(
+            IUnitOfWork unitOfWork, 
+            ILogger<AdminChangePasswordCommandHandler> logger,
+            IPasswordHasher passwordHasher)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<Unit> Handle(AdminChangePasswordCommand request, CancellationToken cancellationToken)
@@ -57,14 +62,8 @@ namespace MyChurch.Application.Member.Commands.AdminChangePassword
                 ValidationException.ThrowException("Authorization", "Você só pode alterar senhas de membros da sua igreja.");
             }
 
-            // Se o PasswordHash ainda não existir, criar um novo
-            if (string.IsNullOrEmpty(targetMember.PasswordHash))
-            {
-                targetMember.PasswordHash = Guid.NewGuid().ToString("N");
-            }
-
-            // Criptografar e salvar a nova senha
-            targetMember.Password = request.NewPassword.Encrypt(targetMember.PasswordHash);
+            // ?? SEGURANÇA: Gerar hash seguro usando BCrypt
+            targetMember.PasswordHash = _passwordHasher.HashPassword(request.NewPassword);
 
             _unitOfWork.Members.Update(targetMember);
             await _unitOfWork.CommitAsync();

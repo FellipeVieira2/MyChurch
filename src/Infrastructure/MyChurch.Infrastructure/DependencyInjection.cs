@@ -110,6 +110,9 @@ namespace MyChurch.Infrastructure
             // Serviços de domínio
             services.AddScoped<MyChurch.Domain.Services.IReviewVerificationService, MyChurch.Infrastructure.Services.ReviewVerificationService>();
             
+            // 🔐 SEGURANÇA: Serviço de hashing de senhas com BCrypt
+            services.AddScoped<MyChurch.Domain.Services.IPasswordHasher, MyChurch.Infrastructure.Services.PasswordHasher>();
+            
             // Cache distribuído
             services.AddDistributedMemoryCache(); // Para desenvolvimento/testes
             // Para produção com Redis:

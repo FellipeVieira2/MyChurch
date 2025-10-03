@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "eaywS1L8OjA=",
+  "dgSpecHash": "xAK8pCR80xo=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Web\\MyChurch.Api.Web\\MyChurch.Api.Web.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.security.keyvault.certificates\\4.6.0\\azure.security.keyvault.certificates.4.6.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\azure.security.keyvault.secrets\\4.6.0\\azure.security.keyvault.secrets.4.6.0.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\csvhelper\\33.1.0\\csvhelper.33.1.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\dotnetgeminisdk\\1.0.14\\dotnetgeminisdk.1.0.14.nupkg.sha512",

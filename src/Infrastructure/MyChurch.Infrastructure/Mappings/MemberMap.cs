@@ -55,12 +55,6 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("boolean");
 
             builder
-                .Property(m => m.Password)
-                .HasColumnName("password")
-                .HasColumnType("varchar(500)")
-                .IsRequired(false);
-
-            builder
                 .Property(m => m.Phone)
                 .HasColumnName("phone")
                 .HasColumnType("varchar(20)")

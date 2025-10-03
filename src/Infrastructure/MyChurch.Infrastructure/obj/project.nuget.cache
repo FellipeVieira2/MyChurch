@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "UYJCysyBVJk=",
+  "dgSpecHash": "1Gzq6UASMeo=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.extensions.netcore.setup\\4.0.1\\awssdk.extensions.netcore.setup.4.0.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.s3\\4.0.0.7\\awssdk.s3.4.0.0.7.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\awssdk.simpleemail\\4.0.0.4\\awssdk.simpleemail.4.0.0.4.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\google.apis\\1.70.0\\google.apis.1.70.0.nupkg.sha512",

@@ -3,8 +3,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using MyChurch.Domain.Contracts;
-using MyChurch.Infrastructure.Utils.Extensions;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace MyChurch.Application.Member.Commands.ActiveMemberPassword
@@ -20,30 +20,37 @@ namespace MyChurch.Application.Member.Commands.ActiveMemberPassword
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<ActiveMemberPasswordCommandHandler> _logger;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public ActiveMemberPasswordCommandHandler(IUnitOfWork unitOfWork, ILogger<ActiveMemberPasswordCommandHandler> logger, IConfiguration configuration)
+        public ActiveMemberPasswordCommandHandler(
+            IUnitOfWork unitOfWork, 
+            ILogger<ActiveMemberPasswordCommandHandler> logger, 
+            IPasswordHasher passwordHasher)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<Unit> Handle(ActiveMemberPasswordCommand request, CancellationToken cancellationToken)
         {
-            var member = await _unitOfWork.Members.Query().FirstOrDefaultAsync(x => x.PasswordHash == request.Hash);
+            var member = await _unitOfWork.Members.Query()
+                .FirstOrDefaultAsync(x => x.PasswordHash == request.Hash, cancellationToken);
+            
             if (member is null)
             {
                 _logger.LogWarning("Invalid hash: {Hash}", request.Hash);
                 ValidationException.ThrowException("Password", $"Invalid hash: {request.Hash}");
             }
 
-            // Criptografar a nova senha usando o hash e o appHash
-            var encryptedPassword = request.Password.Encrypt(request.Hash.ToString());
-            member.Password = encryptedPassword;
+            // 🔐 SEGURANÇA: Gerar hash seguro usando BCrypt
+            var hashedPassword = _passwordHasher.HashPassword(request.Password);
+            member.PasswordHash = hashedPassword;
 
             _unitOfWork.Members.Update(member);
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation("Password updated for member with ID: {MemberId}", member.Id);
+            _logger.LogInformation("Password activated for member with ID: {MemberId}", member.Id);
 
             return Unit.Value;
         }

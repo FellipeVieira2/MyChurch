@@ -21,16 +21,26 @@ namespace MyChurch.Application.Onboarding.IdentifyMember
             public async Task<IdentifyMemberResultDto> Handle(IdentifyMemberCommand request, CancellationToken cancellationToken)
             {
                 var member = _unitOfWork.Members.Query()
-                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) || m.Phone == request.Identifier || m.Email.ToLower() == request.Identifier.ToLower()) && m.ChurchId.ToString() == request.ChurchId);
+                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) 
+                                       || m.Phone == request.Identifier 
+                                       || m.Email.ToLower() == request.Identifier.ToLower()) 
+                                       && m.ChurchId.ToString() == request.ChurchId);
 
                 if (member == null)
                 {
                     return new IdentifyMemberResultDto { Status = "NotFound" };
                 }
-                if (!string.IsNullOrEmpty(member.Password))
+                
+                // ?? SEGURANÇA: Verificar se já tem senha (PasswordHash existe e não é token temporário)
+                // Considerar ativo se PasswordHash existe e tem formato BCrypt ($2a$, $2b$ ou $2y$)
+                bool isActive = !string.IsNullOrEmpty(member.PasswordHash) 
+                             && member.PasswordHash.StartsWith("$2");
+                
+                if (isActive)
                 {
                     return new IdentifyMemberResultDto { Status = "AlreadyActive" };
                 }
+                
                 // Ofusca o nome: Exemplo "Fellipe V. S."
                 string maskedName = MaskName(member.Name);
                 return new IdentifyMemberResultDto { Status = "ActivationRequired", MaskedName = maskedName };
