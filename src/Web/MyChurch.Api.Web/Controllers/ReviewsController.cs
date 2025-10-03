@@ -1,6 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using MyChurch.Application.Common.Models;
+using MyChurch.Application.Dtos;
 using MyChurch.Application.Reviews.Commands.SubmitReview;
 using MyChurch.Application.Reviews.Commands.VoteReview;
 using MyChurch.Application.Reviews.Commands.RespondToReview;
@@ -9,6 +12,7 @@ using MyChurch.Application.Reviews.Queries.GetReviews;
 using MyChurch.Application.Reviews.Queries.CanReviewChurch;
 using MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -20,12 +24,15 @@ namespace MyChurch.Api.Web.Controllers
         /// Envia uma avaliação para uma igreja ou entidade.
         /// Requer verificação de presença para igrejas.
         /// Aceita até 5 fotos por review.
+        /// Limite: 3 reviews a cada 5 minutos.
         /// </summary>
         /// <param name="command">Dados da avaliação com fotos opcionais</param>
         /// <returns>Resultado da submissão</returns>
         [HttpPost]
         [Authorize]
+        [EnableRateLimiting("review-limiter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SubmitReviewResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         public async Task<IActionResult> SubmitReview([FromBody] SubmitReviewCommand command)
         {
             var result = await Mediator.Send(command);
@@ -36,13 +43,26 @@ namespace MyChurch.Api.Web.Controllers
 
         /// <summary>
         /// Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.
+        /// Se autenticado, mostra se o usuário já votou em cada review.
+        /// Suporta filtros, paginação e ordenação.
         /// </summary>
-        /// <param name="query">Filtros de busca</param>
-        /// <returns>Lista paginada de avaliações com fotos e respostas</returns>
+        /// <param name="query">Filtros de busca, paginação e ordenação</param>
+        /// <returns>Lista paginada de avaliações com fotos, respostas e status de voto</returns>
         [HttpGet]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<ReviewWithVoteDto>))]
         public async Task<IActionResult> GetReviews([FromQuery] GetReviewsQuery query)
         {
+            // Se o usuário estiver autenticado, passa o MemberId para verificar votos
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var memberIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (int.TryParse(memberIdClaim, out var memberId))
+                {
+                    query.CurrentMemberId = memberId;
+                }
+            }
+            
             var result = await Mediator.Send(query);
             return Ok(result);
         }
@@ -132,14 +152,17 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Vota em uma review como útil ou não útil (upvote/downvote)
+        /// Vota em uma review como útil ou não útil (upvote/downvote).
+        /// Limite: 10 votos por minuto.
         /// </summary>
         /// <param name="reviewId">ID da review</param>
         /// <param name="request">Tipo de voto</param>
         /// <returns>Resultado da votação com contadores atualizados</returns>
         [HttpPost("{reviewId}/vote")]
         [Authorize]
+        [EnableRateLimiting("vote-limiter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VoteReviewResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         public async Task<IActionResult> VoteReview([FromRoute] int reviewId, [FromBody] VoteReviewRequest request)
         {
             var command = AuthorizationRequestCreate<VoteReviewCommand>();
@@ -151,11 +174,14 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Marca uma review como útil (atalho para upvote)
+        /// Marca uma review como útil (atalho para upvote).
+        /// Limite: 10 votos por minuto.
         /// </summary>
         [HttpPost("{reviewId}/helpful")]
         [Authorize]
+        [EnableRateLimiting("vote-limiter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VoteReviewResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         public async Task<IActionResult> MarkAsHelpful([FromRoute] int reviewId)
         {
             var command = AuthorizationRequestCreate<VoteReviewCommand>();
@@ -167,11 +193,14 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Marca uma review como não útil (atalho para downvote)
+        /// Marca uma review como não útil (atalho para downvote).
+        /// Limite: 10 votos por minuto.
         /// </summary>
         [HttpPost("{reviewId}/not-helpful")]
         [Authorize]
+        [EnableRateLimiting("vote-limiter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VoteReviewResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
         public async Task<IActionResult> MarkAsNotHelpful([FromRoute] int reviewId)
         {
             var command = AuthorizationRequestCreate<VoteReviewCommand>();

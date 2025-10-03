@@ -22,6 +22,8 @@ using MyChurch.Infrastructure.Utils.Postmark;
 using MyChurch.Infrastructure.Utils.SES;
 using Serilog;
 using System.Text;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,69 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
+
+// Configurar Rate Limiting
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    // Rate limiter para votos (previne spam)
+    rateLimiterOptions.AddFixedWindowLimiter(policyName: "vote-limiter", options =>
+    {
+        options.PermitLimit = 10; // 10 votos
+        options.Window = TimeSpan.FromMinutes(1); // por minuto
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 2;
+    });
+
+    // Rate limiter para criação de reviews
+    rateLimiterOptions.AddFixedWindowLimiter(policyName: "review-limiter", options =>
+    {
+        options.PermitLimit = 3; // 3 reviews
+        options.Window = TimeSpan.FromMinutes(5); // a cada 5 minutos
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 1;
+    });
+
+    // Rate limiter geral para API
+    rateLimiterOptions.AddFixedWindowLimiter(policyName: "api-limiter", options =>
+    {
+        options.PermitLimit = 100; // 100 requests
+        options.Window = TimeSpan.FromMinutes(1); // por minuto
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 10;
+    });
+
+    // Rate limiter para uploads (geocoding, uploads de foto)
+    rateLimiterOptions.AddSlidingWindowLimiter(policyName: "upload-limiter", options =>
+    {
+        options.PermitLimit = 20;
+        options.Window = TimeSpan.FromMinutes(1);
+        options.SegmentsPerWindow = 4;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        options.QueueLimit = 5;
+    });
+
+    // Resposta padrão quando limite é atingido
+    rateLimiterOptions.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        
+        if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+        {
+            await context.HttpContext.Response.WriteAsJsonAsync(new
+            {
+                error = "Too many requests. Please try again later.",
+                retryAfter = retryAfter.TotalSeconds
+            }, cancellationToken: token);
+        }
+        else
+        {
+            await context.HttpContext.Response.WriteAsJsonAsync(new
+            {
+                error = "Too many requests. Please try again later."
+            }, cancellationToken: token);
+        }
+    };
+});
 
 // Configurar autenticação JWT
 builder.Services.AddAuthentication(options =>
@@ -189,6 +254,9 @@ app.UseExceptionHandler(errorApp =>
 
 // *** CORREÇÃO 1: ORDEM CORRETA DOS MIDDLEWARES ***
 app.UseCors("_myAllowSpecificOrigins");
+
+// Ativar Rate Limiting
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

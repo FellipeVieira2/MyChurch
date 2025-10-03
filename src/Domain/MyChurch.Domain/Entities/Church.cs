@@ -46,5 +46,17 @@
             LogoFileName = logoFileName;
             Updated = DateTime.UtcNow;
         }
+        public void UpdateLocation(double? latitude, double? longitude)
+        {
+            if (latitude.HasValue && (latitude < -90 || latitude > 90))
+                throw new ArgumentException("Latitude deve estar entre -90 e 90", nameof(latitude));
+            
+            if (longitude.HasValue && (longitude < -180 || longitude > 180))
+                throw new ArgumentException("Longitude deve estar entre -180 e 180", nameof(longitude));
+            
+            Latitude = latitude;
+            Longitude = longitude;
+            Updated = DateTime.UtcNow;
+        }
     }
 }

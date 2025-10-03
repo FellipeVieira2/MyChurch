@@ -10,6 +10,7 @@ using MyChurch.Infrastructure.Utils.Postmark;
 using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
 using MyChurch.Infrastructure.Services;
+using MyChurch.Infrastructure.Cache;
 using System.Net.Http;
 
 namespace MyChurch.Infrastructure
@@ -108,6 +109,16 @@ namespace MyChurch.Infrastructure
             
             // Serviços de domínio
             services.AddScoped<MyChurch.Domain.Services.IReviewVerificationService, MyChurch.Infrastructure.Services.ReviewVerificationService>();
+            
+            // Cache distribuído
+            services.AddDistributedMemoryCache(); // Para desenvolvimento/testes
+            // Para produção com Redis:
+            // services.AddStackExchangeRedisCache(options =>
+            // {
+            //     options.Configuration = configuration["Redis:ConnectionString"];
+            //     options.InstanceName = "MyChurch:";
+            // });
+            services.AddSingleton<ICacheService, DistributedCacheService>();
             
             return services;
         }

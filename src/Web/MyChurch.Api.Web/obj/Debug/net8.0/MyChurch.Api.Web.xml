@@ -148,7 +148,7 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetChurchCashFlowBalance">
             <summary>
-            Retorna o saldo consolidado do fluxo de caixa da igreja
+            Retorna o saldo consolidado do fluxo de caixa da igreja com totalizadores
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowEntry(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand)">
@@ -163,8 +163,11 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowEntries(MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery)">
             <summary>
-            Lista lançamentos de fluxo de caixa
+            Lista lançamentos de fluxo de caixa com paginação, filtros e ordenação.
+            Retorna também os totais de entrada, saída e saldo.
             </summary>
+            <param name="query">Filtros de busca e paginação</param>
+            <returns>Lista paginada com totalizadores</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowEntry(System.Int32)">
             <summary>
@@ -186,10 +189,12 @@
             Exclui uma categoria de fluxo de caixa
             </summary>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories">
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories(MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery)">
             <summary>
-            Lista todas as categorias de fluxo de caixa da igreja
+            Lista todas as categorias de fluxo de caixa da igreja com paginação e filtros
             </summary>
+            <param name="query">Filtros e paginação</param>
+            <returns>Lista paginada de categorias</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.SearchPublicChurches(MyChurch.Application.Church.Queries.SearchPublicChurches.GetPublicChurchesQuery)">
             <summary>
@@ -259,13 +264,28 @@
             <response code="200">QRCode base64</response>
             <response code="404">Igreja não encontrada</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32,MyChurch.Api.Web.Controllers.UpdateChurchLocationRequest)">
             <summary>
-            Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)
+            Atualiza latitude e longitude da igreja.
+            Pode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.
+            Limite: 20 requests por minuto.
             </summary>
             <param name="id">Id da igreja</param>
-            <response code="200">Localização atualizada</response>
+            <param name="request">Dados de localização</param>
+            <response code="200">Localização atualizada com sucesso</response>
+            <response code="400">Coordenadas inválidas ou erro no geocoding</response>
             <response code="404">Igreja não encontrada</response>
+            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GeocodeLocation(System.Int32)">
+            <summary>
+            Atualiza localização da igreja automaticamente usando Google Geocoding (apenas via endereço).
+            Limite: 20 requests por minuto.
+            </summary>
+            <param name="id">Id da igreja</param>
+            <response code="200">Localização geocodificada com sucesso</response>
+            <response code="404">Igreja não encontrada ou endereço inválido</response>
+            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
@@ -584,8 +604,10 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
             <summary>
-            Lista membros da igreja com filtros e paginação (apenas para Admin)
+            Lista membros da igreja com filtros e paginação (apenas para Admin).
+            Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
             </summary>
+            <param name="query">Filtros, paginação e ordenação</param>
             <response code="200">Sucesso: Lista paginada de membros</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
@@ -701,6 +723,7 @@
             Envia uma avaliação para uma igreja ou entidade.
             Requer verificação de presença para igrejas.
             Aceita até 5 fotos por review.
+            Limite: 3 reviews a cada 5 minutos.
             </summary>
             <param name="command">Dados da avaliação com fotos opcionais</param>
             <returns>Resultado da submissão</returns>
@@ -708,9 +731,11 @@
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetReviews(MyChurch.Application.Reviews.Queries.GetReviews.GetReviewsQuery)">
             <summary>
             Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.
+            Se autenticado, mostra se o usuário já votou em cada review.
+            Suporta filtros, paginação e ordenação.
             </summary>
-            <param name="query">Filtros de busca</param>
-            <returns>Lista paginada de avaliações com fotos e respostas</returns>
+            <param name="query">Filtros de busca, paginação e ordenação</param>
+            <returns>Lista paginada de avaliações com fotos, respostas e status de voto</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.RespondToReview(System.Int32,MyChurch.Api.Web.Controllers.RespondToReviewRequest)">
             <summary>
@@ -747,7 +772,8 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.VoteReview(System.Int32,MyChurch.Api.Web.Controllers.VoteReviewRequest)">
             <summary>
-            Vota em uma review como útil ou não útil (upvote/downvote)
+            Vota em uma review como útil ou não útil (upvote/downvote).
+            Limite: 10 votos por minuto.
             </summary>
             <param name="reviewId">ID da review</param>
             <param name="request">Tipo de voto</param>
@@ -755,12 +781,14 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsHelpful(System.Int32)">
             <summary>
-            Marca uma review como útil (atalho para upvote)
+            Marca uma review como útil (atalho para upvote).
+            Limite: 10 votos por minuto.
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsNotHelpful(System.Int32)">
             <summary>
-            Marca uma review como não útil (atalho para downvote)
+            Marca uma review como não útil (atalho para downvote).
+            Limite: 10 votos por minuto.
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">

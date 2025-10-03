@@ -140,29 +140,16 @@
             <summary>Número da página (começa em 1)</summary>
         </member>
         <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageSize">
-            <summary>Tamanho da página</summary>
+            <summary>Tamanho da página (máximo 100)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Amount">
-            <summary>Filtro por valor exato</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.SortBy">
+            <summary>Campo para ordenação (Name, Description)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Date">
-            <summary>Filtro por data exata</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.SortDirection">
+            <summary>Direção da ordenação (asc ou desc)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.StartDate">
-            <summary>Filtro por data inicial (>=)</summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.EndDate" -->
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Type">
-            <summary>Filtro por tipo (Entrada/Saída)</summary>
-        </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.CategoryId">
-            <summary>Filtro por categoria</summary>
-        </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageNumber">
-            <summary>Número da página (começa em 1)</summary>
-        </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageSize">
-            <summary>Tamanho da página</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.Name">
+            <summary>Filtro por nome (contém)</summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
             <summary>Name</summary>
@@ -276,6 +263,147 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
         </member>
+        <member name="T:MyChurch.Application.Common.Extensions.PaginationExtensions">
+            <summary>
+            Extension methods para facilitar paginação
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListAsync``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Converte um IQueryable em PaginatedList aplicando paginação
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListAsync``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest,System.Threading.CancellationToken)">
+            <summary>
+            Converte um IQueryable em PaginatedList aplicando paginação com request
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ApplySort``1(System.Linq.IQueryable{``0},System.String,System.Boolean)">
+            <summary>
+            Aplica ordenação dinâmica baseada em string
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ApplySort``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest)">
+            <summary>
+            Aplica ordenação com PaginatedRequest
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListWithSortAsync``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest,System.Threading.CancellationToken)">
+            <summary>
+            Aplica paginação e ordenação em uma única chamada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedList``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+            <summary>
+            Converte IEnumerable em PaginatedList (para listas em memória)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedList``1(System.Collections.Generic.IEnumerable{``0},MyChurch.Application.Common.Models.PaginatedRequest)">
+            <summary>
+            Converte IEnumerable em PaginatedList com request
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedList`1">
+            <summary>
+            Representa uma lista paginada genérica de itens
+            </summary>
+            <typeparam name="T">Tipo dos itens da lista</typeparam>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.Items">
+            <summary>
+            Itens da página atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.PageNumber">
+            <summary>
+            Número da página atual (baseado em 1)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.TotalPages">
+            <summary>
+            Total de páginas disponíveis
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.TotalCount">
+            <summary>
+            Total de itens em todas as páginas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.PageSize">
+            <summary>
+            Quantidade de itens por página
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.HasPreviousPage">
+            <summary>
+            Indica se existe página anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.HasNextPage">
+            <summary>
+            Indica se existe próxima página
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.FirstItemOnPage">
+            <summary>
+            Índice do primeiro item da página atual (1-based)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.LastItemOnPage">
+            <summary>
+            Índice do último item da página atual (1-based)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma lista paginada a partir de um IQueryable
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.Create(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32)">
+            <summary>
+            Cria uma lista paginada a partir de uma lista em memória
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.Empty(System.Int32,System.Int32)">
+            <summary>
+            Cria uma lista paginada vazia
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedRequest">
+            <summary>
+            Request base para queries paginadas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.PageNumber">
+            <summary>
+            Número da página (baseado em 1, padrão: 1)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.PageSize">
+            <summary>
+            Quantidade de itens por página (padrão: 10, máximo: 100)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.SortBy">
+            <summary>
+            Campo para ordenação (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.SortDirection">
+            <summary>
+            Direção da ordenação (asc ou desc, padrão: asc)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.IsDescending">
+            <summary>
+            Indica se a ordenação é descendente
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedRequestValidator`1">
+            <summary>
+            Validador base para requests paginados
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
             <summary>Nome completo</summary>
             <example>João Silva</example>
@@ -299,6 +427,31 @@
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Comments">
             <summary>Comentários adicionais</summary>
             <example>Gostaria de saber mais sobre os recursos de gestão financeira</example>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewPhotoDto">
+            <summary>
+            DTO para fotos de reviews
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewResponseDto">
+            <summary>
+            DTO para respostas de reviews
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewWithVoteDto">
+            <summary>
+            DTO de Review com informações de voto do usuário atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.HasCurrentMemberVoted">
+            <summary>
+            Indica se o usuário atual já votou nesta review
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.CurrentMemberVoteIsHelpful">
+            <summary>
+            Se votou, indica se foi voto positivo (true) ou negativo (false)
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
             <summary>Arquivo JSON no formato da Harpa</summary>
@@ -416,6 +569,9 @@
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsActive">
             <summary>Filtro por membro ativo</summary>
         </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PendingApproval">
+            <summary>Filtro por aprovação pendente</summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
             <summary>Filtro por ministério</summary>
         </member>
@@ -432,7 +588,13 @@
             <summary>Número da página (começa em 1)</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageSize">
-            <summary>Tamanho da página</summary>
+            <summary>Tamanho da página (máximo 100)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortBy">
+            <summary>Campo para ordenação (Name, Email, BirthDate, Created)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortDirection">
+            <summary>Direção da ordenação (asc ou desc)</summary>
         </member>
         <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Name">
             <summary>Nome do plano</summary>

@@ -58,6 +58,15 @@ namespace MyChurch.Domain.Entities
         }
         
         /// <summary>
+        /// Verifica se a review precisa de moderação
+        /// Critério: mais de 10 votos negativos E score menor que -5
+        /// </summary>
+        public bool NeedsModerationReview()
+        {
+            return GetNotHelpfulVotesCount() > 10 && GetHelpfulnessScore() < -5;
+        }
+        
+        /// <summary>
         /// Retorna total de fotos na review
         /// </summary>
         public int GetPhotosCount()

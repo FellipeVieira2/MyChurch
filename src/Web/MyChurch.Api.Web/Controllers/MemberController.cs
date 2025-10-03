@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Mychurch.Common.Utils.Objects;
+using MyChurch.Application.Common.Models;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.ActiveMemberPassword;
 using MyChurch.Application.Member.Commands.AdminChangePassword;
@@ -31,6 +32,7 @@ namespace MyChurch.Api.Web.Controllers
             var mediator = await Mediator.Send(command);
             return Ok(mediator);
         }
+
         /// <summary>
         /// Active Password
         /// </summary>
@@ -149,14 +151,16 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Lista membros da igreja com filtros e paginação (apenas para Admin)
+        /// Lista membros da igreja com filtros e paginação (apenas para Admin).
+        /// Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
         /// </summary>
+        /// <param name="query">Filtros, paginação e ordenação</param>
         /// <response code="200">Sucesso: Lista paginada de membros</response>
         /// <response code="400">Falha: Requisição inválida</response>
         /// <response code="401">Falha: Não autorizado</response>
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResultDto<MemberDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<MemberDto>))]
         public async Task<IActionResult> GetAllMembers([FromQuery] GetAllMembersQuery query)
         {
             var result = await Mediator.Send(query);

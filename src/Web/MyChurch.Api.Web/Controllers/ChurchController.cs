@@ -1,6 +1,7 @@
 using QRCoder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using MyChurch.Application.Church.Commands.CreateChurchCommand;
 using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
 using MyChurch.Application.Church.Commands.UpdateBankingInfo;
@@ -166,17 +167,73 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)
+        /// Atualiza latitude e longitude da igreja.
+        /// Pode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.
+        /// Limite: 20 requests por minuto.
         /// </summary>
         /// <param name="id">Id da igreja</param>
-        /// <response code="200">Localização atualizada</response>
+        /// <param name="request">Dados de localização</param>
+        /// <response code="200">Localização atualizada com sucesso</response>
+        /// <response code="400">Coordenadas inválidas ou erro no geocoding</response>
         /// <response code="404">Igreja não encontrada</response>
-        [HttpPost("{id}/update-location")]
-        public async Task<IActionResult> UpdateLocation(int id)
+        /// <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
+        [HttpPut("{id}/location")]
+        [Authorize(Roles = "Admin")]
+        [EnableRateLimiting("upload-limiter")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateChurchLocationResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<IActionResult> UpdateLocation(int id, [FromBody] UpdateChurchLocationRequest request)
         {
-            var result = await Mediator.Send(new UpdateChurchLocationCommand { ChurchId = id });
-            if (!result) return NotFound();
-            return Ok(new { success = true });
+            var command = new UpdateChurchLocationCommand
+            {
+                ChurchId = id,
+                Latitude = request.Latitude,
+                Longitude = request.Longitude,
+                AutoGeocode = request.AutoGeocode
+            };
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
         }
+
+        /// <summary>
+        /// Atualiza localização da igreja automaticamente usando Google Geocoding (apenas via endereço).
+        /// Limite: 20 requests por minuto.
+        /// </summary>
+        /// <param name="id">Id da igreja</param>
+        /// <response code="200">Localização geocodificada com sucesso</response>
+        /// <response code="404">Igreja não encontrada ou endereço inválido</response>
+        /// <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
+        [HttpPost("{id}/geocode")]
+        [Authorize(Roles = "Admin")]
+        [EnableRateLimiting("upload-limiter")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UpdateChurchLocationResult))]
+        [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
+        public async Task<IActionResult> GeocodeLocation(int id)
+        {
+            var command = new UpdateChurchLocationCommand
+            {
+                ChurchId = id,
+                AutoGeocode = true
+            };
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+                return NotFound(result);
+
+            return Ok(result);
+        }
+    }
+
+    public class UpdateChurchLocationRequest
+    {
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public bool AutoGeocode { get; set; } = false;
     }
 }

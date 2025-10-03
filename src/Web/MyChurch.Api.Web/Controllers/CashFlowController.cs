@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Mychurch.Common.Utils.Objects;
+using MyChurch.Application.Common.Models;
+using MyChurch.Application.Dtos;
 using MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry;
 using MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry;
 using MyChurch.Application.CashFlow.Commands.DeleteCashFlowEntry;
 using MyChurch.Application.CashFlow.Queries.GetCashFlowEntryById;
 using MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries;
-using MyChurch.Application.Dtos;
-using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.CashFlow.Queries.GetChurchCashFlowBalance;
 using MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory;
 using MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory;
@@ -32,14 +33,13 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Retorna o saldo consolidado do fluxo de caixa da igreja
+        /// Retorna o saldo consolidado do fluxo de caixa da igreja com totalizadores
         /// </summary>
         [Authorize]
         [HttpGet("balance")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(decimal))]
         public async Task<IActionResult> GetChurchCashFlowBalance()
         {
-            // Quando implementar, crie uma query como GetChurchCashFlowBalanceQuery
             var saldo = await Mediator.Send(AuthorizationRequestCreate<GetChurchCashFlowBalanceQuery>());
             return Ok(saldo);
         }
@@ -72,11 +72,14 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Lista lançamentos de fluxo de caixa
+        /// Lista lançamentos de fluxo de caixa com paginação, filtros e ordenação.
+        /// Retorna também os totais de entrada, saída e saldo.
         /// </summary>
+        /// <param name="query">Filtros de busca e paginação</param>
+        /// <returns>Lista paginada com totalizadores</returns>
         [Authorize]
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedResultDto<CashFlowEntryDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CashFlowEntryPagedResult))]
         public async Task<IActionResult> GetAllCashFlowEntries([FromQuery] GetAllCashFlowEntriesQuery query)
         {
             var result = await Mediator.Send(query);
@@ -137,14 +140,15 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Lista todas as categorias de fluxo de caixa da igreja
+        /// Lista todas as categorias de fluxo de caixa da igreja com paginação e filtros
         /// </summary>
+        /// <param name="query">Filtros e paginação</param>
+        /// <returns>Lista paginada de categorias</returns>
         [Authorize]
         [HttpGet("categories")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<CashFlowCategoryDto>))]
-        public async Task<IActionResult> GetAllCashFlowCategories()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<CashFlowCategoryDto>))]
+        public async Task<IActionResult> GetAllCashFlowCategories([FromQuery] GetAllCashFlowCategoriesQuery query)
         {
-            var query = AuthorizationRequestCreate<GetAllCashFlowCategoriesQuery>();
             var result = await Mediator.Send(query);
             return Ok(result);
         }
