@@ -189,7 +189,7 @@ namespace MyChurch.Application.Church.Queries.SearchPublicChurches
                         Score = r.Score,
                         Comment = r.Comment.Length > 150 ? r.Comment.Substring(0, 147) + "..." : r.Comment,
                         CreatedAt = r.CreatedAt,
-                        HelpfulCount = 0, // TODO: Implementar sistema de votos úteis
+                        HelpfulCount = r.GetHelpfulVotesCount(), // Usando o método da entidade
                         ReviewerPhoto = r.Reviewer?.Photo
                     })
                     .ToList();

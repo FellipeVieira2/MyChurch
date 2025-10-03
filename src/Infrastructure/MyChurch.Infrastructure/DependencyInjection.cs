@@ -88,8 +88,9 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IVisitorRepository, VisitorRepository>();
             services.AddScoped<IVisitorStatusHistoryRepository, VisitorStatusHistoryRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IReviewVoteRepository, ReviewVoteRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+ 
             services.AddDbContext<MyChurchDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(connectionString)); // Removed UseNetTopologySuite to avoid postgis migration extension

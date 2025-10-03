@@ -23,6 +23,7 @@ namespace MyChurch.Infrastructure
         public DbSet<ImportedHymnStanza> ImportedHymnStanzas { get; set; }
         public DbSet<Visitor> Visitors { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ReviewVote> ReviewVotes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

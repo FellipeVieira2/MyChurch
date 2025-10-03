@@ -86,6 +86,7 @@ namespace MyChurch.Infrastructure.Repositories
         public IVisitorRepository Visitors { get; } // added
         public IVisitorStatusHistoryRepository VisitorStatusHistories { get; } // added
         public IReviewRepository Reviews { get; } // added
+        public IReviewVoteRepository ReviewVotes { get; } // added
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -157,7 +158,8 @@ namespace MyChurch.Infrastructure.Repositories
             IImportedHymnRepository importedHymns,
             IVisitorRepository visitors,
             IVisitorStatusHistoryRepository visitorStatusHistories,
-            IReviewRepository reviews)
+            IReviewRepository reviews,
+            IReviewVoteRepository reviewVotes)
         {
             Churchs = churchs;
             Donations = donations;
@@ -229,6 +231,7 @@ namespace MyChurch.Infrastructure.Repositories
             Visitors = visitors;
             VisitorStatusHistories = visitorStatusHistories;
             Reviews = reviews;
+            ReviewVotes = reviewVotes;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

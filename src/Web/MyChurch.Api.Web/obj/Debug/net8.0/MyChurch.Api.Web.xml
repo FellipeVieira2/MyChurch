@@ -707,11 +707,26 @@
             <summary>
             Lista avaliações de uma entidade (ex: igreja).
             </summary>
-            <param name="entityId">ID da entidade</param>
-            <param name="entityType">Tipo da entidade (ex: Church)</param>
-            <param name="page">Página</param>
-            <param name="pageSize">Tamanho da página</param>
+            <param name="query">Filtros de busca</param>
             <returns>Lista paginada de avaliações</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.VoteReview(System.Int32,MyChurch.Api.Web.Controllers.VoteReviewRequest)">
+            <summary>
+            Vota em uma review como útil ou não útil (upvote/downvote)
+            </summary>
+            <param name="reviewId">ID da review</param>
+            <param name="isHelpful">true = útil, false = não útil</param>
+            <returns>Resultado da votação com contadores atualizados</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsHelpful(System.Int32)">
+            <summary>
+            Marca uma review como útil (atalho para upvote)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsNotHelpful(System.Int32)">
+            <summary>
+            Marca uma review como não útil (atalho para downvote)
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>

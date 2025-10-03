@@ -482,5 +482,10 @@
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
         </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.VoteReview.VoteReviewCommand">
+            <summary>
+            Adiciona ou atualiza um voto em uma review (útil/não útil)
+            </summary>
+        </member>
     </members>
 </doc>
