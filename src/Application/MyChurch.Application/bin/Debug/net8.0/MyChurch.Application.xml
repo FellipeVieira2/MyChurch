@@ -482,6 +482,16 @@
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
         </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.EditReviewResponse.EditReviewResponseCommand">
+            <summary>
+            Comando para editar resposta da igreja a uma review
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.RespondToReview.RespondToReviewCommand">
+            <summary>
+            Comando para igreja responder a uma review
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand.Photos">
             <summary>
             Lista de fotos em base64 para upload

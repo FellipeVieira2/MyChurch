@@ -29,6 +29,10 @@ namespace MyChurch.Domain.Entities
         // Fotos da review
         public ICollection<ReviewPhoto> Photos { get; set; } = new List<ReviewPhoto>();
         
+        // Resposta oficial da igreja
+        public ReviewResponse? OfficialResponse { get; set; }
+        public bool HasResponse => OfficialResponse != null;
+        
         /// <summary>
         /// Calcula total de votos úteis (upvotes)
         /// </summary>

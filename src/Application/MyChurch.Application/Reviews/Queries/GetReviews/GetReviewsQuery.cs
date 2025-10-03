@@ -44,6 +44,10 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
         // Fotos da review
         public List<ReviewPhotoSimpleDto> Photos { get; set; } = new();
         public int PhotosCount { get; set; }
+        
+        // Resposta oficial da igreja
+        public ReviewResponseDto? OfficialResponse { get; set; }
+        public bool HasResponse { get; set; }
     }
 
     public class ReviewPhotoSimpleDto
@@ -51,6 +55,17 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
         public int PhotoId { get; set; }
         public string PhotoUrl { get; set; } = string.Empty;
         public string? Caption { get; set; }
+    }
+
+    public class ReviewResponseDto
+    {
+        public int ResponseId { get; set; }
+        public string Response { get; set; } = string.Empty;
+        public DateTime RespondedAt { get; set; }
+        public bool IsEdited { get; set; }
+        public DateTime? EditedAt { get; set; }
+        public string ResponderName { get; set; } = string.Empty;
+        public string? ResponderPhoto { get; set; }
     }
 
     public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, ReviewsResultDto>
@@ -66,7 +81,9 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
                 .Where(r => r.EntityId == request.EntityId && r.EntityType == request.EntityType)
                 .Include(r => r.Reviewer)
                 .Include(r => r.Votes)
-                .Include(r => r.Photos) // Incluir fotos
+                .Include(r => r.Photos)
+                .Include(r => r.OfficialResponse)
+                    .ThenInclude(or => or.Responder)
                 .AsNoTracking();
             var totalReviews = await query.CountAsync(cancellationToken);
             var averageScore = totalReviews > 0 ? await query.AverageAsync(r => r.Score, cancellationToken) : 0;
@@ -94,7 +111,18 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
                         PhotoUrl = p.PhotoUrl,
                         Caption = p.Caption
                     }).ToList(),
-                    PhotosCount = r.Photos.Count
+                    PhotosCount = r.Photos.Count,
+                    OfficialResponse = r.OfficialResponse != null ? new ReviewResponseDto
+                    {
+                        ResponseId = r.OfficialResponse.Id,
+                        Response = r.OfficialResponse.Response,
+                        RespondedAt = r.OfficialResponse.RespondedAt,
+                        IsEdited = r.OfficialResponse.IsEdited,
+                        EditedAt = r.OfficialResponse.EditedAt,
+                        ResponderName = r.OfficialResponse.Responder.Name,
+                        ResponderPhoto = r.OfficialResponse.Responder.Photo
+                    } : null,
+                    HasResponse = r.OfficialResponse != null
                 })
                 .ToListAsync(cancellationToken);
             return new ReviewsResultDto

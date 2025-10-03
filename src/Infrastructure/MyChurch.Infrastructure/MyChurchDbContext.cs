@@ -25,6 +25,7 @@ namespace MyChurch.Infrastructure
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ReviewVote> ReviewVotes { get; set; }
         public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
+        public DbSet<ReviewResponse> ReviewResponses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

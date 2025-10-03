@@ -73,6 +73,7 @@
         IReviewRepository Reviews { get; }
         IReviewVoteRepository ReviewVotes { get; }
         IReviewPhotoRepository ReviewPhotos { get; }
+        IReviewResponseRepository ReviewResponses { get; }
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

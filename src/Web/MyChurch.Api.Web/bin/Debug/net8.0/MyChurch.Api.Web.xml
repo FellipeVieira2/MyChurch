@@ -707,10 +707,27 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetReviews(MyChurch.Application.Reviews.Queries.GetReviews.GetReviewsQuery)">
             <summary>
-            Lista avaliações de uma entidade (ex: igreja) com fotos.
+            Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.
             </summary>
             <param name="query">Filtros de busca</param>
-            <returns>Lista paginada de avaliações com fotos</returns>
+            <returns>Lista paginada de avaliações com fotos e respostas</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.RespondToReview(System.Int32,MyChurch.Api.Web.Controllers.RespondToReviewRequest)">
+            <summary>
+            Igreja responde a uma avaliação (apenas Admin).
+            Notifica automaticamente o avaliador.
+            </summary>
+            <param name="reviewId">ID da review</param>
+            <param name="request">Conteúdo da resposta</param>
+            <returns>Resultado da resposta</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.EditReviewResponse(System.Int32,MyChurch.Api.Web.Controllers.EditReviewResponseRequest)">
+            <summary>
+            Edita resposta da igreja a uma avaliação (apenas Admin).
+            </summary>
+            <param name="responseId">ID da resposta</param>
+            <param name="request">Novo conteúdo da resposta</param>
+            <returns>Resultado da edição</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetChurchPhotoGallery(System.Int32,System.Int32)">
             <summary>

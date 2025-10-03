@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Reviews.Commands.SubmitReview;
 using MyChurch.Application.Reviews.Commands.VoteReview;
+using MyChurch.Application.Reviews.Commands.RespondToReview;
+using MyChurch.Application.Reviews.Commands.EditReviewResponse;
 using MyChurch.Application.Reviews.Queries.GetReviews;
 using MyChurch.Application.Reviews.Queries.CanReviewChurch;
 using MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery;
@@ -33,15 +35,60 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Lista avaliações de uma entidade (ex: igreja) com fotos.
+        /// Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.
         /// </summary>
         /// <param name="query">Filtros de busca</param>
-        /// <returns>Lista paginada de avaliações com fotos</returns>
+        /// <returns>Lista paginada de avaliações com fotos e respostas</returns>
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetReviews([FromQuery] GetReviewsQuery query)
         {
             var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Igreja responde a uma avaliação (apenas Admin).
+        /// Notifica automaticamente o avaliador.
+        /// </summary>
+        /// <param name="reviewId">ID da review</param>
+        /// <param name="request">Conteúdo da resposta</param>
+        /// <returns>Resultado da resposta</returns>
+        [HttpPost("{reviewId}/respond")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RespondToReviewResult))]
+        public async Task<IActionResult> RespondToReview([FromRoute] int reviewId, [FromBody] RespondToReviewRequest request)
+        {
+            var command = AuthorizationRequestCreate<RespondToReviewCommand>();
+            command.ReviewId = reviewId;
+            command.Response = request.Response;
+            
+            var result = await Mediator.Send(command);
+            if (!result.Success)
+                return BadRequest(result);
+            
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Edita resposta da igreja a uma avaliação (apenas Admin).
+        /// </summary>
+        /// <param name="responseId">ID da resposta</param>
+        /// <param name="request">Novo conteúdo da resposta</param>
+        /// <returns>Resultado da edição</returns>
+        [HttpPut("response/{responseId}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EditReviewResponseResult))]
+        public async Task<IActionResult> EditReviewResponse([FromRoute] int responseId, [FromBody] EditReviewResponseRequest request)
+        {
+            var command = AuthorizationRequestCreate<EditReviewResponseCommand>();
+            command.ResponseId = responseId;
+            command.NewResponse = request.NewResponse;
+            
+            var result = await Mediator.Send(command);
+            if (!result.Success)
+                return BadRequest(result);
+            
             return Ok(result);
         }
 
@@ -139,5 +186,15 @@ namespace MyChurch.Api.Web.Controllers
     public class VoteReviewRequest
     {
         public bool IsHelpful { get; set; }
+    }
+
+    public class RespondToReviewRequest
+    {
+        public string Response { get; set; } = string.Empty;
+    }
+
+    public class EditReviewResponseRequest
+    {
+        public string NewResponse { get; set; } = string.Empty;
     }
 }
