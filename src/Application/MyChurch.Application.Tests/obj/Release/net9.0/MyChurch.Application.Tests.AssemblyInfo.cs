@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyChurch.Application.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+67e6b0fd86c1f96ac2b3a69cdc50b99d977ea8da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38fada13e064477a113791fe5d42807fb012c69c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyChurch.Application.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyChurch.Application.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

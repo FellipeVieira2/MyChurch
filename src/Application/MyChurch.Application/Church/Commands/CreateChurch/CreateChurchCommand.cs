@@ -6,6 +6,7 @@ using Mychurch.Common.WebClients.Asaas.Models.Requests;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Infrastructure.Utils.S3;
+using MyChurch.Infrastructure.Services;
 using System.Text;
 
 namespace MyChurch.Application.Church.Commands.CreateChurchCommand
@@ -64,12 +65,14 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
         private readonly ILogger<CreateChurchCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
         private readonly IAsaasWebClient _asaasWebClient;
-        public CreateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateChurchCommandHandler> logger, IS3Helper s3Helper, IAsaasWebClient asaasWebClient)
+        private readonly GoogleGeocodingService _geocodingService;
+        public CreateChurchCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateChurchCommandHandler> logger, IS3Helper s3Helper, IAsaasWebClient asaasWebClient, GoogleGeocodingService geocodingService)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
             _asaasWebClient = asaasWebClient;
+            _geocodingService = geocodingService;
         }
 
         public async Task<int> Handle(CreateChurchCommand request, CancellationToken cancellationToken)
@@ -79,6 +82,25 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
             if (!string.IsNullOrEmpty(request.Logo))
             {
                 church.LogoFileName = await UploadLogoAsync(request.Logo, cancellationToken);
+            }
+
+            // Geocode inicial
+            if (church.Address != null)
+            {
+                try
+                {
+                    var addressStr = $"{church.Address.Street}, {church.Address.Number}, {church.Address.Neighborhood}, {church.Address.City}, {church.Address.State}, {church.Address.Country}, {church.Address.ZipCode}";
+                    (double? lat, double? lng) = await _geocodingService.GetLatLongAsync(addressStr);
+                    if (lat.HasValue && lng.HasValue)
+                    {
+                        church.Latitude = lat;
+                        church.Longitude = lng;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Falha ao geocodificar endereço na criação da igreja");
+                }
             }
 
             _unitOfWork.Churchs.Create(church);

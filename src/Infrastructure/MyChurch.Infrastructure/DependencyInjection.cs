@@ -9,6 +9,8 @@ using MyChurch.Infrastructure.Repositories;
 using MyChurch.Infrastructure.Utils.Postmark;
 using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
+using MyChurch.Infrastructure.Services;
+using System.Net.Http;
 
 namespace MyChurch.Infrastructure
 {
@@ -48,7 +50,6 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IWorshipScheduleRepository, WorshipScheduleRepository>();
             services.AddScoped<IDonationWorshipServiceRepository, DonationWorshipServiceRepository>();
             services.AddScoped<IFeedPostImageRepository, FeedPostImageRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPrayerRequestRepository, PrayerRequestRepository>();
             services.AddScoped<IAdminNoticeRepository, AdminNoticeRepository>();
             services.AddScoped<IHymnVerseRepository, HymnVerseRepository>();
@@ -60,11 +61,9 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();
             services.AddScoped<IGroupResourceRepository, GroupResourceRepository>();
-
             services.AddScoped<IGroupMeetingRepository, GroupMeetingRepository>();
             services.AddScoped<IGroupMeetingAttendanceRepository, GroupMeetingAttendanceRepository>();
             services.AddScoped<IGroupMeetingMemberNoteRepository, GroupMeetingMemberNoteRepository>();
-
             services.AddScoped<IJourneyRepository, JourneyRepository>();
             services.AddScoped<IJourneyStageRepository, JourneyStageRepository>();
             services.AddScoped<IMemberJourneyProgressRepository, MemberJourneyProgressRepository>();
@@ -79,29 +78,30 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IPreLaunchInterestRepository, PreLaunchInterestRepository>();
             services.AddScoped<ISlideRepository, SlideRepository>();
             services.AddScoped<IPresentationRepository, PresentationRepository>();
-
-            // Bible Reading Plan repositories
             services.AddScoped<IBibleReadingPlanRepository, BibleReadingPlanRepository>();
             services.AddScoped<IBibleReadingPlanStageRepository, BibleReadingPlanStageRepository>();
             services.AddScoped<IMemberBibleReadingProgressRepository, MemberBibleReadingProgressRepository>();
             services.AddScoped<IMemberBibleReadingAssignmentRepository, MemberBibleReadingAssignmentRepository>();
-
             services.AddScoped<IEngagementEventRepository, EngagementEventRepository>();
             services.AddScoped<IUserActionHistoryRepository, UserActionHistoryRepository>();
             services.AddScoped<IImportedHymnRepository, ImportedHymnRepository>();
+            services.AddScoped<IVisitorRepository, VisitorRepository>();
+            services.AddScoped<IVisitorStatusHistoryRepository, VisitorStatusHistoryRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<MyChurchDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString(connectionString));
+                options.UseNpgsql(configuration.GetConnectionString(connectionString)); // Removed UseNetTopologySuite to avoid postgis migration extension
 #if DEBUG
                 options.LogTo(Console.WriteLine, LogLevel.Information);
 #endif
             });
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            // Register email service (changed from GoogleEmailService to PostmarkEmailService)
             services.AddScoped<IEmailService, PostmarkEmailService>();
 
+            services.AddHttpClient<GoogleGeocodingService>();
             return services;
         }
 
@@ -115,8 +115,13 @@ namespace MyChurch.Infrastructure
                 SecretKey = configuration["S3Settings:SecretKey"]
             };
             services.AddSingleton(aWSS3Config);
-
             services.AddScoped<IS3Helper, S3Helper>();
+            return services;
+        }
+
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHttpClient<GoogleGeocodingService>();
             return services;
         }
     }

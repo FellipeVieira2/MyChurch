@@ -11,7 +11,7 @@ namespace MyChurch.Infrastructure
         public DbSet<BibleReadingPlan> BibleReadingPlans { get; set; }
         public DbSet<BibleReadingPlanStage> BibleReadingPlanStages { get; set; }
         public DbSet<MemberBibleReadingProgress> MemberBibleReadingProgresses { get; set; }
-        public DbSet<EngagementEvent> EngagementEvents { get; set; } // Novo DbSet
+        public DbSet<EngagementEvent> EngagementEvents { get; set; }
         public DbSet<GroupMeeting> GroupMeetings { get; set; }
         public DbSet<GroupMeetingAttendance> GroupMeetingAttendances { get; set; }
         public DbSet<GroupMeetingMemberNote> GroupMeetingMemberNotes { get; set; }
@@ -21,6 +21,8 @@ namespace MyChurch.Infrastructure
         public DbSet<Slide> Slides { get; set; }
         public DbSet<ImportedHymn> ImportedHymns { get; set; }
         public DbSet<ImportedHymnStanza> ImportedHymnStanzas { get; set; }
+        public DbSet<Visitor> Visitors { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

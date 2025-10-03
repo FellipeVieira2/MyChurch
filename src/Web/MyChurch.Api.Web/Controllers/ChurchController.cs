@@ -12,13 +12,50 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Exceptions;
 using MyChurch.Domain.Entities;
 using MyChurch.Application.Church.Commands.GenerateOnboardingQrCode;
+using MyChurch.Application.Church.Queries.SearchPublicChurches; // added
+using MyChurch.Application.Church.Commands;
+using MyChurch.Application.Church.Queries.SearchNearby;
 
 namespace MyChurch.Api.Web.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class ChurchController : BaseController
     {
         // Adiciona construtor para testes
         public ChurchController() : base() { }
+
+        /// <summary>
+        /// Busca pública de igrejas (não requer autenticação)
+        /// Filtros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating
+        /// </summary>
+        /// <param name="query">Parâmetros de filtro e ordenação</param>
+        /// <response code="200">Lista paginada com dados de avaliações, distância e relevância</response>
+        [HttpGet("public/search")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
+        public async Task<IActionResult> SearchPublicChurches([FromQuery] GetPublicChurchesQuery query)
+        {
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Busca igrejas próximas por latitude/longitude e raio (km)
+        /// </summary>
+        [HttpGet("public/nearby")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetNearby([FromQuery] double lat, [FromQuery] double lng, [FromQuery] double radiusKm = 5, [FromQuery] int? max = 50)
+        {
+            var result = await Mediator.Send(new GetNearbyChurchesQuery
+            {
+                Latitude = lat,
+                Longitude = lng,
+                RadiusKm = radiusKm,
+                MaxResults = max
+            });
+            return Ok(result);
+        }
 
         /// <summary>
         /// Create a new Church
@@ -126,6 +163,20 @@ namespace MyChurch.Api.Web.Controllers
             if (string.IsNullOrEmpty(qrCode))
                 return NotFound("Igreja não encontrada");
             return Ok(new { qrCode });
+        }
+
+        /// <summary>
+        /// Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)
+        /// </summary>
+        /// <param name="id">Id da igreja</param>
+        /// <response code="200">Localização atualizada</response>
+        /// <response code="404">Igreja não encontrada</response>
+        [HttpPost("{id}/update-location")]
+        public async Task<IActionResult> UpdateLocation(int id)
+        {
+            var result = await Mediator.Send(new UpdateChurchLocationCommand { ChurchId = id });
+            if (!result) return NotFound();
+            return Ok(new { success = true });
         }
     }
 }

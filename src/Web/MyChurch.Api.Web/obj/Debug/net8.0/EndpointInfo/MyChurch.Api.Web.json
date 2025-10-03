@@ -1809,6 +1809,177 @@
         }
       }
     },
+    "/api/Church/{id}/update-location": {
+      "post": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Localização atualizada"
+          },
+          "404": {
+            "description": "Igreja não encontrada"
+          }
+        }
+      }
+    },
+    "/api/Church/public/search": {
+      "get": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Busca pública de igrejas (não requer autenticação)",
+        "parameters": [
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "City",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "HasServiceToday",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "UserLatitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "UserLongitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "RadiusKm",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada",
+            "content": {
+              "text/plain": {
+                "schema": { }
+              },
+              "application/json": {
+                "schema": { }
+              },
+              "text/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Church/public/nearby": {
+      "get": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Busca igrejas próximas por latitude/longitude e raio (km)",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "radiusKm",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "default": 5
+            }
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Church/dashboard": {
       "get": {
         "tags": [
@@ -3529,6 +3700,194 @@
         }
       }
     },
+    "/api/ImportedHymn": {
+      "post": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImportedHymnCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ImportedHymnDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ImportedHymn/{id}": {
+      "get": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportedHymnDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateImportedHymnCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ImportedHymn"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/journeys": {
       "post": {
         "tags": [
@@ -3751,6 +4110,29 @@
       "get": {
         "tags": [
           "Journey"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Lyrics": {
+      "get": {
+        "tags": [
+          "Lyrics"
+        ],
+        "summary": "Realiza scraping de letras de músicas do Vagalume e importa como hino.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "description": "URL da página da música no Vagalume",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -4482,6 +4864,54 @@
           },
           "204": {
             "description": "Sucesso: Membro aprovado"
+          },
+          "404": {
+            "description": "Falha: Membro não encontrado"
+          }
+        }
+      }
+    },
+    "/api/Member/{memberId}/decline": {
+      "put": {
+        "tags": [
+          "Member"
+        ],
+        "summary": "Reprova o cadastro de um membro (apenas para administradores)",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "Sucesso: Membro reprovado"
           },
           "404": {
             "description": "Falha: Membro não encontrado"
@@ -5893,6 +6323,83 @@
         }
       }
     },
+    "/api/Reviews": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Envia uma avaliação para uma igreja ou entidade.",
+        "requestBody": {
+          "description": "Dados da avaliação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitReviewCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitReviewCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitReviewCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Lista avaliações de uma entidade (ex: igreja).",
+        "parameters": [
+          {
+            "name": "EntityId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "EntityType",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Subscription": {
       "post": {
         "tags": [
@@ -6080,6 +6587,218 @@
         }
       }
     },
+    "/api/Visitor": {
+      "post": {
+        "tags": [
+          "Visitor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnonymousVisitorCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnonymousVisitorCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAnonymousVisitorCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Visitor"
+        ],
+        "parameters": [
+          {
+            "name": "Status",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/VisitorStatus"
+            }
+          },
+          {
+            "name": "MinScore",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "DaysSinceLastVisitGreaterThan",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "NeedsFollowUp",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Visitor/donations": {
+      "post": {
+        "tags": [
+          "Visitor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVisitorDonationCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVisitorDonationCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVisitorDonationCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Visitor/status/update": {
+      "post": {
+        "tags": [
+          "Visitor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVisitorStatusCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVisitorStatusCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVisitorStatusCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Visitor/promote": {
+      "post": {
+        "tags": [
+          "Visitor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromoteVisitorToMemberCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromoteVisitorToMemberCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromoteVisitorToMemberCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Visitor/{visitorId}/timeline": {
+      "get": {
+        "tags": [
+          "Visitor"
+        ],
+        "parameters": [
+          {
+            "name": "visitorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Webhook/asaas": {
       "post": {
         "tags": [
@@ -6091,6 +6810,49 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/presence/check-in": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Faz check-in do membro no culto (geolocalização obrigatória). Retorna 0 se já presente.",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPresenceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPresenceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterPresenceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -6211,6 +6973,47 @@
           },
           {
             "name": "verseNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/WorshipActivity/{worshipServiceId}/imported-hymn/{importedHymnId}/present/{stanzaOrder}": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "importedHymnId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "stanzaOrder",
             "in": "path",
             "required": true,
             "schema": {
@@ -6460,12 +7263,64 @@
         }
       }
     },
+    "/api/WorshipActivity/{worshipServiceId}/visitor/{visitorId}/presence/check-in": {
+      "post": {
+        "tags": [
+          "WorshipActivity"
+        ],
+        "summary": "Check-in de visitante (não autenticado como membro) no culto",
+        "parameters": [
+          {
+            "name": "worshipServiceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "visitorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisitorPresenceRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisitorPresenceRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisitorPresenceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/WorshipActivity/{worshipServiceId}/active-activities": {
       "get": {
         "tags": [
           "WorshipActivity"
         ],
-        "summary": "Retorna as atividades ativas do culto em andamento e registra a presença do usuário",
+        "summary": "Retorna as atividades ativas do culto em andamento e registra a presença do usuário (registro simples sem geolocalização)",
         "parameters": [
           {
             "name": "worshipServiceId",
@@ -6902,6 +7757,36 @@
             "nullable": true
           },
           "number": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddressRegisterForApproval": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "neighborhood": {
             "type": "string",
             "nullable": true
           }
@@ -7556,6 +8441,24 @@
         },
         "additionalProperties": false
       },
+      "CreateAnonymousVisitorCommand": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateAssetCommand": {
         "required": [
           "description",
@@ -8044,6 +8947,31 @@
         },
         "additionalProperties": false
       },
+      "CreateImportedHymnCommand": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateJourneyCommand": {
         "type": "object",
         "properties": {
@@ -8347,6 +9275,38 @@
           "creditCardInfoId": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateVisitorDonationCommand": {
+        "type": "object",
+        "properties": {
+          "visitorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "billingType": {
+            "type": "string",
+            "nullable": true
+          },
+          "worshipServiceId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "campaignId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -8892,6 +9852,53 @@
             "nullable": true
           },
           "churchId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportedHymnDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ImportedHymnStanzaDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "text": {
             "type": "string",
             "nullable": true
           }
@@ -9444,6 +10451,23 @@
         },
         "additionalProperties": { }
       },
+      "PromoteVisitorToMemberCommand": {
+        "type": "object",
+        "properties": {
+          "visitorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterForApprovalCommand": {
         "required": [
           "address",
@@ -9488,7 +10512,7 @@
             "nullable": true
           },
           "address": {
-            "$ref": "#/components/schemas/AddressDto"
+            "$ref": "#/components/schemas/AddressRegisterForApproval"
           }
         },
         "additionalProperties": false
@@ -9505,6 +10529,25 @@
             "items": {
               "$ref": "#/components/schemas/MemberAttendanceDto"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterPresenceRequest": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxDistanceMeters": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },
@@ -9541,7 +10584,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ],
         "type": "integer",
         "format": "int32"
@@ -9581,6 +10625,32 @@
           "presentationId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubmitReviewCommand": {
+        "type": "object",
+        "properties": {
+          "entityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entityType": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9954,6 +11024,35 @@
         },
         "additionalProperties": false
       },
+      "UpdateImportedHymnCommand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "lyrics": {
+            "type": "string",
+            "nullable": true
+          },
+          "stanzas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImportedHymnStanzaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateMemberCommand": {
         "type": "object",
         "properties": {
@@ -10111,6 +11210,23 @@
         },
         "additionalProperties": false
       },
+      "UpdateVisitorStatusCommand": {
+        "type": "object",
+        "properties": {
+          "visitorId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newStatus": {
+            "$ref": "#/components/schemas/VisitorStatus"
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateWorshipScheduleItemCommand": {
         "type": "object",
         "properties": {
@@ -10227,6 +11343,37 @@
           }
         },
         "additionalProperties": false
+      },
+      "VisitorPresenceRequest": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxDistanceMeters": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VisitorStatus": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "WorshipActivityBibleDto": {
         "type": "object",

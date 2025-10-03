@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "W9JVqBKN4IB/7ttfJYG8dUMU0+q7ZlZFu0p/OHFFLUc=",
-  "Source": "MyChurch.Api.Web",
-  "BasePath": "_content/MyChurch.Api.Web",
-  "Mode": "Default",
-  "ManifestType": "Publish",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"sUy2DF9pf5YW/5laYtKNUA/8DJ2/XXXcWW5dRg3HcsY=","Source":"MyChurch.Api.Web","BasePath":"/","Mode":"Root","ManifestType":"Publish","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

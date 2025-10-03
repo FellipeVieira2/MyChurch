@@ -22,11 +22,25 @@ namespace MyChurch.Infrastructure.Mappings
 
             builder.Property(x => x.MemberId)
                 .HasColumnName("member_id")
-                .IsRequired();
+                .IsRequired(false);
+
+            builder.Property(x => x.VisitorId)
+                .HasColumnName("visitor_id")
+                .IsRequired(false);
 
             builder.Property(x => x.Timestamp)
                 .HasColumnName("timestamp")
                 .IsRequired();
+
+            builder.Property(x => x.Latitude)
+                .HasColumnName("latitude")
+                .HasColumnType("double precision")
+                .IsRequired(false);
+
+            builder.Property(x => x.Longitude)
+                .HasColumnName("longitude")
+                .HasColumnType("double precision")
+                .IsRequired(false);
         }
     }
 }

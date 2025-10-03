@@ -68,6 +68,9 @@
         ISlideRepository Slides { get; }
         IPresentationRepository Presentations { get; }
         IImportedHymnRepository ImportedHymns { get; }
+        IVisitorRepository Visitors { get; }
+        IVisitorStatusHistoryRepository VisitorStatusHistories { get; }
+        IReviewRepository Reviews { get; }
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

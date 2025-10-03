@@ -1190,6 +1190,22 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
+    "Method": "UpdateLocation",
+    "RelativePath": "api/Church/{id}/update-location",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
     "Method": "UpdateBankingInfo",
     "RelativePath": "api/Church/banking-info",
     "HttpMethod": "PUT",
@@ -1226,6 +1242,103 @@
       {
         "Type": "System.Void",
         "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
+    "Method": "GetNearby",
+    "RelativePath": "api/Church/public/nearby",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lat",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "lng",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "radiusKm",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "max",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
+    "Method": "SearchPublicChurches",
+    "RelativePath": "api/Church/public/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "City",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "State",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "HasServiceToday",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserLatitude",
+        "Type": "System.Nullable\u00601[[System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserLongitude",
+        "Type": "System.Nullable\u00601[[System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "RadiusKm",
+        "Type": "System.Nullable\u00601[[System.Double, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Object",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
         "StatusCode": 200
       }
     ]
@@ -2178,6 +2291,115 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "GetAll",
+    "RelativePath": "api/ImportedHymn",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[MyChurch.Application.Dtos.ImportedHymnDto, MyChurch.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Create",
+    "RelativePath": "api/ImportedHymn",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.ImportedHymn.Commands.CreateImportedHymnCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "GetById",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.Dtos.ImportedHymnDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Update",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.ImportedHymn.Commands.UpdateImportedHymnCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ImportedHymnController",
+    "Method": "Delete",
+    "RelativePath": "api/ImportedHymn/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.JourneyController",
     "Method": "CreateJourney",
     "RelativePath": "api/journeys",
@@ -2340,6 +2562,22 @@
         "Name": "command",
         "Type": "MyChurch.Application.Journey.Commands.VerifyJourneyStageCommand",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.LyricsController",
+    "Method": "GetLyrics",
+    "RelativePath": "api/Lyrics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "url",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -2617,6 +2855,27 @@
         "Name": "memberId",
         "Type": "System.String",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.MemberController",
+    "Method": "DeclineRegistration",
+    "RelativePath": "api/Member/{memberId}/decline",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "memberId",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "reason",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -3497,6 +3756,53 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ReviewsController",
+    "Method": "SubmitReview",
+    "RelativePath": "api/Reviews",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ReviewsController",
+    "Method": "GetReviews",
+    "RelativePath": "api/Reviews",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "EntityId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "EntityType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.SubscriptionController",
     "Method": "CreateSubscription",
     "RelativePath": "api/Subscription",
@@ -3613,6 +3919,147 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "Create",
+    "RelativePath": "api/Visitor",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Visitors.Commands.CreateAnonymousVisitorCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "GetVisitors",
+    "RelativePath": "api/Visitor",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MinScore",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "DaysSinceLastVisitGreaterThan",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "NeedsFollowUp",
+        "Type": "System.Nullable\u00601[[System.Boolean, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Search",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "UserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Role",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "GetTimeline",
+    "RelativePath": "api/Visitor/{visitorId}/timeline",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "visitorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "CreateDonation",
+    "RelativePath": "api/Visitor/donations",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Donations.Commands.CreateVisitorDonationCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "Promote",
+    "RelativePath": "api/Visitor/promote",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "MyChurch.Application.Visitors.Commands.PromoteVisitorToMemberCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.VisitorController",
+    "Method": "UpdateStatus",
+    "RelativePath": "api/Visitor/status/update",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "MyChurch.Application.Visitors.Commands.UpdateVisitorStatusCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.WebhookController",
@@ -3773,6 +4220,32 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "PresentImportedHymn",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/imported-hymn/{importedHymnId}/present/{stanzaOrder}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "importedHymnId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "stanzaOrder",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
     "Method": "FinishOffering",
     "RelativePath": "api/WorshipActivity/{worshipServiceId}/offering/{activityId}/finish",
     "HttpMethod": "POST",
@@ -3840,6 +4313,27 @@
       {
         "Name": "worshipServiceId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "RegisterPresence",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/presence/check-in",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Web.Controllers.WorshipActivityController\u002BRegisterPresenceRequest",
         "IsRequired": true
       }
     ],
@@ -3924,6 +4418,32 @@
       {
         "Name": "worshipServiceId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "RegisterVisitorPresence",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/visitor/{visitorId}/presence/check-in",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "visitorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Web.Controllers.WorshipActivityController\u002BVisitorPresenceRequest",
         "IsRequired": true
       }
     ],

@@ -6,8 +6,6 @@ using MyChurch.Domain.Behauviours;
 using MyChurch.Application.Engagement;
 using MyChurch.Application.Presentation.Services;
 using MyChurch.Application.Services;
-using MyChurch.Domain.Contracts;
-using MyChurch.Infrastructure.Repositories;
 
 namespace MyChurch.Application
 {

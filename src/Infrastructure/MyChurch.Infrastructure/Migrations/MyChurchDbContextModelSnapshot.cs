@@ -1008,9 +1008,15 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("document");
 
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("LogoFileName")
                         .HasColumnType("varchar(200)")
                         .HasColumnName("logo_file_name");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1142,7 +1148,7 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<bool>("IsTransferred")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MemberId")
+                    b.Property<int?>("MemberId")
                         .HasColumnType("int")
                         .HasColumnName("member_id");
 
@@ -1155,11 +1161,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<DateTime?>("TransferredAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("int")
+                        .HasColumnName("visitor_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CampaignId");
 
                     b.HasIndex("MemberId");
+
+                    b.HasIndex("VisitorId");
 
                     b.ToTable("donation", "postgres");
                 });
@@ -2479,6 +2491,43 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("presentations", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("Reviews", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>
                 {
                     b.Property<int>("Id")
@@ -2669,6 +2718,96 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("verses_of_the_day", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Visitor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AsaasCustomerId")
+                        .HasColumnType("text")
+                        .HasColumnName("asaas_customer_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<DateTime?>("LastVisitAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("last_visit_at");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<bool>("NeedsFollowUp")
+                        .HasColumnType("boolean")
+                        .HasColumnName("needs_follow_up");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text")
+                        .HasColumnName("phone");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer")
+                        .HasColumnName("score");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("visitor", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.VisitorStatusHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ChangedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("changed_at");
+
+                    b.Property<int?>("ChangedByMemberId")
+                        .HasColumnType("integer")
+                        .HasColumnName("changed_by_member_id");
+
+                    b.Property<int>("NewStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("new_status");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text")
+                        .HasColumnName("note");
+
+                    b.Property<int>("OldStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("old_status");
+
+                    b.Property<int>("VisitorId")
+                        .HasColumnType("integer")
+                        .HasColumnName("visitor_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VisitorId");
+
+                    b.ToTable("visitor_status_history", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>
                 {
                     b.Property<int>("Id")
@@ -2795,13 +2934,25 @@ namespace MyChurch.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MemberId")
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("double precision")
+                        .HasColumnName("latitude");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("double precision")
+                        .HasColumnName("longitude");
+
+                    b.Property<int?>("MemberId")
                         .HasColumnType("integer")
                         .HasColumnName("member_id");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("timestamp");
+
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("integer")
+                        .HasColumnName("visitor_id");
 
                     b.Property<int>("WorshipServiceId")
                         .HasColumnType("integer")
@@ -3160,12 +3311,18 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasOne("MyChurch.Domain.Entities.Member", "Member")
                         .WithMany("Donations")
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyChurch.Domain.Entities.Visitor", "Visitor")
+                        .WithMany()
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Campaign");
 
                     b.Navigation("Member");
+
+                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.DonationWorshipService", b =>
@@ -3491,6 +3648,17 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Church");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Review", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Reviewer")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Reviewer");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Presentation", "Presentation")
@@ -3530,6 +3698,17 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Church");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.VisitorStatusHistory", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Visitor", "Visitor")
+                        .WithMany("StatusHistory")
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>
@@ -3731,6 +3910,11 @@ namespace MyChurch.Infrastructure.Migrations
             modelBuilder.Entity("MyChurch.Domain.Entities.Subscription", b =>
                 {
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Visitor", b =>
+                {
+                    b.Navigation("StatusHistory");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.WorshipActivity", b =>

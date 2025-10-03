@@ -191,6 +191,19 @@
             Lista todas as categorias de fluxo de caixa da igreja
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.SearchPublicChurches(MyChurch.Application.Church.Queries.SearchPublicChurches.GetPublicChurchesQuery)">
+            <summary>
+            Busca pública de igrejas (não requer autenticação)
+            Filtros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating
+            </summary>
+            <param name="query">Parâmetros de filtro e ordenação</param>
+            <response code="200">Lista paginada com dados de avaliações, distância e relevância</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetNearby(System.Double,System.Double,System.Double,System.Nullable{System.Int32})">
+            <summary>
+            Busca igrejas próximas por latitude/longitude e raio (km)
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
             <summary>
             Create a new Church
@@ -244,6 +257,14 @@
             </summary>
             <param name="id">Id da igreja</param>
             <response code="200">QRCode base64</response>
+            <response code="404">Igreja não encontrada</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32)">
+            <summary>
+            Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)
+            </summary>
+            <param name="id">Id da igreja</param>
+            <response code="200">Localização atualizada</response>
             <response code="404">Igreja não encontrada</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
@@ -486,10 +507,10 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.LyricsController.GetLyrics(System.String)">
             <summary>
-            Realiza scraping de letras de músicas do Vagalume.
+            Realiza scraping de letras de músicas do Vagalume e importa como hino.
             </summary>
             <param name="url">URL da página da música no Vagalume</param>
-            <returns>Letra completa, estrofes e nome da música</returns>
+            <returns>Letra completa, estrofes, nome da música e id do hino importado</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberConfigurationsController.GetMemberConfiguration">
             <summary>
@@ -675,6 +696,23 @@
             Obtém todos os interesses no pré-lançamento (requer autenticação de administrador)
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.SubmitReview(MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand)">
+            <summary>
+            Envia uma avaliação para uma igreja ou entidade.
+            </summary>
+            <param name="command">Dados da avaliação</param>
+            <returns>Resultado da submissão</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetReviews(MyChurch.Application.Reviews.Queries.GetReviews.GetReviewsQuery)">
+            <summary>
+            Lista avaliações de uma entidade (ex: igreja).
+            </summary>
+            <param name="entityId">ID da entidade</param>
+            <param name="entityType">Tipo da entidade (ex: Church)</param>
+            <param name="page">Página</param>
+            <param name="pageSize">Tamanho da página</param>
+            <returns>Lista paginada de avaliações</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>
             Cria uma nova assinatura
@@ -710,6 +748,11 @@
             <response code="200">Sucesso: Plano alterado</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterPresence(System.Int32,MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterPresenceRequest)">
+            <summary>
+            Faz check-in do membro no culto (geolocalização obrigatória). Retorna 0 se já presente.
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.HighlightBibleReading(System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32})">
             <summary>
@@ -748,7 +791,7 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.GetActiveActivities(System.Int32)">
             <summary>
-            Retorna as atividades ativas do culto em andamento e registra a presença do usuário
+            Retorna as atividades ativas do culto em andamento e registra a presença do usuário (registro simples sem geolocalização)
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.AddScheduleItem(System.Int32,MyChurch.Application.WorshipService.Commands.ManageSchedule.AddWorshipScheduleItemCommand)">
@@ -779,6 +822,11 @@
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.SendAdminNotice(System.Int32,MyChurch.Application.WorshipActivity.Commands.SendAdminNoticeCommand)">
             <summary>
             Envia um aviso administrativo para todos do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterVisitorPresence(System.Int32,System.Int32,MyChurch.Api.Web.Controllers.WorshipActivityController.VisitorPresenceRequest)">
+            <summary>
+            Check-in de visitante (não autenticado como membro) no culto
             </summary>
         </member>
     </members>

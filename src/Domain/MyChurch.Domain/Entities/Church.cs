@@ -31,8 +31,8 @@
         public ICollection<CashFlowCategory> CashFlowCategories { get; set; }
         public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
         public string? OnboardingQrCode { get; set; }
-
-        // Assinatura da igreja  
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         public Subscription Subscription { get; set; }
         public void Update(string? name, string? phone)
         {

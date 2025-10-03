@@ -3,8 +3,10 @@
     public class Donation
     {
         public int Id { get; set; }
-        public int MemberId { get; set; }
-        public Member Member { get; set; }
+        public int? MemberId { get; set; }
+        public Member? Member { get; set; }
+        public int? VisitorId { get; set; } // visitante anônimo/logado externamente
+        public Visitor? Visitor { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public decimal PlatformFee { get; set; }

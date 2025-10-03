@@ -57,56 +57,54 @@ namespace MyChurch.Application.Webhook.Commands
 
                 if (payment.DonationId != null)
                 {
-                    // Busca a doação para pegar valores e descrição
                     var donation = await _unitOfWork.Donations.Query()
                         .Include(d => d.Member)
                         .FirstOrDefaultAsync(d => d.Id == payment.DonationId, cancellationToken);
 
                     if (donation != null)
                     {
-                        // Busca a categoria "Doacao" (case-insensitive) para a igreja
-                        var category = await _unitOfWork.CashFlowCategories.Query()
-                            .FirstOrDefaultAsync(
-                                c => c.ChurchId == donation.Member.ChurchId &&
-                                     c.Name.ToLower() == "doacao",
-                                cancellationToken);
-
-                        // Se não existir, cria a categoria "Doacao"
-                        if (category == null)
+                        var churchId = donation.Member?.ChurchId; // null se visitante
+                        if (churchId.HasValue)
                         {
-                            category = new CashFlowCategory
+                            var category = await _unitOfWork.CashFlowCategories.Query()
+                                .FirstOrDefaultAsync(
+                                    c => c.ChurchId == churchId.Value &&
+                                         c.Name.ToLower() == "doacao",
+                                    cancellationToken);
+
+                            if (category == null)
                             {
-                                Name = "Doacao",
-                                ChurchId = donation.Member.ChurchId
-                            };
-                            _unitOfWork.CashFlowCategories.Create(category);
-                            await _unitOfWork.CommitAsync();
-                        }
+                                category = new CashFlowCategory
+                                {
+                                    Name = "Doacao",
+                                    ChurchId = churchId.Value
+                                };
+                                _unitOfWork.CashFlowCategories.Create(category);
+                                await _unitOfWork.CommitAsync();
+                            }
 
-                        await _mediator.Send(new CreateCashFlowEntryCommand
-                        {
-                            UserId = donation.MemberId,
-                            Amount = donation.Amount,
-                            Date = DateTime.UtcNow,
-                            Description = $"Doação recebida",
-                            Type = CashFlowType.Income,
-                            CategoryId = category.Id
-                        }, cancellationToken);
+                            await _mediator.Send(new CreateCashFlowEntryCommand
+                            {
+                                UserId = donation.MemberId ?? 0,
+                                Amount = donation.Amount,
+                                Date = DateTime.UtcNow,
+                                Description = "Doação recebida",
+                                Type = CashFlowType.Income,
+                                CategoryId = category.Id
+                            }, cancellationToken);
+                        }
                     }
                 }
-                // Se for pagamento de assinatura e status for Completed
                 if (payment.Subscription != null && request.Status == PaymentStatus.Completed || request.Status == PaymentStatus.Received || PaymentStatus.Confirmed == request.Status)
                 {
                     var subscription = payment.Subscription;
 
-                    // Se ainda não existe assinatura no Asaas (ExternalReference == null ou vazia)
                     if (string.IsNullOrEmpty(subscription.ExternalReference))
                     {
-                        // Monta o request para criar assinatura no Asaas
                         var assinaturaRequest = new
                         {
                             customer = subscription.Church.AsaasCustomerId,
-                            billingType = payment.BillingType, // ajuste conforme seu modelo
+                            billingType = payment.BillingType,
                             value = subscription.Plan.Price,
                             nextDueDate = DateTime.UtcNow.AddMonths(1).ToString("yyyy-MM-dd"),
                             description = $"Assinatura do plano {subscription.Plan.Name}",
@@ -114,10 +112,7 @@ namespace MyChurch.Application.Webhook.Commands
                             cycle = "MONTHLY"
                         };
 
-                        // Cria assinatura no Asaas
                         var asaasSubscription = await _asaasWebClient.CriarAssinaturaAsync(assinaturaRequest);
-
-                        // Salva o ID da assinatura do Asaas no campo ExternalReference
                         subscription.ExternalReference = asaasSubscription?.Id;
                     }
 

@@ -8,6 +8,7 @@ using MyChurch.Application.WorshipService.Commands.ManageSchedule;
 using MyChurch.Application.WorshipService.Commands.PrayerRequest;
 using MyChurch.Application.WorshipService.Queries.PrayerRequest;
 using MyChurch.Domain.Contracts;
+using MyChurch.Application.WorshipService.Commands.Presence; // added
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -22,6 +23,34 @@ namespace MyChurch.Api.Web.Controllers
         {
             _hubContext = hubContext;
             _unitOfWork = unitOfWork;
+        }
+
+        /// <summary>
+        /// Faz check-in do membro no culto (geolocalização obrigatória). Retorna 0 se já presente.
+        /// </summary>
+        [Authorize]
+        [HttpPost("{worshipServiceId}/presence/check-in")]
+        public async Task<IActionResult> RegisterPresence(int worshipServiceId, [FromBody] RegisterPresenceRequest body)
+        {
+            var command = AuthorizationRequestCreate<MyChurch.Application.WorshipService.Commands.Presence.RegisterWorshipPresenceCommand>();
+            command.WorshipServiceId = worshipServiceId;
+            command.Latitude = body.Latitude;
+            command.Longitude = body.Longitude;
+            command.MaxDistanceMeters = body.MaxDistanceMeters ?? 150;
+            var id = await Mediator.Send(command);
+            if (id > 0)
+            {
+                await _hubContext.Clients.Group($"worship_{worshipServiceId}")
+                    .SendAsync("VisitorJoined", new { worshipServiceId, memberId = command.UserId });
+            }
+            return Ok(new { presenceId = id });
+        }
+
+        public class RegisterPresenceRequest
+        {
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            public double? MaxDistanceMeters { get; set; }
         }
 
         /// <summary>
@@ -167,17 +196,18 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Retorna as atividades ativas do culto em andamento e registra a presença do usuário
+        /// Retorna as atividades ativas do culto em andamento e registra a presença do usuário (registro simples sem geolocalização)
         /// </summary>
         [Authorize]
         [HttpGet("{worshipServiceId}/active-activities")]
         public async Task<IActionResult> GetActiveActivities(int worshipServiceId)
         {
-            var command = AuthorizationRequestCreate<RegisterWorshipPresenceCommand>();
+            // Usa comando fully qualified para evitar ambiguidade
+            var command = AuthorizationRequestCreate<MyChurch.Application.WorshipService.Commands.Presence.RegisterWorshipPresenceCommand>();
             command.WorshipServiceId = worshipServiceId;
+            // Não seta lat/long aqui – poderia ser extendido se o cliente enviar
             await Mediator.Send(command);
 
-            // Busca as atividades ativas do culto
             var activities = await Mediator.Send(new GetActiveWorshipActivitiesQuery { WorshipServiceId = worshipServiceId });
             return Ok(activities);
         }
@@ -266,6 +296,37 @@ namespace MyChurch.Api.Web.Controllers
             await _hubContext.Clients.Group($"worship_{worshipServiceId}")
                 .SendAsync("AdminNoticeReceived", new { noticeId });
             return Ok(new { noticeId });
+        }
+
+        /// <summary>
+        /// Check-in de visitante (não autenticado como membro) no culto
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost("{worshipServiceId}/visitor/{visitorId}/presence/check-in")]
+        public async Task<IActionResult> RegisterVisitorPresence(int worshipServiceId, int visitorId, [FromBody] VisitorPresenceRequest body)
+        {
+            var cmd = new RegisterVisitorWorshipPresenceCommand
+            {
+                WorshipServiceId = worshipServiceId,
+                VisitorId = visitorId,
+                Latitude = body.Latitude,
+                Longitude = body.Longitude,
+                MaxDistanceMeters = body.MaxDistanceMeters ?? 150
+            };
+            var id = await Mediator.Send(cmd);
+            if (id > 0)
+            {
+                await _hubContext.Clients.Group($"worship_{worshipServiceId}")
+                    .SendAsync("VisitorJoined", new { worshipServiceId, visitorId });
+            }
+            return Ok(new { presenceId = id });
+        }
+
+        public class VisitorPresenceRequest
+        {
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            public double? MaxDistanceMeters { get; set; }
         }
     }
 }

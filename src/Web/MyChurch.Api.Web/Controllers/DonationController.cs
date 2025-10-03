@@ -4,7 +4,6 @@ using MyChurch.Application.Donation.Commands.CreateDonation;
 using MyChurch.Application.Donation.Commands.TransferChurchBalance;
 using MyChurch.Application.Donation.Queries.GetAllPaidDonations;
 using MyChurch.Application.Donation.Queries.GetChurchTransferBalance;
-
 namespace MyChurch.Api.Web.Controllers
 {
     public class DonationController : BaseController

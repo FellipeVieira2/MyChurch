@@ -16,3 +16,4 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\MyChurc
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\MyChurch.Infrastructure\obj\Release\net8.0\MyChurch.Infrastructure.pdb
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\MyChurch.Infrastructure\obj\Release\net8.0\MyChurch.Infrastructure.genruntimeconfig.cache
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\MyChurch.Infrastructure\obj\Release\net8.0\ref\MyChurch.Infrastructure.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Infrastructure\MyChurch.Infrastructure\obj\Release\net8.0\EFCoreNpgsqlNetTopologySuite.cs
