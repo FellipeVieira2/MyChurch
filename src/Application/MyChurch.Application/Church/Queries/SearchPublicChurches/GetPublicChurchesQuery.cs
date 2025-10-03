@@ -66,6 +66,7 @@ namespace MyChurch.Application.Church.Queries.SearchPublicChurches
         public DateTime CreatedAt { get; set; }
         public int HelpfulCount { get; set; }
         public string? ReviewerPhoto { get; set; }
+        public bool IsVerified { get; set; } // Badge de verificação
     }
 
     public class GetPublicChurchesQueryHandler : IRequestHandler<GetPublicChurchesQuery, PagedResultDto<ChurchPublicListItemDto>>
@@ -189,8 +190,9 @@ namespace MyChurch.Application.Church.Queries.SearchPublicChurches
                         Score = r.Score,
                         Comment = r.Comment.Length > 150 ? r.Comment.Substring(0, 147) + "..." : r.Comment,
                         CreatedAt = r.CreatedAt,
-                        HelpfulCount = r.GetHelpfulVotesCount(), // Usando o método da entidade
-                        ReviewerPhoto = r.Reviewer?.Photo
+                        HelpfulCount = r.GetHelpfulVotesCount(),
+                        ReviewerPhoto = r.Reviewer?.Photo,
+                        IsVerified = r.IsVerified
                     })
                     .ToList();
 

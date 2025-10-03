@@ -699,6 +699,7 @@
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.SubmitReview(MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand)">
             <summary>
             Envia uma avaliação para uma igreja ou entidade.
+            Requer verificação de presença para igrejas.
             </summary>
             <param name="command">Dados da avaliação</param>
             <returns>Resultado da submissão</returns>
@@ -710,12 +711,20 @@
             <param name="query">Filtros de busca</param>
             <returns>Lista paginada de avaliações</returns>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.CanReviewChurch(System.Int32)">
+            <summary>
+            Verifica se o usuário logado pode avaliar uma igreja.
+            Valida presença, período e reviews existentes.
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <returns>Resultado da verificação</returns>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.VoteReview(System.Int32,MyChurch.Api.Web.Controllers.VoteReviewRequest)">
             <summary>
             Vota em uma review como útil ou não útil (upvote/downvote)
             </summary>
             <param name="reviewId">ID da review</param>
-            <param name="isHelpful">true = útil, false = não útil</param>
+            <param name="request">Tipo de voto</param>
             <returns>Resultado da votação com contadores atualizados</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsHelpful(System.Int32)">

@@ -36,6 +36,10 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
         public int HelpfulVotes { get; set; }
         public int NotHelpfulVotes { get; set; }
         public int HelpfulnessScore { get; set; }
+        
+        // Verificação de presença
+        public bool IsVerified { get; set; }
+        public System.DateTime? VerifiedAt { get; set; }
     }
 
     public class GetReviewsQueryHandler : IRequestHandler<GetReviewsQuery, ReviewsResultDto>
@@ -69,7 +73,9 @@ namespace MyChurch.Application.Reviews.Queries.GetReviews
                     CreatedAt = r.CreatedAt,
                     HelpfulVotes = r.Votes.Count(v => v.IsHelpful),
                     NotHelpfulVotes = r.Votes.Count(v => !v.IsHelpful),
-                    HelpfulnessScore = r.Votes.Count(v => v.IsHelpful) - r.Votes.Count(v => !v.IsHelpful)
+                    HelpfulnessScore = r.Votes.Count(v => v.IsHelpful) - r.Votes.Count(v => !v.IsHelpful),
+                    IsVerified = r.IsVerified,
+                    VerifiedAt = r.VerifiedAt
                 })
                 .ToListAsync(cancellationToken);
             return new ReviewsResultDto

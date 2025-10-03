@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Reviews.Commands.SubmitReview;
 using MyChurch.Application.Reviews.Commands.VoteReview;
 using MyChurch.Application.Reviews.Queries.GetReviews;
+using MyChurch.Application.Reviews.Queries.CanReviewChurch;
 using System.Threading.Tasks;
 
 namespace MyChurch.Api.Web.Controllers
@@ -14,11 +15,13 @@ namespace MyChurch.Api.Web.Controllers
     {
         /// <summary>
         /// Envia uma avaliação para uma igreja ou entidade.
+        /// Requer verificação de presença para igrejas.
         /// </summary>
         /// <param name="command">Dados da avaliação</param>
         /// <returns>Resultado da submissão</returns>
         [HttpPost]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SubmitReviewResult))]
         public async Task<IActionResult> SubmitReview([FromBody] SubmitReviewCommand command)
         {
             var result = await Mediator.Send(command);
@@ -41,10 +44,28 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
+        /// Verifica se o usuário logado pode avaliar uma igreja.
+        /// Valida presença, período e reviews existentes.
+        /// </summary>
+        /// <param name="churchId">ID da igreja</param>
+        /// <returns>Resultado da verificação</returns>
+        [HttpGet("can-review/{churchId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CanReviewChurchResult))]
+        public async Task<IActionResult> CanReviewChurch([FromRoute] int churchId)
+        {
+            var query = AuthorizationRequestCreate<CanReviewChurchQuery>();
+            query.ChurchId = churchId;
+            
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Vota em uma review como útil ou não útil (upvote/downvote)
         /// </summary>
         /// <param name="reviewId">ID da review</param>
-        /// <param name="isHelpful">true = útil, false = não útil</param>
+        /// <param name="request">Tipo de voto</param>
         /// <returns>Resultado da votação com contadores atualizados</returns>
         [HttpPost("{reviewId}/vote")]
         [Authorize]

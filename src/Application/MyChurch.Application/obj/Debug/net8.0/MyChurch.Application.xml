@@ -487,5 +487,10 @@
             Adiciona ou atualiza um voto em uma review (útil/não útil)
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.CanReviewChurch.CanReviewChurchQuery">
+            <summary>
+            Verifica se um membro pode avaliar uma igreja
+            </summary>
+        </member>
     </members>
 </doc>

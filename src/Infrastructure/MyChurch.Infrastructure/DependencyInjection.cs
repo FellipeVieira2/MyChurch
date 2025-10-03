@@ -103,6 +103,10 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IEmailService, PostmarkEmailService>();
 
             services.AddHttpClient<GoogleGeocodingService>();
+            
+            // Serviços de domínio
+            services.AddScoped<MyChurch.Domain.Services.IReviewVerificationService, MyChurch.Infrastructure.Services.ReviewVerificationService>();
+            
             return services;
         }
 
