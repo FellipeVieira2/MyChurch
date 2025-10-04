@@ -92,6 +92,11 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IReviewVoteRepository, ReviewVoteRepository>();
             services.AddScoped<IReviewPhotoRepository, ReviewPhotoRepository>();
             services.AddScoped<IReviewResponseRepository, ReviewResponseRepository>();
+            
+            // 📸 Galeria de Fotos da Igreja
+            services.AddScoped<IChurchPhotoRepository, ChurchPhotoRepository>();
+            services.AddScoped<IChurchPhotoLikeRepository, ChurchPhotoLikeRepository>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
  
             services.AddDbContext<MyChurchDbContext>(options =>

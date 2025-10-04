@@ -89,6 +89,10 @@ namespace MyChurch.Infrastructure.Repositories
         public IReviewVoteRepository ReviewVotes { get; } // added
         public IReviewPhotoRepository ReviewPhotos { get; } // added
         public IReviewResponseRepository ReviewResponses { get; } // added
+        
+        // 📸 Galeria de Fotos da Igreja
+        public IChurchPhotoRepository ChurchPhotos { get; }
+        public IChurchPhotoLikeRepository ChurchPhotoLikes { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -163,7 +167,9 @@ namespace MyChurch.Infrastructure.Repositories
             IReviewRepository reviews,
             IReviewVoteRepository reviewVotes,
             IReviewPhotoRepository reviewPhotos,
-            IReviewResponseRepository reviewResponses)
+            IReviewResponseRepository reviewResponses,
+            IChurchPhotoRepository churchPhotos,
+            IChurchPhotoLikeRepository churchPhotoLikes)
         {
             Churchs = churchs;
             Donations = donations;
@@ -238,6 +244,8 @@ namespace MyChurch.Infrastructure.Repositories
             ReviewVotes = reviewVotes;
             ReviewPhotos = reviewPhotos;
             ReviewResponses = reviewResponses;
+            ChurchPhotos = churchPhotos;
+            ChurchPhotoLikes = churchPhotoLikes;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

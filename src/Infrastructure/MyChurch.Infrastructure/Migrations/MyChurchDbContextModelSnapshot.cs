@@ -995,9 +995,18 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("asaas_customer_id");
 
+                    b.Property<double?>("AverageRating")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("CoverPhoto")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
                         .HasColumnName("created");
+
+                    b.Property<string>("Denomination")
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1007,6 +1016,24 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<string>("Document")
                         .HasColumnType("varchar(20)")
                         .HasColumnName("document");
+
+                    b.Property<bool>("HasChildMinistry")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasLiveStream")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasParking")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsAccessible")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Languages")
+                        .HasColumnType("text");
 
                     b.Property<double?>("Latitude")
                         .HasColumnType("double precision");
@@ -1038,9 +1065,18 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasDefaultValue(0.05m)
                         .HasColumnName("platform_fee");
 
+                    b.Property<int>("TotalReviews")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TotalVisits")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp")
                         .HasColumnName("updated");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -2004,10 +2040,6 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("varchar(1000)")
                         .HasColumnName("notes");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("password");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("varchar(500)")

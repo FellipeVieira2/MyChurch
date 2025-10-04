@@ -1,0 +1,44 @@
+{
+  "name": "mychurch-cypress-tests",
+  "version": "1.0.0",
+  "description": "E2E API tests for MyChurch using Cypress",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:chrome": "cypress run --browser chrome",
+    "cy:run:edge": "cypress run --browser edge",
+    "test": "cypress run",
+    "test:api": "cypress run --spec 'cypress/e2e/api/**/*.cy.js'",
+    "test:auth": "cypress run --spec 'cypress/e2e/api/auth.cy.js'",
+    "test:church": "cypress run --spec 'cypress/e2e/api/church.cy.js'",
+    "test:member": "cypress run --spec 'cypress/e2e/api/member.cy.js'",
+    "test:bible": "cypress run --spec 'cypress/e2e/api/bible.cy.js'",
+    "test:cashflow": "cypress run --spec 'cypress/e2e/api/cashflow.cy.js'",
+    "test:event": "cypress run --spec 'cypress/e2e/api/event.cy.js'",
+    "test:journey": "cypress run --spec 'cypress/e2e/api/journey.cy.js'",
+    "test:presentation": "cypress run --spec 'cypress/e2e/api/presentation.cy.js'",
+    "test:worshipactivity": "cypress run --spec 'cypress/e2e/api/worshipactivity.cy.js'",
+    "test:pastorbot": "cypress run --spec 'cypress/e2e/api/pastorbot.cy.js'",
+    "test:subscription": "cypress run --spec 'cypress/e2e/api/subscription.cy.js'",
+    "test:donation": "cypress run --spec 'cypress/e2e/api/donation.cy.js'",
+    "test:feed": "cypress run --spec 'cypress/e2e/api/feed.cy.js'",
+    "test:reviews": "cypress run --spec 'cypress/e2e/api/reviews.cy.js'",
+    "report": "cypress run --reporter mochawesome"
+  },
+  "keywords": [
+    "cypress",
+    "e2e",
+    "api-testing",
+    "mychurch"
+  ],
+  "author": "MyChurch Team",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^13.6.2",
+    "@faker-js/faker": "^8.3.1",
+    "cypress-mochawesome-reporter": "^3.8.1",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0"
+  }
+}

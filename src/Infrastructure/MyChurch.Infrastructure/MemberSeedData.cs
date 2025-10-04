@@ -10,6 +10,7 @@ namespace MyChurch.Infrastructure
     {
         public static void SeedMembers(MyChurchDbContext context)
         {
+            // Se já existem membros, não executa o seed
             if (context.Set<Member>().Any())
                 return;
 
@@ -22,15 +23,102 @@ namespace MyChurch.Infrastructure
             context.Add(church);
             context.SaveChanges();
 
-            // Membros
+            // ========================================
+            // ?? USUÁRIOS DE TESTE PARA CYPRESS
+            // ========================================
+
+            var testUsers = new List<Member>
+            {
+                // Platform Admin
+                new Member
+                {
+                    Name = "Platform Admin",
+                    Email = "platformadmin@test.com",
+                    Phone = "11999999901",
+                    BirthDate = new DateTime(1990, 1, 1),
+                    IsBaptized = true,
+                    BaptizedDate = new DateTime(2010, 1, 1),
+                    IsTither = true,
+                    ChurchId = church.Id,
+                    Role = UserRole.PlatformAdmin,
+                    Created = DateTime.UtcNow,
+                    BirthCity = "São Paulo",
+                    BirthState = "SP",
+                    IsActive = true,
+                    MemberSince = new DateTime(2020, 1, 1),
+                    Address = address,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Test@123456", workFactor: 12),
+                    Documents = new List<MemberDocument>
+                    {
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000001" }
+                    }
+                },
+
+                // Admin
+                new Member
+                {
+                    Name = "Admin Test User",
+                    Email = "admin@test.com",
+                    Phone = "11999999902",
+                    BirthDate = new DateTime(1985, 1, 1),
+                    IsBaptized = true,
+                    BaptizedDate = new DateTime(2010, 1, 1),
+                    IsTither = true,
+                    ChurchId = church.Id,
+                    Role = UserRole.Admin,
+                    Created = DateTime.UtcNow,
+                    BirthCity = "São Paulo",
+                    BirthState = "SP",
+                    IsActive = true,
+                    MemberSince = new DateTime(2020, 1, 1),
+                    Address = address,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123", workFactor: 12),
+                    Documents = new List<MemberDocument>
+                    {
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000002" }
+                    }
+                },
+
+                // Member
+                new Member
+                {
+                    Name = "Member Test User",
+                    Email = "member@test.com",
+                    Phone = "11999999903",
+                    BirthDate = new DateTime(1995, 1, 1),
+                    IsBaptized = false,
+                    IsTither = false,
+                    ChurchId = church.Id,
+                    Role = UserRole.Member,
+                    Created = DateTime.UtcNow,
+                    BirthCity = "São Paulo",
+                    BirthState = "SP",
+                    IsActive = true,
+                    MemberSince = new DateTime(2021, 1, 1),
+                    Address = address,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Member@123", workFactor: 12),
+                    Documents = new List<MemberDocument>
+                    {
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000003" }
+                    }
+                }
+            };
+
+            context.AddRange(testUsers);
+            context.SaveChanges();
+
+            // ========================================
+            // ?? MEMBROS ADICIONAIS PARA TESTES
+            // ========================================
+
             var members = new List<Member>();
-            for (int i = 1; i <= 10; i++)
+            for (int i = 4; i <= 10; i++)
             {
                 var member = new Member
                 {
                     Name = $"Membro Exemplo {i}",
                     Email = $"membro{i}@exemplo.com",
-                    Phone = $"1199999999{i:D2}",
+                    Phone = $"119999999{i:D2}",
                     BirthDate = new DateTime(1990, 1, i),
                     IsBaptized = i % 2 == 0,
                     BaptizedDate = i % 2 == 0 ? new DateTime(2010, 1, i) : null,
@@ -46,9 +134,10 @@ namespace MyChurch.Infrastructure
                     IsActive = true,
                     Notes = "Membro criado pelo seed inicial.",
                     Address = address,
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword($"Senha@{i}", workFactor: 12),
                     Documents = new List<MemberDocument>
                     {
-                        new MemberDocument { Type = 0, Number = $"000.000.000-0{i}" }
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = $"0000000000{i}" }
                     }
                 };
                 members.Add(member);
@@ -56,29 +145,33 @@ namespace MyChurch.Infrastructure
             context.AddRange(members);
             context.SaveChanges();
 
+            // Combinar todos os membros para uso posterior
+            var allMembers = testUsers.Concat(members).ToList();
+
             // Família e filhos
             var family = new Family
             {
                 ChurchId = church.Id,
                 FamilyName = "Família Silva",
                 CreatedAt = DateTime.UtcNow,
-                Members = members.Take(3).ToList()
+                Members = allMembers.Take(3).ToList()
             };
             context.Add(family);
             context.SaveChanges();
             foreach (var m in family.Members) { m.FamilyId = family.Id; }
             context.UpdateRange(family.Members);
             context.SaveChanges();
+            
             var child1 = new Child { FamilyId = family.Id, FullName = "Joãozinho Silva", BirthDate = new DateTime(2015, 5, 10), Gender = Gender.Male, IsActive = true };
             var child2 = new Child { FamilyId = family.Id, FullName = "Maria Silva", BirthDate = new DateTime(2017, 8, 22), Gender = Gender.Female, IsActive = true };
             context.AddRange(new List<Child> { child1, child2 });
             context.SaveChanges();
 
             // Grupos
-            var group = new Group(church.Id, "Grupo de Jovens", "Grupo para jovens da igreja", GroupType.SmallGroup, members[0].Id, true, null);
+            var group = new Group(church.Id, "Grupo de Jovens", "Grupo para jovens da igreja", GroupType.SmallGroup, allMembers[1].Id, true, null);
             context.Add(group);
             context.SaveChanges();
-            var groupMembers = members.Select(m => new GroupMember(group.Id, m.Id, m.Id == members[0].Id ? "Líder" : "Membro")).ToList();
+            var groupMembers = allMembers.Select(m => new GroupMember(group.Id, m.Id, m.Id == allMembers[1].Id ? "Líder" : "Membro")).ToList();
             context.AddRange(groupMembers);
             context.SaveChanges();
 
@@ -99,7 +192,7 @@ namespace MyChurch.Infrastructure
                 EventType = EventType.WorshipService,
                 Church = church,
                 RequiresParticipantList = true,
-                Participants = members.Take(5).ToList()
+                Participants = allMembers.Take(5).ToList()
             };
             context.Add(evento);
             context.SaveChanges();
@@ -124,7 +217,7 @@ namespace MyChurch.Infrastructure
             {
                 var donation = new Donation
                 {
-                    MemberId = members[i].Id,
+                    MemberId = allMembers[i].Id,
                     Amount = 100 + i * 10,
                     Date = DateTime.UtcNow.AddDays(-i),
                     PlatformFee = 5,
@@ -149,7 +242,7 @@ namespace MyChurch.Infrastructure
             {
                 var post = new FeedPost
                 {
-                    MemberId = members[i].Id,
+                    MemberId = allMembers[i].Id,
                     ChurchId = church.Id,
                     Content = $"Mensagem de fé {i+1}",
                     Created = DateTime.UtcNow.AddDays(-i),
@@ -159,7 +252,7 @@ namespace MyChurch.Infrastructure
                     },
                     Likes = new List<FeedLike>
                     {
-                        new FeedLike { MemberId = members[(i+1)%10].Id, Created = DateTime.UtcNow }
+                        new FeedLike { MemberId = allMembers[(i+1)%allMembers.Count].Id, Created = DateTime.UtcNow }
                     }
                 };
                 feedPosts.Add(post);
@@ -180,9 +273,9 @@ namespace MyChurch.Infrastructure
             // Lançamentos financeiros
             var cashFlowEntries = new List<CashFlowEntry>
             {
-                new CashFlowEntry { Amount = 500, Date = DateTime.UtcNow.AddDays(-10), Description = "Dízimo do mês", Type = CashFlowType.Income, ChurchId = church.Id, MemberId = members[0].Id, CategoryId = cashFlowCategories[0].Id },
-                new CashFlowEntry { Amount = 200, Date = DateTime.UtcNow.AddDays(-8), Description = "Oferta especial", Type = CashFlowType.Income, ChurchId = church.Id, MemberId = members[1].Id, CategoryId = cashFlowCategories[1].Id },
-                new CashFlowEntry { Amount = 150, Date = DateTime.UtcNow.AddDays(-5), Description = "Compra de materiais", Type = CashFlowType.Expense, ChurchId = church.Id, MemberId = members[2].Id, CategoryId = cashFlowCategories[2].Id }
+                new CashFlowEntry { Amount = 500, Date = DateTime.UtcNow.AddDays(-10), Description = "Dízimo do mês", Type = CashFlowType.Income, ChurchId = church.Id, MemberId = allMembers[0].Id, CategoryId = cashFlowCategories[0].Id },
+                new CashFlowEntry { Amount = 200, Date = DateTime.UtcNow.AddDays(-8), Description = "Oferta especial", Type = CashFlowType.Income, ChurchId = church.Id, MemberId = allMembers[1].Id, CategoryId = cashFlowCategories[1].Id },
+                new CashFlowEntry { Amount = 150, Date = DateTime.UtcNow.AddDays(-5), Description = "Compra de materiais", Type = CashFlowType.Expense, ChurchId = church.Id, MemberId = allMembers[2].Id, CategoryId = cashFlowCategories[2].Id }
             };
             context.AddRange(cashFlowEntries);
             context.SaveChanges();
@@ -227,7 +320,7 @@ namespace MyChurch.Infrastructure
             // Progresso de leitura bíblica
             var memberBibleProgress = new MyChurch.Domain.Entities.Bible.MemberBibleReadingProgress
             {
-                MemberId = members[0].Id,
+                MemberId = allMembers[0].Id,
                 BibleReadingPlanId = biblePlan.Id,
                 BibleReadingPlanStageId = biblePlan.BibleReadingPlanStages.First().Id,
                 DateCompleted = DateTime.UtcNow.AddDays(-1),
@@ -239,7 +332,7 @@ namespace MyChurch.Infrastructure
             // Evento de engajamento
             var engagementEvent = new EngagementEvent
             {
-                MemberId = members[0].Id,
+                MemberId = allMembers[0].Id,
                 ChurchId = church.Id,
                 Points = 20,
                 EventType = Domain.Enum.EngagementEventType.DonationMade,
@@ -253,10 +346,10 @@ namespace MyChurch.Infrastructure
             var groupMeeting = new GroupMeeting(group.Id, DateTime.UtcNow.AddDays(-2), "Estudo sobre fé", "Ótima participação do grupo.");
             context.GroupMeetings.Add(groupMeeting);
             context.SaveChanges();
-            var attendances = members.Take(5).Select(m => new GroupMeetingAttendance(groupMeeting.Id, m.Id, true)).ToList();
+            var attendances = allMembers.Take(5).Select(m => new GroupMeetingAttendance(groupMeeting.Id, m.Id, true)).ToList();
             context.GroupMeetingAttendances.AddRange(attendances);
             context.SaveChanges();
-            var note = new GroupMeetingMemberNote(groupMeeting.Id, members[1].Id, members[0].Id, "Participou ativamente da discussão.");
+            var note = new GroupMeetingMemberNote(groupMeeting.Id, allMembers[1].Id, allMembers[0].Id, "Participou ativamente da discussão.");
             context.GroupMeetingMemberNotes.Add(note);
             context.SaveChanges();
 
@@ -269,10 +362,10 @@ namespace MyChurch.Infrastructure
             };
             context.AddRange(faithLevels);
             context.SaveChanges();
-            members[0].FaithLevelId = faithLevels[0].Id;
-            members[1].FaithLevelId = faithLevels[1].Id;
-            members[2].FaithLevelId = faithLevels[2].Id;
-            context.UpdateRange(members);
+            allMembers[0].FaithLevelId = faithLevels[0].Id;
+            allMembers[1].FaithLevelId = faithLevels[1].Id;
+            allMembers[2].FaithLevelId = faithLevels[2].Id;
+            context.UpdateRange(allMembers);
             context.SaveChanges();
 
             // Conquistas
@@ -298,7 +391,7 @@ namespace MyChurch.Infrastructure
                 Condition = "Novo",
                 PurchaseDate = DateTime.UtcNow.AddMonths(-2),
                 Location = "Sala de Música",
-                Responsible = members[0].Name,
+                Responsible = allMembers[0].Name,
                 LastMaintenance = DateTime.UtcNow.AddMonths(-1),
                 NextMaintenance = DateTime.UtcNow.AddMonths(5),
                 WarrantyUntil = DateTime.UtcNow.AddYears(1),

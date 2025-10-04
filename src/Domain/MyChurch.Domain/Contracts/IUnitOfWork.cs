@@ -74,6 +74,11 @@
         IReviewVoteRepository ReviewVotes { get; }
         IReviewPhotoRepository ReviewPhotos { get; }
         IReviewResponseRepository ReviewResponses { get; }
+        
+        // 📸 Galeria de Fotos da Igreja
+        IChurchPhotoRepository ChurchPhotos { get; }
+        IChurchPhotoLikeRepository ChurchPhotoLikes { get; }
+        
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

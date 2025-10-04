@@ -1,0 +1,145 @@
+name: ?? Cypress E2E API Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: mychurch_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: ?? Checkout code
+        uses: actions/checkout@v4
+
+      - name: ?? Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: ?? Restore dependencies
+        run: dotnet restore src/MyChurch.sln
+
+      - name: ?? Build API
+        run: dotnet build src/MyChurch.sln --no-restore
+
+      - name: ??? Run migrations
+        run: dotnet ef database update --project src/Infrastructure/MyChurch.Infrastructure --startup-project src/Web/MyChurch.Api.Web
+        env:
+          ConnectionStrings__MyChurchDb: "Host=localhost;Database=mychurch_test;Username=postgres;Password=postgres"
+
+      - name: ?? Start API
+        run: |
+          cd src/Web/MyChurch.Api.Web
+          dotnet run &
+          echo $! > api.pid
+        env:
+          ASPNETCORE_ENVIRONMENT: Test
+          ASPNETCORE_URLS: https://localhost:7163
+          ConnectionStrings__MyChurchDb: "Host=localhost;Database=mychurch_test;Username=postgres;Password=postgres"
+
+      - name: ? Wait for API
+        run: |
+          for i in {1..30}; do
+            if curl -k -s https://localhost:7163/api/health > /dev/null; then
+              echo "API is ready!"
+              exit 0
+            fi
+            echo "Waiting for API... ($i/30)"
+            sleep 2
+          done
+          echo "API failed to start"
+          exit 1
+
+      - name: ?? Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: Tests/MyChurch.Cypress/package-lock.json
+
+      - name: ?? Install Cypress dependencies
+        run: |
+          cd Tests/MyChurch.Cypress
+          npm ci
+
+      - name: ?? Run Cypress tests
+        run: |
+          cd Tests/MyChurch.Cypress
+          npm run cy:run
+        env:
+          CYPRESS_baseUrl: https://localhost:7163
+          CYPRESS_apiUrl: https://localhost:7163/api
+
+      - name: ?? Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-results
+          path: |
+            Tests/MyChurch.Cypress/cypress/videos/
+            Tests/MyChurch.Cypress/cypress/screenshots/
+            Tests/MyChurch.Cypress/cypress/reports/
+
+      - name: ?? Publish test report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Cypress Test Results
+          path: Tests/MyChurch.Cypress/cypress/reports/*.xml
+          reporter: java-junit
+
+      - name: ?? Stop API
+        if: always()
+        run: |
+          if [ -f src/Web/MyChurch.Api.Web/api.pid ]; then
+            kill $(cat src/Web/MyChurch.Api.Web/api.pid) || true
+          fi
+
+      - name: ?? Comment PR with results
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request' && always()
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = 'Tests/MyChurch.Cypress/cypress/reports/report.json';
+            
+            if (fs.existsSync(reportPath)) {
+              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              const { stats } = report;
+              
+              const comment = `## ?? Cypress Test Results
+              
+              - ? Passed: ${stats.passes}
+              - ? Failed: ${stats.failures}
+              - ?? Skipped: ${stats.pending}
+              - ?? Duration: ${(stats.duration / 1000).toFixed(2)}s
+              
+              ${stats.failures > 0 ? '?? Some tests failed. Check the artifacts for details.' : '? All tests passed!'}
+              `;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }

@@ -151,6 +151,36 @@
         <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.Name">
             <summary>Filtro por nome (contém)</summary>
         </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.LikePhoto.TogglePhotoLikeCommand">
+            <summary>
+            Comando para curtir/descurtir foto
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.ApproveChurchPhotoCommand">
+            <summary>
+            Comando para aprovar foto (apenas Admin)
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.RejectChurchPhotoCommand">
+            <summary>
+            Comando para rejeitar foto (apenas Admin)
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand">
+            <summary>
+            Comando para upload de foto da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Queries.GetChurchPhotosQuery">
+            <summary>
+            Query para buscar galeria de fotos da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Queries.GetPendingPhotosQuery">
+            <summary>
+            Query para buscar fotos pendentes de moderação (apenas Admin)
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>
@@ -262,6 +292,52 @@
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery">
+            <summary>
+            Query para buscar igrejas próximas usando geolocalização
+            Sistema similar ao TripAdvisor
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.ApplyFilters(System.Linq.IQueryable{MyChurch.Domain.Entities.Church},MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery)">
+            <summary>
+            Aplica filtros na query
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.CalculateDistance(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Calcula distância usando fórmula Haversine
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.SortResults``1(System.Collections.Generic.List{``0},System.String)">
+            <summary>
+            Ordena resultados
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.MapToChurchCard(MyChurch.Domain.Entities.Church,System.Double)">
+            <summary>
+            Mapeia entidade para DTO
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.EnrichChurchCards(System.Collections.Generic.List{MyChurch.Application.Dtos.ChurchSearchCardDto},System.Threading.CancellationToken)">
+            <summary>
+            Enriquece cards com fotos e reviews
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.CalculateMapBounds(System.Collections.Generic.List{MyChurch.Domain.Entities.Church})">
+            <summary>
+            Calcula limites do mapa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.GenerateSearchSuggestions(System.Collections.Generic.List{MyChurch.Domain.Entities.Church},MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery)">
+            <summary>
+            Gera sugestões de busca
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.GenerateAvailableFilters(System.Collections.Generic.List{MyChurch.Domain.Entities.Church})">
+            <summary>
+            Gera filtros disponíveis com contagem
+            </summary>
         </member>
         <member name="T:MyChurch.Application.Common.Extensions.PaginationExtensions">
             <summary>
@@ -402,6 +478,56 @@
         <member name="T:MyChurch.Application.Common.Models.PaginatedRequestValidator`1">
             <summary>
             Validador base para requests paginados
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchPhotoDto">
+            <summary>
+            DTO para foto da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchPhotoGalleryDto">
+            <summary>
+            DTO para galeria de fotos
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.PhotoCategoryCountDto">
+            <summary>
+            Contagem de fotos por categoria
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchSearchCardDto">
+            <summary>
+            DTO para card de igreja na busca (similar ao TripAdvisor)
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.WorshipScheduleSummaryDto">
+            <summary>
+            Resumo do próximo culto
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchSearchResultDto">
+            <summary>
+            Resultado da busca de igrejas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MapBoundsDto">
+            <summary>
+            Limites do mapa para exibição
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.SearchSuggestionsDto">
+            <summary>
+            Sugestões de busca
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.FilterOptionDto">
+            <summary>
+            Opção de filtro disponível
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.FilterValueDto">
+            <summary>
+            Valor de filtro
             </summary>
         </member>
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
@@ -659,6 +785,11 @@
             Lista de fotos em base64 para upload
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewPhotoDto">
+            <summary>
+            DTO para submissão de fotos em reviews
+            </summary>
+        </member>
         <member name="T:MyChurch.Application.Reviews.Commands.VoteReview.VoteReviewCommand">
             <summary>
             Adiciona ou atualiza um voto em uma review (útil/não útil)
@@ -672,6 +803,11 @@
         <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.GetChurchPhotoGalleryQuery">
             <summary>
             Busca galeria de fotos de reviews de uma igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.ReviewPhotoItemDto">
+            <summary>
+            DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)
             </summary>
         </member>
     </members>

@@ -287,6 +287,138 @@
             <response code="404">Igreja não encontrada ou endereço inválido</response>
             <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
         </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchPhotoController">
+            <summary>
+            Controller para galeria de fotos da igreja
+            Sistema similar ao TripAdvisor para fotos da comunidade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhoto(System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
+            <summary>
+            ?? Upload de foto da igreja (Membros e Visitantes)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="command">Dados da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhotoAsVisitor(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
+            <summary>
+            ?? Upload de foto por visitante (sem autenticação)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="visitorId">ID do visitante</param>
+            <param name="command">Dados da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.GetPhotos(System.Int32,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            ??? Buscar galeria de fotos da igreja
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="category">Filtrar por categoria (Exterior, Interior, Worship, etc)</param>
+            <param name="onlyFeatured">Apenas fotos em destaque</param>
+            <param name="page">Página</param>
+            <param name="pageSize">Tamanho da página</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.GetPendingPhotos(System.Int32)">
+            <summary>
+            ?? Buscar fotos pendentes de moderação (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ApprovePhoto(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.ApproveChurchPhotoCommand)">
+            <summary>
+            ? Aprovar foto (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="command">Dados da aprovação</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.RejectPhoto(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.RejectChurchPhotoCommand)">
+            <summary>
+            ? Rejeitar foto (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="command">Motivo da rejeição</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ToggleLike(System.Int32,System.Int32)">
+            <summary>
+            ?? Curtir/Descurtir foto
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ToggleLikeAsVisitor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            ?? Curtir foto como visitante
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="visitorId">ID do visitante</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.SetAsFeatured(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            ? Marcar foto como destaque (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="displayOrder">Ordem de exibição</param>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchSearchController">
+            <summary>
+            Controller para busca e descoberta de igrejas
+            Sistema similar ao TripAdvisor
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.SearchNearby(System.Double,System.Double,System.Int32,System.Int32,System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String)">
+            <summary>
+            ?? Buscar igrejas próximas por geolocalização
+            </summary>
+            <param name="latitude">Latitude do ponto de busca</param>
+            <param name="longitude">Longitude do ponto de busca</param>
+            <param name="radiusKm">Raio de busca em km (padrão: 10km)</param>
+            <param name="page">Página (padrão: 1)</param>
+            <param name="pageSize">Tamanho da página (padrão: 20)</param>
+            <param name="denominations">Filtro por denominações (ex: Batista,Assembleia)</param>
+            <param name="languages">Filtro por idiomas (ex: Português,Inglês)</param>
+            <param name="minRating">Avaliação mínima (1-5)</param>
+            <param name="hasParking">Filtrar apenas com estacionamento</param>
+            <param name="isAccessible">Filtrar apenas acessíveis</param>
+            <param name="hasLiveStream">Filtrar apenas com transmissão ao vivo</param>
+            <param name="hasChildMinistry">Filtrar apenas com ministério infantil</param>
+            <param name="isVerified">Filtrar apenas igrejas verificadas</param>
+            <param name="sortBy">Ordenar por: distance, rating, popularity, name (padrão: distance)</param>
+            <response code="200">Lista de igrejas encontradas</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.SearchByCity(System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            ??? Buscar igrejas em uma cidade
+            </summary>
+            <param name="city">Nome da cidade</param>
+            <param name="state">Estado (UF)</param>
+            <param name="page">Página</param>
+            <param name="pageSize">Tamanho da página</param>
+            <param name="sortBy">Ordenação</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.GetRankings(System.String,System.String,System.Int32)">
+            <summary>
+            ?? Buscar top igrejas ranqueadas
+            </summary>
+            <param name="city">Cidade (opcional)</param>
+            <param name="rankingType">Tipo: top-rated, most-popular, trending, family-friendly</param>
+            <param name="limit">Limite de resultados (padrão: 10)</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.Autocomplete(System.String,System.Int32)">
+            <summary>
+            ?? Autocomplete de igrejas para busca
+            </summary>
+            <param name="query">Texto de busca</param>
+            <param name="limit">Limite de sugestões (padrão: 5)</param>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchAutocompleteDto">
+            <summary>
+            DTO para autocomplete
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
             Create a new Donation

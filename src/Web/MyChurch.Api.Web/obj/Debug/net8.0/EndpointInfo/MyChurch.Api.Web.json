@@ -1243,12 +1243,11 @@
         "tags": [
           "CashFlow"
         ],
-        "summary": "Lista lançamentos de fluxo de caixa",
+        "summary": "Lista lançamentos de fluxo de caixa com paginação, filtros e ordenação.\r\nRetorna também os totais de entrada, saída e saldo.",
         "parameters": [
           {
             "name": "Amount",
             "in": "query",
-            "description": "Filtro por valor exato",
             "schema": {
               "type": "number",
               "format": "double"
@@ -1257,7 +1256,6 @@
           {
             "name": "Date",
             "in": "query",
-            "description": "Filtro por data exata",
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -1266,7 +1264,6 @@
           {
             "name": "StartDate",
             "in": "query",
-            "description": "Filtro por data inicial (>=)",
             "schema": {
               "type": "string",
               "format": "date-time"
@@ -1283,7 +1280,6 @@
           {
             "name": "Type",
             "in": "query",
-            "description": "Filtro por tipo (Entrada/Saída)",
             "schema": {
               "$ref": "#/components/schemas/CashFlowType"
             }
@@ -1291,7 +1287,6 @@
           {
             "name": "CategoryId",
             "in": "query",
-            "description": "Filtro por categoria",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1300,7 +1295,6 @@
           {
             "name": "PageNumber",
             "in": "query",
-            "description": "Número da página (começa em 1)",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1309,10 +1303,23 @@
           {
             "name": "PageSize",
             "in": "query",
-            "description": "Tamanho da página",
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1322,17 +1329,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CashFlowEntryDtoPagedResultDto"
+                  "$ref": "#/components/schemas/CashFlowEntryPagedResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CashFlowEntryDtoPagedResultDto"
+                  "$ref": "#/components/schemas/CashFlowEntryPagedResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CashFlowEntryDtoPagedResultDto"
+                  "$ref": "#/components/schemas/CashFlowEntryPagedResult"
                 }
               }
             }
@@ -1395,33 +1402,68 @@
         "tags": [
           "CashFlow"
         ],
-        "summary": "Lista todas as categorias de fluxo de caixa da igreja",
+        "summary": "Lista todas as categorias de fluxo de caixa da igreja com paginação e filtros",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "description": "Número da página (começa em 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "description": "Tamanho da página (máximo 100)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "description": "Campo para ordenação (Name, Description)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "description": "Direção da ordenação (asc ou desc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "description": "Filtro por nome (contém)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CashFlowCategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CashFlowCategoryDtoPaginatedList"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CashFlowCategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CashFlowCategoryDtoPaginatedList"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CashFlowCategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CashFlowCategoryDtoPaginatedList"
                 }
               }
             }
@@ -1434,7 +1476,7 @@
         "tags": [
           "CashFlow"
         ],
-        "summary": "Retorna o saldo consolidado do fluxo de caixa da igreja",
+        "summary": "Retorna o saldo consolidado do fluxo de caixa da igreja com totalizadores",
         "responses": {
           "200": {
             "description": "OK",
@@ -1809,12 +1851,12 @@
         }
       }
     },
-    "/api/Church/{id}/update-location": {
+    "/api/Church/{id}/geocode": {
       "post": {
         "tags": [
           "Church"
         ],
-        "summary": "Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)",
+        "summary": "Atualiza localização da igreja automaticamente usando Google Geocoding (apenas via endereço).\r\nLimite: 20 requests por minuto.",
         "parameters": [
           {
             "name": "id",
@@ -1829,10 +1871,47 @@
         ],
         "responses": {
           "200": {
-            "description": "Localização atualizada"
+            "description": "Localização geocodificada com sucesso",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Muitas requisições - aguarde antes de tentar novamente",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Igreja não encontrada"
+            "description": "Igreja não encontrada ou endereço inválido"
           }
         }
       }
@@ -1842,7 +1921,7 @@
         "tags": [
           "Church"
         ],
-        "summary": "Busca pública de igrejas (não requer autenticação)",
+        "summary": "Busca pública de igrejas (não requer autenticação)\r\nFiltros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating",
         "parameters": [
           {
             "name": "Search",
@@ -1897,6 +1976,49 @@
             }
           },
           {
+            "name": "MinRating",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "MinReviews",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Amenities",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Denominations",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
@@ -1915,7 +2037,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista paginada",
+            "description": "Lista paginada com dados de avaliações, distância e relevância",
             "content": {
               "text/plain": {
                 "schema": { }
@@ -2158,6 +2280,1019 @@
           },
           "401": {
             "description": "Falha: Não autorizado"
+          }
+        }
+      }
+    },
+    "/api/Church/{id}/location": {
+      "put": {
+        "tags": [
+          "Church"
+        ],
+        "summary": "Atualiza latitude e longitude da igreja.\r\nPode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.\r\nLimite: 20 requests por minuto.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados de localização",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChurchLocationRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChurchLocationRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChurchLocationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Localização atualizada com sucesso",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateChurchLocationResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Muitas requisições - aguarde antes de tentar novamente",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Coordenadas inválidas ou erro no geocoding"
+          },
+          "404": {
+            "description": "Igreja não encontrada"
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/upload": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "?? Upload de foto da igreja (Membros e Visitantes)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados da foto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/upload/visitor/{visitorId}": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "?? Upload de foto por visitante (sem autenticação)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "visitorId",
+            "in": "path",
+            "description": "ID do visitante",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados da foto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadChurchPhotoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/{photoId}/approve": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "? Aprovar foto (Admin apenas)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "photoId",
+            "in": "path",
+            "description": "ID da foto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados da aprovação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveChurchPhotoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveChurchPhotoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveChurchPhotoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/{photoId}/reject": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "? Rejeitar foto (Admin apenas)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "photoId",
+            "in": "path",
+            "description": "ID da foto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Motivo da rejeição",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectChurchPhotoCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectChurchPhotoCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectChurchPhotoCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/{photoId}/like": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "?? Curtir/Descurtir foto",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "photoId",
+            "in": "path",
+            "description": "ID da foto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/{photoId}/like/visitor/{visitorId}": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "?? Curtir foto como visitante",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "photoId",
+            "in": "path",
+            "description": "ID da foto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "visitorId",
+            "in": "path",
+            "description": "ID do visitante",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhotoLikeResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/{photoId}/feature": {
+      "post": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "? Marcar foto como destaque (Admin apenas)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "photoId",
+            "in": "path",
+            "description": "ID da foto",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "displayOrder",
+            "in": "query",
+            "description": "Ordem de exibição",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos": {
+      "get": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "??? Buscar galeria de fotos da igreja",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filtrar por categoria (Exterior, Interior, Worship, etc)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "onlyFeatured",
+            "in": "query",
+            "description": "Apenas fotos em destaque",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/{churchId}/photos/pending": {
+      "get": {
+        "tags": [
+          "ChurchPhoto"
+        ],
+        "summary": "?? Buscar fotos pendentes de moderação (Admin apenas)",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchPhotoDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchPhotoDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchPhotoDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/search/nearby": {
+      "get": {
+        "tags": [
+          "ChurchSearch"
+        ],
+        "summary": "?? Buscar igrejas próximas por geolocalização",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "description": "Latitude do ponto de busca",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "description": "Longitude do ponto de busca",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "radiusKm",
+            "in": "query",
+            "description": "Raio de busca em km (padrão: 10km)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página (padrão: 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página (padrão: 20)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "denominations",
+            "in": "query",
+            "description": "Filtro por denominações (ex: Batista,Assembleia)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "languages",
+            "in": "query",
+            "description": "Filtro por idiomas (ex: Português,Inglês)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minRating",
+            "in": "query",
+            "description": "Avaliação mínima (1-5)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "hasParking",
+            "in": "query",
+            "description": "Filtrar apenas com estacionamento",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isAccessible",
+            "in": "query",
+            "description": "Filtrar apenas acessíveis",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "hasLiveStream",
+            "in": "query",
+            "description": "Filtrar apenas com transmissão ao vivo",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "hasChildMinistry",
+            "in": "query",
+            "description": "Filtrar apenas com ministério infantil",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isVerified",
+            "in": "query",
+            "description": "Filtrar apenas igrejas verificadas",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Ordenar por: distance, rating, popularity, name (padrão: distance)",
+            "schema": {
+              "type": "string",
+              "default": "distance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de igrejas encontradas",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/search/city": {
+      "get": {
+        "tags": [
+          "ChurchSearch"
+        ],
+        "summary": "??? Buscar igrejas em uma cidade",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Nome da cidade",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "Estado (UF)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Página",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Tamanho da página",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Ordenação",
+            "schema": {
+              "type": "string",
+              "default": "rating"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchSearchResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/rankings": {
+      "get": {
+        "tags": [
+          "ChurchSearch"
+        ],
+        "summary": "?? Buscar top igrejas ranqueadas",
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "description": "Cidade (opcional)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rankingType",
+            "in": "query",
+            "description": "Tipo: top-rated, most-popular, trending, family-friendly",
+            "schema": {
+              "type": "string",
+              "default": "top-rated"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limite de resultados (padrão: 10)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchSearchCardDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchSearchCardDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchSearchCardDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/search/autocomplete": {
+      "get": {
+        "tags": [
+          "ChurchSearch"
+        ],
+        "summary": "?? Autocomplete de igrejas para busca",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Texto de busca",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limite de sugestões (padrão: 5)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchAutocompleteDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchAutocompleteDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChurchAutocompleteDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4202,7 +5337,7 @@
         "tags": [
           "Member"
         ],
-        "summary": "Lista membros da igreja com filtros e paginação (apenas para Admin)",
+        "summary": "Lista membros da igreja com filtros e paginação (apenas para Admin).\r\nSuporta ordenação dinâmica por Name, Email, BirthDate ou Created.",
         "parameters": [
           {
             "name": "Name",
@@ -4273,6 +5408,7 @@
           {
             "name": "PendingApproval",
             "in": "query",
+            "description": "Filtro por aprovação pendente",
             "schema": {
               "type": "boolean"
             }
@@ -4322,10 +5458,26 @@
           {
             "name": "PageSize",
             "in": "query",
-            "description": "Tamanho da página",
+            "description": "Tamanho da página (máximo 100)",
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "description": "Campo para ordenação (Name, Email, BirthDate, Created)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "description": "Direção da ordenação (asc ou desc)",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -4335,17 +5487,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                  "$ref": "#/components/schemas/MemberDtoPaginatedList"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                  "$ref": "#/components/schemas/MemberDtoPaginatedList"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MemberDtoPagedResultDto"
+                  "$ref": "#/components/schemas/MemberDtoPaginatedList"
                 }
               }
             }
@@ -6328,9 +7480,9 @@
         "tags": [
           "Reviews"
         ],
-        "summary": "Envia uma avaliação para uma igreja ou entidade.",
+        "summary": "Envia uma avaliação para uma igreja ou entidade.\r\nRequer verificação de presença para igrejas.\r\nAceita até 5 fotos por review.\r\nLimite: 3 reviews a cada 5 minutos.",
         "requestBody": {
-          "description": "Dados da avaliação",
+          "description": "Dados da avaliação com fotos opcionais",
           "content": {
             "application/json": {
               "schema": {
@@ -6351,7 +7503,44 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmitReviewResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmitReviewResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmitReviewResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -6359,7 +7548,7 @@
         "tags": [
           "Reviews"
         ],
-        "summary": "Lista avaliações de uma entidade (ex: igreja).",
+        "summary": "Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.\r\nSe autenticado, mostra se o usuário já votou em cada review.\r\nSuporta filtros, paginação e ordenação.",
         "parameters": [
           {
             "name": "EntityId",
@@ -6377,7 +7566,29 @@
             }
           },
           {
-            "name": "Page",
+            "name": "MinScore",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "IsVerified",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "HasResponse",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "PageNumber",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -6391,11 +7602,472 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "CurrentMemberId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewWithVoteDtoPaginatedList"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewWithVoteDtoPaginatedList"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewWithVoteDtoPaginatedList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/{reviewId}/respond": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Igreja responde a uma avaliação (apenas Admin).\r\nNotifica automaticamente o avaliador.",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "ID da review",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Conteúdo da resposta",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToReviewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToReviewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespondToReviewResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespondToReviewResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespondToReviewResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/{reviewId}/vote": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Vota em uma review como útil ou não útil (upvote/downvote).\r\nLimite: 10 votos por minuto.",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "ID da review",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Tipo de voto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoteReviewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoteReviewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoteReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/{reviewId}/helpful": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Marca uma review como útil (atalho para upvote).\r\nLimite: 10 votos por minuto.",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/{reviewId}/not-helpful": {
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Marca uma review como não útil (atalho para downvote).\r\nLimite: 10 votos por minuto.",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoteReviewResult"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/church/{churchId}/photos": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Busca galeria de fotos de reviews de uma igreja.",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limite de fotos (padrão: 50)",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChurchPhotoGalleryResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/can-review/{churchId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Verifica se o usuário logado pode avaliar uma igreja.\r\nValida presença, período e reviews existentes.",
+        "parameters": [
+          {
+            "name": "churchId",
+            "in": "path",
+            "description": "ID da igreja",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanReviewChurchResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanReviewChurchResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanReviewChurchResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Reviews/response/{responseId}": {
+      "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Edita resposta da igreja a uma avaliação (apenas Admin).",
+        "parameters": [
+          {
+            "name": "responseId",
+            "in": "path",
+            "description": "ID da resposta",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Novo conteúdo da resposta",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditReviewResponseRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditReviewResponseRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditReviewResponseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditReviewResponseResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditReviewResponseResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditReviewResponseResult"
+                }
+              }
+            }
           }
         }
       }
@@ -7803,6 +9475,24 @@
         },
         "additionalProperties": false
       },
+      "ApproveChurchPhotoCommand": {
+        "type": "object",
+        "properties": {
+          "photoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "setAsFeatured": {
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Comando para aprovar foto (apenas Admin)"
+      },
       "AskPastorBotCommand": {
         "type": "object",
         "properties": {
@@ -8175,6 +9865,30 @@
         "type": "integer",
         "format": "int32"
       },
+      "CanReviewChurchResult": {
+        "type": "object",
+        "properties": {
+          "canReview": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasVisited": {
+            "type": "boolean"
+          },
+          "lastVisitDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "hasExistingReview": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "CashFlowCategoryDto": {
         "type": "object",
         "properties": {
@@ -8200,6 +9914,65 @@
           }
         },
         "additionalProperties": false
+      },
+      "CashFlowCategoryDtoPaginatedList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CashFlowCategoryDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual (baseado em 1)",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas disponíveis",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total de itens em todas as páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Quantidade de itens por página",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se existe página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se existe próxima página",
+            "readOnly": true
+          },
+          "firstItemOnPage": {
+            "type": "integer",
+            "description": "Índice do primeiro item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          },
+          "lastItemOnPage": {
+            "type": "integer",
+            "description": "Índice do último item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Representa uma lista paginada genérica de itens"
       },
       "CashFlowEntryDto": {
         "type": "object",
@@ -8260,7 +10033,7 @@
         },
         "additionalProperties": false
       },
-      "CashFlowEntryDtoPagedResultDto": {
+      "CashFlowEntryDtoPaginatedList": {
         "type": "object",
         "properties": {
           "items": {
@@ -8268,24 +10041,74 @@
             "items": {
               "$ref": "#/components/schemas/CashFlowEntryDto"
             },
+            "description": "Itens da página atual",
             "nullable": true
           },
           "pageNumber": {
             "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
+            "description": "Número da página atual (baseado em 1)",
             "format": "int32"
           },
           "totalPages": {
             "type": "integer",
+            "description": "Total de páginas disponíveis",
             "format": "int32",
             "readOnly": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total de itens em todas as páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Quantidade de itens por página",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se existe página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se existe próxima página",
+            "readOnly": true
+          },
+          "firstItemOnPage": {
+            "type": "integer",
+            "description": "Índice do primeiro item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          },
+          "lastItemOnPage": {
+            "type": "integer",
+            "description": "Índice do último item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Representa uma lista paginada genérica de itens"
+      },
+      "CashFlowEntryPagedResult": {
+        "type": "object",
+        "properties": {
+          "entries": {
+            "$ref": "#/components/schemas/CashFlowEntryDtoPaginatedList"
+          },
+          "balance": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalIncome": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalExpense": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -8375,6 +10198,34 @@
         },
         "additionalProperties": false
       },
+      "ChurchAutocompleteDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para autocomplete"
+      },
       "ChurchDto": {
         "type": "object",
         "properties": {
@@ -8417,9 +10268,366 @@
           "onboardingQrCode": {
             "type": "string",
             "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "denomination": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalVisits": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasParking": {
+            "type": "boolean"
+          },
+          "isAccessible": {
+            "type": "boolean"
+          },
+          "hasLiveStream": {
+            "type": "boolean"
+          },
+          "hasChildMinistry": {
+            "type": "boolean"
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "verifiedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false
+      },
+      "ChurchPhotoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "churchName": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedByMemberId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "uploadedByMemberName": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedByVisitorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "uploadedByVisitorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryDisplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "likes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isApproved": {
+            "type": "boolean"
+          },
+          "isRejected": {
+            "type": "boolean"
+          },
+          "isFeatured": {
+            "type": "boolean"
+          },
+          "rejectionReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "hasUserLiked": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para foto da igreja"
+      },
+      "ChurchPhotoGalleryDto": {
+        "type": "object",
+        "properties": {
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "churchName": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalPhotos": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChurchPhotoDto"
+            },
+            "nullable": true
+          },
+          "categoriesCount": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PhotoCategoryCountDto"
+            },
+            "nullable": true
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para galeria de fotos"
+      },
+      "ChurchPhotoGalleryResult": {
+        "type": "object",
+        "properties": {
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPhotos": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewPhotoItemDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChurchSearchCardDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "distanceKm": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "denomination": {
+            "type": "string",
+            "nullable": true
+          },
+          "topReviewHighlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "nextWorship": {
+            "$ref": "#/components/schemas/WorshipScheduleSummaryDto"
+          },
+          "priceRange": {
+            "type": "string",
+            "nullable": true
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "badges": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "totalPhotos": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalVisits": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para card de igreja na busca (similar ao TripAdvisor)"
+      },
+      "ChurchSearchResultDto": {
+        "type": "object",
+        "properties": {
+          "churches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChurchSearchCardDto"
+            },
+            "nullable": true
+          },
+          "totalResults": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "mapBounds": {
+            "$ref": "#/components/schemas/MapBoundsDto"
+          },
+          "suggestions": {
+            "$ref": "#/components/schemas/SearchSuggestionsDto"
+          },
+          "availableFilters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterOptionDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Resultado da busca de igrejas"
       },
       "CommunityEngagementScoreDto": {
         "type": "object",
@@ -9378,6 +11586,37 @@
         },
         "additionalProperties": false
       },
+      "EditReviewResponseRequest": {
+        "type": "object",
+        "properties": {
+          "newResponse": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditReviewResponseResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "isEdited": {
+            "type": "boolean"
+          },
+          "editedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "EndLivePresentationCommand": {
         "type": "object",
         "properties": {
@@ -9707,6 +11946,51 @@
         },
         "additionalProperties": false
       },
+      "FilterOptionDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterValueDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Opção de filtro disponível"
+      },
+      "FilterValueDto": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Valor de filtro"
+      },
       "Gender": {
         "enum": [
           1,
@@ -9928,6 +12212,37 @@
           }
         },
         "additionalProperties": false
+      },
+      "MapBoundsDto": {
+        "type": "object",
+        "properties": {
+          "minLatitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxLatitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "minLongitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxLongitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "centerLatitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "centerLongitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Limites do mapa para exibição"
       },
       "MaritalStatus": {
         "enum": [
@@ -10185,7 +12500,7 @@
         },
         "additionalProperties": false
       },
-      "MemberDtoPagedResultDto": {
+      "MemberDtoPaginatedList": {
         "type": "object",
         "properties": {
           "items": {
@@ -10193,27 +12508,56 @@
             "items": {
               "$ref": "#/components/schemas/MemberDto"
             },
+            "description": "Itens da página atual",
             "nullable": true
           },
           "pageNumber": {
             "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
+            "description": "Número da página atual (baseado em 1)",
             "format": "int32"
           },
           "totalPages": {
             "type": "integer",
+            "description": "Total de páginas disponíveis",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total de itens em todas as páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Quantidade de itens por página",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se existe página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se existe próxima página",
+            "readOnly": true
+          },
+          "firstItemOnPage": {
+            "type": "integer",
+            "description": "Índice do primeiro item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          },
+          "lastItemOnPage": {
+            "type": "integer",
+            "description": "Índice do último item da página atual (1-based)",
             "format": "int32",
             "readOnly": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Representa uma lista paginada genérica de itens"
       },
       "MemberEngagementRankingDto": {
         "type": "object",
@@ -10309,6 +12653,38 @@
           "transactionId": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhotoCategoryCountDto": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryDisplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Contagem de fotos por categoria"
+      },
+      "PhotoLikeResultDto": {
+        "type": "object",
+        "properties": {
+          "isLiked": {
+            "type": "boolean"
+          },
+          "totalLikes": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -10507,10 +12883,6 @@
             "type": "string",
             "nullable": true
           },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
           "address": {
             "$ref": "#/components/schemas/AddressRegisterForApproval"
           }
@@ -10552,6 +12924,315 @@
           }
         },
         "additionalProperties": false
+      },
+      "RejectChurchPhotoCommand": {
+        "type": "object",
+        "properties": {
+          "photoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Comando para rejeitar foto (apenas Admin)"
+      },
+      "RespondToReviewRequest": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RespondToReviewResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "responseId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "respondedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReviewPhotoDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para fotos de reviews"
+      },
+      "ReviewPhotoItemDto": {
+        "type": "object",
+        "properties": {
+          "photoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reviewerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewScore": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isVerified": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)"
+      },
+      "ReviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "response": {
+            "type": "string",
+            "nullable": true
+          },
+          "responderId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "respondedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "respondedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para respostas de reviews"
+      },
+      "ReviewWithVoteDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entityId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "entityType": {
+            "type": "string",
+            "nullable": true
+          },
+          "score": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "memberName": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "helpfulCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notHelpfulCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewPhotoDto"
+            },
+            "nullable": true
+          },
+          "response": {
+            "$ref": "#/components/schemas/ReviewResponseDto"
+          },
+          "hasCurrentMemberVoted": {
+            "type": "boolean",
+            "description": "Indica se o usuário atual já votou nesta review"
+          },
+          "currentMemberVoteIsHelpful": {
+            "type": "boolean",
+            "description": "Se votou, indica se foi voto positivo (true) ou negativo (false)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO de Review com informações de voto do usuário atual"
+      },
+      "ReviewWithVoteDtoPaginatedList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewWithVoteDto"
+            },
+            "description": "Itens da página atual",
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "description": "Número da página atual (baseado em 1)",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total de páginas disponíveis",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total de itens em todas as páginas",
+            "format": "int32",
+            "readOnly": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Quantidade de itens por página",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean",
+            "description": "Indica se existe página anterior",
+            "readOnly": true
+          },
+          "hasNextPage": {
+            "type": "boolean",
+            "description": "Indica se existe próxima página",
+            "readOnly": true
+          },
+          "firstItemOnPage": {
+            "type": "integer",
+            "description": "Índice do primeiro item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          },
+          "lastItemOnPage": {
+            "type": "integer",
+            "description": "Índice do último item da página atual (1-based)",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Representa uma lista paginada genérica de itens"
+      },
+      "SearchSuggestionsDto": {
+        "type": "object",
+        "properties": {
+          "nearbyDenominations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "popularSearches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "didYouMean": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Sugestões de busca"
       },
       "SendAdminNoticeCommand": {
         "type": "object",
@@ -10650,6 +13331,68 @@
           },
           "comment": {
             "type": "string",
+            "nullable": true
+          },
+          "skipVerification": {
+            "type": "boolean"
+          },
+          "photos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmitReviewPhotoDto"
+            },
+            "description": "Lista de fotos em base64 para upload",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubmitReviewPhotoDto": {
+        "type": "object",
+        "properties": {
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "originalFileName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "DTO para submissão de fotos em reviews"
+      },
+      "SubmitReviewResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "reviewId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isVerified": {
+            "type": "boolean"
+          },
+          "photosUploaded": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "inappropriateWordsFound": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
@@ -10945,6 +13688,48 @@
           },
           "address": {
             "$ref": "#/components/schemas/AddressChurch"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateChurchLocationRequest": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "autoGeocode": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateChurchLocationResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11249,6 +14034,34 @@
         },
         "additionalProperties": false
       },
+      "UploadChurchPhotoCommand": {
+        "type": "object",
+        "properties": {
+          "churchId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "photoBase64": {
+            "type": "string",
+            "nullable": true
+          },
+          "caption": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "type": "string",
+            "nullable": true
+          },
+          "visitorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Comando para upload de foto da igreja"
+      },
       "UserRole": {
         "enum": [
           0,
@@ -11375,6 +14188,40 @@
         "type": "integer",
         "format": "int32"
       },
+      "VoteReviewRequest": {
+        "type": "object",
+        "properties": {
+          "isHelpful": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VoteReviewResult": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "helpfulVotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notHelpfulVotes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "helpfulnessScore": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "WorshipActivityBibleDto": {
         "type": "object",
         "properties": {
@@ -11488,6 +14335,33 @@
           }
         },
         "additionalProperties": false
+      },
+      "WorshipScheduleSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dayOfWeek": {
+            "type": "string",
+            "nullable": true
+          },
+          "time": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Resumo do próximo culto"
       },
       "WorshipServiceDto": {
         "type": "object",

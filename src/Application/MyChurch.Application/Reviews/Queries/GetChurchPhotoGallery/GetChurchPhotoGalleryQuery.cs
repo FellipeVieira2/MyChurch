@@ -17,10 +17,13 @@ namespace MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery
     {
         public int ChurchId { get; set; }
         public int TotalPhotos { get; set; }
-        public List<ChurchPhotoDto> Photos { get; set; } = new();
+        public List<ReviewPhotoItemDto> Photos { get; set; } = new();
     }
 
-    public class ChurchPhotoDto
+    /// <summary>
+    /// DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)
+    /// </summary>
+    public class ReviewPhotoItemDto
     {
         public int PhotoId { get; set; }
         public int ReviewId { get; set; }
@@ -53,7 +56,7 @@ namespace MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery
                 .Where(p => p.Review.EntityId == request.ChurchId && p.Review.EntityType == "Church")
                 .OrderByDescending(p => p.UploadedAt)
                 .Take(request.Limit)
-                .Select(p => new ChurchPhotoDto
+                .Select(p => new ReviewPhotoItemDto
                 {
                     PhotoId = p.Id,
                     ReviewId = p.ReviewId,

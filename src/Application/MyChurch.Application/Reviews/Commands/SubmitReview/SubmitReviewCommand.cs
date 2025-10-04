@@ -22,10 +22,13 @@ namespace MyChurch.Application.Reviews.Commands.SubmitReview
         /// <summary>
         /// Lista de fotos em base64 para upload
         /// </summary>
-        public List<ReviewPhotoDto>? Photos { get; set; }
+        public List<SubmitReviewPhotoDto>? Photos { get; set; }
     }
 
-    public class ReviewPhotoDto
+    /// <summary>
+    /// DTO para submissão de fotos em reviews
+    /// </summary>
+    public class SubmitReviewPhotoDto
     {
         public string PhotoBase64 { get; set; } = string.Empty;
         public string? Caption { get; set; }
