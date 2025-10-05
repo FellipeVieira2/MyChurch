@@ -1,0 +1,607 @@
+{
+	"info": {
+		"_postman_id": "church-controller-collection",
+		"name": "MyChurch - Church Controller",
+		"description": "Collection completa para testar todos os endpoints do ChurchController\n\n**Funcionalidades:**\n- Busca p�blica de igrejas\n- Busca por proximidade (geolocaliza��o)\n- CRUD de igrejas\n- Gest�o de dados banc�rios\n- Dashboard administrativo\n- QR Code de onboarding\n- Geolocaliza��o (manual e autom�tica)\n\n**Autentica��o:**\nA maioria dos endpoints requer JWT Token. Configure a vari�vel `{{jwt_token}}` no ambiente.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "?? Public - Search Churches",
+			"item": [
+				{
+					"name": "Search Public Churches - Basic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?search=igreja&page=1&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "search",
+									"value": "igreja",
+									"description": "Termo de busca (nome da igreja)"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Busca b�sica de igrejas p�blicas sem filtros avan�ados"
+					},
+					"response": []
+				},
+				{
+					"name": "Search by City and State",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?city=S�o Paulo&state=SP&page=1&pageSize=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "city",
+									"value": "S�o Paulo"
+								},
+								{
+									"key": "state",
+									"value": "SP"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Busca igrejas por cidade e estado"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with Advanced Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?minRating=4.0&minReviews=10&sortBy=rating&page=1&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "minRating",
+									"value": "4.0",
+									"description": "Nota m�nima (0-5)"
+								},
+								{
+									"key": "minReviews",
+									"value": "10",
+									"description": "M�nimo de avalia��es"
+								},
+								{
+									"key": "sortBy",
+									"value": "rating",
+									"description": "Ordenar por: relevance, rating, distance, reviews, newest"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Busca avan�ada com filtro por rating m�nimo e ordena��o"
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Location (Radius)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?userLatitude=-23.550520&userLongitude=-46.633308&radiusKm=5&sortBy=distance&page=1&pageSize=15",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "userLatitude",
+									"value": "-23.550520",
+									"description": "Latitude do usu�rio (S�o Paulo)"
+								},
+								{
+									"key": "userLongitude",
+									"value": "-46.633308",
+									"description": "Longitude do usu�rio (S�o Paulo)"
+								},
+								{
+									"key": "radiusKm",
+									"value": "5",
+									"description": "Raio de busca em km"
+								},
+								{
+									"key": "sortBy",
+									"value": "distance"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "15"
+								}
+							]
+						},
+						"description": "Busca igrejas dentro de um raio de X km da localiza��o do usu�rio"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with Amenities Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=estacionamento&amenities=acessibilidade&amenities=transmissao_online&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "estacionamento",
+									"description": "Filtrar por comodidades"
+								},
+								{
+									"key": "amenities",
+									"value": "acessibilidade"
+								},
+								{
+									"key": "amenities",
+									"value": "transmissao_online"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas que possuem amenidades espec�ficas (estacionamento, acessibilidade, etc)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Denomination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?denominations=Batista&denominations=Assembleia de Deus&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "denominations",
+									"value": "Batista"
+								},
+								{
+									"key": "denominations",
+									"value": "Assembleia de Deus"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas por denomina��o"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints p�blicos de busca de igrejas (n�o requer autentica��o)"
+		},
+		{
+			"name": "?? Geolocation",
+			"item": [
+				{
+					"name": "Get Nearby Churches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/nearby?lat=-23.550520&lng=-46.633308&radiusKm=5&max=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "nearby"],
+							"query": [
+								{
+									"key": "lat",
+									"value": "-23.550520",
+									"description": "Latitude (S�o Paulo)"
+								},
+								{
+									"key": "lng",
+									"value": "-46.633308",
+									"description": "Longitude (S�o Paulo)"
+								},
+								{
+									"key": "radiusKm",
+									"value": "5",
+									"description": "Raio em km (padr�o: 5)"
+								},
+								{
+									"key": "max",
+									"value": "50",
+									"description": "M�ximo de resultados (padr�o: 50)"
+								}
+							]
+						},
+						"description": "Busca igrejas pr�ximas usando latitude/longitude e raio"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints de busca por geolocaliza��o"
+		},
+		{
+			"name": "? Church CRUD",
+			"item": [
+				{
+					"name": "Create Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Igreja Nova Esperan�a\",\n  \"description\": \"Igreja evang�lica com foco em jovens\",\n  \"phone\": \"11987654321\",\n  \"planId\": 1,\n  \"document\": \"12345678000190\",\n  \"logo\": \"data:image/jpeg;base64,/9j/4AAQ...\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"city\": \"S�o Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01234-567\",\n    \"country\": \"Brasil\",\n    \"neighborhood\": \"Centro\",\n    \"number\": \"100\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church"]
+						},
+						"description": "Cria uma nova igreja (requer autentica��o)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Church with Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Igreja Pentecostal Renovada\",\n  \"description\": \"Igreja focada em fam�lias\",\n  \"phone\": \"11999887766\",\n  \"logo\": \"data:image/jpeg;base64,/9j/4AAQ...\",\n  \"document\": \"98765432000111\",\n  \"address\": {\n    \"street\": \"Av. Paulista\",\n    \"city\": \"S�o Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01310-100\",\n    \"country\": \"Brasil\",\n    \"neighborhood\": \"Bela Vista\",\n    \"number\": \"1500\"\n  },\n  \"adminName\": \"Pastor Jo�o Silva\",\n  \"adminEmail\": \"pastor@igreja.com\",\n  \"adminPhone\": \"11987654321\",\n  \"adminBirthDate\": \"1980-05-15\",\n  \"adminIsBaptized\": true,\n  \"adminBaptizedDate\": \"1995-12-25\",\n  \"adminIsTither\": true,\n  \"adminPassword\": \"SenhaForte@123\",\n  \"adminBirthCity\": \"S�o Paulo\",\n  \"adminBirthState\": \"SP\",\n  \"ministry\": \"Louvor\",\n  \"memberSince\": \"2010-01-01\",\n  \"maritalStatus\": \"Married\",\n  \"adminAddress\": {\n    \"street\": \"Rua das Palmeiras\",\n    \"city\": \"S�o Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01234-567\",\n    \"country\": \"Brasil\",\n    \"neighborhood\": \"Jardins\",\n    \"number\": \"200\"\n  },\n  \"adminDocuments\": [\n    {\n      \"type\": 1,\n      \"number\": \"12345678900\"\n    },\n    {\n      \"type\": 2,\n      \"number\": \"123456789\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/withadmin",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "withadmin"]
+						},
+						"description": "Cria uma nova igreja j� com usu�rio administrador configurado"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Church by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}"]
+						},
+						"description": "Busca uma igreja por ID (requer autentica��o)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Igreja Nova Esperan�a - Atualizada\",\n  \"phone\": \"11987654322\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"city\": \"S�o Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01234-567\",\n    \"country\": \"Brasil\",\n    \"neighborhood\": \"Centro\",\n    \"number\": \"101\",\n    \"complement\": \"Sala 5\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}"]
+						},
+						"description": "Atualiza dados de uma igreja (requer role Admin)"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD b�sico de igrejas"
+		},
+		{
+			"name": "?? Banking & Financial",
+			"item": [
+				{
+					"name": "Update Banking Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bankName\": \"Banco do Brasil\",\n  \"agency\": \"1234-5\",\n  \"account\": \"98765-4\",\n  \"accountDigit\": \"3\",\n  \"accountType\": \"Conta Corrente\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/banking-info",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "banking-info"]
+						},
+						"description": "Atualiza dados banc�rios da igreja (apenas Admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Church Dashboard",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "dashboard"]
+						},
+						"description": "Dashboard com indicadores consolidados da igreja (apenas Admin)"
+					},
+					"response": []
+				}
+			],
+			"description": "Gest�o financeira e dashboard administrativo"
+		},
+		{
+			"name": "?? QR Code & Onboarding",
+			"item": [
+				{
+					"name": "Generate Onboarding QR Code",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}/generate-onboarding-qrcode",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}", "generate-onboarding-qrcode"]
+						},
+						"description": "Gera QR Code de onboarding para a igreja caso n�o exista"
+					},
+					"response": []
+				}
+			],
+			"description": "QR Code para onboarding de novos membros"
+		},
+		{
+			"name": "??? Location Management",
+			"item": [
+				{
+					"name": "Update Location Manually",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"latitude\": -23.550520,\n  \"longitude\": -46.633308,\n  \"autoGeocode\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}/location",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}", "location"]
+						},
+						"description": "Atualiza latitude/longitude manualmente (Rate Limit: 20 req/min)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location via Geocoding",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"autoGeocode\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}/location",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}", "location"]
+						},
+						"description": "Geocodifica automaticamente usando endere�o da igreja (Google Geocoding API)"
+					},
+					"response": []
+				},
+				{
+					"name": "Geocode Church Location",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/{{church_id}}/geocode",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "{{church_id}}", "geocode"]
+						},
+						"description": "Endpoint dedicado para geocodifica��o autom�tica (Rate Limit: 20 req/min)"
+					},
+					"response": []
+				}
+			],
+			"description": "Gerenciamento de geolocaliza��o da igreja"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:7163",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		},
+		{
+			"key": "church_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}

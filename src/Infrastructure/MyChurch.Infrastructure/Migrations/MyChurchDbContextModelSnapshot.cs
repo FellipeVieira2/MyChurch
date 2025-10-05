@@ -1086,6 +1086,158 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("church", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("approved_at");
+
+                    b.Property<int?>("ApprovedByAdminId")
+                        .HasColumnType("int")
+                        .HasColumnName("approved_by_admin_id");
+
+                    b.Property<string>("Caption")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("caption");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int")
+                        .HasColumnName("category");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("display_order");
+
+                    b.Property<bool>("IsApproved")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_approved");
+
+                    b.Property<bool>("IsFeatured")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_featured");
+
+                    b.Property<bool>("IsRejected")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_rejected");
+
+                    b.Property<int>("Likes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("likes");
+
+                    b.Property<string>("OriginalFileName")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("original_file_name");
+
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("photo_url");
+
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("rejection_reason");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("uploaded_at");
+
+                    b.Property<int?>("UploadedByMemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("uploaded_by_member_id");
+
+                    b.Property<int?>("UploadedByVisitorId")
+                        .HasColumnType("int")
+                        .HasColumnName("uploaded_by_visitor_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedByAdminId");
+
+                    b.HasIndex("UploadedAt")
+                        .HasDatabaseName("IX_church_photos_uploaded_at");
+
+                    b.HasIndex("UploadedByMemberId");
+
+                    b.HasIndex("UploadedByVisitorId");
+
+                    b.HasIndex("IsFeatured", "DisplayOrder")
+                        .HasDatabaseName("IX_church_photos_featured_order");
+
+                    b.HasIndex("ChurchId", "IsApproved", "Category")
+                        .HasDatabaseName("IX_church_photos_church_approved_category");
+
+                    b.ToTable("church_photos", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPhotoLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchPhotoId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_photo_id");
+
+                    b.Property<DateTime>("LikedAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("liked_at");
+
+                    b.Property<int?>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("int")
+                        .HasColumnName("visitor_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("VisitorId");
+
+                    b.HasIndex("ChurchPhotoId", "MemberId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_church_photo_likes_photo_member")
+                        .HasFilter("member_id IS NOT NULL");
+
+                    b.HasIndex("ChurchPhotoId", "VisitorId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_church_photo_likes_photo_visitor")
+                        .HasFilter("visitor_id IS NOT NULL");
+
+                    b.ToTable("church_photo_likes", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPromotion", b =>
                 {
                     b.Property<int>("Id")
@@ -1909,7 +2061,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("GroupMeetings", (string)null);
+                    b.ToTable("GroupMeetings");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingAttendance", b =>
@@ -1933,7 +2085,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingAttendances", (string)null);
+                    b.ToTable("GroupMeetingAttendances");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingMemberNote", b =>
@@ -1965,7 +2117,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingMemberNotes", (string)null);
+                    b.ToTable("GroupMeetingMemberNotes");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMember", b =>
@@ -3742,6 +3894,63 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPhoto", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "ApprovedByAdmin")
+                        .WithMany()
+                        .HasForeignKey("ApprovedByAdminId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "UploadedBy")
+                        .WithMany()
+                        .HasForeignKey("UploadedByMemberId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MyChurch.Domain.Entities.Visitor", "UploadedByVisitor")
+                        .WithMany()
+                        .HasForeignKey("UploadedByVisitorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("ApprovedByAdmin");
+
+                    b.Navigation("Church");
+
+                    b.Navigation("UploadedBy");
+
+                    b.Navigation("UploadedByVisitor");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPhotoLike", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.ChurchPhoto", "ChurchPhoto")
+                        .WithMany("PhotoLikes")
+                        .HasForeignKey("ChurchPhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyChurch.Domain.Entities.Visitor", "Visitor")
+                        .WithMany()
+                        .HasForeignKey("VisitorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("ChurchPhoto");
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Visitor");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPromotion", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Church", "Church")
@@ -4398,6 +4607,11 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.Navigation("Subscription")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPhoto", b =>
+                {
+                    b.Navigation("PhotoLikes");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Donation", b =>

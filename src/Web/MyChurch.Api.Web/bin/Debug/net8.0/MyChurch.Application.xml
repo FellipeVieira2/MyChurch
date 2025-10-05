@@ -399,6 +399,16 @@
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Number">
             <summary>Number</summary>
         </member>
+        <member name="T:MyChurch.Application.Church.Commands.DeleteChurchPhoto.DeleteChurchPhotoCommand">
+            <summary>
+            Comando para deletar uma foto
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.LikeChurchPhoto.LikeChurchPhotoCommand">
+            <summary>
+            Comando para curtir/descurtir uma foto
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.BankName">
             <summary>Banco</summary>
         </member>
@@ -460,6 +470,34 @@
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand">
+            <summary>
+            Comando para fazer upload de uma foto da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.ChurchId">
+            <summary>ID da igreja</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.PhotoBase64">
+            <summary>Foto em Base64</summary>
+            <example>data:image/jpeg;base64,/9j/4AAQSkZJRg...</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.Caption">
+            <summary>Legenda/descrição</summary>
+            <example>Interior do templo durante culto</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.Category">
+            <summary>Categoria da foto (1-10)</summary>
+            <example>2</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.OriginalFileName">
+            <summary>Nome original do arquivo</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Queries.GetChurchPhotos.GetChurchPhotosQuery">
+            <summary>
+            Query para buscar fotos de uma igreja
+            </summary>
         </member>
         <member name="T:MyChurch.Application.Church.Queries.GetChurchSchedules.GetChurchSchedulesQuery">
             <summary>
