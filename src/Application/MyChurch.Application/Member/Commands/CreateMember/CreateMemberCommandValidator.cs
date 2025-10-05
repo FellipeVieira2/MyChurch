@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MyChurch.Application.Dtos;
+using MyChurch.Domain.Entities;
+using MyChurch.Domain.Services;
 using static MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommand;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
     public class CreateMemberCommandValidator : AbstractValidator<CreateMemberCommand>
     {
-        public CreateMemberCommandValidator()
+        public CreateMemberCommandValidator(IDocumentValidator documentValidator)
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("O nome é obrigatório.")
@@ -20,7 +22,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             RuleFor(x => x.Documents)
                 .ForEach(docRule =>
                 {
-                    docRule.SetValidator(new MemberDocumentDtoValidator());
+                    docRule.SetValidator(new MemberDocumentDtoValidator(documentValidator));
                 }).When(x => x.Documents is not null && x.Documents.Any());
 
             RuleFor(x => x.Phone)
@@ -55,7 +57,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
 
     public class MemberDocumentDtoValidator : AbstractValidator<MemberDocumentDtoCreate>
     {
-        public MemberDocumentDtoValidator()
+        public MemberDocumentDtoValidator(IDocumentValidator documentValidator)
         {
             RuleFor(x => x.Type)
                 .IsInEnum().WithMessage("O tipo de documento é inválido.");
@@ -63,6 +65,18 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             RuleFor(x => x.Number)
                 .NotEmpty().WithMessage("O número do documento é obrigatório.")
                 .MaximumLength(50).WithMessage("O número do documento não pode ter mais de 50 caracteres.");
+
+            // Validação específica para CPF
+            RuleFor(x => x.Number)
+                .Must((doc, number) => documentValidator.IsValidCpf(number))
+                .WithMessage("O CPF informado é inválido.")
+                .When(x => x.Type == MemberDocumentType.CPF);
+
+            // Validação específica para RG
+            RuleFor(x => x.Number)
+                .Must((doc, number) => documentValidator.IsValidRg(number))
+                .WithMessage("O RG informado é inválido.")
+                .When(x => x.Type == MemberDocumentType.RG);
         }
     }
 }

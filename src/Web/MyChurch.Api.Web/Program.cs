@@ -12,26 +12,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Mychurch.Common.WebClients.Asaas;
-using MyChurch.Api.Web.Configuration;
 using MyChurch.Api.Web.Filters;
-using MyChurch.Api.Web.Middleware;
 using MyChurch.Application;
-using MyChurch.Domain.Exceptions;
+using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
+using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Services;
 using MyChurch.Infrastructure;
+using MyChurch.Infrastructure.Repositories;
+using MyChurch.Infrastructure.Services;
 using MyChurch.Infrastructure.Utils.Postmark;
 using MyChurch.Infrastructure.Utils.SES;
 using Serilog;
+using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Path = System.IO.Path;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Serilog configuration
 
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerConfiguration();
+builder.Services.AddSwaggerGen();
 
 // Configurar Rate Limiting
 builder.Services.AddRateLimiter(rateLimiterOptions =>
@@ -113,17 +116,14 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]))
     };
 
-    // *** CORREÇÃO 2: Habilitar leitura do token da query string para o SignalR ***
     options.Events = new JwtBearerEvents
     {
         OnMessageReceived = context =>
         {
             var accessToken = context.Request.Query["access_token"];
-
-            // Se a requisição for para um hub e tiver o token, configure o contexto
             var path = context.HttpContext.Request.Path;
             if (!string.IsNullOrEmpty(accessToken) &&
-                (path.StartsWithSegments("/ws/worship"))) // Verifique o caminho do seu Hub aqui
+                (path.StartsWithSegments("/ws/worship")))
             {
                 context.Token = accessToken;
             }
@@ -135,7 +135,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.InjectInfra(builder.Configuration);
 builder.Services.AddScoped<IAsaasWebClient, AsaasWebClient>();
-builder.Services.AddScoped<IEmailService, PostmarkEmailService>();
+
+// ?? Registrar serviço de validação de documentos
+builder.Services.AddScoped<IDocumentValidator, DocumentValidator>();
 
 var awsConfig = builder.Configuration.GetSection("AWS");
 var awsCredentials = new BasicAWSCredentials(
@@ -145,8 +147,9 @@ var awsRegion = RegionEndpoint.GetBySystemName(awsConfig["Region"]);
 builder.Services.AddSignalR(hubOptions => {
     hubOptions.EnableDetailedErrors = true;
     hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(10);
-    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(15); // Aumentado para dar mais margem
-}); builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
+    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(15);
+}); 
+builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
 {
     Credentials = awsCredentials,
     Region = awsRegion
@@ -154,22 +157,21 @@ builder.Services.AddSignalR(hubOptions => {
 builder.Services.InjectS3(builder.Configuration);
 builder.Services.InjectApplication();
 builder.Services.AddHttpClient<IAsaasWebClient, AsaasWebClient>();
-builder.Services.AddAuthorization();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
 builder.Services.AddCors(delegate (CorsOptions options)
 {
     options.AddPolicy("_myAllowSpecificOrigins", delegate (CorsPolicyBuilder policy)
     {
         policy.WithOrigins(
-            "https://www.mychurchlab.net", // produção
-            "http://localhost:3000",       // desenvolvimento local
-            "https://localhost:3000",    // se usar https localmente
-            "https://localhost:7265/",     // se usar https localmente
+            "https://www.mychurchlab.net",
+            "http://localhost:3000",
+            "https://localhost:3000",
+            "https://localhost:7265/",
             "http://localhost:7265/"
         )
         .AllowAnyHeader()
         .AllowAnyMethod()
-        .AllowCredentials(); // Essencial para SignalR com autenticação
+        .AllowCredentials();
     });
 });
 builder.Services.AddGeminiClient(config =>
@@ -206,6 +208,19 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddFluentValidationRulesToSwagger();
 
+// MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(CreateChurchWithAdminMemberCommand).Assembly));
+
+// Repositories
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Services
+builder.Services.AddScoped<IEmailService, PostmarkEmailService>(); // Serviço de email
+builder.Services.AddScoped<IReviewVerificationService, ReviewVerificationService>();
+
+// ?? Background Jobs (comentado até adicionar pacote Microsoft.Extensions.Hosting.Abstractions)
+// builder.Services.AddHostedService<ExpiredPromotionsCleanupJob>();
+
 var app = builder.Build();
 
 // Seed default Bible reading plans
@@ -219,14 +234,17 @@ using (var scope = app.Services.CreateScope())
     
     // Seed data
     BibleReadingPlanSeedData.SeedDefaultPlans(dbContext);
-    MemberSeedData.SeedMembers(dbContext); // <-- Adiciona o seed de membros
+    MemberSeedData.SeedMembers(dbContext);
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    options.DefaultModelsExpandDepth(-1);
-});
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("_myAllowSpecificOrigins");
 
 app.UseExceptionHandler(errorApp =>
 {
@@ -252,24 +270,17 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-// *** CORREÇÃO 1: ORDEM CORRETA DOS MIDDLEWARES ***
-app.UseCors("_myAllowSpecificOrigins");
-
 // Ativar Rate Limiting
 app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Registrar o middleware JWT
-app.UseMiddleware<JwtMiddleware>();
-
-// Registrar o middleware de histórico de ações do usuário
-app.UseMiddleware<UserActionHistoryMiddleware>();
-
 app.MapControllers();
-app.MapHub<WorshipServiceHub>("/ws/worship"); // Mapeamento de endpoints por último
-app.MapHub<CampaignHub>("/campaignHub"); // Mapeia o CampaignHub para SignalR
-app.MapHub<GroupHub>("/hubs/group"); // Novo Hub para grupos pequenos
 
-app.Run();
+// Hubs - comentados se não existirem
+// app.MapHub<WorshipServiceHub>("/ws/worship");
+// app.MapHub<CampaignHub>("/campaignHub");
+// app.MapHub<GroupHub>("/hubs/group");
+
+app.Run();app.Run();

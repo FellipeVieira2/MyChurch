@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Domain.Services;
 using MyChurch.Infrastructure.Utils.S3;
 using System.Text.Json.Serialization;
 
@@ -62,12 +63,18 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<UpdateMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
+        private readonly IDocumentValidator _documentValidator;
 
-        public UpdateMemberCommandHandler(IUnitOfWork unitOfWork, ILogger<UpdateMemberCommandHandler> logger, IS3Helper s3Helper)
+        public UpdateMemberCommandHandler(
+            IUnitOfWork unitOfWork, 
+            ILogger<UpdateMemberCommandHandler> logger, 
+            IS3Helper s3Helper,
+            IDocumentValidator documentValidator)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
+            _documentValidator = documentValidator;
         }
 
         public async Task<MemberDto> Handle(UpdateMemberCommand request, CancellationToken cancellationToken)
@@ -155,7 +162,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                 }
             }
 
-            // Atualização dos documentos
+            // Atualização dos documentos com normalização
             if (request.Documents != null && request.Documents.Any())
             {
                 member.Documents.Clear();
@@ -164,7 +171,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                     member.Documents.Add(new MemberDocument
                     {
                         Type = doc.Type,
-                        Number = doc.Number
+                        Number = _documentValidator.RemoveFormatting(doc.Number)
                     });
                 }
             }

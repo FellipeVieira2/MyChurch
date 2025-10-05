@@ -6,6 +6,7 @@ using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
+using MyChurch.Domain.Services;
 using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
 using System.Collections.Generic;
@@ -91,13 +92,18 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
+        private readonly IDocumentValidator _documentValidator;
 
-
-        public CreateMemberCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateMemberCommandHandler> logger, IS3Helper s3Helper)
+        public CreateMemberCommandHandler(
+            IUnitOfWork unitOfWork, 
+            ILogger<CreateMemberCommandHandler> logger, 
+            IS3Helper s3Helper,
+            IDocumentValidator documentValidator)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
+            _documentValidator = documentValidator;
         }
 
         public async Task<int> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
@@ -114,18 +120,24 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             // Validação de limite de membros do plano
             await ValidatePlanMemberLimitAsync(churchId, cancellationToken);
 
+            // Normalizar números de documentos antes da validação de duplicidade
+            var documentNumbers = request.Documents?
+                .Select(d => _documentValidator.RemoveFormatting(d.Number))
+                .ToList() ?? new List<string>();
+
             // Validação de duplicidade (documento/email)
-            var documentNumbers = request.Documents?.Select(d => d.Number).ToList() ?? new List<string>();
             var exists = await _unitOfWork.Members.Query()
                 .AnyAsync(m =>
                     m.ChurchId == churchId &&
                     (m.Documents.Any(x => documentNumbers.Contains(x.Number)) ||
                      (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email) || (request.Name == m.Name)),
                     cancellationToken);
+            
             if (request.Name == "Quercio Goes Santos ")
             {
                 var teste = "x";
             }
+            
             if (exists)
                 ValidationException.ThrowException("Member", "This Member already exists.");
 
@@ -150,11 +162,11 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 BirthState = request.BirthState,
                 Address =request.Address is not null ? new Address(request.Address.Street, request.Address.City, request.Address.State, request.Address.ZipCode, request.Address.Country, request.Address.Neighborhood) 
                 {Number = request.Address.Number } : null,
-                // Mapeamento dos documentos
+                // Mapeamento dos documentos com normalização
                 Documents = request.Documents?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
-                    Number = d.Number
+                    Number = _documentValidator.RemoveFormatting(d.Number)
                 }).ToList() ?? new List<MemberDocument>()
             };
 

@@ -363,6 +363,195 @@
             <param name="photoId">ID da foto</param>
             <param name="displayOrder">Ordem de exibição</param>
         </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchPromotionController">
+            <summary>
+            Gerenciamento de promoções de igrejas
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.SimulatePrice(MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery)">
+            <summary>
+            ?? Simula o preço de uma promoção ANTES de criar
+            </summary>
+            <remarks>
+            Use este endpoint para mostrar o preço ao usuário antes de ele confirmar a compra.
+            
+            Exemplo: "7 dias de promoção custará R$ 35,00"
+            
+            **Tipos de promoção:**
+            - FeaturedInSearch (0): R$ 150/mês = R$ 5,00/dia
+            - CarouselHome (1): R$ 200/mês = R$ 6,67/dia
+            - TopSearch (2): R$ 250/mês = R$ 8,33/dia
+            - SidebarBanner (3): R$ 50/mês = R$ 1,67/dia
+            - RegionalPromotion (4): R$ 100/mês = R$ 3,33/dia
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.CreatePromotion(MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand)">
+            <summary>
+            Cria uma nova promoção para a igreja
+            </summary>
+            <remarks>
+            ?? **Apenas igrejas com plano PREMIUM podem criar promoções.**
+            
+            **Nova forma de uso (com duração em dias):**
+            ```json
+            {
+              "type": 0,
+              "durationInDays": 7,
+              "targetRegion": "SP",
+              "customText": "Venha conhecer nossa igreja!",
+              "paymentMethod": "PIX"
+            }
+            ```
+            
+            O sistema calculará automaticamente:
+            - `startDate` = hoje
+            - `endDate` = hoje + 7 dias
+            - `totalPrice` = (R$ 150 / 30 dias) * 7 = R$ 35,00
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetActivePromotions(System.Nullable{MyChurch.Domain.Enum.PromotionType},System.String,System.Int32)">
+            <summary>
+            Busca promoções ativas para exibição pública
+            </summary>
+            <param name="type">Tipo de promoção (opcional)</param>
+            <param name="region">Região para filtrar (opcional) - Ex: "SP"</param>
+            <param name="limit">Número máximo de resultados (padrão: 10)</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetMyPromotions(System.Nullable{MyChurch.Domain.Enum.PromotionStatus},System.Boolean)">
+            <summary>
+            Busca as promoções da minha igreja
+            </summary>
+            <param name="status">Filtrar por status (opcional)</param>
+            <param name="includeExpired">Incluir promoções expiradas?</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.TrackView(System.Int32)">
+            <summary>
+            Registra uma visualização de promoção (usado internamente pelo frontend)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.TrackClick(System.Int32)">
+            <summary>
+            Registra um clique em uma promoção
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.PausePromotion(System.Int32)">
+            <summary>
+            Pausa uma promoção ativa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.ResumePromotion(System.Int32)">
+            <summary>
+            Retoma uma promoção pausada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetDashboard">
+            <summary>
+            ?? Dashboard completo de analytics de promoções da igreja
+            </summary>
+            <remarks>
+            Retorna visão geral de TODAS as promoções da igreja:
+            - Promoções ativas
+            - Promoções concluídas
+            - Métricas consolidadas
+            - Top performers
+            - Estatísticas por tipo
+            
+            **Exemplo de resposta:**
+            ```json
+            {
+              "totalActivePromotions": 2,
+              "totalInvested": 300.00,
+              "totalViews": 5420,
+              "totalClicks": 163,
+              "averageClickThroughRate": 3.01,
+              "activePromotions": [...],
+              "completedPromotions": [...],
+              "statsByType": [...]
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetAnalytics(System.Int32)">
+            <summary>
+            ?? Analytics detalhados de uma promoção específica
+            </summary>
+            <remarks>
+            Retorna métricas detalhadas de UMA promoção:
+            - Views e clicks totais
+            - CTR (Click-Through Rate)
+            - Custo por view/click
+            - Performance diária
+            - Projeções de resultados finais
+            
+            **Exemplo de resposta:**
+            ```json
+            {
+              "promotionId": 1,
+              "totalViews": 3500,
+              "totalClicks": 105,
+              "clickThroughRate": 3.0,
+              "costPerView": 0.04,
+              "costPerClick": 1.43,
+              "daysActive": 15,
+              "daysRemaining": 15,
+              "projectedTotalViews": 7000,
+              "projectedTotalClicks": 210,
+              "dailyMetrics": [...]
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchScheduleController">
+            <summary>
+            Gerenciamento de horários de cultos e atividades das igrejas
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Create(MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand)">
+            <summary>
+            Cria um novo horário de culto/atividade
+            </summary>
+            <param name="command">Dados do horário</param>
+            <returns>Horário criado</returns>
+            <response code="200">Horário criado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.GetByChurch(System.Int32,System.Boolean)">
+            <summary>
+            Lista todos os horários de uma igreja
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="onlyActive">Retornar apenas horários ativos (padrão: true)</param>
+            <returns>Lista de horários</returns>
+            <response code="200">Retorna lista de horários</response>
+            <response code="401">Não autenticado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Update(System.Int32,MyChurch.Application.Church.Commands.UpdateChurchSchedule.UpdateChurchScheduleCommand)">
+            <summary>
+            Atualiza um horário existente
+            </summary>
+            <param name="id">ID do horário</param>
+            <param name="command">Dados para atualização</param>
+            <returns>Horário atualizado</returns>
+            <response code="200">Horário atualizado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+            <response code="404">Horário não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Delete(System.Int32,System.Int32)">
+            <summary>
+            Remove um horário
+            </summary>
+            <param name="id">ID do horário</param>
+            <param name="churchId">ID da igreja</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Horário removido com sucesso</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+            <response code="404">Horário não encontrado</response>
+        </member>
         <member name="T:MyChurch.Api.Web.Controllers.ChurchSearchController">
             <summary>
             Controller para busca e descoberta de igrejas
@@ -509,6 +698,57 @@
             <response code="200">Sucesso: Culto retornado</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.EventPromotionController">
+            <summary>
+            Gerenciamento de promoções de eventos
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.CreateEventPromotion(MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand)">
+            <summary>
+            Cria uma nova promoção para um evento
+            </summary>
+            <remarks>
+            Apenas igrejas com plano Premium podem promover eventos.
+            
+            Tipos de promoção disponíveis:
+            - FeaturedEvent (0): Destaque na lista de eventos
+            - CarouselEvent (1): Aparece no carousel de eventos
+            - ChurchFeedBanner (2): Banner no feed da igreja
+            - PushNotification (3): Notificação push para membros próximos
+            
+            O orçamento será consumido conforme os cliques (R$ 0,50 por clique).
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.GetMyEventPromotions">
+            <summary>
+            Busca as promoções de eventos da minha igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.GetEventPromotion(System.Int32)">
+            <summary>
+            Busca detalhes de uma promoção de evento
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackView(System.Int32)">
+            <summary>
+            Registra uma visualização da promoção de evento
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackClick(System.Int32)">
+            <summary>
+            Registra um clique na promoção (consome do orçamento)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackConversion(System.Int32)">
+            <summary>
+            Registra uma conversão (pessoa confirmou presença)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.PausePromotion(System.Int32)">
+            <summary>
+            Pausa uma promoção de evento
+            </summary>
         </member>
         <member name="T:MyChurch.Api.Web.Controllers.FamilyController">
             <summary>

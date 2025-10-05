@@ -93,6 +93,14 @@ namespace MyChurch.Infrastructure.Repositories
         // 📸 Galeria de Fotos da Igreja
         public IChurchPhotoRepository ChurchPhotos { get; }
         public IChurchPhotoLikeRepository ChurchPhotoLikes { get; }
+        
+        // 🎯 Sistema de Promoções
+        public IChurchPromotionRepository ChurchPromotions { get; }
+        public IEventPromotionRepository EventPromotions { get; }
+        public IEngagementEventRepository EngagementEvents { get; }
+
+        // 🕐 HORÁRIOS DE CULTOS
+        public IChurchScheduleRepository ChurchSchedules { get; }
 
         public UnitOfWork(
             IChurchRepository churchs,
@@ -169,7 +177,11 @@ namespace MyChurch.Infrastructure.Repositories
             IReviewPhotoRepository reviewPhotos,
             IReviewResponseRepository reviewResponses,
             IChurchPhotoRepository churchPhotos,
-            IChurchPhotoLikeRepository churchPhotoLikes)
+            IChurchPhotoLikeRepository churchPhotoLikes,
+            IChurchPromotionRepository churchPromotions,
+            IEventPromotionRepository eventPromotions,
+            IEngagementEventRepository engagementEvents,
+            IChurchScheduleRepository churchSchedules)
         {
             Churchs = churchs;
             Donations = donations;
@@ -246,6 +258,10 @@ namespace MyChurch.Infrastructure.Repositories
             ReviewResponses = reviewResponses;
             ChurchPhotos = churchPhotos;
             ChurchPhotoLikes = churchPhotoLikes;
+            ChurchPromotions = churchPromotions;
+            EventPromotions = eventPromotions;
+            EngagementEvents = engagementEvents;
+            ChurchSchedules = churchSchedules;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

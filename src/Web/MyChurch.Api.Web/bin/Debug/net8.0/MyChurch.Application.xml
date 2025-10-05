@@ -181,6 +181,174 @@
             Query para buscar fotos pendentes de moderação (apenas Admin)
             </summary>
         </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.Type">
+            <summary>
+            Tipo de promoção desejada
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.DurationInDays">
+            <summary>
+            Duração da promoção em dias
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.StartDate">
+            <summary>
+            Data de início da promoção (opcional - padrão: hoje)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.TargetRegion">
+            <summary>
+            Região alvo (opcional) - Ex: "SP" ou "SP,São Paulo"
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CustomBannerUrl">
+            <summary>
+            Banner personalizado (Base64 ou URL)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CustomText">
+            <summary>
+            Texto personalizado para a promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.PaymentMethod">
+            <summary>
+            Método de pagamento (PIX, CREDIT_CARD, etc)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CreditCard">
+            <summary>
+            Dados do cartão de crédito (se for o método escolhido)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CreditCardInfoId">
+            <summary>
+            ID de cartão já salvo (opcional)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommandHandler.CalculatePromotionPrice(MyChurch.Domain.Enum.PromotionType,System.Int32)">
+            <summary>
+            Calcula o preço da promoção baseado no tipo e duração em DIAS
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Commands.ProcessPromotionPayment.ProcessPromotionPaymentCommand">
+            <summary>
+            Processa confirmação de pagamento de promoção via webhook do Asaas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.EventHandlers.PromotionActivatedEmailHandler">
+            <summary>
+            Handler que envia email quando promoção é ativada
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Events.PromotionActivatedEvent">
+            <summary>
+            Evento disparado quando uma promoção é ativada após confirmação de pagamento
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Type">
+            <summary>
+            Tipo de promoção para filtrar (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Region">
+            <summary>
+            Região para filtrar (opcional) - Ex: "SP"
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Limit">
+            <summary>
+            Número máximo de promoções a retornar
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetMyChurchPromotions.GetMyChurchPromotionsQuery.Status">
+            <summary>
+            Filtrar por status (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetMyChurchPromotions.GetMyChurchPromotionsQuery.IncludeExpired">
+            <summary>
+            Incluir promoções expiradas?
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.GetPromotionAnalytics.GetPromotionAnalyticsQuery">
+            <summary>
+            Busca analytics detalhados de uma promoção específica
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.GetPromotionsDashboard.GetPromotionsDashboardQuery">
+            <summary>
+            Dashboard geral com todas as promoções da igreja e métricas consolidadas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery">
+            <summary>
+            Simula o preço de uma promoção baseado no tipo e duração
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.Type">
+            <summary>
+            Tipo de promoção desejada
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.DurationInDays">
+            <summary>
+            Número de dias que a promoção ficará ativa
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.StartDate">
+            <summary>
+            Data de início (opcional - padrão: hoje)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.EstimatedViews">
+            <summary>
+            Estimativa de visualizações baseada em dados históricos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.EstimatedClicks">
+            <summary>
+            Estimativa de cliques (2-5% de CTR)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.CostPerClick">
+            <summary>
+            Custo estimado por clique
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand">
+            <summary>
+            Comando para criar um novo horário de culto/atividade
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.ChurchId">
+            <summary>ID da igreja</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.DayOfWeek">
+            <summary>Dia da semana (0 = Domingo, 6 = Sábado)</summary>
+            <example>0</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.StartTime">
+            <summary>Hora de início (HH:mm)</summary>
+            <example>19:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.EndTime">
+            <summary>Hora de término (HH:mm) - Opcional</summary>
+            <example>21:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.ServiceType">
+            <summary>Tipo de serviço</summary>
+            <example>Culto de Celebração</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.Description">
+            <summary>Descrição adicional</summary>
+            <example>Culto principal com louvor e pregação</example>
+        </member>
+        <member name="M:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommandHandler.CreateFreeSubscriptionAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma assinatura gratuita de 30 dias para a igreja
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>
@@ -292,6 +460,11 @@
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Queries.GetChurchSchedules.GetChurchSchedulesQuery">
+            <summary>
+            Query para buscar horários de uma igreja
+            </summary>
         </member>
         <member name="T:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery">
             <summary>
@@ -577,6 +750,51 @@
         <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.CurrentMemberVoteIsHelpful">
             <summary>
             Se votou, indica se foi voto positivo (true) ou negativo (false)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.EventId">
+            <summary>
+            ID do evento a ser promovido
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.Type">
+            <summary>
+            Tipo de promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.StartDate">
+            <summary>
+            Data de início da promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.EndDate">
+            <summary>
+            Data de término da promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.Budget">
+            <summary>
+            Orçamento total para a promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.TargetRegion">
+            <summary>
+            Região alvo (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.TargetRadiusKm">
+            <summary>
+            Raio em KM para promoção regional (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.CustomBannerUrl">
+            <summary>
+            Banner personalizado
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.PaymentMethod">
+            <summary>
+            Método de pagamento
             </summary>
         </member>
         <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">

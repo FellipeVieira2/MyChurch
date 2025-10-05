@@ -97,6 +97,13 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IChurchPhotoRepository, ChurchPhotoRepository>();
             services.AddScoped<IChurchPhotoLikeRepository, ChurchPhotoLikeRepository>();
             
+            // 🎯 Sistema de Promoções
+            services.AddScoped<IChurchPromotionRepository, ChurchPromotionRepository>();
+            services.AddScoped<IEventPromotionRepository, EventPromotionRepository>();
+            
+            // 🕐 HORÁRIOS DE CULTOS
+            services.AddScoped<IChurchScheduleRepository, ChurchScheduleRepository>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
  
             services.AddDbContext<MyChurchDbContext>(options =>

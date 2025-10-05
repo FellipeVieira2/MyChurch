@@ -42,6 +42,9 @@
         // ✅ VERIFICAÇÃO
         public bool IsVerified { get; set; }
         public DateTime? VerifiedAt { get; set; }
+        
+        // 🕐 HORÁRIOS DE CULTOS
+        public List<ChurchScheduleDto>? Schedules { get; set; }
 
         public static ChurchDto New(Domain.Entities.Church church)
         {
@@ -71,7 +74,8 @@
                     ? null 
                     : System.Text.Json.JsonSerializer.Deserialize<List<string>>(church.Languages),
                 IsVerified = church.IsVerified,
-                VerifiedAt = church.VerifiedAt
+                VerifiedAt = church.VerifiedAt,
+                Schedules = church.Schedules?.Select(ChurchScheduleDto.New).ToList()
             };
         }
     }

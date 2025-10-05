@@ -1086,6 +1086,149 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("church", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPromotion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("amount_paid");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<int>("Clicks")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("clicks");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CustomBannerUrl")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("custom_banner_url");
+
+                    b.Property<string>("CustomText")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("custom_text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("end_date");
+
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("int")
+                        .HasColumnName("payment_id");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("start_date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<string>("TargetRegion")
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("target_region");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.Property<int>("Views")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("views");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId")
+                        .HasDatabaseName("IX_church_promotions_church_id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("Type")
+                        .HasDatabaseName("IX_church_promotions_type");
+
+                    b.HasIndex("Status", "StartDate", "EndDate")
+                        .HasDatabaseName("IX_church_promotions_status_dates");
+
+                    b.ToTable("church_promotions", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int")
+                        .HasColumnName("day_of_week");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("description");
+
+                    b.Property<TimeSpan?>("EndTime")
+                        .HasColumnType("time")
+                        .HasColumnName("end_time");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("service_type");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time")
+                        .HasColumnName("start_time");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId", "DayOfWeek", "IsActive")
+                        .HasDatabaseName("IX_church_schedules_church_day_active");
+
+                    b.ToTable("church_schedules", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.CreditCardInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -1352,6 +1495,110 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("event_notification", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventPromotion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AmountSpent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(10,2)")
+                        .HasDefaultValue(0m)
+                        .HasColumnName("amount_spent");
+
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("budget");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<int>("Clicks")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("clicks");
+
+                    b.Property<int>("Conversions")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("conversions");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CustomBannerUrl")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("custom_banner_url");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("end_date");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<int?>("PaymentId")
+                        .HasColumnType("int")
+                        .HasColumnName("payment_id");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("start_date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<double?>("TargetRadiusKm")
+                        .HasColumnType("double precision")
+                        .HasColumnName("target_radius_km");
+
+                    b.Property<string>("TargetRegion")
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("target_region");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated");
+
+                    b.Property<int>("Views")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("views");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId")
+                        .HasDatabaseName("IX_event_promotions_church_id");
+
+                    b.HasIndex("EventId")
+                        .HasDatabaseName("IX_event_promotions_event_id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("Type")
+                        .HasDatabaseName("IX_event_promotions_type");
+
+                    b.HasIndex("Status", "StartDate", "EndDate")
+                        .HasDatabaseName("IX_event_promotions_status_dates");
+
+                    b.ToTable("event_promotions", "postgres");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.EventRecurrence", b =>
@@ -1662,7 +1909,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("GroupMeetings");
+                    b.ToTable("GroupMeetings", (string)null);
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingAttendance", b =>
@@ -1686,7 +1933,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingAttendances");
+                    b.ToTable("GroupMeetingAttendances", (string)null);
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMeetingMemberNote", b =>
@@ -1718,7 +1965,7 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("GroupMeetingId");
 
-                    b.ToTable("GroupMeetingMemberNotes");
+                    b.ToTable("GroupMeetingMemberNotes", (string)null);
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.GroupMember", b =>
@@ -2352,9 +2599,39 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("branches");
 
+                    b.Property<bool>("CanPromoteChurch")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("can_promote_church");
+
+                    b.Property<bool>("CanPromoteEvents")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("can_promote_events");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp")
                         .HasColumnName("created");
+
+                    b.Property<bool>("HasAdvancedAnalytics")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("has_advanced_analytics");
+
+                    b.Property<bool>("HasPrioritySupport")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("has_priority_support");
+
+                    b.Property<bool>("HasVerifiedBadge")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("has_verified_badge");
 
                     b.Property<int>("MaxEvents")
                         .HasColumnType("int")
@@ -2376,6 +2653,12 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)")
                         .HasColumnName("price");
+
+                    b.Property<bool>("ShowsAds")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("shows_ads");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp")
@@ -3459,6 +3742,35 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Address");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchPromotion", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChurchSchedule", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany("Schedules")
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Church");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.CreditCardInfo", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Member", "Member")
@@ -3544,6 +3856,32 @@ namespace MyChurch.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.EventPromotion", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.EventRecurrence", b =>
@@ -4055,6 +4393,8 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Events");
 
                     b.Navigation("Members");
+
+                    b.Navigation("Schedules");
 
                     b.Navigation("Subscription")
                         .IsRequired();

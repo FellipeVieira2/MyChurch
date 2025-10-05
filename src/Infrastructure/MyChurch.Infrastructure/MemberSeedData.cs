@@ -50,7 +50,7 @@ namespace MyChurch.Infrastructure
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("Test@123456", workFactor: 12),
                     Documents = new List<MemberDocument>
                     {
-                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000001" }
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "11144477735" } // CPF válido
                     }
                 },
 
@@ -75,7 +75,7 @@ namespace MyChurch.Infrastructure
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123", workFactor: 12),
                     Documents = new List<MemberDocument>
                     {
-                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000002" }
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "22255588844" } // CPF válido
                     }
                 },
 
@@ -99,7 +99,7 @@ namespace MyChurch.Infrastructure
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("Member@123", workFactor: 12),
                     Documents = new List<MemberDocument>
                     {
-                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "00000000003" }
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = "33366699955" } // CPF válido
                     }
                 }
             };
@@ -112,9 +112,21 @@ namespace MyChurch.Infrastructure
             // ========================================
 
             var members = new List<Member>();
+            // CPFs válidos para os próximos membros
+            var validCpfs = new string[] 
+            { 
+                "44477788866", // Membro 4
+                "55588899977", // Membro 5
+                "66699900088", // Membro 6
+                "77700011199", // Membro 7
+                "88811122200", // Membro 8
+                "99922233311", // Membro 9
+                "10101010101"  // Membro 10
+            };
+            
             for (int i = 4; i <= 10; i++)
             {
-                var member = new Member
+                var member = new Domain.Entities.Member
                 {
                     Name = $"Membro Exemplo {i}",
                     Email = $"membro{i}@exemplo.com",
@@ -137,7 +149,7 @@ namespace MyChurch.Infrastructure
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword($"Senha@{i}", workFactor: 12),
                     Documents = new List<MemberDocument>
                     {
-                        new MemberDocument { Type = MemberDocumentType.CPF, Number = $"0000000000{i}" }
+                        new MemberDocument { Type = MemberDocumentType.CPF, Number = validCpfs[i - 4] }
                     }
                 };
                 members.Add(member);

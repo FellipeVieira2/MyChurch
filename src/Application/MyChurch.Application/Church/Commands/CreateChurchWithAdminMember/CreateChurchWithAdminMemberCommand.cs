@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mychurch.Common.WebClients.Asaas;
 using Mychurch.Common.WebClients.Asaas.Models.Requests;
-using MyChurch.Application.Subscription.Commands.CreateSubscription;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -23,8 +22,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         public string Name { get; set; }
         public string Description { get; set; }
         public string Phone { get; set; }
-        public int PlanId { get; set; }
-        public string BillingType { get; set; } // Ex:"PIX", "CREDIT_CARD"
         public string? Logo { get; set; }
         public AddressChurchWithAdminCreate Address { get; set; }
 
@@ -47,10 +44,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         public string? Notes { get; set; }
         public AddressChurchWithAdminCreate AdminAddress { get; set; }
         public MaritalStatus? MaritalStatus { get; set; }
-
-        // Cartão de crédito
-        public CreditCardDto? CreditCard { get; set; }
-        public CreditCardHolderInfoDto? CreditCardHolderInfo { get; set; }
         
         public class AddressChurchWithAdminCreate
         {
@@ -76,23 +69,23 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         private readonly ILogger<CreateChurchWithAdminMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
         private readonly IAsaasWebClient _asaasWebClient;
-        private readonly ISender _sender;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly IDocumentValidator _documentValidator;
 
         public CreateChurchWithAdminMemberCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateChurchWithAdminMemberCommandHandler> logger,
             IS3Helper s3Helper,
             IAsaasWebClient asaasWebClient,
-            ISender sender,
-            IPasswordHasher passwordHasher)
+            IPasswordHasher passwordHasher,
+            IDocumentValidator documentValidator)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
             _asaasWebClient = asaasWebClient;
-            _sender = sender;
             _passwordHasher = passwordHasher;
+            _documentValidator = documentValidator;
         }
 
         public async Task<CreateChurchWithAdminResultDto> Handle(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
@@ -110,25 +103,26 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                     var adminMember = await CreateAdminMemberAsync(request, church.Id, cancellationToken);
                     await SaveChurchAndAdminAsync(church, adminMember, cancellationToken);
                     await UpdateChurchWithAsaasCustomerIdAsync(church, request.AdminEmail, cancellationToken);
+                    
                     // Gera o QRCode de onboarding
                     var onboardingUrl = $"https://www.mychurchlab.net/onboarding?church={church.Id}";
                     church.OnboardingQrCode = GenerateQrCodeBase64(onboardingUrl);
                     _unitOfWork.Churchs.Update(church);
                     await _unitOfWork.CommitAsync();
 
-                    var subscriptionCommand = CreateSubscriptionCommand(request, adminMember.Id);
-                    var checkoutResult = await _sender.Send(subscriptionCommand, cancellationToken);
+                    // 🆓 Criar assinatura gratuita automaticamente (plano Free - ID 1)
+                    await CreateFreeSubscriptionAsync(church.Id, cancellationToken);
 
                     await _unitOfWork.CommitTransactionAsync();
 
-                    _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId}", church.Id, adminMember.Id);
+                    _logger.LogInformation("Igreja criada com ID: {ChurchId} e admin com ID: {AdminId} com plano gratuito", church.Id, adminMember.Id);
 
                     return new CreateChurchWithAdminResultDto
                     {
                         ChurchId = church.Id,
-                        CheckoutUrl = checkoutResult?.CheckoutUrl,
-                        PixQrCode = checkoutResult?.PixQrCode,
-                        Payload = checkoutResult?.Payload
+                        CheckoutUrl = null,
+                        PixQrCode = null,
+                        Payload = null
                     };
                 }
                 catch
@@ -147,12 +141,17 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 
         private void ValidateAdminDocuments(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
         {
-            var adminDocumentNumbers = request.AdminDocuments?.Select(d => OnlyDigits(d.Number)).ToList() ?? new List<string>();
+            // Usar o DocumentValidator para normalizar os documentos
+            var adminDocumentNumbers = request.AdminDocuments?
+                .Select(d => _documentValidator.RemoveFormatting(d.Number))
+                .ToList() ?? new List<string>();
+                
             var existingDocuments = _unitOfWork.MemberDocuments
                 .Query()
                 .Where(x => adminDocumentNumbers.Contains(x.Number))
                 .Select(x => x.Number)
                 .ToList();
+                
             if (existingDocuments.Any())
             {
                 ValidationException.ThrowException("Church", "Document Already Used");
@@ -234,10 +233,11 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 Notes = request.Notes,
                 MemberSince = request.MemberSince,
                 Address = CreateAddress(request.AdminAddress),
+                // Normalizar documentos do admin
                 Documents = request.AdminDocuments?.Select(d => new MemberDocument
                 {
                     Type = d.Type,
-                    Number = OnlyDigits(d.Number)
+                    Number = _documentValidator.RemoveFormatting(d.Number)
                 }).ToList() ?? []
             };
             
@@ -268,17 +268,45 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             await _unitOfWork.CommitAsync();
         }
 
-        private CreateSubscriptionCommand CreateSubscriptionCommand(CreateChurchWithAdminMemberCommand request, int adminMemberId)
+        /// <summary>
+        /// Cria uma assinatura gratuita de 30 dias para a igreja
+        /// </summary>
+        private async Task CreateFreeSubscriptionAsync(int churchId, CancellationToken cancellationToken)
         {
-            return new CreateSubscriptionCommand
+            // Busca o plano gratuito (assumindo que ID = 1 é o plano Free)
+            var freePlan = await _unitOfWork.Plans.Query()
+                .FirstOrDefaultAsync(p => p.Price == 0, cancellationToken);
+
+            if (freePlan == null)
             {
-                UserId = adminMemberId,
-                PlanId = request.PlanId,
-                BillingType = request.BillingType,
-                FirstPaymentDate = DateTime.UtcNow,
-                CreditCard = request.CreditCard,
-                CreditCardHolderInfo = request.CreditCardHolderInfo,
+                _logger.LogWarning("Plano gratuito não encontrado. Criando assinatura com período de teste.");
+                // Se não houver plano gratuito, pega qualquer plano e cria período de teste
+                freePlan = await _unitOfWork.Plans.Query()
+                    .OrderBy(p => p.Price)
+                    .FirstOrDefaultAsync(cancellationToken);
+            }
+
+            if (freePlan == null)
+            {
+                throw new InvalidOperationException("Nenhum plano disponível no sistema.");
+            }
+
+            var subscription = new Domain.Entities.Subscription(
+                planId: freePlan.Id,
+                startDate: DateTime.UtcNow,
+                endDate: DateTime.UtcNow.AddMonths(1) // 30 dias de período gratuito
+            )
+            {
+                ChurchId = churchId,
+                Created = DateTime.UtcNow,
+                ExternalReference = null // Não tem referência externa pois é gratuito
             };
+
+            _unitOfWork.Subscriptions.Create(subscription);
+            await _unitOfWork.CommitAsync();
+
+            _logger.LogInformation("Assinatura gratuita criada para a igreja {ChurchId} no plano {PlanId} ({PlanName})", 
+                churchId, freePlan.Id, freePlan.Name);
         }
 
         private async Task<string> UploadLogoAsync(string logoBase64, CancellationToken cancellationToken)

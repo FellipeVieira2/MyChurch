@@ -55,6 +55,49 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
+            // 🆕 FEATURES PREMIUM
+            builder
+                .Property(p => p.ShowsAds)
+                .HasColumnName("shows_ads")
+                .HasColumnType("boolean")
+                .HasDefaultValue(true)
+                .IsRequired();
+
+            builder
+                .Property(p => p.CanPromoteChurch)
+                .HasColumnName("can_promote_church")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.CanPromoteEvents)
+                .HasColumnName("can_promote_events")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasAdvancedAnalytics)
+                .HasColumnName("has_advanced_analytics")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasPrioritySupport)
+                .HasColumnName("has_priority_support")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasVerifiedBadge)
+                .HasColumnName("has_verified_badge")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
             builder
                 .Property(p => p.Created)
                 .HasColumnName("created")

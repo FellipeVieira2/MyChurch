@@ -58,6 +58,9 @@
         
         public Subscription Subscription { get; set; }
         
+        // 🕐 HORÁRIOS DE CULTOS
+        public ICollection<ChurchSchedule> Schedules { get; set; }
+        
         public void Update(string? name, string? phone)
         {
             Name = name ?? Name;

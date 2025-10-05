@@ -10886,27 +10886,31 @@
         "additionalProperties": false
       },
       "CreateChurchWithAdminMemberCommand": {
+        "required": [
+          "address",
+          "adminDocuments",
+          "adminName",
+          "adminPassword",
+          "adminPhone",
+          "document",
+          "name",
+          "phone"
+        ],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
           },
           "description": {
             "type": "string",
             "nullable": true
           },
           "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "planId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "billingType": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
           },
           "logo": {
             "type": "string",
@@ -10916,31 +10920,33 @@
             "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
           },
           "adminName": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
           },
           "adminEmail": {
             "type": "string",
             "nullable": true
           },
           "adminDocuments": {
+            "minItems": 1,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MemberDocumentDtoCreateChurch"
-            },
-            "nullable": true
+            }
           },
           "adminPhoto": {
             "type": "string",
             "nullable": true
           },
           "document": {
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "adminPhone": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
           },
           "adminBirthDate": {
             "type": "string",
@@ -10958,8 +10964,8 @@
             "type": "boolean"
           },
           "adminPassword": {
-            "type": "string",
-            "nullable": true
+            "minLength": 6,
+            "type": "string"
           },
           "adminBirthCity": {
             "type": "string",
@@ -10986,12 +10992,6 @@
           },
           "maritalStatus": {
             "$ref": "#/components/schemas/MaritalStatus"
-          },
-          "creditCard": {
-            "$ref": "#/components/schemas/CreditCardDto"
-          },
-          "creditCardHolderInfo": {
-            "$ref": "#/components/schemas/CreditCardHolderInfoDto"
           }
         },
         "additionalProperties": false
@@ -12369,28 +12369,36 @@
         "additionalProperties": false
       },
       "MemberDocumentDtoCreateChurch": {
+        "required": [
+          "number"
+        ],
         "type": "object",
         "properties": {
           "type": {
             "$ref": "#/components/schemas/MemberDocumentType"
           },
           "number": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "MemberDocumentDtoUpdate": {
+        "required": [
+          "number"
+        ],
         "type": "object",
         "properties": {
           "type": {
             "$ref": "#/components/schemas/MemberDocumentType"
           },
           "number": {
+            "maxLength": 50,
+            "minLength": 1,
             "type": "string",
             "description": "Número do documento",
-            "nullable": true,
             "example": "12345678901"
           }
         },

@@ -140,29 +140,51 @@
             <summary>Número da página (começa em 1)</summary>
         </member>
         <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.PageSize">
-            <summary>Tamanho da página</summary>
+            <summary>Tamanho da página (máximo 100)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Amount">
-            <summary>Filtro por valor exato</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.SortBy">
+            <summary>Campo para ordenação (Name, Description)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Date">
-            <summary>Filtro por data exata</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.SortDirection">
+            <summary>Direção da ordenação (asc ou desc)</summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.StartDate">
-            <summary>Filtro por data inicial (>=)</summary>
+        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.Name">
+            <summary>Filtro por nome (contém)</summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.EndDate" -->
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.Type">
-            <summary>Filtro por tipo (Entrada/Saída)</summary>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.LikePhoto.TogglePhotoLikeCommand">
+            <summary>
+            Comando para curtir/descurtir foto
+            </summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.CategoryId">
-            <summary>Filtro por categoria</summary>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.ApproveChurchPhotoCommand">
+            <summary>
+            Comando para aprovar foto (apenas Admin)
+            </summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageNumber">
-            <summary>Número da página (começa em 1)</summary>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.RejectChurchPhotoCommand">
+            <summary>
+            Comando para rejeitar foto (apenas Admin)
+            </summary>
         </member>
-        <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery.PageSize">
-            <summary>Tamanho da página</summary>
+        <member name="T:MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand">
+            <summary>
+            Comando para upload de foto da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Queries.GetChurchPhotosQuery">
+            <summary>
+            Query para buscar galeria de fotos da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPhoto.Queries.GetPendingPhotosQuery">
+            <summary>
+            Query para buscar fotos pendentes de moderação (apenas Admin)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommandHandler.CreateFreeSubscriptionAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma assinatura gratuita de 30 dias para a igreja
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.Name">
             <summary>Name</summary>
@@ -276,6 +298,243 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
         </member>
+        <member name="T:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery">
+            <summary>
+            Query para buscar igrejas próximas usando geolocalização
+            Sistema similar ao TripAdvisor
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.ApplyFilters(System.Linq.IQueryable{MyChurch.Domain.Entities.Church},MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery)">
+            <summary>
+            Aplica filtros na query
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.CalculateDistance(System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Calcula distância usando fórmula Haversine
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.SortResults``1(System.Collections.Generic.List{``0},System.String)">
+            <summary>
+            Ordena resultados
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.MapToChurchCard(MyChurch.Domain.Entities.Church,System.Double)">
+            <summary>
+            Mapeia entidade para DTO
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.EnrichChurchCards(System.Collections.Generic.List{MyChurch.Application.Dtos.ChurchSearchCardDto},System.Threading.CancellationToken)">
+            <summary>
+            Enriquece cards com fotos e reviews
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.CalculateMapBounds(System.Collections.Generic.List{MyChurch.Domain.Entities.Church})">
+            <summary>
+            Calcula limites do mapa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.GenerateSearchSuggestions(System.Collections.Generic.List{MyChurch.Domain.Entities.Church},MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery)">
+            <summary>
+            Gera sugestões de busca
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQueryHandler.GenerateAvailableFilters(System.Collections.Generic.List{MyChurch.Domain.Entities.Church})">
+            <summary>
+            Gera filtros disponíveis com contagem
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Extensions.PaginationExtensions">
+            <summary>
+            Extension methods para facilitar paginação
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListAsync``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Converte um IQueryable em PaginatedList aplicando paginação
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListAsync``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest,System.Threading.CancellationToken)">
+            <summary>
+            Converte um IQueryable em PaginatedList aplicando paginação com request
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ApplySort``1(System.Linq.IQueryable{``0},System.String,System.Boolean)">
+            <summary>
+            Aplica ordenação dinâmica baseada em string
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ApplySort``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest)">
+            <summary>
+            Aplica ordenação com PaginatedRequest
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedListWithSortAsync``1(System.Linq.IQueryable{``0},MyChurch.Application.Common.Models.PaginatedRequest,System.Threading.CancellationToken)">
+            <summary>
+            Aplica paginação e ordenação em uma única chamada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedList``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+            <summary>
+            Converte IEnumerable em PaginatedList (para listas em memória)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Extensions.PaginationExtensions.ToPaginatedList``1(System.Collections.Generic.IEnumerable{``0},MyChurch.Application.Common.Models.PaginatedRequest)">
+            <summary>
+            Converte IEnumerable em PaginatedList com request
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedList`1">
+            <summary>
+            Representa uma lista paginada genérica de itens
+            </summary>
+            <typeparam name="T">Tipo dos itens da lista</typeparam>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.Items">
+            <summary>
+            Itens da página atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.PageNumber">
+            <summary>
+            Número da página atual (baseado em 1)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.TotalPages">
+            <summary>
+            Total de páginas disponíveis
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.TotalCount">
+            <summary>
+            Total de itens em todas as páginas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.PageSize">
+            <summary>
+            Quantidade de itens por página
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.HasPreviousPage">
+            <summary>
+            Indica se existe página anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.HasNextPage">
+            <summary>
+            Indica se existe próxima página
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.FirstItemOnPage">
+            <summary>
+            Índice do primeiro item da página atual (1-based)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedList`1.LastItemOnPage">
+            <summary>
+            Índice do último item da página atual (1-based)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria uma lista paginada a partir de um IQueryable
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.Create(System.Collections.Generic.IEnumerable{`0},System.Int32,System.Int32)">
+            <summary>
+            Cria uma lista paginada a partir de uma lista em memória
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Common.Models.PaginatedList`1.Empty(System.Int32,System.Int32)">
+            <summary>
+            Cria uma lista paginada vazia
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedRequest">
+            <summary>
+            Request base para queries paginadas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.PageNumber">
+            <summary>
+            Número da página (baseado em 1, padrão: 1)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.PageSize">
+            <summary>
+            Quantidade de itens por página (padrão: 10, máximo: 100)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.SortBy">
+            <summary>
+            Campo para ordenação (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.SortDirection">
+            <summary>
+            Direção da ordenação (asc ou desc, padrão: asc)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Common.Models.PaginatedRequest.IsDescending">
+            <summary>
+            Indica se a ordenação é descendente
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Common.Models.PaginatedRequestValidator`1">
+            <summary>
+            Validador base para requests paginados
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchPhotoDto">
+            <summary>
+            DTO para foto da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchPhotoGalleryDto">
+            <summary>
+            DTO para galeria de fotos
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.PhotoCategoryCountDto">
+            <summary>
+            Contagem de fotos por categoria
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchSearchCardDto">
+            <summary>
+            DTO para card de igreja na busca (similar ao TripAdvisor)
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.WorshipScheduleSummaryDto">
+            <summary>
+            Resumo do próximo culto
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchSearchResultDto">
+            <summary>
+            Resultado da busca de igrejas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MapBoundsDto">
+            <summary>
+            Limites do mapa para exibição
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.SearchSuggestionsDto">
+            <summary>
+            Sugestões de busca
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.FilterOptionDto">
+            <summary>
+            Opção de filtro disponível
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.FilterValueDto">
+            <summary>
+            Valor de filtro
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
             <summary>Nome completo</summary>
             <example>João Silva</example>
@@ -299,6 +558,31 @@
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Comments">
             <summary>Comentários adicionais</summary>
             <example>Gostaria de saber mais sobre os recursos de gestão financeira</example>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewPhotoDto">
+            <summary>
+            DTO para fotos de reviews
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewResponseDto">
+            <summary>
+            DTO para respostas de reviews
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ReviewWithVoteDto">
+            <summary>
+            DTO de Review com informações de voto do usuário atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.HasCurrentMemberVoted">
+            <summary>
+            Indica se o usuário atual já votou nesta review
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.CurrentMemberVoteIsHelpful">
+            <summary>
+            Se votou, indica se foi voto positivo (true) ou negativo (false)
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
             <summary>Arquivo JSON no formato da Harpa</summary>
@@ -416,6 +700,9 @@
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.IsActive">
             <summary>Filtro por membro ativo</summary>
         </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PendingApproval">
+            <summary>Filtro por aprovação pendente</summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
             <summary>Filtro por ministério</summary>
         </member>
@@ -432,7 +719,13 @@
             <summary>Número da página (começa em 1)</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.PageSize">
-            <summary>Tamanho da página</summary>
+            <summary>Tamanho da página (máximo 100)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortBy">
+            <summary>Campo para ordenação (Name, Email, BirthDate, Created)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortDirection">
+            <summary>Direção da ordenação (asc ou desc)</summary>
         </member>
         <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Name">
             <summary>Nome do plano</summary>
@@ -481,6 +774,46 @@
         <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.Branches">
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.EditReviewResponse.EditReviewResponseCommand">
+            <summary>
+            Comando para editar resposta da igreja a uma review
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.RespondToReview.RespondToReviewCommand">
+            <summary>
+            Comando para igreja responder a uma review
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand.Photos">
+            <summary>
+            Lista de fotos em base64 para upload
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewPhotoDto">
+            <summary>
+            DTO para submissão de fotos em reviews
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Commands.VoteReview.VoteReviewCommand">
+            <summary>
+            Adiciona ou atualiza um voto em uma review (útil/não útil)
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.CanReviewChurch.CanReviewChurchQuery">
+            <summary>
+            Verifica se um membro pode avaliar uma igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.GetChurchPhotoGalleryQuery">
+            <summary>
+            Busca galeria de fotos de reviews de uma igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.ReviewPhotoItemDto">
+            <summary>
+            DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)
+            </summary>
         </member>
     </members>
 </doc>

@@ -13,6 +13,7 @@ C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\o
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Azure.Identity.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Azure.Security.KeyVault.Certificates.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\Azure.Security.KeyVault.Secrets.dll
+C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\BCrypt.Net-Next.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\BouncyCastle.Cryptography.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\CsvHelper.dll
 C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\PubTmp\Out\DotnetGeminiSDK.dll

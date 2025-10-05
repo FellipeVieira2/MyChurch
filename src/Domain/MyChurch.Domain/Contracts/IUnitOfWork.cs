@@ -79,6 +79,14 @@
         IChurchPhotoRepository ChurchPhotos { get; }
         IChurchPhotoLikeRepository ChurchPhotoLikes { get; }
         
+        // 🎯 Sistema de Promoções
+        IChurchPromotionRepository ChurchPromotions { get; }
+        IEventPromotionRepository EventPromotions { get; }
+        IEngagementEventRepository EngagementEvents { get; }
+        
+        // 🕐 HORÁRIOS DE CULTOS
+        IChurchScheduleRepository ChurchSchedules { get; }
+        
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

@@ -148,7 +148,7 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetChurchCashFlowBalance">
             <summary>
-            Retorna o saldo consolidado do fluxo de caixa da igreja
+            Retorna o saldo consolidado do fluxo de caixa da igreja com totalizadores
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.UpdateCashFlowEntry(System.Int32,MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry.UpdateCashFlowEntryCommand)">
@@ -163,8 +163,11 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowEntries(MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries.GetAllCashFlowEntriesQuery)">
             <summary>
-            Lista lançamentos de fluxo de caixa
+            Lista lançamentos de fluxo de caixa com paginação, filtros e ordenação.
+            Retorna também os totais de entrada, saída e saldo.
             </summary>
+            <param name="query">Filtros de busca e paginação</param>
+            <returns>Lista paginada com totalizadores</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.DeleteCashFlowEntry(System.Int32)">
             <summary>
@@ -186,17 +189,20 @@
             Exclui uma categoria de fluxo de caixa
             </summary>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories">
+        <member name="M:MyChurch.Api.Web.Controllers.CashFlowController.GetAllCashFlowCategories(MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery)">
             <summary>
-            Lista todas as categorias de fluxo de caixa da igreja
+            Lista todas as categorias de fluxo de caixa da igreja com paginação e filtros
             </summary>
+            <param name="query">Filtros e paginação</param>
+            <returns>Lista paginada de categorias</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.SearchPublicChurches(MyChurch.Application.Church.Queries.SearchPublicChurches.GetPublicChurchesQuery)">
             <summary>
             Busca pública de igrejas (não requer autenticação)
+            Filtros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating
             </summary>
-            <param name="query">Parâmetros de filtro</param>
-            <response code="200">Lista paginada</response>
+            <param name="query">Parâmetros de filtro e ordenação</param>
+            <response code="200">Lista paginada com dados de avaliações, distância e relevância</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetNearby(System.Double,System.Double,System.Double,System.Nullable{System.Int32})">
             <summary>
@@ -258,13 +264,160 @@
             <response code="200">QRCode base64</response>
             <response code="404">Igreja não encontrada</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32,MyChurch.Api.Web.Controllers.UpdateChurchLocationRequest)">
             <summary>
-            Atualiza latitude e longitude da igreja usando o endereço cadastrado (Google Geocoding API)
+            Atualiza latitude e longitude da igreja.
+            Pode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.
+            Limite: 20 requests por minuto.
             </summary>
             <param name="id">Id da igreja</param>
-            <response code="200">Localização atualizada</response>
+            <param name="request">Dados de localização</param>
+            <response code="200">Localização atualizada com sucesso</response>
+            <response code="400">Coordenadas inválidas ou erro no geocoding</response>
             <response code="404">Igreja não encontrada</response>
+            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GeocodeLocation(System.Int32)">
+            <summary>
+            Atualiza localização da igreja automaticamente usando Google Geocoding (apenas via endereço).
+            Limite: 20 requests por minuto.
+            </summary>
+            <param name="id">Id da igreja</param>
+            <response code="200">Localização geocodificada com sucesso</response>
+            <response code="404">Igreja não encontrada ou endereço inválido</response>
+            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchPhotoController">
+            <summary>
+            Controller para galeria de fotos da igreja
+            Sistema similar ao TripAdvisor para fotos da comunidade
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhoto(System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
+            <summary>
+            ?? Upload de foto da igreja (Membros e Visitantes)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="command">Dados da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhotoAsVisitor(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
+            <summary>
+            ?? Upload de foto por visitante (sem autenticação)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="visitorId">ID do visitante</param>
+            <param name="command">Dados da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.GetPhotos(System.Int32,System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            ??? Buscar galeria de fotos da igreja
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="category">Filtrar por categoria (Exterior, Interior, Worship, etc)</param>
+            <param name="onlyFeatured">Apenas fotos em destaque</param>
+            <param name="page">Página</param>
+            <param name="pageSize">Tamanho da página</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.GetPendingPhotos(System.Int32)">
+            <summary>
+            ?? Buscar fotos pendentes de moderação (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ApprovePhoto(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.ApproveChurchPhotoCommand)">
+            <summary>
+            ? Aprovar foto (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="command">Dados da aprovação</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.RejectPhoto(System.Int32,System.Int32,MyChurch.Application.ChurchPhoto.Commands.ModeratePhoto.RejectChurchPhotoCommand)">
+            <summary>
+            ? Rejeitar foto (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="command">Motivo da rejeição</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ToggleLike(System.Int32,System.Int32)">
+            <summary>
+            ?? Curtir/Descurtir foto
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.ToggleLikeAsVisitor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            ?? Curtir foto como visitante
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="visitorId">ID do visitante</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.SetAsFeatured(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            ? Marcar foto como destaque (Admin apenas)
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="photoId">ID da foto</param>
+            <param name="displayOrder">Ordem de exibição</param>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchSearchController">
+            <summary>
+            Controller para busca e descoberta de igrejas
+            Sistema similar ao TripAdvisor
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.SearchNearby(System.Double,System.Double,System.Int32,System.Int32,System.Int32,System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.String)">
+            <summary>
+            ?? Buscar igrejas próximas por geolocalização
+            </summary>
+            <param name="latitude">Latitude do ponto de busca</param>
+            <param name="longitude">Longitude do ponto de busca</param>
+            <param name="radiusKm">Raio de busca em km (padrão: 10km)</param>
+            <param name="page">Página (padrão: 1)</param>
+            <param name="pageSize">Tamanho da página (padrão: 20)</param>
+            <param name="denominations">Filtro por denominações (ex: Batista,Assembleia)</param>
+            <param name="languages">Filtro por idiomas (ex: Português,Inglês)</param>
+            <param name="minRating">Avaliação mínima (1-5)</param>
+            <param name="hasParking">Filtrar apenas com estacionamento</param>
+            <param name="isAccessible">Filtrar apenas acessíveis</param>
+            <param name="hasLiveStream">Filtrar apenas com transmissão ao vivo</param>
+            <param name="hasChildMinistry">Filtrar apenas com ministério infantil</param>
+            <param name="isVerified">Filtrar apenas igrejas verificadas</param>
+            <param name="sortBy">Ordenar por: distance, rating, popularity, name (padrão: distance)</param>
+            <response code="200">Lista de igrejas encontradas</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.SearchByCity(System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            ??? Buscar igrejas em uma cidade
+            </summary>
+            <param name="city">Nome da cidade</param>
+            <param name="state">Estado (UF)</param>
+            <param name="page">Página</param>
+            <param name="pageSize">Tamanho da página</param>
+            <param name="sortBy">Ordenação</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.GetRankings(System.String,System.String,System.Int32)">
+            <summary>
+            ?? Buscar top igrejas ranqueadas
+            </summary>
+            <param name="city">Cidade (opcional)</param>
+            <param name="rankingType">Tipo: top-rated, most-popular, trending, family-friendly</param>
+            <param name="limit">Limite de resultados (padrão: 10)</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchSearchController.Autocomplete(System.String,System.Int32)">
+            <summary>
+            ?? Autocomplete de igrejas para busca
+            </summary>
+            <param name="query">Texto de busca</param>
+            <param name="limit">Limite de sugestões (padrão: 5)</param>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchAutocompleteDto">
+            <summary>
+            DTO para autocomplete
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
@@ -583,8 +736,10 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetAllMembers(MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery)">
             <summary>
-            Lista membros da igreja com filtros e paginação (apenas para Admin)
+            Lista membros da igreja com filtros e paginação (apenas para Admin).
+            Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
             </summary>
+            <param name="query">Filtros, paginação e ordenação</param>
             <response code="200">Sucesso: Lista paginada de membros</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
@@ -698,19 +853,75 @@
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.SubmitReview(MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand)">
             <summary>
             Envia uma avaliação para uma igreja ou entidade.
+            Requer verificação de presença para igrejas.
+            Aceita até 5 fotos por review.
+            Limite: 3 reviews a cada 5 minutos.
             </summary>
-            <param name="command">Dados da avaliação</param>
+            <param name="command">Dados da avaliação com fotos opcionais</param>
             <returns>Resultado da submissão</returns>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetReviews(MyChurch.Application.Reviews.Queries.GetReviews.GetReviewsQuery)">
             <summary>
-            Lista avaliações de uma entidade (ex: igreja).
+            Lista avaliações de uma entidade (ex: igreja) com fotos e respostas.
+            Se autenticado, mostra se o usuário já votou em cada review.
+            Suporta filtros, paginação e ordenação.
             </summary>
-            <param name="entityId">ID da entidade</param>
-            <param name="entityType">Tipo da entidade (ex: Church)</param>
-            <param name="page">Página</param>
-            <param name="pageSize">Tamanho da página</param>
-            <returns>Lista paginada de avaliações</returns>
+            <param name="query">Filtros de busca, paginação e ordenação</param>
+            <returns>Lista paginada de avaliações com fotos, respostas e status de voto</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.RespondToReview(System.Int32,MyChurch.Api.Web.Controllers.RespondToReviewRequest)">
+            <summary>
+            Igreja responde a uma avaliação (apenas Admin).
+            Notifica automaticamente o avaliador.
+            </summary>
+            <param name="reviewId">ID da review</param>
+            <param name="request">Conteúdo da resposta</param>
+            <returns>Resultado da resposta</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.EditReviewResponse(System.Int32,MyChurch.Api.Web.Controllers.EditReviewResponseRequest)">
+            <summary>
+            Edita resposta da igreja a uma avaliação (apenas Admin).
+            </summary>
+            <param name="responseId">ID da resposta</param>
+            <param name="request">Novo conteúdo da resposta</param>
+            <returns>Resultado da edição</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.GetChurchPhotoGallery(System.Int32,System.Int32)">
+            <summary>
+            Busca galeria de fotos de reviews de uma igreja.
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="limit">Limite de fotos (padrão: 50)</param>
+            <returns>Galeria de fotos com informações dos revisores</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.CanReviewChurch(System.Int32)">
+            <summary>
+            Verifica se o usuário logado pode avaliar uma igreja.
+            Valida presença, período e reviews existentes.
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <returns>Resultado da verificação</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.VoteReview(System.Int32,MyChurch.Api.Web.Controllers.VoteReviewRequest)">
+            <summary>
+            Vota em uma review como útil ou não útil (upvote/downvote).
+            Limite: 10 votos por minuto.
+            </summary>
+            <param name="reviewId">ID da review</param>
+            <param name="request">Tipo de voto</param>
+            <returns>Resultado da votação com contadores atualizados</returns>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsHelpful(System.Int32)">
+            <summary>
+            Marca uma review como útil (atalho para upvote).
+            Limite: 10 votos por minuto.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.MarkAsNotHelpful(System.Int32)">
+            <summary>
+            Marca uma review como não útil (atalho para downvote).
+            Limite: 10 votos por minuto.
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>

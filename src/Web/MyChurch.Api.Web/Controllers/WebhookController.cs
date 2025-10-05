@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Webhook.Commands;
+using MyChurch.Application.ChurchPromotion.Commands.ProcessPromotionPayment;
 using MyChurch.Domain.Enum;
 using System.Text.Json;
 
@@ -26,13 +27,25 @@ namespace MyChurch.Api.Web.Controllers
                 using var reader = new StreamReader(Request.Body);
                 var body = await reader.ReadToEndAsync();
 
+                _logger.LogInformation("📨 Webhook recebido do Asaas: {Body}", body);
+
                 var webhook = JsonSerializer.Deserialize<AsaasWebhookEventDto>(body);
 
-                // Exemplo de processamento:
-                switch (webhook?.Event)
+                if (webhook == null || webhook.Payment == null)
+                {
+                    _logger.LogWarning("Webhook inválido ou sem informações de pagamento");
+                    return BadRequest("Webhook inválido");
+                }
+
+                // Processa webhook de acordo com o evento
+                switch (webhook.Event)
                 {
                     case "PAYMENT_CONFIRMED":
                     case "PAYMENT_RECEIVED":
+                    case "PAYMENT_RECEIVED_IN_CASH":
+                        _logger.LogInformation("✅ Pagamento confirmado: {PaymentId}", webhook.Payment.Id);
+                        
+                        // 1. Confirmar pagamento (doações, assinaturas)
                         if (Enum.TryParse<PaymentStatus>(webhook.Payment.Status, true, out var paymentStatus))
                         {
                             await Mediator.Send(new ConfirmPaymentCommand
@@ -41,11 +54,37 @@ namespace MyChurch.Api.Web.Controllers
                                 Status = paymentStatus
                             });
                         }
+
+                        // 2. Processar pagamento de promoções (ativa automaticamente)
+                        await Mediator.Send(new ProcessPromotionPaymentCommand
+                        {
+                            TransactionId = webhook.Payment.Id,
+                            PaymentStatus = webhook.Payment.Status
+                        });
                         break;
-                        // Outros eventos...
+
+                    case "PAYMENT_OVERDUE":
+                        _logger.LogWarning("⚠️ Pagamento vencido: {PaymentId}", webhook.Payment.Id);
+                        break;
+
+                    case "PAYMENT_DELETED":
+                    case "PAYMENT_REFUNDED":
+                        _logger.LogWarning("❌ Pagamento cancelado/reembolsado: {PaymentId}", webhook.Payment.Id);
+                        
+                        // Rejeitar promoção se pagamento foi cancelado
+                        await Mediator.Send(new ProcessPromotionPaymentCommand
+                        {
+                            TransactionId = webhook.Payment.Id,
+                            PaymentStatus = "CANCELLED"
+                        });
+                        break;
+
+                    default:
+                        _logger.LogInformation("Evento não processado: {Event}", webhook.Event);
+                        break;
                 }
 
-                return Ok();
+                return Ok(new { message = "Webhook processado com sucesso" });
             }
             catch (Exception ex)
             {
