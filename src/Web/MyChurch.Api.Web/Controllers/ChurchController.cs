@@ -16,6 +16,9 @@ using MyChurch.Application.Church.Commands.GenerateOnboardingQrCode;
 using MyChurch.Application.Church.Queries.SearchPublicChurches; // added
 using MyChurch.Application.Church.Commands;
 using MyChurch.Application.Church.Queries.SearchNearby;
+using MyChurch.Application.Church.Commands.UpdateChurchSocialMedia;
+using MyChurch.Application.Church.Commands.UpdateChurchCharacteristics;
+using MyChurch.Application.Church.Commands.UpdateChurchCapacity;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -116,6 +119,51 @@ namespace MyChurch.Api.Web.Controllers
             // ChurchId será resolvido pelo membro logado no handler
             var result = await Mediator.Send(command);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Atualiza as redes sociais e contatos da igreja (Website, Instagram, Facebook, YouTube, WhatsApp, Twitter, TikTok)
+        /// </summary>
+        /// <response code="200">Sucesso: Redes sociais atualizadas</response>
+        /// <response code="400">Falha: URLs inválidas</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPut("social-media")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateSocialMedia([FromBody] UpdateChurchSocialMediaCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok(new { message = "Redes sociais atualizadas com sucesso" });
+        }
+
+        /// <summary>
+        /// Atualiza características avançadas da igreja (denominação, amenidades, idiomas) para busca avançada
+        /// </summary>
+        /// <response code="200">Sucesso: Características atualizadas</response>
+        /// <response code="400">Falha: Dados inválidos</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPut("characteristics")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateCharacteristics([FromBody] UpdateChurchCharacteristicsCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok(new { message = "Características da igreja atualizadas com sucesso" });
+        }
+
+        /// <summary>
+        /// Atualiza capacidade e infraestrutura da igreja (lotação, estacionamento, equipamentos, instalações)
+        /// </summary>
+        /// <response code="200">Sucesso: Capacidade e infraestrutura atualizadas</response>
+        /// <response code="400">Falha: Dados inválidos (capacidade negativa)</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        [HttpPut("capacity")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateCapacity([FromBody] UpdateChurchCapacityCommand command)
+        {
+            await Mediator.Send(command);
+            return Ok(new { message = "Capacidade e infraestrutura atualizadas com sucesso" });
         }
 
         /// <summary>

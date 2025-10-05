@@ -43,6 +43,32 @@
         public bool IsVerified { get; set; }
         public DateTime? VerifiedAt { get; set; }
         
+        // 📱 REDES SOCIAIS E CONTATOS
+        public string? Website { get; set; }
+        public string? Email { get; set; }
+        public string? InstagramUrl { get; set; }
+        public string? FacebookUrl { get; set; }
+        public string? YoutubeUrl { get; set; }
+        public string? WhatsAppNumber { get; set; }
+        public string? TwitterUrl { get; set; }
+        public string? TikTokUrl { get; set; }
+        
+        // 🏛️ CAPACIDADE E INFRAESTRUTURA
+        public int? SeatingCapacity { get; set; }
+        public int? StandingCapacity { get; set; }
+        public int? ParkingSpaces { get; set; }
+        public bool HasWifi { get; set; }
+        public string? WifiPassword { get; set; } // Apenas para membros autenticados
+        public bool HasCafeteria { get; set; }
+        public bool HasBookstore { get; set; }
+        public bool HasNursery { get; set; }
+        public bool HasSoundSystem { get; set; }
+        public bool HasProjector { get; set; }
+        public bool HasAirConditioning { get; set; }
+        public bool HasBaptistery { get; set; }
+        public List<string>? AdditionalFacilities { get; set; }
+        public string? EquipmentNotes { get; set; }
+        
         // 🕐 HORÁRIOS DE CULTOS
         public List<ChurchScheduleDto>? Schedules { get; set; }
 
@@ -75,6 +101,30 @@
                     : System.Text.Json.JsonSerializer.Deserialize<List<string>>(church.Languages),
                 IsVerified = church.IsVerified,
                 VerifiedAt = church.VerifiedAt,
+                Website = church.Website,
+                Email = church.Email,
+                InstagramUrl = church.InstagramUrl,
+                FacebookUrl = church.FacebookUrl,
+                YoutubeUrl = church.YoutubeUrl,
+                WhatsAppNumber = church.WhatsAppNumber,
+                TwitterUrl = church.TwitterUrl,
+                TikTokUrl = church.TikTokUrl,
+                SeatingCapacity = church.SeatingCapacity,
+                StandingCapacity = church.StandingCapacity,
+                ParkingSpaces = church.ParkingSpaces,
+                HasWifi = church.HasWifi,
+                WifiPassword = church.WifiPassword,
+                HasCafeteria = church.HasCafeteria,
+                HasBookstore = church.HasBookstore,
+                HasNursery = church.HasNursery,
+                HasSoundSystem = church.HasSoundSystem,
+                HasProjector = church.HasProjector,
+                HasAirConditioning = church.HasAirConditioning,
+                HasBaptistery = church.HasBaptistery,
+                AdditionalFacilities = string.IsNullOrEmpty(church.AdditionalFacilities)
+                    ? null
+                    : System.Text.Json.JsonSerializer.Deserialize<List<string>>(church.AdditionalFacilities),
+                EquipmentNotes = church.EquipmentNotes,
                 Schedules = church.Schedules?.Select(ChurchScheduleDto.New).ToList()
             };
         }

@@ -1,0 +1,540 @@
+{
+	"info": {
+		"_postman_id": "church-capacity-collection",
+		"name": "MyChurch - Church Capacity & Infrastructure",
+		"description": "Collection completa para gerenciar capacidade e infraestrutura da igreja\n\n**Funcionalidades:**\n- Atualizar lotação (assentos e em pé)\n- Gerenciar vagas de estacionamento\n- Configurar WiFi\n- Adicionar instalações (cafeteria, livraria, berçário)\n- Registrar equipamentos (som, projetor, ar-condicionado)\n- Instalações adicionais\n\n**Autenticação:**\nRequer JWT Token com role **Admin**.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "??? Capacity Management",
+			"item": [
+				{
+					"name": "Update Full Capacity - Large Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 800,\n  \"standingCapacity\": 200,\n  \"parkingSpaces\": 150,\n  \"hasWifi\": true,\n  \"wifiPassword\": \"IgrejaWiFi2024\",\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"hasAirConditioning\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Academia\", \"Quadra esportiva\", \"Auditório\", \"Sala de reuniões\"],\n  \"equipmentNotes\": \"Sistema de som profissional Yamaha. Projetor 4K. Ar-condicionado central.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja grande com todas as instalações e equipamentos"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Capacity - Medium Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 300,\n  \"standingCapacity\": 50,\n  \"parkingSpaces\": 40,\n  \"hasWifi\": true,\n  \"hasCafeteria\": false,\n  \"hasBookstore\": false,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"hasAirConditioning\": true,\n  \"hasBaptistery\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja de médio porte com infraestrutura básica"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Capacity - Small Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 100,\n  \"parkingSpaces\": 15,\n  \"hasWifi\": false,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": false,\n  \"hasAirConditioning\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja pequena com infraestrutura mínima"
+					},
+					"response": []
+				}
+			],
+			"description": "Gerenciamento de lotação da igreja"
+		},
+		{
+			"name": "?? Parking Management",
+			"item": [
+				{
+					"name": "Update Parking - Large Lot",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parkingSpaces\": 200,\n  \"additionalFacilities\": [\"Estacionamento coberto\", \"Vaga para deficientes\", \"Manobrista\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Estacionamento grande com facilidades"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Parking - Street Only",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parkingSpaces\": 0,\n  \"equipmentNotes\": \"Estacionamento disponível apenas na rua\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja sem estacionamento próprio"
+					},
+					"response": []
+				}
+			],
+			"description": "Gerenciamento de vagas de estacionamento"
+		},
+		{
+			"name": "?? WiFi Configuration",
+			"item": [
+				{
+					"name": "Enable WiFi with Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasWifi\": true,\n  \"wifiPassword\": \"MinhaIgreja#2024\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Habilita WiFi com senha para membros"
+					},
+					"response": []
+				},
+				{
+					"name": "Enable WiFi - Public (No Password)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasWifi\": true,\n  \"wifiPassword\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "WiFi público sem senha"
+					},
+					"response": []
+				}
+			],
+			"description": "Configuração de WiFi"
+		},
+		{
+			"name": "?? Facilities Management",
+			"item": [
+				{
+					"name": "Enable All Facilities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Biblioteca\", \"Sala de oração\", \"Cozinha industrial\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Habilita todas as instalações"
+					},
+					"response": []
+				},
+				{
+					"name": "Family-Friendly Setup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasNursery\": true,\n  \"hasCafeteria\": true,\n  \"additionalFacilities\": [\"Brinquedoteca\", \"Fraldário\", \"Sala de amamentação\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja com foco em famílias"
+					},
+					"response": []
+				}
+			],
+			"description": "Instalações da igreja (cafeteria, livraria, berçário)"
+		},
+		{
+			"name": "??? Equipment Management",
+			"item": [
+				{
+					"name": "Professional Sound & Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"equipmentNotes\": \"Mesa de som Behringer X32. Projetores Epson 6K lumens (2 unidades). Câmeras PTZ para transmissão. Sistema de iluminação LED DMX.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Equipamentos profissionais de som e vídeo"
+					},
+					"response": []
+				},
+				{
+					"name": "Basic Equipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": false,\n  \"equipmentNotes\": \"Caixas de som amplificadas. Microfones sem fio (2). Violão e teclado.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Equipamentos básicos"
+					},
+					"response": []
+				},
+				{
+					"name": "Climate Control",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasAirConditioning\": true,\n  \"equipmentNotes\": \"Ar-condicionado central 60.000 BTUs. Sistema de ventilação forçada.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Climatização da igreja"
+					},
+					"response": []
+				}
+			],
+			"description": "Equipamentos técnicos (som, projetor, ar-condicionado)"
+		},
+		{
+			"name": "?? Additional Facilities",
+			"item": [
+				{
+					"name": "Multi-Purpose Complex",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 1000,\n  \"standingCapacity\": 300,\n  \"parkingSpaces\": 250,\n  \"additionalFacilities\": [\n    \"Auditório secundário (200 lugares)\",\n    \"Quadra poliesportiva\",\n    \"Academia\",\n    \"Biblioteca\",\n    \"Sala de música\",\n    \"Estúdio de gravação\",\n    \"10 salas de aula\",\n    \"Refeitório (150 lugares)\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Complexo multi-uso com diversas instalações"
+					},
+					"response": []
+				},
+				{
+					"name": "Educational Focus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasBookstore\": true,\n  \"additionalFacilities\": [\n    \"Biblioteca teológica\",\n    \"5 salas de estudo bíblico\",\n    \"Sala de informática (20 computadores)\",\n    \"Sala de seminários\"\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja com foco educacional"
+					},
+					"response": []
+				}
+			],
+			"description": "Instalações adicionais customizadas"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:7163",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		}
+	]
+}

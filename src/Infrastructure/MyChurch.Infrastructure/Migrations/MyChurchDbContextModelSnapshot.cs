@@ -987,6 +987,9 @@ namespace MyChurch.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AdditionalFacilities")
+                        .HasColumnType("text");
+
                     b.Property<int>("AddressId")
                         .HasColumnType("int")
                         .HasColumnName("address_id");
@@ -1017,14 +1020,50 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("varchar(20)")
                         .HasColumnName("document");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EquipmentNotes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FacebookUrl")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("HasAirConditioning")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasBaptistery")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasBookstore")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasCafeteria")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("HasChildMinistry")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("HasLiveStream")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("HasNursery")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("HasParking")
                         .HasColumnType("boolean");
+
+                    b.Property<bool>("HasProjector")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasSoundSystem")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("HasWifi")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("InstagramUrl")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsAccessible")
                         .HasColumnType("boolean");
@@ -1054,6 +1093,9 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("onboarding_qrcode");
 
+                    b.Property<int?>("ParkingSpaces")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("varchar(20)")
@@ -1065,11 +1107,23 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasDefaultValue(0.05m)
                         .HasColumnName("platform_fee");
 
+                    b.Property<int?>("SeatingCapacity")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("StandingCapacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TikTokUrl")
+                        .HasColumnType("text");
+
                     b.Property<int>("TotalReviews")
                         .HasColumnType("integer");
 
                     b.Property<int>("TotalVisits")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TwitterUrl")
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp")
@@ -1077,6 +1131,18 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Website")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WhatsAppNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WifiPassword")
+                        .HasColumnType("text");
+
+                    b.Property<string>("YoutubeUrl")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

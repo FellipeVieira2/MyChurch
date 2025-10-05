@@ -436,6 +436,84 @@
         <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKeyType">
             <summary>Tipo da Chave PIX</summary>
         </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand">
+            <summary>
+            Comando para atualizar capacidade e infraestrutura da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.SeatingCapacity">
+            <summary>Capacidade de assentos</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.StandingCapacity">
+            <summary>Capacidade em pé (eventos especiais)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.ParkingSpaces">
+            <summary>Número de vagas de estacionamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasWifi">
+            <summary>Possui WiFi</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.WifiPassword">
+            <summary>Senha do WiFi (opcional, para membros)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasCafeteria">
+            <summary>Possui cafeteria/lanchonete</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasBookstore">
+            <summary>Possui livraria</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasNursery">
+            <summary>Possui berçário</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasSoundSystem">
+            <summary>Sistema de som profissional</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasProjector">
+            <summary>Projetor/Telão</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasAirConditioning">
+            <summary>Ar condicionado</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasBaptistery">
+            <summary>Batistério</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.AdditionalFacilities">
+            <summary>Instalações adicionais (Ex: ["Academia", "Quadra esportiva", "Auditório"])</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.EquipmentNotes">
+            <summary>Notas sobre equipamentos disponíveis</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand">
+            <summary>
+            Comando para atualizar características avançadas da igreja (denominação, amenidades, idiomas)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.Denomination">
+            <summary>Denominação da igreja (Ex: Batista, Assembleia de Deus, Adventista, Católica)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.CoverPhoto">
+            <summary>URL da foto de capa (base64 ou URL S3)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasParking">
+            <summary>Possui estacionamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.IsAccessible">
+            <summary>Possui acessibilidade (rampa, elevador, etc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasLiveStream">
+            <summary>Possui transmissão ao vivo (YouTube, Facebook Live, etc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasChildMinistry">
+            <summary>Possui ministério infantil</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.Languages">
+            <summary>Idiomas falados nos cultos (Ex: ["Português", "Inglês", "Espanhol"])</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand">
+            <summary>
+            Comando para atualizar redes sociais e contatos da igreja
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
             <summary>Name</summary>
             <example>Igreja Pentecostal</example>

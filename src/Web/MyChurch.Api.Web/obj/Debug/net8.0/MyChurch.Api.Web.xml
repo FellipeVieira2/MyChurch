@@ -241,6 +241,30 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateSocialMedia(MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand)">
+            <summary>
+            Atualiza as redes sociais e contatos da igreja (Website, Instagram, Facebook, YouTube, WhatsApp, Twitter, TikTok)
+            </summary>
+            <response code="200">Sucesso: Redes sociais atualizadas</response>
+            <response code="400">Falha: URLs inválidas</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCharacteristics(MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand)">
+            <summary>
+            Atualiza características avançadas da igreja (denominação, amenidades, idiomas) para busca avançada
+            </summary>
+            <response code="200">Sucesso: Características atualizadas</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCapacity(MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand)">
+            <summary>
+            Atualiza capacidade e infraestrutura da igreja (lotação, estacionamento, equipamentos, instalações)
+            </summary>
+            <response code="200">Sucesso: Capacidade e infraestrutura atualizadas</response>
+            <response code="400">Falha: Dados inválidos (capacidade negativa)</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
             <summary>
             Dashboard com indicadores da igreja

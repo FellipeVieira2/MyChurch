@@ -1,0 +1,538 @@
+{
+	"info": {
+		"_postman_id": "church-photo-controller-collection",
+		"name": "MyChurch - Church Photo Gallery",
+		"description": "Collection completa para testar a Galeria de Fotos das Igrejas\n\n**Funcionalidades:**\n- Upload de fotos da igreja (infraestrutura, eventos, ministérios)\n- Listar fotos com filtros (categoria, aprovação, destaque)\n- Sistema de likes (curtir/descurtir)\n- Deletar fotos (admin ou autor)\n- Paginação e ordenação\n\n**Categorias de Fotos:**\n1. Exterior - Fachada da igreja\n2. Interior - Interior do templo\n3. Worship - Durante o culto\n4. Events - Eventos especiais\n5. Community - Comunidade/pessoas\n6. Facilities - Instalações (banheiro, estacionamento)\n7. ChildMinistry - Ministério infantil\n8. YouthMinistry - Ministério jovem\n9. Menu - Programação de atividades\n10. Other - Outros\n\n**Autenticação:**\n- Upload requer JWT Token (membros da igreja)\n- Like requer JWT Token\n- Delete requer JWT Token (admin ou autor)\n- Listar fotos é público (sem auth)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "?? Upload Photos",
+			"item": [
+				{
+					"name": "Upload Photo - Exterior",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/...\",\n  \"caption\": \"Fachada principal da igreja - Vista frontal\",\n  \"category\": 1,\n  \"originalFileName\": \"fachada.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto da fachada externa (Categoria: Exterior = 1)"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Photo - Interior",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...\",\n  \"caption\": \"Interior do templo - Altar principal\",\n  \"category\": 2,\n  \"originalFileName\": \"interior.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto do interior do templo (Categoria: Interior = 2)"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Photo - Worship",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...\",\n  \"caption\": \"Culto de domingo - Louvor e adoração\",\n  \"category\": 3,\n  \"originalFileName\": \"culto.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto durante o culto (Categoria: Worship = 3)"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Photo - Events",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...\",\n  \"caption\": \"Evento especial - Batismo coletivo\",\n  \"category\": 4,\n  \"originalFileName\": \"batismo.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto de evento especial (Categoria: Events = 4)"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Photo - Child Ministry",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...\",\n  \"caption\": \"Ministério infantil - Escola bíblica dominical\",\n  \"category\": 7,\n  \"originalFileName\": \"criancas.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto do ministério infantil (Categoria: ChildMinistry = 7)"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Photo - Facilities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"churchId\": {{church_id}},\n  \"photoBase64\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...\",\n  \"caption\": \"Estacionamento amplo - 50 vagas\",\n  \"category\": 6,\n  \"originalFileName\": \"estacionamento.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto"]
+						},
+						"description": "Upload de foto das instalações (Categoria: Facilities = 6)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints para upload de fotos da igreja (requer autenticação de membro)"
+		},
+		{
+			"name": "?? List & Filter Photos",
+			"item": [
+				{
+					"name": "Get All Photos - Church",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?page=1&pageSize=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Lista todas as fotos aprovadas de uma igreja (público)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Photos by Category - Exterior",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?category=1&page=1&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "category",
+									"value": "1",
+									"description": "1=Exterior, 2=Interior, 3=Worship, 4=Events, etc"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Filtra fotos por categoria (Exterior)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Photos by Category - Worship",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?category=3&page=1&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "category",
+									"value": "3",
+									"description": "Categoria: Worship (cultos)"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Filtra fotos de cultos"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Featured Photos Only",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?onlyFeatured=true&page=1&pageSize=5",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "onlyFeatured",
+									"value": "true",
+									"description": "Apenas fotos em destaque"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Lista apenas fotos marcadas como destaque (featured)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Photos - Large Page Size",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?page=1&pageSize=50",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "50",
+									"description": "Até 50 fotos por página"
+								}
+							]
+						},
+						"description": "Lista com paginação maior (útil para galeria completa)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Photos - Page 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/church/{{church_id}}?page=2&pageSize=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "church", "{{church_id}}"],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Segunda página de resultados"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints públicos para listar e filtrar fotos (sem autenticação necessária)"
+		},
+		{
+			"name": "?? Like System",
+			"item": [
+				{
+					"name": "Like Photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/{{photo_id}}/like?like=true",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "{{photo_id}}", "like"],
+							"query": [
+								{
+									"key": "like",
+									"value": "true",
+									"description": "true = curtir, false = descurtir"
+								}
+							]
+						},
+						"description": "Curtir uma foto (requer autenticação)"
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/{{photo_id}}/like?like=false",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "{{photo_id}}", "like"],
+							"query": [
+								{
+									"key": "like",
+									"value": "false",
+									"description": "Remover curtida"
+								}
+							]
+						},
+						"description": "Descurtir uma foto (remove o like)"
+					},
+					"response": []
+				}
+			],
+			"description": "Sistema de curtidas (requer autenticação)"
+		},
+		{
+			"name": "??? Delete Photos",
+			"item": [
+				{
+					"name": "Delete Photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/ChurchPhoto/{{photo_id}}?churchId={{church_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["api", "ChurchPhoto", "{{photo_id}}"],
+							"query": [
+								{
+									"key": "churchId",
+									"value": "{{church_id}}",
+									"description": "ID da igreja (validação)"
+								}
+							]
+						},
+						"description": "Deleta uma foto (apenas admin ou autor podem deletar)"
+					},
+					"response": []
+				}
+			],
+			"description": "Deletar fotos (requer permissão: admin ou autor da foto)"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Auto-inject current timestamp",
+					"pm.environment.set('timestamp', new Date().toISOString());"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test: validate response time",
+					"pm.test('Response time is acceptable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+					"});",
+					"",
+					"// Global test: validate content-type",
+					"if (pm.response.code !== 204) {",
+					"    pm.test('Content-Type is JSON', function () {",
+					"        pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:7163",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		},
+		{
+			"key": "church_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "photo_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}

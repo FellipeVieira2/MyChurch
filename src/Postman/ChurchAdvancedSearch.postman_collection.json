@@ -1,0 +1,592 @@
+{
+	"info": {
+		"_postman_id": "church-advanced-search-collection",
+		"name": "MyChurch - Advanced Church Search & Characteristics",
+		"description": "Collection completa para busca avançada de igrejas e gerenciamento de características\n\n**Funcionalidades:**\n- Busca por denominação\n- Filtros por amenidades (estacionamento, acessibilidade, transmissão online)\n- Busca por idiomas\n- Filtros por avaliação (rating mínimo, quantidade de reviews)\n- Ordenação avançada (relevância, distância, rating, reviews)\n- Atualização de características da igreja\n\n**Nota:**\nA busca pública NÃO requer autenticação, mas a atualização de características requer JWT Token de Admin.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "?? Advanced Search - Public",
+			"item": [
+				{
+					"name": "Search by Denomination - Batista",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?denominations=Batista&page=1&pageSize=20",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "denominations",
+									"value": "Batista",
+									"description": "Filtrar por denominação"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
+								}
+							]
+						},
+						"description": "Busca igrejas da denominação Batista"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Multiple Denominations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?denominations=Assembleia de Deus&denominations=Batista&denominations=Adventista&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "denominations",
+									"value": "Assembleia de Deus"
+								},
+								{
+									"key": "denominations",
+									"value": "Batista"
+								},
+								{
+									"key": "denominations",
+									"value": "Adventista"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas de múltiplas denominações"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with Parking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=estacionamento&sortBy=rating&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "estacionamento",
+									"description": "Igrejas com estacionamento"
+								},
+								{
+									"key": "sortBy",
+									"value": "rating"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas que possuem estacionamento, ordenadas por avaliação"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Accessible Churches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=acessibilidade&city=São Paulo&state=SP&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "acessibilidade",
+									"description": "Igrejas acessíveis (rampa, elevador)"
+								},
+								{
+									"key": "city",
+									"value": "São Paulo"
+								},
+								{
+									"key": "state",
+									"value": "SP"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas acessíveis em São Paulo"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with Live Stream",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=transmissao_online&sortBy=reviews&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "transmissao_online",
+									"description": "Igrejas com transmissão ao vivo"
+								},
+								{
+									"key": "sortBy",
+									"value": "reviews"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas com transmissão online, ordenadas por quantidade de reviews"
+					},
+					"response": []
+				},
+				{
+					"name": "Search with Child Ministry",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=ministerio_infantil&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "ministerio_infantil"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas com ministério infantil"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Multiple Amenities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?amenities=estacionamento&amenities=acessibilidade&amenities=transmissao_online&amenities=ministerio_infantil&minRating=4.0&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "amenities",
+									"value": "estacionamento"
+								},
+								{
+									"key": "amenities",
+									"value": "acessibilidade"
+								},
+								{
+									"key": "amenities",
+									"value": "transmissao_online"
+								},
+								{
+									"key": "amenities",
+									"value": "ministerio_infantil"
+								},
+								{
+									"key": "minRating",
+									"value": "4.0",
+									"description": "Rating mínimo de 4.0 estrelas"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas com todas as comodidades e nota mínima 4.0"
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Rating - Top Rated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?minRating=4.5&minReviews=20&sortBy=rating&page=1&pageSize=10",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "minRating",
+									"value": "4.5",
+									"description": "Nota mínima 4.5 estrelas"
+								},
+								{
+									"key": "minReviews",
+									"value": "20",
+									"description": "Mínimo 20 avaliações"
+								},
+								{
+									"key": "sortBy",
+									"value": "rating",
+									"description": "Ordenar por avaliação"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Busca igrejas mais bem avaliadas (4.5+ com pelo menos 20 reviews)"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Nearby with Filters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?userLatitude=-23.550520&userLongitude=-46.633308&radiusKm=10&amenities=estacionamento&amenities=transmissao_online&minRating=4.0&sortBy=distance&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "userLatitude",
+									"value": "-23.550520",
+									"description": "Latitude do usuário"
+								},
+								{
+									"key": "userLongitude",
+									"value": "-46.633308",
+									"description": "Longitude do usuário"
+								},
+								{
+									"key": "radiusKm",
+									"value": "10",
+									"description": "Raio de 10km"
+								},
+								{
+									"key": "amenities",
+									"value": "estacionamento"
+								},
+								{
+									"key": "amenities",
+									"value": "transmissao_online"
+								},
+								{
+									"key": "minRating",
+									"value": "4.0"
+								},
+								{
+									"key": "sortBy",
+									"value": "distance"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas próximas com filtros combinados"
+					},
+					"response": []
+				},
+				{
+					"name": "Search by Relevance Score",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/Church/public/search?city=São Paulo&state=SP&sortBy=relevance&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "public", "search"],
+							"query": [
+								{
+									"key": "city",
+									"value": "São Paulo"
+								},
+								{
+									"key": "state",
+									"value": "SP"
+								},
+								{
+									"key": "sortBy",
+									"value": "relevance",
+									"description": "Score calculado: rating + reviews + distância"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Busca igrejas ordenadas por score de relevância (rating + reviews + proximidade)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints públicos de busca avançada (não requer autenticação)"
+		},
+		{
+			"name": "?? Update Church Characteristics",
+			"item": [
+				{
+					"name": "Update Characteristics - Complete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"denomination\": \"Batista\",\n  \"coverPhoto\": \"https://s3.amazonaws.com/mybucket/cover-photo.jpg\",\n  \"hasParking\": true,\n  \"isAccessible\": true,\n  \"hasLiveStream\": true,\n  \"hasChildMinistry\": true,\n  \"languages\": [\"Português\", \"Inglês\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Atualiza todas as características da igreja (apenas Admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Denomination Only",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"denomination\": \"Assembleia de Deus\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Atualiza apenas a denominação"
+					},
+					"response": []
+				},
+				{
+					"name": "Enable All Amenities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasParking\": true,\n  \"isAccessible\": true,\n  \"hasLiveStream\": true,\n  \"hasChildMinistry\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Habilita todas as amenidades"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Languages - Multilingual Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"languages\": [\"Português\", \"Inglês\", \"Espanhol\", \"Francês\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Igreja com cultos em múltiplos idiomas"
+					},
+					"response": []
+				},
+				{
+					"name": "Enable Online Features",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasLiveStream\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Habilita transmissão online"
+					},
+					"response": []
+				},
+				{
+					"name": "Family-Friendly Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasChildMinistry\": true,\n  \"hasParking\": true,\n  \"isAccessible\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/characteristics",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "characteristics"]
+						},
+						"description": "Igreja com foco em famílias (ministério infantil, estacionamento, acessibilidade)"
+					},
+					"response": []
+				}
+			],
+			"description": "Atualização de características da igreja para busca avançada (requer Admin)"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:7163",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		}
+	]
+}

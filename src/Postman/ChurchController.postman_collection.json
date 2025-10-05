@@ -2,12 +2,12 @@
 	"info": {
 		"_postman_id": "church-controller-collection",
 		"name": "MyChurch - Church Controller",
-		"description": "Collection completa para testar todos os endpoints do ChurchController\n\n**Funcionalidades:**\n- Busca p�blica de igrejas\n- Busca por proximidade (geolocaliza��o)\n- CRUD de igrejas\n- Gest�o de dados banc�rios\n- Dashboard administrativo\n- QR Code de onboarding\n- Geolocaliza��o (manual e autom�tica)\n\n**Autentica��o:**\nA maioria dos endpoints requer JWT Token. Configure a vari�vel `{{jwt_token}}` no ambiente.",
+		"description": "Collection completa para testar todos os endpoints do ChurchController\n\n**Funcionalidades:**\n- Busca pública de igrejas\n- Busca por proximidade (geolocalização)\n- CRUD de igrejas\n- Gestão de dados bancários\n- Dashboard administrativo\n- QR Code de onboarding\n- Geolocalização (manual e automática)\n- Redes Sociais e Contatos\n- Capacidade e Infraestrutura\n\n**Autenticação:**\nA maioria dos endpoints requer JWT Token. Configure a variável `{{jwt_token}}` no ambiente.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "?? Public - Search Churches",
+			"name": "🔍 Public - Search Churches",
 			"item": [
 				{
 					"name": "Search Public Churches - Basic",
@@ -214,10 +214,10 @@
 					"response": []
 				}
 			],
-			"description": "Endpoints p�blicos de busca de igrejas (n�o requer autentica��o)"
+			"description": "Endpoints públicos de busca de igrejas (não requer autenticação)"
 		},
 		{
-			"name": "?? Geolocation",
+			"name": "📍 Geolocation",
 			"item": [
 				{
 					"name": "Get Nearby Churches",
@@ -259,7 +259,7 @@
 			"description": "Endpoints de busca por geolocaliza��o"
 		},
 		{
-			"name": "? Church CRUD",
+			"name": "⛪ Church CRUD",
 			"item": [
 				{
 					"name": "Create Church",
@@ -378,7 +378,7 @@
 			"description": "CRUD b�sico de igrejas"
 		},
 		{
-			"name": "?? Banking & Financial",
+			"name": "💰 Banking & Financial",
 			"item": [
 				{
 					"name": "Update Banking Info",
@@ -441,7 +441,382 @@
 			"description": "Gest�o financeira e dashboard administrativo"
 		},
 		{
-			"name": "?? QR Code & Onboarding",
+			"name": "📱 Social Media & Contacts",
+			"item": [
+				{
+					"name": "Update Social Media - Complete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"website\": \"https://www.minhaigreja.com.br\",\n  \"email\": \"contato@minhaigreja.com.br\",\n  \"instagramUrl\": \"https://www.instagram.com/minhaigreja\",\n  \"facebookUrl\": \"https://www.facebook.com/minhaigreja\",\n  \"youtubeUrl\": \"https://www.youtube.com/@minhaigreja\",\n  \"whatsAppNumber\": \"+5511987654321\",\n  \"twitterUrl\": \"https://twitter.com/minhaigreja\",\n  \"tiktokUrl\": \"https://www.tiktok.com/@minhaigreja\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Atualiza todos os canais de redes sociais e contatos da igreja (apenas Admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Social Media - Partial (Website + Email)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"website\": \"https://www.igrejanovaesperanca.com.br\",\n  \"email\": \"admin@igrejanovaesperanca.com.br\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Atualização parcial - apenas website e email institucional"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Social Media - Only Instagram",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"instagramUrl\": \"https://www.instagram.com/igreja.renovada\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Atualiza apenas o Instagram"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Social Media - Facebook + YouTube",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"facebookUrl\": \"https://www.facebook.com/IgrejaPentecostal\",\n  \"youtubeUrl\": \"https://www.youtube.com/@IgrejaPentecostal\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Atualiza Facebook e YouTube para transmissões ao vivo"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Social Media - WhatsApp Only",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"whatsAppNumber\": \"+5511999888777\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Atualiza apenas o WhatsApp (formato internacional)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Social Media - New Social (TikTok + Twitter)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"tiktokUrl\": \"https://www.tiktok.com/@igrejajovem\",\n  \"twitterUrl\": \"https://twitter.com/IgrejaJovem\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/social-media",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "social-media"]
+						},
+						"description": "Adiciona TikTok e Twitter para alcançar público jovem"
+					},
+					"response": []
+				}
+			],
+			"description": "Gerenciamento de redes sociais e contatos completos da igreja"
+		},
+		{
+			"name": "🏛️ Capacity & Infrastructure",
+			"item": [
+				{
+					"name": "Update Capacity - Complete (Large Church)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 800,\n  \"standingCapacity\": 200,\n  \"parkingSpaces\": 150,\n  \"hasWifi\": true,\n  \"wifiPassword\": \"IgrejaWiFi2024\",\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"hasAirConditioning\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Academia\", \"Quadra esportiva\", \"Auditório\"],\n  \"equipmentNotes\": \"Sistema de som Yamaha. Projetor 4K.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Atualiza todos os dados de capacidade e infraestrutura - Igreja grande"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Capacity - Medium Church",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"seatingCapacity\": 300,\n  \"parkingSpaces\": 40,\n  \"hasWifi\": true,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja de médio porte com infraestrutura padrão"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Parking Only",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"parkingSpaces\": 200,\n  \"additionalFacilities\": [\"Estacionamento coberto\", \"Manobrista\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Atualiza apenas vagas de estacionamento"
+					},
+					"response": []
+				},
+				{
+					"name": "Enable WiFi",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasWifi\": true,\n  \"wifiPassword\": \"MinhaIgreja#2024\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Habilita WiFi com senha para membros"
+					},
+					"response": []
+				},
+				{
+					"name": "Family-Friendly Setup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"hasNursery\": true,\n  \"hasCafeteria\": true,\n  \"additionalFacilities\": [\"Brinquedoteca\", \"Fraldário\", \"Playground\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Church/capacity",
+							"host": ["{{base_url}}"],
+							"path": ["api", "Church", "capacity"]
+						},
+						"description": "Igreja com foco em famílias e crianças"
+					},
+					"response": []
+				}
+			],
+			"description": "Gerenciamento de capacidade, lotação, estacionamento, equipamentos e instalações"
+		},
+		{
+			"name": "📱 QR Code & Onboarding",
 			"item": [
 				{
 					"name": "Generate Onboarding QR Code",
@@ -471,7 +846,7 @@
 			"description": "QR Code para onboarding de novos membros"
 		},
 		{
-			"name": "??? Location Management",
+			"name": "🗺️ Location Management",
 			"item": [
 				{
 					"name": "Update Location Manually",

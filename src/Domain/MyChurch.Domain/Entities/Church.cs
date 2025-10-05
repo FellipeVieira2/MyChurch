@@ -56,6 +56,32 @@
         public bool IsVerified { get; set; } = false; // Igreja verificada pela plataforma
         public DateTime? VerifiedAt { get; set; }
         
+        // 📱 REDES SOCIAIS E CONTATOS
+        public string? Website { get; set; } // Site oficial da igreja
+        public string? Email { get; set; } // Email institucional
+        public string? InstagramUrl { get; set; } // URL completa do Instagram
+        public string? FacebookUrl { get; set; } // URL completa do Facebook
+        public string? YoutubeUrl { get; set; } // URL completa do YouTube
+        public string? WhatsAppNumber { get; set; } // Número do WhatsApp (formato internacional)
+        public string? TwitterUrl { get; set; } // URL completa do Twitter/X
+        public string? TikTokUrl { get; set; } // URL completa do TikTok
+        
+        // 🏛️ CAPACIDADE E INFRAESTRUTURA
+        public int? SeatingCapacity { get; set; } // Lotação total de assentos
+        public int? StandingCapacity { get; set; } // Capacidade em pé (para eventos especiais)
+        public int? ParkingSpaces { get; set; } // Número de vagas de estacionamento
+        public bool HasWifi { get; set; } = false; // WiFi disponível
+        public string? WifiPassword { get; set; } // Senha do WiFi (opcional, para membros)
+        public bool HasCafeteria { get; set; } = false; // Possui cafeteria/lanchonete
+        public bool HasBookstore { get; set; } = false; // Possui livraria
+        public bool HasNursery { get; set; } = false; // Possui berçário
+        public bool HasSoundSystem { get; set; } = false; // Sistema de som profissional
+        public bool HasProjector { get; set; } = false; // Projetor/Telão
+        public bool HasAirConditioning { get; set; } = false; // Ar condicionado
+        public bool HasBaptistery { get; set; } = false; // Batistério
+        public string? AdditionalFacilities { get; set; } // JSON array de instalações adicionais
+        public string? EquipmentNotes { get; set; } // Notas sobre equipamentos disponíveis
+        
         public Subscription Subscription { get; set; }
         
         // 🕐 HORÁRIOS DE CULTOS
@@ -84,6 +110,68 @@
             
             Latitude = latitude;
             Longitude = longitude;
+            Updated = DateTime.UtcNow;
+        }
+        
+        /// <summary>
+        /// Atualiza as redes sociais e contatos da igreja
+        /// </summary>
+        public void UpdateSocialMedia(
+            string? website = null,
+            string? email = null,
+            string? instagramUrl = null,
+            string? facebookUrl = null,
+            string? youtubeUrl = null,
+            string? whatsAppNumber = null,
+            string? twitterUrl = null,
+            string? tiktokUrl = null)
+        {
+            if (website != null) Website = website;
+            if (email != null) Email = email;
+            if (instagramUrl != null) InstagramUrl = instagramUrl;
+            if (facebookUrl != null) FacebookUrl = facebookUrl;
+            if (youtubeUrl != null) YoutubeUrl = youtubeUrl;
+            if (whatsAppNumber != null) WhatsAppNumber = whatsAppNumber;
+            if (twitterUrl != null) TwitterUrl = twitterUrl;
+            if (tiktokUrl != null) TikTokUrl = tiktokUrl;
+            
+            Updated = DateTime.UtcNow;
+        }
+        
+        /// <summary>
+        /// Atualiza capacidade e infraestrutura da igreja
+        /// </summary>
+        public void UpdateCapacityAndInfrastructure(
+            int? seatingCapacity = null,
+            int? standingCapacity = null,
+            int? parkingSpaces = null,
+            bool? hasWifi = null,
+            string? wifiPassword = null,
+            bool? hasCafeteria = null,
+            bool? hasBookstore = null,
+            bool? hasNursery = null,
+            bool? hasSoundSystem = null,
+            bool? hasProjector = null,
+            bool? hasAirConditioning = null,
+            bool? hasBaptistery = null,
+            string? additionalFacilities = null,
+            string? equipmentNotes = null)
+        {
+            if (seatingCapacity.HasValue) SeatingCapacity = seatingCapacity.Value;
+            if (standingCapacity.HasValue) StandingCapacity = standingCapacity.Value;
+            if (parkingSpaces.HasValue) ParkingSpaces = parkingSpaces.Value;
+            if (hasWifi.HasValue) HasWifi = hasWifi.Value;
+            if (wifiPassword != null) WifiPassword = wifiPassword;
+            if (hasCafeteria.HasValue) HasCafeteria = hasCafeteria.Value;
+            if (hasBookstore.HasValue) HasBookstore = hasBookstore.Value;
+            if (hasNursery.HasValue) HasNursery = hasNursery.Value;
+            if (hasSoundSystem.HasValue) HasSoundSystem = hasSoundSystem.Value;
+            if (hasProjector.HasValue) HasProjector = hasProjector.Value;
+            if (hasAirConditioning.HasValue) HasAirConditioning = hasAirConditioning.Value;
+            if (hasBaptistery.HasValue) HasBaptistery = hasBaptistery.Value;
+            if (additionalFacilities != null) AdditionalFacilities = additionalFacilities;
+            if (equipmentNotes != null) EquipmentNotes = equipmentNotes;
+            
             Updated = DateTime.UtcNow;
         }
         
