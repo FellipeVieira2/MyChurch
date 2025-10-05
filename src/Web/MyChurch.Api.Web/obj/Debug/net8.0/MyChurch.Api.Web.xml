@@ -1250,6 +1250,48 @@
             Limite: 10 votos por minuto.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetDashboardStatistics(System.Nullable{System.Int32})">
+            <summary>
+            Obtém estatísticas gerais da igreja
+            </summary>
+            <response code="200">Sucesso: Estatísticas retornadas</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMembersByAgeGroup(System.Nullable{System.Int32})">
+            <summary>
+            Obtém distribuição de membros por faixa etária
+            </summary>
+            <response code="200">Sucesso: Distribuição retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMembersByMinistry(System.Nullable{System.Int32})">
+            <summary>
+            Obtém distribuição de membros por ministério
+            </summary>
+            <response code="200">Sucesso: Distribuição retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMonthlyMemberGrowth(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém evolução mensal de membros
+            </summary>
+            <response code="200">Sucesso: Evolução retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMonthlyFinancial(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém evolução financeira mensal
+            </summary>
+            <response code="200">Sucesso: Evolução retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetTopEngagedMembers(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém top membros mais engajados
+            </summary>
+            <response code="200">Sucesso: Top membros retornados</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>
             Cria uma nova assinatura

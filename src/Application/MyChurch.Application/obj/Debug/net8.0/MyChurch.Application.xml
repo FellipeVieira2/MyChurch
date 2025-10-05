@@ -819,6 +819,166 @@
             Valor de filtro
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByAgeGroupDto">
+            <summary>
+            Estatísticas de membros por faixa etária
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByGenderDto">
+            <summary>
+            Estatísticas de membros por gênero
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByMinistryDto">
+            <summary>
+            Estatísticas de membros por ministério
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MonthlyMemberGrowthDto">
+            <summary>
+            Evolução mensal de membros
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MonthlyFinancialDto">
+            <summary>
+            Evolução mensal financeira
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.AttendanceByEventDto">
+            <summary>
+            Estatísticas de presença por evento
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.TopEngagedMembersDto">
+            <summary>
+            Top membros mais engajados
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchStatisticsDto">
+            <summary>
+            DTO com estatísticas gerais da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TotalMembers">
+            <summary>
+            Total de membros cadastrados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveMembers">
+            <summary>
+            Total de membros ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.InactiveMembers">
+            <summary>
+            Total de membros inativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.NewMembersThisMonth">
+            <summary>
+            Novos membros no mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.NewMembersLastMonth">
+            <summary>
+            Novos membros no mês anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.MemberGrowthPercentage">
+            <summary>
+            Percentual de crescimento de membros
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BaptizedMembers">
+            <summary>
+            Total de membros batizados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BaptizedPercentage">
+            <summary>
+            Percentual de membros batizados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.Tithers">
+            <summary>
+            Total de dizimistas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TithersPercentage">
+            <summary>
+            Percentual de dizimistas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.AverageAttendancePercentage">
+            <summary>
+            Média de presença em cultos (%)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TotalAttendancesThisMonth">
+            <summary>
+            Total de presenças registradas no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueThisMonth">
+            <summary>
+            Receita total do mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueLastMonth">
+            <summary>
+            Receita total do mês anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueGrowthPercentage">
+            <summary>
+            Percentual de crescimento da receita
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ExpensesThisMonth">
+            <summary>
+            Despesas totais do mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BalanceThisMonth">
+            <summary>
+            Saldo do mês (receita - despesas)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.EventsThisMonth">
+            <summary>
+            Total de eventos no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveMinistries">
+            <summary>
+            Total de ministérios ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveGroups">
+            <summary>
+            Total de grupos/células ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActivePrayerRequests">
+            <summary>
+            Total de pedidos de oração ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.AverageEngagementScore">
+            <summary>
+            Taxa de engajamento média (0-100)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.VisitorsThisMonth">
+            <summary>
+            Total de visitantes no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.VisitorConversionRate">
+            <summary>
+            Taxa de conversão de visitantes em membros (%)
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
             <summary>Nome completo</summary>
             <example>João Silva</example>
@@ -1142,6 +1302,26 @@
         <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.ReviewPhotoItemDto">
             <summary>
             DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetChurchStatistics.GetChurchStatisticsQuery.ChurchId">
+            <summary>
+            ID da igreja (opcional, pega da autenticação se não fornecido)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetMonthlyFinancial.GetMonthlyFinancialQuery.Months">
+            <summary>
+            Número de meses para retornar (padrão: 12)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetMonthlyMemberGrowth.GetMonthlyMemberGrowthQuery.Months">
+            <summary>
+            Número de meses para retornar (padrão: 12)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetTopEngagedMembers.GetTopEngagedMembersQuery.Top">
+            <summary>
+            Quantidade de membros para retornar (padrão: 10)
             </summary>
         </member>
     </members>

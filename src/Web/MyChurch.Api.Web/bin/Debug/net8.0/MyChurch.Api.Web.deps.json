@@ -41,10 +41,7 @@
       },
       "AWSSDK.Extensions.NETCore.Setup/4.0.1": {
         "dependencies": {
-          "AWSSDK.Core": "4.0.0.5",
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.9",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9"
+          "AWSSDK.Core": "4.0.0.5"
         },
         "runtime": {
           "lib/net8.0/AWSSDK.Extensions.NETCore.Setup.dll": {
@@ -79,10 +76,7 @@
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "7.0.0",
           "System.ClientModel": "1.0.0",
-          "System.Diagnostics.DiagnosticSource": "9.0.9",
-          "System.Memory.Data": "1.0.2",
-          "System.Text.Encodings.Web": "9.0.3",
-          "System.Text.Json": "9.0.3"
+          "System.Memory.Data": "1.0.2"
         },
         "runtime": {
           "lib/net6.0/Azure.Core.dll": {
@@ -96,8 +90,7 @@
           "Azure.Core": "1.38.0",
           "Microsoft.Identity.Client": "4.64.1",
           "Microsoft.Identity.Client.Extensions.Msal": "4.61.3",
-          "System.Security.Cryptography.ProtectedData": "4.7.0",
-          "System.Text.Json": "9.0.3"
+          "System.Security.Cryptography.ProtectedData": "4.7.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.Identity.dll": {
@@ -108,8 +101,7 @@
       },
       "Azure.Security.KeyVault.Certificates/4.6.0": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
-          "System.Text.Json": "9.0.3"
+          "Azure.Core": "1.38.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.Security.KeyVault.Certificates.dll": {
@@ -120,8 +112,7 @@
       },
       "Azure.Security.KeyVault.Secrets/4.6.0": {
         "dependencies": {
-          "Azure.Core": "1.38.0",
-          "System.Text.Json": "9.0.3"
+          "Azure.Core": "1.38.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.Security.KeyVault.Secrets.dll": {
@@ -156,7 +147,6 @@
       },
       "DotnetGeminiSDK/1.0.14": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
@@ -188,8 +178,7 @@
       },
       "FluentValidation.DependencyInjectionExtensions/11.11.0": {
         "dependencies": {
-          "FluentValidation": "11.11.0",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9"
+          "FluentValidation": "11.11.0"
         },
         "runtime": {
           "lib/netstandard2.1/FluentValidation.DependencyInjectionExtensions.dll": {
@@ -263,8 +252,7 @@
       },
       "MediatR/12.4.1": {
         "dependencies": {
-          "MediatR.Contracts": "2.0.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9"
+          "MediatR.Contracts": "2.0.1"
         },
         "runtime": {
           "lib/net6.0/MediatR.dll": {
@@ -283,9 +271,7 @@
       },
       "MicroElements.OpenApi.FluentValidation/6.1.0": {
         "dependencies": {
-          "FluentValidation": "11.11.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
-          "Microsoft.Extensions.Options": "9.0.9"
+          "FluentValidation": "11.11.0"
         },
         "runtime": {
           "lib/netstandard2.0/MicroElements.OpenApi.FluentValidation.dll": {
@@ -326,39 +312,6 @@
           "lib/net8.0/Microsoft.AspNetCore.Authentication.OpenIdConnect.dll": {
             "assemblyVersion": "8.0.12.0",
             "fileVersion": "8.0.1224.60312"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.Cryptography.Internal/8.0.1": {
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.123.58008"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.DataProtection/8.0.1": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.Internal": "8.0.1",
-          "Microsoft.AspNetCore.DataProtection.Abstractions": "8.0.1",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.9",
-          "Microsoft.Extensions.Hosting.Abstractions": "9.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
-          "Microsoft.Extensions.Options": "9.0.9",
-          "System.Security.Cryptography.Xml": "8.0.1"
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.DataProtection.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.123.58008"
-          }
-        }
-      },
-      "Microsoft.AspNetCore.DataProtection.Abstractions/8.0.1": {
-        "runtime": {
-          "lib/net8.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.123.58008"
           }
         }
       },
@@ -547,8 +500,7 @@
           "Humanizer.Core": "2.14.1",
           "Microsoft.Bcl.AsyncInterfaces": "7.0.0",
           "Microsoft.CodeAnalysis.Common": "4.8.0",
-          "System.Composition": "7.0.0",
-          "System.IO.Pipelines": "9.0.3"
+          "System.Composition": "7.0.0"
         },
         "runtime": {
           "lib/net7.0/Microsoft.CodeAnalysis.Workspaces.dll": {
@@ -601,8 +553,7 @@
       "Microsoft.CodeAnalysis.Workspaces.MSBuild/4.8.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.Common": "4.8.0",
-          "Microsoft.CodeAnalysis.Workspaces.Common": "4.8.0",
-          "System.Text.Json": "9.0.3"
+          "Microsoft.CodeAnalysis.Workspaces.Common": "4.8.0"
         },
         "runtime": {
           "lib/net7.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll": {
@@ -942,8 +893,7 @@
       },
       "Microsoft.Identity.Client/4.64.1": {
         "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "8.7.0",
-          "System.Diagnostics.DiagnosticSource": "9.0.9"
+          "Microsoft.IdentityModel.Abstractions": "8.7.0"
         },
         "runtime": {
           "lib/net6.0/Microsoft.Identity.Client.dll": {
@@ -966,15 +916,13 @@
       },
       "Microsoft.Identity.Web/3.2.0": {
         "dependencies": {
-          "Microsoft.Extensions.Http": "9.0.9",
           "Microsoft.Identity.Web.Certificate": "3.2.0",
           "Microsoft.Identity.Web.Certificateless": "3.2.0",
           "Microsoft.Identity.Web.TokenAcquisition": "3.2.0",
           "Microsoft.Identity.Web.TokenCache": "3.2.0",
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "8.1.0",
           "Microsoft.IdentityModel.Validators": "8.1.0",
-          "System.IdentityModel.Tokens.Jwt": "8.7.0",
-          "System.Text.Json": "9.0.3"
+          "System.IdentityModel.Tokens.Jwt": "8.7.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Identity.Web.dll": {
@@ -990,8 +938,7 @@
           "Azure.Security.KeyVault.Secrets": "4.6.0",
           "Microsoft.Identity.Abstractions": "7.1.0",
           "Microsoft.Identity.Web.Certificateless": "3.2.0",
-          "Microsoft.Identity.Web.Diagnostics": "3.2.0",
-          "System.Text.Json": "9.0.3"
+          "Microsoft.Identity.Web.Diagnostics": "3.2.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Identity.Web.Certificate.dll": {
@@ -1002,10 +949,8 @@
       },
       "Microsoft.Identity.Web.Certificateless/3.2.0": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
           "Microsoft.Identity.Client": "4.64.1",
-          "Microsoft.IdentityModel.JsonWebTokens": "8.7.0",
-          "System.Text.Json": "9.0.3"
+          "Microsoft.IdentityModel.JsonWebTokens": "8.7.0"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.Identity.Web.Certificateless.dll": {
@@ -1024,7 +969,6 @@
       },
       "Microsoft.Identity.Web.DownstreamApi/3.2.0": {
         "dependencies": {
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.9",
           "Microsoft.Identity.Web.TokenAcquisition": "3.2.0"
         },
         "runtime": {
@@ -1038,8 +982,6 @@
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.12",
           "Microsoft.AspNetCore.Authentication.OpenIdConnect": "8.0.12",
-          "Microsoft.Extensions.Http": "9.0.9",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "9.0.9",
           "Microsoft.Identity.Abstractions": "7.1.0",
           "Microsoft.Identity.Web.Certificate": "3.2.0",
           "Microsoft.Identity.Web.Certificateless": "3.2.0",
@@ -1058,13 +1000,8 @@
       },
       "Microsoft.Identity.Web.TokenCache/3.2.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.DataProtection": "8.0.1",
-          "Microsoft.Extensions.Caching.Memory": "9.0.3",
-          "Microsoft.Extensions.Logging": "9.0.9",
           "Microsoft.Identity.Client": "4.64.1",
-          "Microsoft.Identity.Web.Diagnostics": "3.2.0",
-          "System.Security.Cryptography.Pkcs": "8.0.1",
-          "System.Security.Cryptography.Xml": "8.0.1"
+          "Microsoft.Identity.Web.Diagnostics": "3.2.0"
         },
         "runtime": {
           "lib/net8.0/Microsoft.Identity.Web.TokenCache.dll": {
@@ -1105,7 +1042,6 @@
       },
       "Microsoft.IdentityModel.LoggingExtensions/8.1.0": {
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
           "Microsoft.IdentityModel.Abstractions": "8.7.0"
         },
         "runtime": {
@@ -1141,7 +1077,6 @@
       "Microsoft.IdentityModel.Tokens/8.7.0": {
         "dependencies": {
           "Microsoft.Bcl.Memory": "9.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9",
           "Microsoft.IdentityModel.Logging": "8.7.0"
         },
         "runtime": {
@@ -1191,8 +1126,7 @@
       },
       "MimeKit/4.12.0": {
         "dependencies": {
-          "BouncyCastle.Cryptography": "2.5.1",
-          "System.Security.Cryptography.Pkcs": "8.0.1"
+          "BouncyCastle.Cryptography": "2.5.1"
         },
         "runtime": {
           "lib/net8.0/MimeKit.dll": {
@@ -1240,9 +1174,6 @@
         }
       },
       "Npgsql/9.0.3": {
-        "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.9"
-        },
         "runtime": {
           "lib/net8.0/Npgsql.dll": {
             "assemblyVersion": "9.0.3.0",
@@ -1289,9 +1220,6 @@
         }
       },
       "Postmark/5.2.0": {
-        "dependencies": {
-          "System.Text.Json": "9.0.3"
-        },
         "runtime": {
           "lib/netstandard2.0/Postmark.dll": {
             "assemblyVersion": "5.2.0.0",
@@ -1455,8 +1383,7 @@
       },
       "System.ClientModel/1.0.0": {
         "dependencies": {
-          "System.Memory.Data": "1.0.2",
-          "System.Text.Json": "9.0.3"
+          "System.Memory.Data": "1.0.2"
         },
         "runtime": {
           "lib/net6.0/System.ClientModel.dll": {
@@ -1596,30 +1523,10 @@
         }
       },
       "System.Memory.Data/1.0.2": {
-        "dependencies": {
-          "System.Text.Encodings.Web": "9.0.3",
-          "System.Text.Json": "9.0.3"
-        },
         "runtime": {
           "lib/netstandard2.0/System.Memory.Data.dll": {
             "assemblyVersion": "1.0.2.0",
             "fileVersion": "1.0.221.20802"
-          }
-        }
-      },
-      "System.Security.Cryptography.Pkcs/8.0.1": {
-        "runtime": {
-          "lib/net8.0/System.Security.Cryptography.Pkcs.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1024.46610"
-          }
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll": {
-            "rid": "win",
-            "assetType": "runtime",
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1024.46610"
           }
         }
       },
@@ -1636,17 +1543,6 @@
             "assetType": "runtime",
             "assemblyVersion": "4.0.5.0",
             "fileVersion": "4.700.19.56404"
-          }
-        }
-      },
-      "System.Security.Cryptography.Xml/8.0.1": {
-        "dependencies": {
-          "System.Security.Cryptography.Pkcs": "8.0.1"
-        },
-        "runtime": {
-          "lib/net8.0/System.Security.Cryptography.Xml.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.524.21615"
           }
         }
       },
@@ -1948,27 +1844,6 @@
       "sha512": "sha512-3N1yJih35FoBb9dy9F0OscsKrzUE29HI0L0MyUhAhJLTE2AwhkUaACLDrEtc694q3XnmcQ01jHyaIPOLPTaODg==",
       "path": "microsoft.aspnetcore.authentication.openidconnect/8.0.12",
       "hashPath": "microsoft.aspnetcore.authentication.openidconnect.8.0.12.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.Cryptography.Internal/8.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ryzsiEKr1qJ8f/CARxK8/zTX41aGUpoYOrZuKpsWiK6LwnuynxSFrzBDF04bT7xHF/i0EOeqkIRvfIohI/EsTg==",
-      "path": "microsoft.aspnetcore.cryptography.internal/8.0.1",
-      "hashPath": "microsoft.aspnetcore.cryptography.internal.8.0.1.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.DataProtection/8.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-DX2Quy+WRLXPGeWNGtOKyPT2vusNfFI15S9M2DIpaeBqZmXpheoQdlvsPzyn7K8uorcnfUW5ML/vSo26FOQ9BA==",
-      "path": "microsoft.aspnetcore.dataprotection/8.0.1",
-      "hashPath": "microsoft.aspnetcore.dataprotection.8.0.1.nupkg.sha512"
-    },
-    "Microsoft.AspNetCore.DataProtection.Abstractions/8.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-4n79+eJnSXaqZIx5c6A+Dtl2bIYwcrAujKDfnDJnTkJa0n5NH4UBCCDNEyONW11UeBYzZb1G4DTE7YWOFbw+9Q==",
-      "path": "microsoft.aspnetcore.dataprotection.abstractions/8.0.1",
-      "hashPath": "microsoft.aspnetcore.dataprotection.abstractions.8.0.1.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/7.0.0": {
       "type": "package",
@@ -2586,26 +2461,12 @@
       "path": "system.memory.data/1.0.2",
       "hashPath": "system.memory.data.1.0.2.nupkg.sha512"
     },
-    "System.Security.Cryptography.Pkcs/8.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-CoCRHFym33aUSf/NtWSVSZa99dkd0Hm7OCZUxORBjRB16LNhIEOf8THPqzIYlvKM0nNDAPTRBa1FxEECrgaxxA==",
-      "path": "system.security.cryptography.pkcs/8.0.1",
-      "hashPath": "system.security.cryptography.pkcs.8.0.1.nupkg.sha512"
-    },
     "System.Security.Cryptography.ProtectedData/4.7.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-ehYW0m9ptxpGWvE4zgqongBVWpSDU/JCFD4K7krxkQwSz/sFQjEXCUqpvencjy6DYDbn7Ig09R8GFffu8TtneQ==",
       "path": "system.security.cryptography.protecteddata/4.7.0",
       "hashPath": "system.security.cryptography.protecteddata.4.7.0.nupkg.sha512"
-    },
-    "System.Security.Cryptography.Xml/8.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hqu2ztecOf3BYg5q1R7QcyliX9L7r3mfsWtaRitAxcezH8hyZMB7zCmhi186hsUZXk1KxsAHXwyPEW+xvUED6g==",
-      "path": "system.security.cryptography.xml/8.0.1",
-      "hashPath": "system.security.cryptography.xml.8.0.1.nupkg.sha512"
     },
     "System.Text.Encodings.Web/9.0.3": {
       "type": "package",
