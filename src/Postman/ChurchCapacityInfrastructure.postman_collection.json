@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "church-capacity-collection",
 		"name": "MyChurch - Church Capacity & Infrastructure",
-		"description": "Collection completa para gerenciar capacidade e infraestrutura da igreja\n\n**Funcionalidades:**\n- Atualizar lotação (assentos e em pé)\n- Gerenciar vagas de estacionamento\n- Configurar WiFi\n- Adicionar instalações (cafeteria, livraria, berçário)\n- Registrar equipamentos (som, projetor, ar-condicionado)\n- Instalações adicionais\n\n**Autenticação:**\nRequer JWT Token com role **Admin**.",
+		"description": "Collection completa para gerenciar capacidade e infraestrutura da igreja\n\n**Funcionalidades:**\n- Atualizar lotaï¿½ï¿½o (assentos e em pï¿½)\n- Gerenciar vagas de estacionamento\n- Configurar WiFi\n- Adicionar instalaï¿½ï¿½es (cafeteria, livraria, berï¿½ï¿½rio)\n- Registrar equipamentos (som, projetor, ar-condicionado)\n- Instalaï¿½ï¿½es adicionais\n\n**Autenticaï¿½ï¿½o:**\nRequer JWT Token com role **Admin**.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -31,14 +31,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"seatingCapacity\": 800,\n  \"standingCapacity\": 200,\n  \"parkingSpaces\": 150,\n  \"hasWifi\": true,\n  \"wifiPassword\": \"IgrejaWiFi2024\",\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"hasAirConditioning\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Academia\", \"Quadra esportiva\", \"Auditório\", \"Sala de reuniões\"],\n  \"equipmentNotes\": \"Sistema de som profissional Yamaha. Projetor 4K. Ar-condicionado central.\"\n}"
+							"raw": "{\n  \"seatingCapacity\": 800,\n  \"standingCapacity\": 200,\n  \"parkingSpaces\": 150,\n  \"hasWifi\": true,\n  \"wifiPassword\": \"IgrejaWiFi2024\",\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"hasAirConditioning\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Academia\", \"Quadra esportiva\", \"Auditï¿½rio\", \"Sala de reuniï¿½es\"],\n  \"equipmentNotes\": \"Sistema de som profissional Yamaha. Projetor 4K. Ar-condicionado central.\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Igreja grande com todas as instalações e equipamentos"
+						"description": "Igreja grande com todas as instalaï¿½ï¿½es e equipamentos"
 					},
 					"response": []
 				},
@@ -71,7 +71,7 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Igreja de médio porte com infraestrutura básica"
+						"description": "Igreja de mï¿½dio porte com infraestrutura bï¿½sica"
 					},
 					"response": []
 				},
@@ -104,12 +104,12 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Igreja pequena com infraestrutura mínima"
+						"description": "Igreja pequena com infraestrutura mï¿½nima"
 					},
 					"response": []
 				}
 			],
-			"description": "Gerenciamento de lotação da igreja"
+			"description": "Gerenciamento de lotaï¿½ï¿½o da igreja"
 		},
 		{
 			"name": "?? Parking Management",
@@ -169,14 +169,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"parkingSpaces\": 0,\n  \"equipmentNotes\": \"Estacionamento disponível apenas na rua\"\n}"
+							"raw": "{\n  \"parkingSpaces\": 0,\n  \"equipmentNotes\": \"Estacionamento disponï¿½vel apenas na rua\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Igreja sem estacionamento próprio"
+						"description": "Igreja sem estacionamento prï¿½prio"
 					},
 					"response": []
 				}
@@ -248,12 +248,12 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "WiFi público sem senha"
+						"description": "WiFi pï¿½blico sem senha"
 					},
 					"response": []
 				}
 			],
-			"description": "Configuração de WiFi"
+			"description": "Configuraï¿½ï¿½o de WiFi"
 		},
 		{
 			"name": "?? Facilities Management",
@@ -280,14 +280,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Biblioteca\", \"Sala de oração\", \"Cozinha industrial\"]\n}"
+							"raw": "{\n  \"hasCafeteria\": true,\n  \"hasBookstore\": true,\n  \"hasNursery\": true,\n  \"hasBaptistery\": true,\n  \"additionalFacilities\": [\"Biblioteca\", \"Sala de oraï¿½ï¿½o\", \"Cozinha industrial\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Habilita todas as instalações"
+						"description": "Habilita todas as instalaï¿½ï¿½es"
 					},
 					"response": []
 				},
@@ -313,19 +313,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasNursery\": true,\n  \"hasCafeteria\": true,\n  \"additionalFacilities\": [\"Brinquedoteca\", \"Fraldário\", \"Sala de amamentação\"]\n}"
+							"raw": "{\n  \"hasNursery\": true,\n  \"hasCafeteria\": true,\n  \"additionalFacilities\": [\"Brinquedoteca\", \"Fraldï¿½rio\", \"Sala de amamentaï¿½ï¿½o\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Igreja com foco em famílias"
+						"description": "Igreja com foco em famï¿½lias"
 					},
 					"response": []
 				}
 			],
-			"description": "Instalações da igreja (cafeteria, livraria, berçário)"
+			"description": "Instalaï¿½ï¿½es da igreja (cafeteria, livraria, berï¿½ï¿½rio)"
 		},
 		{
 			"name": "??? Equipment Management",
@@ -352,14 +352,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"equipmentNotes\": \"Mesa de som Behringer X32. Projetores Epson 6K lumens (2 unidades). Câmeras PTZ para transmissão. Sistema de iluminação LED DMX.\"\n}"
+							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": true,\n  \"equipmentNotes\": \"Mesa de som Behringer X32. Projetores Epson 6K lumens (2 unidades). Cï¿½meras PTZ para transmissï¿½o. Sistema de iluminaï¿½ï¿½o LED DMX.\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Equipamentos profissionais de som e vídeo"
+						"description": "Equipamentos profissionais de som e vï¿½deo"
 					},
 					"response": []
 				},
@@ -385,14 +385,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": false,\n  \"equipmentNotes\": \"Caixas de som amplificadas. Microfones sem fio (2). Violão e teclado.\"\n}"
+							"raw": "{\n  \"hasSoundSystem\": true,\n  \"hasProjector\": false,\n  \"equipmentNotes\": \"Caixas de som amplificadas. Microfones sem fio (2). Violï¿½o e teclado.\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Equipamentos básicos"
+						"description": "Equipamentos bï¿½sicos"
 					},
 					"response": []
 				},
@@ -418,19 +418,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasAirConditioning\": true,\n  \"equipmentNotes\": \"Ar-condicionado central 60.000 BTUs. Sistema de ventilação forçada.\"\n}"
+							"raw": "{\n  \"hasAirConditioning\": true,\n  \"equipmentNotes\": \"Ar-condicionado central 60.000 BTUs. Sistema de ventilaï¿½ï¿½o forï¿½ada.\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Climatização da igreja"
+						"description": "Climatizaï¿½ï¿½o da igreja"
 					},
 					"response": []
 				}
 			],
-			"description": "Equipamentos técnicos (som, projetor, ar-condicionado)"
+			"description": "Equipamentos tï¿½cnicos (som, projetor, ar-condicionado)"
 		},
 		{
 			"name": "?? Additional Facilities",
@@ -457,14 +457,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"seatingCapacity\": 1000,\n  \"standingCapacity\": 300,\n  \"parkingSpaces\": 250,\n  \"additionalFacilities\": [\n    \"Auditório secundário (200 lugares)\",\n    \"Quadra poliesportiva\",\n    \"Academia\",\n    \"Biblioteca\",\n    \"Sala de música\",\n    \"Estúdio de gravação\",\n    \"10 salas de aula\",\n    \"Refeitório (150 lugares)\"\n  ]\n}"
+							"raw": "{\n  \"seatingCapacity\": 1000,\n  \"standingCapacity\": 300,\n  \"parkingSpaces\": 250,\n  \"additionalFacilities\": [\n    \"Auditï¿½rio secundï¿½rio (200 lugares)\",\n    \"Quadra poliesportiva\",\n    \"Academia\",\n    \"Biblioteca\",\n    \"Sala de mï¿½sica\",\n    \"Estï¿½dio de gravaï¿½ï¿½o\",\n    \"10 salas de aula\",\n    \"Refeitï¿½rio (150 lugares)\"\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "capacity"]
 						},
-						"description": "Complexo multi-uso com diversas instalações"
+						"description": "Complexo multi-uso com diversas instalaï¿½ï¿½es"
 					},
 					"response": []
 				},
@@ -490,7 +490,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"hasBookstore\": true,\n  \"additionalFacilities\": [\n    \"Biblioteca teológica\",\n    \"5 salas de estudo bíblico\",\n    \"Sala de informática (20 computadores)\",\n    \"Sala de seminários\"\n  ]\n}"
+							"raw": "{\n  \"hasBookstore\": true,\n  \"additionalFacilities\": [\n    \"Biblioteca teolï¿½gica\",\n    \"5 salas de estudo bï¿½blico\",\n    \"Sala de informï¿½tica (20 computadores)\",\n    \"Sala de seminï¿½rios\"\n  ]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/capacity",
@@ -502,7 +502,7 @@
 					"response": []
 				}
 			],
-			"description": "Instalações adicionais customizadas"
+			"description": "Instalaï¿½ï¿½es adicionais customizadas"
 		}
 	],
 	"event": [

@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "church-advanced-search-collection",
 		"name": "MyChurch - Advanced Church Search & Characteristics",
-		"description": "Collection completa para busca avançada de igrejas e gerenciamento de características\n\n**Funcionalidades:**\n- Busca por denominação\n- Filtros por amenidades (estacionamento, acessibilidade, transmissão online)\n- Busca por idiomas\n- Filtros por avaliação (rating mínimo, quantidade de reviews)\n- Ordenação avançada (relevância, distância, rating, reviews)\n- Atualização de características da igreja\n\n**Nota:**\nA busca pública NÃO requer autenticação, mas a atualização de características requer JWT Token de Admin.",
+		"description": "Collection completa para busca avanï¿½ada de igrejas e gerenciamento de caracterï¿½sticas\n\n**Funcionalidades:**\n- Busca por denominaï¿½ï¿½o\n- Filtros por amenidades (estacionamento, acessibilidade, transmissï¿½o online)\n- Busca por idiomas\n- Filtros por avaliaï¿½ï¿½o (rating mï¿½nimo, quantidade de reviews)\n- Ordenaï¿½ï¿½o avanï¿½ada (relevï¿½ncia, distï¿½ncia, rating, reviews)\n- Atualizaï¿½ï¿½o de caracterï¿½sticas da igreja\n\n**Nota:**\nA busca pï¿½blica Nï¿½O requer autenticaï¿½ï¿½o, mas a atualizaï¿½ï¿½o de caracterï¿½sticas requer JWT Token de Admin.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -22,7 +22,7 @@
 								{
 									"key": "denominations",
 									"value": "Batista",
-									"description": "Filtrar por denominação"
+									"description": "Filtrar por denominaï¿½ï¿½o"
 								},
 								{
 									"key": "page",
@@ -34,7 +34,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas da denominação Batista"
+						"description": "Busca igrejas da denominaï¿½ï¿½o Batista"
 					},
 					"response": []
 				},
@@ -66,7 +66,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas de múltiplas denominações"
+						"description": "Busca igrejas de mï¿½ltiplas denominaï¿½ï¿½es"
 					},
 					"response": []
 				},
@@ -95,7 +95,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas que possuem estacionamento, ordenadas por avaliação"
+						"description": "Busca igrejas que possuem estacionamento, ordenadas por avaliaï¿½ï¿½o"
 					},
 					"response": []
 				},
@@ -105,18 +105,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/Church/public/search?amenities=acessibilidade&city=São Paulo&state=SP&page=1",
+							"raw": "{{base_url}}/api/Church/public/search?amenities=acessibilidade&city=Sï¿½o Paulo&state=SP&page=1",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "public", "search"],
 							"query": [
 								{
 									"key": "amenities",
 									"value": "acessibilidade",
-									"description": "Igrejas acessíveis (rampa, elevador)"
+									"description": "Igrejas acessï¿½veis (rampa, elevador)"
 								},
 								{
 									"key": "city",
-									"value": "São Paulo"
+									"value": "Sï¿½o Paulo"
 								},
 								{
 									"key": "state",
@@ -128,7 +128,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas acessíveis em São Paulo"
+						"description": "Busca igrejas acessï¿½veis em Sï¿½o Paulo"
 					},
 					"response": []
 				},
@@ -145,7 +145,7 @@
 								{
 									"key": "amenities",
 									"value": "transmissao_online",
-									"description": "Igrejas com transmissão ao vivo"
+									"description": "Igrejas com transmissï¿½o ao vivo"
 								},
 								{
 									"key": "sortBy",
@@ -157,7 +157,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas com transmissão online, ordenadas por quantidade de reviews"
+						"description": "Busca igrejas com transmissï¿½o online, ordenadas por quantidade de reviews"
 					},
 					"response": []
 				},
@@ -181,7 +181,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas com ministério infantil"
+						"description": "Busca igrejas com ministï¿½rio infantil"
 					},
 					"response": []
 				},
@@ -214,7 +214,7 @@
 								{
 									"key": "minRating",
 									"value": "4.0",
-									"description": "Rating mínimo de 4.0 estrelas"
+									"description": "Rating mï¿½nimo de 4.0 estrelas"
 								},
 								{
 									"key": "page",
@@ -222,7 +222,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas com todas as comodidades e nota mínima 4.0"
+						"description": "Busca igrejas com todas as comodidades e nota mï¿½nima 4.0"
 					},
 					"response": []
 				},
@@ -239,17 +239,17 @@
 								{
 									"key": "minRating",
 									"value": "4.5",
-									"description": "Nota mínima 4.5 estrelas"
+									"description": "Nota mï¿½nima 4.5 estrelas"
 								},
 								{
 									"key": "minReviews",
 									"value": "20",
-									"description": "Mínimo 20 avaliações"
+									"description": "Mï¿½nimo 20 avaliaï¿½ï¿½es"
 								},
 								{
 									"key": "sortBy",
 									"value": "rating",
-									"description": "Ordenar por avaliação"
+									"description": "Ordenar por avaliaï¿½ï¿½o"
 								},
 								{
 									"key": "page",
@@ -278,12 +278,12 @@
 								{
 									"key": "userLatitude",
 									"value": "-23.550520",
-									"description": "Latitude do usuário"
+									"description": "Latitude do usuï¿½rio"
 								},
 								{
 									"key": "userLongitude",
 									"value": "-46.633308",
-									"description": "Longitude do usuário"
+									"description": "Longitude do usuï¿½rio"
 								},
 								{
 									"key": "radiusKm",
@@ -312,7 +312,7 @@
 								}
 							]
 						},
-						"description": "Busca igrejas próximas com filtros combinados"
+						"description": "Busca igrejas prï¿½ximas com filtros combinados"
 					},
 					"response": []
 				},
@@ -322,13 +322,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/Church/public/search?city=São Paulo&state=SP&sortBy=relevance&page=1",
+							"raw": "{{base_url}}/api/Church/public/search?city=Sï¿½o Paulo&state=SP&sortBy=relevance&page=1",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "public", "search"],
 							"query": [
 								{
 									"key": "city",
-									"value": "São Paulo"
+									"value": "Sï¿½o Paulo"
 								},
 								{
 									"key": "state",
@@ -337,7 +337,7 @@
 								{
 									"key": "sortBy",
 									"value": "relevance",
-									"description": "Score calculado: rating + reviews + distância"
+									"description": "Score calculado: rating + reviews + distï¿½ncia"
 								},
 								{
 									"key": "page",
@@ -345,12 +345,12 @@
 								}
 							]
 						},
-						"description": "Busca igrejas ordenadas por score de relevância (rating + reviews + proximidade)"
+						"description": "Busca igrejas ordenadas por score de relevï¿½ncia (rating + reviews + proximidade)"
 					},
 					"response": []
 				}
 			],
-			"description": "Endpoints públicos de busca avançada (não requer autenticação)"
+			"description": "Endpoints pï¿½blicos de busca avanï¿½ada (nï¿½o requer autenticaï¿½ï¿½o)"
 		},
 		{
 			"name": "?? Update Church Characteristics",
@@ -377,14 +377,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"denomination\": \"Batista\",\n  \"coverPhoto\": \"https://s3.amazonaws.com/mybucket/cover-photo.jpg\",\n  \"hasParking\": true,\n  \"isAccessible\": true,\n  \"hasLiveStream\": true,\n  \"hasChildMinistry\": true,\n  \"languages\": [\"Português\", \"Inglês\"]\n}"
+							"raw": "{\n  \"denomination\": \"Batista\",\n  \"coverPhoto\": \"https://s3.amazonaws.com/mybucket/cover-photo.jpg\",\n  \"hasParking\": true,\n  \"isAccessible\": true,\n  \"hasLiveStream\": true,\n  \"hasChildMinistry\": true,\n  \"languages\": [\"Portuguï¿½s\", \"Inglï¿½s\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/characteristics",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "characteristics"]
 						},
-						"description": "Atualiza todas as características da igreja (apenas Admin)"
+						"description": "Atualiza todas as caracterï¿½sticas da igreja (apenas Admin)"
 					},
 					"response": []
 				},
@@ -417,7 +417,7 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "characteristics"]
 						},
-						"description": "Atualiza apenas a denominação"
+						"description": "Atualiza apenas a denominaï¿½ï¿½o"
 					},
 					"response": []
 				},
@@ -476,14 +476,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"languages\": [\"Português\", \"Inglês\", \"Espanhol\", \"Francês\"]\n}"
+							"raw": "{\n  \"languages\": [\"Portuguï¿½s\", \"Inglï¿½s\", \"Espanhol\", \"Francï¿½s\"]\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/Church/characteristics",
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "characteristics"]
 						},
-						"description": "Igreja com cultos em múltiplos idiomas"
+						"description": "Igreja com cultos em mï¿½ltiplos idiomas"
 					},
 					"response": []
 				},
@@ -516,7 +516,7 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "characteristics"]
 						},
-						"description": "Habilita transmissão online"
+						"description": "Habilita transmissï¿½o online"
 					},
 					"response": []
 				},
@@ -549,12 +549,12 @@
 							"host": ["{{base_url}}"],
 							"path": ["api", "Church", "characteristics"]
 						},
-						"description": "Igreja com foco em famílias (ministério infantil, estacionamento, acessibilidade)"
+						"description": "Igreja com foco em famï¿½lias (ministï¿½rio infantil, estacionamento, acessibilidade)"
 					},
 					"response": []
 				}
 			],
-			"description": "Atualização de características da igreja para busca avançada (requer Admin)"
+			"description": "Atualizaï¿½ï¿½o de caracterï¿½sticas da igreja para busca avanï¿½ada (requer Admin)"
 		}
 	],
 	"event": [

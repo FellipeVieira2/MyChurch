@@ -26,6 +26,10 @@ namespace MyChurch.Infrastructure
         public DbSet<ReviewVote> ReviewVotes { get; set; }
         public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
         public DbSet<ReviewResponse> ReviewResponses { get; set; }
+        
+        // 🎯 MINISTÉRIOS
+        public DbSet<Ministry> Ministries { get; set; }
+        public DbSet<MinistryMember> MinistryMembers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +37,7 @@ namespace MyChurch.Infrastructure
             modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MyChurchDbContext).Assembly);
         }
+        
         [DbFunction("unaccent")]
         public string Unaccent()
         {

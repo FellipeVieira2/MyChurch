@@ -25,7 +25,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public bool? IsTither { get; set; }
         public MaritalStatus? MaritalStatus { get; set; }
         public DateTime? MemberSince { get; set; }
-        public Ministry? Ministry { get; set; }
+        public string? Ministry { get; set; }
         public bool? IsActive { get; set; }
         public string? Notes { get; set; }
         public string? Photo { get; set; }
@@ -122,7 +122,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
                 request.IsTither,
                 request.MaritalStatus,
                 request.MemberSince,
-                request.Ministry?.ToString(),
+                request.Ministry,
                 request.IsActive,
                 request.Notes,
                 photoUrl ?? request.Photo, // Usa a URL da foto uploada ou mantém a atual

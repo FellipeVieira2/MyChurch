@@ -2712,6 +2712,114 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("member_journey_progresses", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Ministry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Color")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<int?>("LeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeetingDay")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("MeetingLocation")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<TimeSpan?>("MeetingTime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Photo")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("LeaderId");
+
+                    b.ToTable("Ministries", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.MinistryMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTime>("JoinedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinistryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Role")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("MinistryId");
+
+                    b.HasIndex("MinistryId", "MemberId")
+                        .IsUnique();
+
+                    b.ToTable("MinistryMembers", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.PastoralAlert", b =>
                 {
                     b.Property<int>("Id")
@@ -4375,6 +4483,43 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("JourneyStage");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.Ministry", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Leader")
+                        .WithMany()
+                        .HasForeignKey("LeaderId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Church");
+
+                    b.Navigation("Leader");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.MinistryMember", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Ministry", "Ministry")
+                        .WithMany("MinistryMembers")
+                        .HasForeignKey("MinistryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Ministry");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Donation", "Donation")
@@ -4744,6 +4889,11 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Donations");
 
                     b.Navigation("PrayerRequests");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.Ministry", b =>
+                {
+                    b.Navigation("MinistryMembers");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Presentation", b =>

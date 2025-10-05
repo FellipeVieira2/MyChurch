@@ -155,7 +155,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 Created = DateTime.UtcNow,
                 MaritalStatus =request.MaritalStatus is not null ? Enum.Parse<MaritalStatus>(request.MaritalStatus) : null,
                 MemberSince = request?.MemberSince,
-                Ministry= string.IsNullOrWhiteSpace(request.Ministry) ? null : Enum.Parse<Ministry>(request?.Ministry).ToString(),
+                Ministry = request.Ministry,
                 IsActive = request.IsActive,
                 Notes = request.Notes,
                 BirthCity = request.BirthCity,

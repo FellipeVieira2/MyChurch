@@ -39,8 +39,8 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
         /// <summary>Filtro por aprovação pendente</summary>
         public bool PendingApproval { get; set; } = false;
 
-        /// <summary>Filtro por ministério</summary>
-        public Ministry? Ministry { get; set; }
+        /// <summary>Filtro por ministério (nome do ministério em texto)</summary>
+        public string? Ministry { get; set; }
 
         /// <summary>Filtro por estado civil</summary>
         public MaritalStatus? MaritalStatus { get; set; }
@@ -166,8 +166,8 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
             if (request.IsActive.HasValue)
                 query = query.Where(m => m.IsActive == request.IsActive.Value);
 
-            if (request.Ministry.HasValue)
-                query = query.Where(m => m.Ministry == request.Ministry.Value.ToString());
+            if (!string.IsNullOrWhiteSpace(request.Ministry))
+                query = query.Where(m => m.Ministry == request.Ministry);
 
             if (request.MaritalStatus.HasValue)
                 query = query.Where(m => m.MaritalStatus == request.MaritalStatus.Value);
