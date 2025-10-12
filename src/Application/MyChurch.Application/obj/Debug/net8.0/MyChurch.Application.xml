@@ -151,6 +151,16 @@
         <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.Name">
             <summary>Filtro por nome (contém)</summary>
         </member>
+        <member name="M:MyChurch.Application.CashFlow.Services.ICashFlowAutomationService.CreateEntryFromDonationAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria lançamento automático quando doação é confirmada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.CashFlow.Services.ICashFlowAutomationService.GetOrCreateDonationCategoryAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca ou cria categoria padrão para doações
+            </summary>
+        </member>
         <member name="T:MyChurch.Application.ChurchPhoto.Commands.LikePhoto.TogglePhotoLikeCommand">
             <summary>
             Comando para curtir/descurtir foto
@@ -1148,6 +1158,21 @@
             Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommand">
+            <summary>
+            Comando para deletar permanentemente um membro (Hard Delete)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommand.Reason">
+            <summary>
+            Motivo da exclusão (obrigatório para auditoria)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommandHandler.DeleteMemberDependenciesAsync(MyChurch.Domain.Entities.Member,System.Threading.CancellationToken)">
+            <summary>
+            Remove todas as dependências do membro antes de deletá-lo
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.Documents">
             <summary>Documentos do membro</summary>
         </member>
@@ -1215,6 +1240,40 @@
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortDirection">
             <summary>Direção da ordenação (asc ou desc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Onboarding.IdentifyMember.IdentifyMemberResultDto.Status">
+            <summary>
+            Status do membro:
+            - NotFound: Membro não encontrado
+            - PendingApproval: Cadastro aguardando aprovação do administrador
+            - AlreadyActive: Conta aprovada e ativa - pode fazer login
+            - Rejected: Cadastro foi rejeitado pelo administrador
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Onboarding.IdentifyMember.IdentifyMemberResultDto.MaskedName">
+            <summary>
+            Nome mascarado do membro (ex: "João S.")
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.TargetMemberId">
+            <summary>
+            ID do membro que receberá a permissão
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.Permission">
+            <summary>
+            Permissão a ser concedida
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.Reason">
+            <summary>
+            Motivo da concessão (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.ExpiresAt">
+            <summary>
+            Data de expiração (null = permanente)
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Name">
             <summary>Nome do plano</summary>

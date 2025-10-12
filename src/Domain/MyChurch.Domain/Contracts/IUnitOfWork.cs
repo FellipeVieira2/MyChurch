@@ -87,6 +87,10 @@
         // 🕐 HORÁRIOS DE CULTOS
         IChurchScheduleRepository ChurchSchedules { get; }
         
+        // 🔐 SISTEMA DE PERMISSÕES GRANULARES
+        IRolePermissionRepository RolePermissions { get; }
+        IMemberCustomPermissionRepository MemberCustomPermissions { get; }
+        
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

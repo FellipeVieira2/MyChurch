@@ -15,11 +15,11 @@ namespace MyChurch.Application.Church.Queries.GetChurch
     {
         public int TotalActiveMembers { get; set; }
         public int TotalEvents { get; set; }
-        public decimal? CurrentBalance { get; set; }
-        public decimal? MemberGrowthPercent { get; set; }
-        public decimal? EventGrowthPercent { get; set; }
-        public decimal? FinancialGrowthPercent { get; set; }
-        public decimal? AverageDonationTicket { get; set; }
+        public decimal CurrentBalance { get; set; }
+        public decimal MemberGrowthPercent { get; set; }
+        public decimal EventGrowthPercent { get; set; }
+        public decimal FinancialGrowthPercent { get; set; }
+        public decimal AverageDonationTicket { get; set; }
     }
 
     public class GetChurchDashboardQueryHandler : IRequestHandler<GetChurchDashboardQuery, ChurchDashboardDto>
@@ -35,84 +35,87 @@ namespace MyChurch.Application.Church.Queries.GetChurch
 
         public async Task<ChurchDashboardDto> Handle(GetChurchDashboardQuery request, CancellationToken cancellationToken)
         {
-            // Busca o membro logado
+            // Busca o membro logado (otimizado - sem Include)
             var member = await _unitOfWork.Members.Query()
-                .Include(m => m.Church)
+                .AsNoTracking()
+                .Select(m => new { m.Id, m.ChurchId })
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
-            if (member == null || member.Church == null)
+            if (member == null)
             {
-                _logger.LogWarning("Usuário não encontrado ou sem igreja vinculada.");
-                throw new UnauthorizedAccessException("Usuário não encontrado ou sem igreja vinculada.");
+                _logger.LogWarning("Usuário não encontrado.");
+                throw new UnauthorizedAccessException("Usuário não encontrado.");
             }
 
             var churchId = member.ChurchId;
-
-            // Busca a igreja com relacionamentos necessários
-            var church = await _unitOfWork.Churchs.Query()
-                .Include(c => c.Members)
-                .Include(c => c.Events)
-                .Include(c => c.CashFlowEntries)
-                .FirstOrDefaultAsync(c => c.Id == churchId, cancellationToken);
-
-            if (church == null)
-                throw new Exception("Igreja não encontrada.");
-
             var now = DateTime.UtcNow;
             var firstDayThisMonth = new DateTime(now.Year, now.Month, 1);
             var firstDayLastMonth = firstDayThisMonth.AddMonths(-1);
 
+            // ⚡ QUERIES OTIMIZADAS - Sem Include desnecessários
+
             // Membros ativos
-            var totalActiveMembers = church.Members?.Count(m => m.IsActive) ?? 0;
+            var totalActiveMembers = await _unitOfWork.Members.Query()
+                .CountAsync(m => m.ChurchId == churchId && m.IsActive, cancellationToken);
 
-            // Eventos
-            var totalEvents = church.Events?.Count() ?? 0;
+            // Total de eventos
+            var totalEvents = await _unitOfWork.Events.Query()
+                .CountAsync(e => e.ChurchId == churchId, cancellationToken);
 
-            // Saldo atual
-            var currentBalance = (church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Income).Sum(e => e.Amount) ?? 0)
-                               - (church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Expense).Sum(e => e.Amount) ?? 0);
+            // 🔥 SALDO REAL = CashFlow (inclui doações automáticas)
+            var cashFlowBalance = await _unitOfWork.CashFlowEntries.Query()
+                .Where(e => e.ChurchId == churchId)
+                .SumAsync(e => e.Type == CashFlowType.Income ? e.Amount : -e.Amount, cancellationToken);
+
+            var currentBalance = cashFlowBalance;
 
             // Crescimento de membros
-            var membersLastMonth = church.Members?.Count(m => m.Created >= firstDayLastMonth && m.Created < firstDayThisMonth) ?? 0;
-            var membersThisMonth = church.Members?.Count(m => m.Created >= firstDayThisMonth) ?? 0;
-            var totalMembersBefore = church.Members?.Count(m => m.Created < firstDayThisMonth) ?? 0;
-            var memberGrowthPercent = totalMembersBefore > 0
-                ? (decimal)membersThisMonth / totalMembersBefore * 100
-                : (membersThisMonth > 0 ? 100 : 0);
+            var membersThisMonth = await _unitOfWork.Members.Query()
+                .CountAsync(m => m.ChurchId == churchId && m.Created >= firstDayThisMonth, cancellationToken);
+
+            var membersLastMonth = await _unitOfWork.Members.Query()
+                .CountAsync(m => m.ChurchId == churchId &&
+                                m.Created >= firstDayLastMonth &&
+                                m.Created < firstDayThisMonth, cancellationToken);
+
+            var memberGrowthPercent = CalculateGrowthPercent(membersLastMonth, membersThisMonth);
 
             // Crescimento de eventos
-            var eventsLastMonth = church.Events?.Count(e => e.Date >= firstDayLastMonth && e.Date < firstDayThisMonth) ?? 0;
-            var eventsThisMonth = church.Events?.Count(e => e.Date >= firstDayThisMonth) ?? 0;
-            var totalEventsBefore = church.Events?.Count(e => e.Date < firstDayThisMonth) ?? 0;
-            var eventGrowthPercent = totalEventsBefore > 0
-                ? (decimal)eventsThisMonth / totalEventsBefore * 100
-                : (eventsThisMonth > 0 ? 100 : 0);
+            var eventsThisMonth = await _unitOfWork.Events.Query()
+                .CountAsync(e => e.ChurchId == churchId && e.Date >= firstDayThisMonth, cancellationToken);
 
-            // Crescimento/decrescimento financeiro
-            var entradasLastMonth = church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Income && e.Date >= firstDayLastMonth && e.Date < firstDayThisMonth).Sum(e => e.Amount) ?? 0;
-            var entradasThisMonth = church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Income && e.Date >= firstDayThisMonth).Sum(e => e.Amount) ?? 0;
-            var saidasLastMonth = church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Expense && e.Date >= firstDayLastMonth && e.Date < firstDayThisMonth).Sum(e => e.Amount) ?? 0;
-            var saidasThisMonth = church.CashFlowEntries?.Where(e => e.Type == CashFlowType.Expense && e.Date >= firstDayThisMonth).Sum(e => e.Amount) ?? 0;
-            var saldoLastMonth = entradasLastMonth - saidasLastMonth;
-            var saldoThisMonth = entradasThisMonth - saidasThisMonth;
-            var financialGrowthPercent = saldoLastMonth != 0
-                ? ((saldoThisMonth - saldoLastMonth) / Math.Abs(saldoLastMonth)) * 100
-                : (saldoThisMonth > 0 ? 100 : 0);
+            var eventsLastMonth = await _unitOfWork.Events.Query()
+                .CountAsync(e => e.ChurchId == churchId &&
+                                e.Date >= firstDayLastMonth &&
+                                e.Date < firstDayThisMonth, cancellationToken);
 
-            // Ticket médio de doação
+            var eventGrowthPercent = CalculateGrowthPercent(eventsLastMonth, eventsThisMonth);
+
+            // Crescimento financeiro (baseado em CashFlow)
+            var cashFlowThisMonth = await _unitOfWork.CashFlowEntries.Query()
+                .Where(e => e.ChurchId == churchId && e.Date >= firstDayThisMonth)
+                .SumAsync(e => e.Type == CashFlowType.Income ? e.Amount : -e.Amount, cancellationToken);
+
+            var cashFlowLastMonth = await _unitOfWork.CashFlowEntries.Query()
+                .Where(e => e.ChurchId == churchId &&
+                           e.Date >= firstDayLastMonth &&
+                           e.Date < firstDayThisMonth)
+                .SumAsync(e => e.Type == CashFlowType.Income ? e.Amount : -e.Amount, cancellationToken);
+
+            var financialGrowthPercent = CalculateGrowthPercent(cashFlowLastMonth, cashFlowThisMonth);
+
+            // Ticket médio de doação (apenas doações confirmadas)
             var paidDonations = await _unitOfWork.Donations.Query()
-                .Include(d => d.Payments)
                 .Where(d => d.Member.ChurchId == churchId &&
-                            d.Payments.Any(p =>
-                                p.PaymentStatus == PaymentStatus.Completed.ToString() ||
-                                p.PaymentStatus == PaymentStatus.Received.ToString() ||
-                                p.PaymentStatus == "RECEIVED"
-                            ))
+                           d.Payments.Any(p =>
+                               p.PaymentStatus == PaymentStatus.Completed.ToString() ||
+                               p.PaymentStatus == PaymentStatus.Received.ToString() ||
+                               p.PaymentStatus == "RECEIVED" ||
+                               p.PaymentStatus == "CONFIRMED"))
+                .Select(d => d.Amount)
                 .ToListAsync(cancellationToken);
 
-            var averageDonationTicket = paidDonations.Any()
-                ? paidDonations.Average(d => d.Amount)
-                : 0;
+            var averageDonationTicket = paidDonations.Any() ? paidDonations.Average() : 0;
 
             return new ChurchDashboardDto
             {
@@ -124,6 +127,14 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 FinancialGrowthPercent = financialGrowthPercent,
                 AverageDonationTicket = averageDonationTicket
             };
+        }
+
+        private decimal CalculateGrowthPercent(decimal previous, decimal current)
+        {
+            if (previous == 0)
+                return current > 0 ? 100 : 0;
+
+            return ((current - previous) / previous) * 100;
         }
     }
 }

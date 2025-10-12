@@ -4,6 +4,33 @@
         <name>MyChurch.Api.Web</name>
     </assembly>
     <members>
+        <member name="T:MyChurch.Api.Web.Authorization.HasPermissionAttribute">
+            <summary>
+            Atributo para aplicar requisitos de permissão em controllers e actions
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.HasAllPermissionsAttribute">
+            <summary>
+            Atributo que requer TODAS as permissões especificadas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.PermissionAuthorizationHandler">
+            <summary>
+            Handler para verificar permissões granulares
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.PermissionRequirement">
+            <summary>
+            Requirement para verificar se o usuário possui uma permissão específica
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Authorization.PermissionRequirement.#ctor(MyChurch.Domain.Enum.Permission[],System.Boolean)">
+            <summary>
+            Cria um requirement de permissão
+            </summary>
+            <param name="permissions">Permissões necessárias</param>
+            <param name="requireAll">Se true, o usuário deve ter TODAS as permissões. Se false, basta ter UMA.</param>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.AssetController.CreateAsset(MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand)">
             <summary>
             Cria um novo ativo patrimonial
@@ -1037,6 +1064,25 @@
             </summary>
             <response code="204">Sucesso: Membro reprovado</response>
             <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.DeleteMember(System.Int32,MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest)">
+            <summary>
+            Deleta permanentemente um membro (Hard Delete) - Apenas Admin
+            ⚠️ ATENÇÃO: Esta ação é irreversível!
+            Membros com doações ou lançamentos financeiros não podem ser deletados (apenas desativados)
+            </summary>
+            <param name="id">ID do membro</param>
+            <param name="reason">Motivo da exclusão (obrigatório para auditoria)</param>
+            <response code="204">Sucesso: Membro deletado permanentemente</response>
+            <response code="400">Falha: Membro possui dados críticos vinculados</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="403">Falha: Apenas administradores podem deletar</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="P:MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest.Reason">
+            <summary>
+            Motivo da exclusão (obrigatório)
+            </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.MinistryController.CreateMinistry(MyChurch.Application.Ministries.Commands.CreateMinistry.CreateMinistryCommand)">
             <summary>

@@ -98,10 +98,12 @@ namespace MyChurch.Domain.Entities
         {
             if (!PendingApproval)
             {
-                // Opcional: lançar exceção ou ignorar
                 return;
             }
+            
+            // ✅ Aprovar e ativar a conta
             PendingApproval = false;
+            IsActive = true; // 🎉 Conta ativa após aprovação do admin
         }
 
         public void ActivateAccount(string passwordHash)

@@ -102,6 +102,10 @@ namespace MyChurch.Infrastructure.Repositories
         // 🕐 HORÁRIOS DE CULTOS
         public IChurchScheduleRepository ChurchSchedules { get; }
 
+        // 🔐 SISTEMA DE PERMISSÕES GRANULARES
+        public IRolePermissionRepository RolePermissions { get; }
+        public IMemberCustomPermissionRepository MemberCustomPermissions { get; }
+
         public UnitOfWork(
             IChurchRepository churchs,
             IDonationRepository donations,
@@ -181,7 +185,9 @@ namespace MyChurch.Infrastructure.Repositories
             IChurchPromotionRepository churchPromotions,
             IEventPromotionRepository eventPromotions,
             IEngagementEventRepository engagementEvents,
-            IChurchScheduleRepository churchSchedules)
+            IChurchScheduleRepository churchSchedules,
+            IRolePermissionRepository rolePermissions,
+            IMemberCustomPermissionRepository memberCustomPermissions)
         {
             Churchs = churchs;
             Donations = donations;
@@ -262,6 +268,8 @@ namespace MyChurch.Infrastructure.Repositories
             EventPromotions = eventPromotions;
             EngagementEvents = engagementEvents;
             ChurchSchedules = churchSchedules;
+            RolePermissions = rolePermissions;
+            MemberCustomPermissions = memberCustomPermissions;
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

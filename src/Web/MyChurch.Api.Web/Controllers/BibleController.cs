@@ -13,7 +13,6 @@ using MyChurch.Application.Bible.Queries.GetVersesByReference;
 
 namespace MyChurch.Api.Web.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BibleController : BaseController
@@ -119,6 +118,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Lista todos os versículos favoritos do membro.
         /// </summary>
         [HttpGet("favorites")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFavoriteVerses()
         {
@@ -131,6 +131,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Adiciona um versículo aos favoritos do membro.
         /// </summary>
         [HttpPost("favorites")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddFavoriteVerse([FromBody] AddFavoriteVerseCommand command)
@@ -149,6 +150,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Remove um versículo dos favoritos do membro.
         /// </summary>
         [HttpDelete("favorites/{favoriteVerseId}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoveFavoriteVerse(int favoriteVerseId)

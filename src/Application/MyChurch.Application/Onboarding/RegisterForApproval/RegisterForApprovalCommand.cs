@@ -1,7 +1,8 @@
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
+using MyChurch.Domain.Services;
 using ValidationException = MyChurch.Domain.Exceptions.ValidationException;
 
 namespace MyChurch.Application.Onboarding.RegisterForApproval
@@ -15,6 +16,7 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
         public string Cpf { get; set; }
         public DateTime BirthDate { get; set; }
         public string? MaritalStatus { get; set; }
+        public string Password { get; set; } // ✅ Senha definida no registro
         public AddressRegisterForApproval Address { get; set; }
 
         public class AddressRegisterForApproval
@@ -35,6 +37,8 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                 RuleFor(x => x.Name).NotEmpty();
                 RuleFor(x => x.Cpf).NotEmpty();
                 RuleFor(x => x.BirthDate).NotEmpty();
+                RuleFor(x => x.Password).NotEmpty().MinimumLength(6)
+                    .WithMessage("A senha deve ter no mínimo 6 caracteres");
                 RuleFor(x => x.Address).NotNull();
             }
         }
@@ -42,18 +46,31 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
         public class Handler : IRequestHandler<RegisterForApprovalCommand>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IPasswordHasher _passwordHasher;
+            private readonly IDocumentValidator _documentValidator;
 
-            public Handler(IUnitOfWork unitOfWork)
+            public Handler(
+                IUnitOfWork unitOfWork, 
+                IPasswordHasher passwordHasher,
+                IDocumentValidator documentValidator)
             {
                 _unitOfWork = unitOfWork;
+                _passwordHasher = passwordHasher;
+                _documentValidator = documentValidator;
             }
 
             public async Task Handle(RegisterForApprovalCommand request, CancellationToken cancellationToken)
             {
-                var exists = _unitOfWork.Members.Query().Any(m => m.Documents.Any(d => d.Number == request.Cpf));
+                // 📄 Normalizar CPF (remove pontos, traços, espaços)
+                var normalizedCpf = _documentValidator.RemoveFormatting(request.Cpf);
+                
+                // Validar se já existe membro com este CPF
+                var exists = _unitOfWork.Members.Query()
+                    .Any(m => m.Documents.Any(d => d.Number == normalizedCpf));
+                
                 if (exists)
                 {
-                    ValidationException.ThrowException("User","J� existe um membro com este CPF.");
+                    ValidationException.ThrowException("User","Já existe um membro com este CPF.");
                 }
                 
                 MaritalStatus? maritalStatus = null;
@@ -68,7 +85,7 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                     BirthDate = request.BirthDate,
                     MaritalStatus = maritalStatus,
                     ChurchId = request.ChurchId,
-                    IsActive = false,
+                    IsActive = false, // ❌ Conta inativa até admin aprovar
                     Address = new MyChurch.Domain.Entities.Address(
                         request.Address.Street,
                         request.Address.City,
@@ -76,15 +93,19 @@ namespace MyChurch.Application.Onboarding.RegisterForApproval
                         request.Address.ZipCode,
                         request.Address.Country,
                         request.Address.Neighborhood
-                    )
+                    ),
+                    Role = UserRole.Member // Padrão é Member
                 };
 
-                // ?? Criar token tempor�rio para ativa��o futura
-                // A senha ser� definida quando o admin aprovar e o membro ativar a conta
-                member.PasswordHash = Guid.NewGuid().ToString("N"); // Token tempor�rio
+                // 🔐 SEGURANÇA: Salvar hash BCrypt da senha imediatamente
+                member.PasswordHash = _passwordHasher.HashPassword(request.Password);
                 
-                member.Documents.Add(new MyChurch.Domain.Entities.MemberDocument { Number = request.Cpf });
-                member.PendingApproval = true;
+                // Salvar CPF normalizado (somente dígitos)
+                member.Documents.Add(new MyChurch.Domain.Entities.MemberDocument 
+                { 
+                    Number = normalizedCpf // ✅ CPF sem formatação
+                });
+                member.PendingApproval = true; // ⏳ Aguardando aprovação do admin
 
                 _unitOfWork.Members.Create(member);
                 await _unitOfWork.CommitAsync();

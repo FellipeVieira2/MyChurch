@@ -31,13 +31,14 @@ namespace MyChurch.Application.Church.Queries.GetChurch
         {
             var church = await _unitOfWork.Churchs.Query().AsNoTrackingWithIdentityResolution()
                 .Include(c => c.Address)
+                .Include(c => c.Members)
                 .Include(c => c.Subscription)
                     .ThenInclude(x => x.Plan)
                 .FirstOrDefaultAsync(c => c.Id == request.Id && c.Members.Any(x => x.Id == request.UserId), cancellationToken);
             if (church == null)
             {
                 _logger.LogError("Church not found");
-                ValidationException.ThrowException("Get", "You do not have permission to update this church.");
+                ValidationException.ThrowException("Get", "Church not found");
             }
 
             var isAdmin = request.Role == UserRole.Admin.ToString();

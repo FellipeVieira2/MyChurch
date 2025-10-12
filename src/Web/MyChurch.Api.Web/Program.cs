@@ -28,6 +28,7 @@ using System.Text;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Path = System.IO.Path;
+using MyChurch.Api.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -158,22 +159,31 @@ builder.Services.InjectS3(builder.Configuration);
 builder.Services.InjectApplication();
 builder.Services.AddHttpClient<IAsaasWebClient, AsaasWebClient>();
 builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
-builder.Services.AddCors(delegate (CorsOptions options)
+
+// ? CORS configurado corretamente para Produção e Desenvolvimento
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy("_myAllowSpecificOrigins", delegate (CorsPolicyBuilder policy)
+    options.AddPolicy("_myAllowSpecificOrigins", policy =>
     {
-        policy.WithOrigins(
-            "https://www.mychurchlab.net",
-            "http://localhost:3000",
-            "https://localhost:3000",
-            "https://localhost:7265/",
-            "http://localhost:7265/"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials();
+        if (builder.Environment.IsProduction())
+        {
+            // ?? PRODUÇÃO: Apenas domínio oficial
+            policy.WithOrigins("https://www.mychurchlab.net")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+        else
+        {
+            // ?? DESENVOLVIMENTO: Permite qualquer origem
+            policy.SetIsOriginAllowed(_ => true)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
     });
 });
+
 builder.Services.AddGeminiClient(config =>
 {
     config.ApiKey = builder.Configuration["Gemini:ApiKey"];
@@ -237,12 +247,8 @@ using (var scope = app.Services.CreateScope())
     MemberSeedData.SeedMembers(dbContext);
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("_myAllowSpecificOrigins");
 
@@ -273,14 +279,16 @@ app.UseExceptionHandler(errorApp =>
 // Ativar Rate Limiting
 app.UseRateLimiter();
 
+// ?? ADICIONAR JWT MIDDLEWARE (ANTES DE AUTHENTICATION)
+app.UseMiddleware<MyChurch.Api.Web.Middleware.JwtMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Hubs - comentados se não existirem
-// app.MapHub<WorshipServiceHub>("/ws/worship");
-// app.MapHub<CampaignHub>("/campaignHub");
-// app.MapHub<GroupHub>("/hubs/group");
+app.MapHub<WorshipServiceHub>("/ws/worship");
+app.MapHub<CampaignHub>("/campaignHub");
+app.MapHub<GroupHub>("/hubs/group");
 
-app.Run();app.Run();
+app.Run();

@@ -880,6 +880,9 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
 
+                    b.Property<int?>("AssetId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer")
                         .HasColumnName("category_id");
@@ -900,9 +903,27 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<int?>("DonationId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAutomatic")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsReconciled")
+                        .HasColumnType("boolean");
+
                     b.Property<int?>("MemberId")
                         .HasColumnType("int")
                         .HasColumnName("member_id");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReceiptUrl")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ReconciledAt")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -914,9 +935,13 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssetId");
+
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ChurchId");
+
+                    b.HasIndex("DonationId");
 
                     b.HasIndex("MemberId");
 
@@ -2626,6 +2651,65 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("member_configurations", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.MemberCustomPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<int?>("GrantedByMemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("granted_by_member_id");
+
+                    b.Property<bool>("IsGranted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_granted");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("reason");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("ix_member_custom_permissions_expires_at");
+
+                    b.HasIndex("GrantedByMemberId");
+
+                    b.HasIndex("MemberId")
+                        .HasDatabaseName("ix_member_custom_permissions_member_id");
+
+                    b.HasIndex("MemberId", "Permission")
+                        .IsUnique()
+                        .HasDatabaseName("ix_member_custom_permissions_member_permission");
+
+                    b.ToTable("member_custom_permissions", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.MemberDocument", b =>
                 {
                     b.Property<int>("Id")
@@ -3304,6 +3388,52 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasDatabaseName("IX_ReviewVotes_ReviewId_MemberId");
 
                     b.ToTable("ReviewVotes", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.RolePermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("role");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("updated");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChurchId")
+                        .HasDatabaseName("ix_role_permissions_church_id");
+
+                    b.HasIndex("Role", "Permission", "ChurchId")
+                        .HasDatabaseName("ix_role_permissions_role_permission_church");
+
+                    b.ToTable("role_permissions", (string)null);
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>
@@ -4003,6 +4133,10 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.CashFlowEntry", b =>
                 {
+                    b.HasOne("MyChurch.Domain.Entities.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId");
+
                     b.HasOne("MyChurch.Domain.Entities.CashFlowCategory", "Category")
                         .WithMany("CashFlowEntries")
                         .HasForeignKey("CategoryId")
@@ -4015,14 +4149,22 @@ namespace MyChurch.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyChurch.Domain.Entities.Donation", "Donation")
+                        .WithMany()
+                        .HasForeignKey("DonationId");
+
                     b.HasOne("MyChurch.Domain.Entities.Member", "Member")
                         .WithMany("CashFlowEntries")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.Navigation("Asset");
+
                     b.Navigation("Category");
 
                     b.Navigation("Church");
+
+                    b.Navigation("Donation");
 
                     b.Navigation("Member");
                 });
@@ -4461,6 +4603,24 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("PreferredBibleVersion");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.MemberCustomPermission", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "GrantedByMember")
+                        .WithMany()
+                        .HasForeignKey("GrantedByMemberId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GrantedByMember");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.MemberDocument", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Member", "Member")
@@ -4639,6 +4799,16 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Member");
 
                     b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.RolePermission", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Church", "Church")
+                        .WithMany()
+                        .HasForeignKey("ChurchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Church");
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Slide", b =>

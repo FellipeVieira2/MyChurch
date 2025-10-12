@@ -30,6 +30,10 @@ namespace MyChurch.Infrastructure
         // 🎯 MINISTÉRIOS
         public DbSet<Ministry> Ministries { get; set; }
         public DbSet<MinistryMember> MinistryMembers { get; set; }
+        
+        // 🔐 SISTEMA DE PERMISSÕES GRANULARES
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<MemberCustomPermission> MemberCustomPermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

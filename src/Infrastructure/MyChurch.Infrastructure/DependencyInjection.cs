@@ -104,6 +104,10 @@ namespace MyChurch.Infrastructure
             // 🕐 HORÁRIOS DE CULTOS
             services.AddScoped<IChurchScheduleRepository, ChurchScheduleRepository>();
             
+            // 🔐 SISTEMA DE PERMISSÕES GRANULARES
+            services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+            services.AddScoped<IMemberCustomPermissionRepository, MemberCustomPermissionRepository>();
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
  
             services.AddDbContext<MyChurchDbContext>(options =>
@@ -124,6 +128,9 @@ namespace MyChurch.Infrastructure
             
             // 🔐 SEGURANÇA: Serviço de hashing de senhas com BCrypt
             services.AddScoped<MyChurch.Domain.Services.IPasswordHasher, MyChurch.Infrastructure.Services.PasswordHasher>();
+            
+            // 🔐 SISTEMA DE PERMISSÕES: Serviço de verificação e gestão de permissões
+            services.AddScoped<MyChurch.Domain.Services.IPermissionService, MyChurch.Infrastructure.Services.PermissionService>();
             
             // Cache distribuído
             services.AddDistributedMemoryCache(); // Para desenvolvimento/testes

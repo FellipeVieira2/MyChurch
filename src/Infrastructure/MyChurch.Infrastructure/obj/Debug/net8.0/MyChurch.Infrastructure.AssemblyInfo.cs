@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MyChurch.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c602f02b908cbb2babeca8b669fee406392e5531")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d2f8665f74e9740a3ad9408fa1a25b547f89b67e")]
 [assembly: System.Reflection.AssemblyProductAttribute("MyChurch.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MyChurch.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -4,6 +4,33 @@
         <name>MyChurch.Api.Web</name>
     </assembly>
     <members>
+        <member name="T:MyChurch.Api.Web.Authorization.HasPermissionAttribute">
+            <summary>
+            Atributo para aplicar requisitos de permissão em controllers e actions
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.HasAllPermissionsAttribute">
+            <summary>
+            Atributo que requer TODAS as permissões especificadas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.PermissionAuthorizationHandler">
+            <summary>
+            Handler para verificar permissões granulares
+            </summary>
+        </member>
+        <member name="T:MyChurch.Api.Web.Authorization.PermissionRequirement">
+            <summary>
+            Requirement para verificar se o usuário possui uma permissão específica
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Authorization.PermissionRequirement.#ctor(MyChurch.Domain.Enum.Permission[],System.Boolean)">
+            <summary>
+            Cria um requirement de permissão
+            </summary>
+            <param name="permissions">Permissões necessárias</param>
+            <param name="requireAll">Se true, o usuário deve ter TODAS as permissões. Se false, basta ter UMA.</param>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.AssetController.CreateAsset(MyChurch.Application.Asset.Commands.CreateAsset.CreateAssetCommand)">
             <summary>
             Cria um novo ativo patrimonial
@@ -241,6 +268,30 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateSocialMedia(MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand)">
+            <summary>
+            Atualiza as redes sociais e contatos da igreja (Website, Instagram, Facebook, YouTube, WhatsApp, Twitter, TikTok)
+            </summary>
+            <response code="200">Sucesso: Redes sociais atualizadas</response>
+            <response code="400">Falha: URLs inválidas</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCharacteristics(MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand)">
+            <summary>
+            Atualiza características avançadas da igreja (denominação, amenidades, idiomas) para busca avançada
+            </summary>
+            <response code="200">Sucesso: Características atualizadas</response>
+            <response code="400">Falha: Dados inválidos</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCapacity(MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand)">
+            <summary>
+            Atualiza capacidade e infraestrutura da igreja (lotação, estacionamento, equipamentos, instalações)
+            </summary>
+            <response code="200">Sucesso: Capacidade e infraestrutura atualizadas</response>
+            <response code="400">Falha: Dados inválidos (capacidade negativa)</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
             <summary>
             Dashboard com indicadores da igreja
@@ -362,6 +413,195 @@
             <param name="churchId">ID da igreja</param>
             <param name="photoId">ID da foto</param>
             <param name="displayOrder">Ordem de exibição</param>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchPromotionController">
+            <summary>
+            Gerenciamento de promoções de igrejas
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.SimulatePrice(MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery)">
+            <summary>
+            ?? Simula o preço de uma promoção ANTES de criar
+            </summary>
+            <remarks>
+            Use este endpoint para mostrar o preço ao usuário antes de ele confirmar a compra.
+            
+            Exemplo: "7 dias de promoção custará R$ 35,00"
+            
+            **Tipos de promoção:**
+            - FeaturedInSearch (0): R$ 150/mês = R$ 5,00/dia
+            - CarouselHome (1): R$ 200/mês = R$ 6,67/dia
+            - TopSearch (2): R$ 250/mês = R$ 8,33/dia
+            - SidebarBanner (3): R$ 50/mês = R$ 1,67/dia
+            - RegionalPromotion (4): R$ 100/mês = R$ 3,33/dia
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.CreatePromotion(MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand)">
+            <summary>
+            Cria uma nova promoção para a igreja
+            </summary>
+            <remarks>
+            ?? **Apenas igrejas com plano PREMIUM podem criar promoções.**
+            
+            **Nova forma de uso (com duração em dias):**
+            ```json
+            {
+              "type": 0,
+              "durationInDays": 7,
+              "targetRegion": "SP",
+              "customText": "Venha conhecer nossa igreja!",
+              "paymentMethod": "PIX"
+            }
+            ```
+            
+            O sistema calculará automaticamente:
+            - `startDate` = hoje
+            - `endDate` = hoje + 7 dias
+            - `totalPrice` = (R$ 150 / 30 dias) * 7 = R$ 35,00
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetActivePromotions(System.Nullable{MyChurch.Domain.Enum.PromotionType},System.String,System.Int32)">
+            <summary>
+            Busca promoções ativas para exibição pública
+            </summary>
+            <param name="type">Tipo de promoção (opcional)</param>
+            <param name="region">Região para filtrar (opcional) - Ex: "SP"</param>
+            <param name="limit">Número máximo de resultados (padrão: 10)</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetMyPromotions(System.Nullable{MyChurch.Domain.Enum.PromotionStatus},System.Boolean)">
+            <summary>
+            Busca as promoções da minha igreja
+            </summary>
+            <param name="status">Filtrar por status (opcional)</param>
+            <param name="includeExpired">Incluir promoções expiradas?</param>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.TrackView(System.Int32)">
+            <summary>
+            Registra uma visualização de promoção (usado internamente pelo frontend)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.TrackClick(System.Int32)">
+            <summary>
+            Registra um clique em uma promoção
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.PausePromotion(System.Int32)">
+            <summary>
+            Pausa uma promoção ativa
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.ResumePromotion(System.Int32)">
+            <summary>
+            Retoma uma promoção pausada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetDashboard">
+            <summary>
+            ?? Dashboard completo de analytics de promoções da igreja
+            </summary>
+            <remarks>
+            Retorna visão geral de TODAS as promoções da igreja:
+            - Promoções ativas
+            - Promoções concluídas
+            - Métricas consolidadas
+            - Top performers
+            - Estatísticas por tipo
+            
+            **Exemplo de resposta:**
+            ```json
+            {
+              "totalActivePromotions": 2,
+              "totalInvested": 300.00,
+              "totalViews": 5420,
+              "totalClicks": 163,
+              "averageClickThroughRate": 3.01,
+              "activePromotions": [...],
+              "completedPromotions": [...],
+              "statsByType": [...]
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchPromotionController.GetAnalytics(System.Int32)">
+            <summary>
+            ?? Analytics detalhados de uma promoção específica
+            </summary>
+            <remarks>
+            Retorna métricas detalhadas de UMA promoção:
+            - Views e clicks totais
+            - CTR (Click-Through Rate)
+            - Custo por view/click
+            - Performance diária
+            - Projeções de resultados finais
+            
+            **Exemplo de resposta:**
+            ```json
+            {
+              "promotionId": 1,
+              "totalViews": 3500,
+              "totalClicks": 105,
+              "clickThroughRate": 3.0,
+              "costPerView": 0.04,
+              "costPerClick": 1.43,
+              "daysActive": 15,
+              "daysRemaining": 15,
+              "projectedTotalViews": 7000,
+              "projectedTotalClicks": 210,
+              "dailyMetrics": [...]
+            }
+            ```
+            </remarks>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.ChurchScheduleController">
+            <summary>
+            Gerenciamento de horários de cultos e atividades das igrejas
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Create(MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand)">
+            <summary>
+            Cria um novo horário de culto/atividade
+            </summary>
+            <param name="command">Dados do horário</param>
+            <returns>Horário criado</returns>
+            <response code="200">Horário criado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.GetByChurch(System.Int32,System.Boolean)">
+            <summary>
+            Lista todos os horários de uma igreja
+            </summary>
+            <param name="churchId">ID da igreja</param>
+            <param name="onlyActive">Retornar apenas horários ativos (padrão: true)</param>
+            <returns>Lista de horários</returns>
+            <response code="200">Retorna lista de horários</response>
+            <response code="401">Não autenticado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Update(System.Int32,MyChurch.Application.Church.Commands.UpdateChurchSchedule.UpdateChurchScheduleCommand)">
+            <summary>
+            Atualiza um horário existente
+            </summary>
+            <param name="id">ID do horário</param>
+            <param name="command">Dados para atualização</param>
+            <returns>Horário atualizado</returns>
+            <response code="200">Horário atualizado com sucesso</response>
+            <response code="400">Dados inválidos</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+            <response code="404">Horário não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchScheduleController.Delete(System.Int32,System.Int32)">
+            <summary>
+            Remove um horário
+            </summary>
+            <param name="id">ID do horário</param>
+            <param name="churchId">ID da igreja</param>
+            <returns>Sem conteúdo</returns>
+            <response code="204">Horário removido com sucesso</response>
+            <response code="401">Não autenticado</response>
+            <response code="403">Sem permissão (apenas Admin)</response>
+            <response code="404">Horário não encontrado</response>
         </member>
         <member name="T:MyChurch.Api.Web.Controllers.ChurchSearchController">
             <summary>
@@ -509,6 +749,57 @@
             <response code="200">Sucesso: Culto retornado</response>
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="T:MyChurch.Api.Web.Controllers.EventPromotionController">
+            <summary>
+            Gerenciamento de promoções de eventos
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.CreateEventPromotion(MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand)">
+            <summary>
+            Cria uma nova promoção para um evento
+            </summary>
+            <remarks>
+            Apenas igrejas com plano Premium podem promover eventos.
+            
+            Tipos de promoção disponíveis:
+            - FeaturedEvent (0): Destaque na lista de eventos
+            - CarouselEvent (1): Aparece no carousel de eventos
+            - ChurchFeedBanner (2): Banner no feed da igreja
+            - PushNotification (3): Notificação push para membros próximos
+            
+            O orçamento será consumido conforme os cliques (R$ 0,50 por clique).
+            </remarks>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.GetMyEventPromotions">
+            <summary>
+            Busca as promoções de eventos da minha igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.GetEventPromotion(System.Int32)">
+            <summary>
+            Busca detalhes de uma promoção de evento
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackView(System.Int32)">
+            <summary>
+            Registra uma visualização da promoção de evento
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackClick(System.Int32)">
+            <summary>
+            Registra um clique na promoção (consome do orçamento)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.TrackConversion(System.Int32)">
+            <summary>
+            Registra uma conversão (pessoa confirmou presença)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventPromotionController.PausePromotion(System.Int32)">
+            <summary>
+            Pausa uma promoção de evento
+            </summary>
         </member>
         <member name="T:MyChurch.Api.Web.Controllers.FamilyController">
             <summary>
@@ -774,6 +1065,88 @@
             <response code="204">Sucesso: Membro reprovado</response>
             <response code="404">Falha: Membro não encontrado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.DeleteMember(System.Int32,MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest)">
+            <summary>
+            Deleta permanentemente um membro (Hard Delete) - Apenas Admin
+            ⚠️ ATENÇÃO: Esta ação é irreversível!
+            Membros com doações ou lançamentos financeiros não podem ser deletados (apenas desativados)
+            </summary>
+            <param name="id">ID do membro</param>
+            <param name="reason">Motivo da exclusão (obrigatório para auditoria)</param>
+            <response code="204">Sucesso: Membro deletado permanentemente</response>
+            <response code="400">Falha: Membro possui dados críticos vinculados</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="403">Falha: Apenas administradores podem deletar</response>
+            <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="P:MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest.Reason">
+            <summary>
+            Motivo da exclusão (obrigatório)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.CreateMinistry(MyChurch.Application.Ministries.Commands.CreateMinistry.CreateMinistryCommand)">
+            <summary>
+            Cria um novo ministério
+            </summary>
+            <response code="200">Sucesso: Ministério criado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.UpdateMinistry(System.Int32,MyChurch.Application.Ministries.Commands.UpdateMinistry.UpdateMinistryCommand)">
+            <summary>
+            Atualiza um ministério existente
+            </summary>
+            <response code="200">Sucesso: Ministério atualizado</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Ministério não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.DeleteMinistry(System.Int32)">
+            <summary>
+            Deleta um ministério
+            </summary>
+            <response code="204">Sucesso: Ministério deletado</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Ministério não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.GetMinistryById(System.Int32)">
+            <summary>
+            Busca um ministério por ID
+            </summary>
+            <response code="200">Sucesso: Ministério retornado</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Ministério não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.GetMinistriesByChurch(System.Int32,System.Nullable{System.Boolean})">
+            <summary>
+            Lista todos os ministérios de uma igreja
+            </summary>
+            <response code="200">Sucesso: Lista de ministérios</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.GetMinistryMembers(System.Int32,System.Nullable{System.Boolean})">
+            <summary>
+            Lista todos os membros de um ministério
+            </summary>
+            <response code="200">Sucesso: Lista de membros</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.AddMinistryMember(System.Int32,MyChurch.Application.Ministries.Commands.AddMinistryMember.AddMinistryMemberCommand)">
+            <summary>
+            Adiciona um membro a um ministério
+            </summary>
+            <response code="200">Sucesso: Membro adicionado ao ministério</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MinistryController.RemoveMinistryMember(System.Int32,System.Int32)">
+            <summary>
+            Remove um membro de um ministério
+            </summary>
+            <response code="204">Sucesso: Membro removido do ministério</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="404">Falha: Membro não encontrado no ministério</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.PastorBotController.Ask(MyChurch.Application.PastorBot.Commands.AskPastorBot.AskPastorBotCommand)">
             <summary>
             Ask to Pastor.
@@ -922,6 +1295,48 @@
             Marca uma review como não útil (atalho para downvote).
             Limite: 10 votos por minuto.
             </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetDashboardStatistics(System.Nullable{System.Int32})">
+            <summary>
+            Obtém estatísticas gerais da igreja
+            </summary>
+            <response code="200">Sucesso: Estatísticas retornadas</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMembersByAgeGroup(System.Nullable{System.Int32})">
+            <summary>
+            Obtém distribuição de membros por faixa etária
+            </summary>
+            <response code="200">Sucesso: Distribuição retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMembersByMinistry(System.Nullable{System.Int32})">
+            <summary>
+            Obtém distribuição de membros por ministério
+            </summary>
+            <response code="200">Sucesso: Distribuição retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMonthlyMemberGrowth(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém evolução mensal de membros
+            </summary>
+            <response code="200">Sucesso: Evolução retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetMonthlyFinancial(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém evolução financeira mensal
+            </summary>
+            <response code="200">Sucesso: Evolução retornada</response>
+            <response code="401">Falha: Não autorizado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.StatisticsController.GetTopEngagedMembers(System.Nullable{System.Int32},System.Int32)">
+            <summary>
+            Obtém top membros mais engajados
+            </summary>
+            <response code="200">Sucesso: Top membros retornados</response>
+            <response code="401">Falha: Não autorizado</response>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.SubscriptionController.CreateSubscription(MyChurch.Application.Subscription.Commands.CreateSubscription.CreateSubscriptionCommand)">
             <summary>

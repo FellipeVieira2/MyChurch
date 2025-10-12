@@ -151,6 +151,16 @@
         <member name="P:MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories.GetAllCashFlowCategoriesQuery.Name">
             <summary>Filtro por nome (contém)</summary>
         </member>
+        <member name="M:MyChurch.Application.CashFlow.Services.ICashFlowAutomationService.CreateEntryFromDonationAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Cria lançamento automático quando doação é confirmada
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.CashFlow.Services.ICashFlowAutomationService.GetOrCreateDonationCategoryAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca ou cria categoria padrão para doações
+            </summary>
+        </member>
         <member name="T:MyChurch.Application.ChurchPhoto.Commands.LikePhoto.TogglePhotoLikeCommand">
             <summary>
             Comando para curtir/descurtir foto
@@ -180,6 +190,169 @@
             <summary>
             Query para buscar fotos pendentes de moderação (apenas Admin)
             </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.Type">
+            <summary>
+            Tipo de promoção desejada
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.DurationInDays">
+            <summary>
+            Duração da promoção em dias
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.StartDate">
+            <summary>
+            Data de início da promoção (opcional - padrão: hoje)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.TargetRegion">
+            <summary>
+            Região alvo (opcional) - Ex: "SP" ou "SP,São Paulo"
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CustomBannerUrl">
+            <summary>
+            Banner personalizado (Base64 ou URL)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CustomText">
+            <summary>
+            Texto personalizado para a promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.PaymentMethod">
+            <summary>
+            Método de pagamento (PIX, CREDIT_CARD, etc)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CreditCard">
+            <summary>
+            Dados do cartão de crédito (se for o método escolhido)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommand.CreditCardInfoId">
+            <summary>
+            ID de cartão já salvo (opcional)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion.CreateChurchPromotionCommandHandler.CalculatePromotionPrice(MyChurch.Domain.Enum.PromotionType,System.Int32)">
+            <summary>
+            Calcula o preço da promoção baseado no tipo e duração em DIAS
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Commands.ProcessPromotionPayment.ProcessPromotionPaymentCommand">
+            <summary>
+            Processa confirmação de pagamento de promoção via webhook do Asaas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.EventHandlers.PromotionActivatedEmailHandler">
+            <summary>
+            Handler que envia email quando promoção é ativada
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Events.PromotionActivatedEvent">
+            <summary>
+            Evento disparado quando uma promoção é ativada após confirmação de pagamento
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Type">
+            <summary>
+            Tipo de promoção para filtrar (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Region">
+            <summary>
+            Região para filtrar (opcional) - Ex: "SP"
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetActiveChurchPromotions.GetActiveChurchPromotionsQuery.Limit">
+            <summary>
+            Número máximo de promoções a retornar
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetMyChurchPromotions.GetMyChurchPromotionsQuery.Status">
+            <summary>
+            Filtrar por status (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.GetMyChurchPromotions.GetMyChurchPromotionsQuery.IncludeExpired">
+            <summary>
+            Incluir promoções expiradas?
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.GetPromotionAnalytics.GetPromotionAnalyticsQuery">
+            <summary>
+            Busca analytics detalhados de uma promoção específica
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.GetPromotionsDashboard.GetPromotionsDashboardQuery">
+            <summary>
+            Dashboard geral com todas as promoções da igreja e métricas consolidadas
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery">
+            <summary>
+            Simula o preço de uma promoção baseado no tipo e duração
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.Type">
+            <summary>
+            Tipo de promoção desejada
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.DurationInDays">
+            <summary>
+            Número de dias que a promoção ficará ativa
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.SimulatePromotionPriceQuery.StartDate">
+            <summary>
+            Data de início (opcional - padrão: hoje)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.EstimatedViews">
+            <summary>
+            Estimativa de visualizações baseada em dados históricos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.EstimatedClicks">
+            <summary>
+            Estimativa de cliques (2-5% de CTR)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.ChurchPromotion.Queries.SimulatePromotionPrice.PromotionPriceSimulationDto.CostPerClick">
+            <summary>
+            Custo estimado por clique
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand">
+            <summary>
+            Comando para criar um novo horário de culto/atividade
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.ChurchId">
+            <summary>ID da igreja</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.DayOfWeek">
+            <summary>Dia da semana (0 = Domingo, 6 = Sábado)</summary>
+            <example>0</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.StartTime">
+            <summary>Hora de início (HH:mm)</summary>
+            <example>19:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.EndTime">
+            <summary>Hora de término (HH:mm) - Opcional</summary>
+            <example>21:00</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.ServiceType">
+            <summary>Tipo de serviço</summary>
+            <example>Culto de Celebração</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.CreateChurchSchedule.CreateChurchScheduleCommand.Description">
+            <summary>Descrição adicional</summary>
+            <example>Culto principal com louvor e pregação</example>
         </member>
         <member name="M:MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommandHandler.CreateFreeSubscriptionAsync(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -236,6 +409,16 @@
         <member name="P:MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand.AddressChurchCreate.Number">
             <summary>Number</summary>
         </member>
+        <member name="T:MyChurch.Application.Church.Commands.DeleteChurchPhoto.DeleteChurchPhotoCommand">
+            <summary>
+            Comando para deletar uma foto
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.LikeChurchPhoto.LikeChurchPhotoCommand">
+            <summary>
+            Comando para curtir/descurtir uma foto
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.BankName">
             <summary>Banco</summary>
         </member>
@@ -262,6 +445,84 @@
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand.PixKeyType">
             <summary>Tipo da Chave PIX</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand">
+            <summary>
+            Comando para atualizar capacidade e infraestrutura da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.SeatingCapacity">
+            <summary>Capacidade de assentos</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.StandingCapacity">
+            <summary>Capacidade em pé (eventos especiais)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.ParkingSpaces">
+            <summary>Número de vagas de estacionamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasWifi">
+            <summary>Possui WiFi</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.WifiPassword">
+            <summary>Senha do WiFi (opcional, para membros)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasCafeteria">
+            <summary>Possui cafeteria/lanchonete</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasBookstore">
+            <summary>Possui livraria</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasNursery">
+            <summary>Possui berçário</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasSoundSystem">
+            <summary>Sistema de som profissional</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasProjector">
+            <summary>Projetor/Telão</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasAirConditioning">
+            <summary>Ar condicionado</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.HasBaptistery">
+            <summary>Batistério</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.AdditionalFacilities">
+            <summary>Instalações adicionais (Ex: ["Academia", "Quadra esportiva", "Auditório"])</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand.EquipmentNotes">
+            <summary>Notas sobre equipamentos disponíveis</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand">
+            <summary>
+            Comando para atualizar características avançadas da igreja (denominação, amenidades, idiomas)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.Denomination">
+            <summary>Denominação da igreja (Ex: Batista, Assembleia de Deus, Adventista, Católica)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.CoverPhoto">
+            <summary>URL da foto de capa (base64 ou URL S3)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasParking">
+            <summary>Possui estacionamento</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.IsAccessible">
+            <summary>Possui acessibilidade (rampa, elevador, etc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasLiveStream">
+            <summary>Possui transmissão ao vivo (YouTube, Facebook Live, etc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.HasChildMinistry">
+            <summary>Possui ministério infantil</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand.Languages">
+            <summary>Idiomas falados nos cultos (Ex: ["Português", "Inglês", "Espanhol"])</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand">
+            <summary>
+            Comando para atualizar redes sociais e contatos da igreja
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.Name">
             <summary>Name</summary>
@@ -297,6 +558,39 @@
         </member>
         <member name="P:MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand.AddressChurch.Number">
             <summary>Number</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand">
+            <summary>
+            Comando para fazer upload de uma foto da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.ChurchId">
+            <summary>ID da igreja</summary>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.PhotoBase64">
+            <summary>Foto em Base64</summary>
+            <example>data:image/jpeg;base64,/9j/4AAQSkZJRg...</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.Caption">
+            <summary>Legenda/descrição</summary>
+            <example>Interior do templo durante culto</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.Category">
+            <summary>Categoria da foto (1-10)</summary>
+            <example>2</example>
+        </member>
+        <member name="P:MyChurch.Application.Church.Commands.UploadChurchPhoto.UploadChurchPhotoCommand.OriginalFileName">
+            <summary>Nome original do arquivo</summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Queries.GetChurchPhotos.GetChurchPhotosQuery">
+            <summary>
+            Query para buscar fotos de uma igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Church.Queries.GetChurchSchedules.GetChurchSchedulesQuery">
+            <summary>
+            Query para buscar horários de uma igreja
+            </summary>
         </member>
         <member name="T:MyChurch.Application.Church.Queries.SearchNearby.SearchNearbyChurchesQuery">
             <summary>
@@ -535,6 +829,166 @@
             Valor de filtro
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByAgeGroupDto">
+            <summary>
+            Estatísticas de membros por faixa etária
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByGenderDto">
+            <summary>
+            Estatísticas de membros por gênero
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MembersByMinistryDto">
+            <summary>
+            Estatísticas de membros por ministério
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MonthlyMemberGrowthDto">
+            <summary>
+            Evolução mensal de membros
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.MonthlyFinancialDto">
+            <summary>
+            Evolução mensal financeira
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.AttendanceByEventDto">
+            <summary>
+            Estatísticas de presença por evento
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.TopEngagedMembersDto">
+            <summary>
+            Top membros mais engajados
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Dtos.ChurchStatisticsDto">
+            <summary>
+            DTO com estatísticas gerais da igreja
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TotalMembers">
+            <summary>
+            Total de membros cadastrados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveMembers">
+            <summary>
+            Total de membros ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.InactiveMembers">
+            <summary>
+            Total de membros inativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.NewMembersThisMonth">
+            <summary>
+            Novos membros no mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.NewMembersLastMonth">
+            <summary>
+            Novos membros no mês anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.MemberGrowthPercentage">
+            <summary>
+            Percentual de crescimento de membros
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BaptizedMembers">
+            <summary>
+            Total de membros batizados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BaptizedPercentage">
+            <summary>
+            Percentual de membros batizados
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.Tithers">
+            <summary>
+            Total de dizimistas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TithersPercentage">
+            <summary>
+            Percentual de dizimistas
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.AverageAttendancePercentage">
+            <summary>
+            Média de presença em cultos (%)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.TotalAttendancesThisMonth">
+            <summary>
+            Total de presenças registradas no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueThisMonth">
+            <summary>
+            Receita total do mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueLastMonth">
+            <summary>
+            Receita total do mês anterior
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.RevenueGrowthPercentage">
+            <summary>
+            Percentual de crescimento da receita
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ExpensesThisMonth">
+            <summary>
+            Despesas totais do mês atual
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.BalanceThisMonth">
+            <summary>
+            Saldo do mês (receita - despesas)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.EventsThisMonth">
+            <summary>
+            Total de eventos no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveMinistries">
+            <summary>
+            Total de ministérios ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActiveGroups">
+            <summary>
+            Total de grupos/células ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.ActivePrayerRequests">
+            <summary>
+            Total de pedidos de oração ativos
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.AverageEngagementScore">
+            <summary>
+            Taxa de engajamento média (0-100)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.VisitorsThisMonth">
+            <summary>
+            Total de visitantes no mês
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Dtos.ChurchStatisticsDto.VisitorConversionRate">
+            <summary>
+            Taxa de conversão de visitantes em membros (%)
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Dtos.CreatePreLaunchInterestDto.Name">
             <summary>Nome completo</summary>
             <example>João Silva</example>
@@ -582,6 +1036,51 @@
         <member name="P:MyChurch.Application.Dtos.ReviewWithVoteDto.CurrentMemberVoteIsHelpful">
             <summary>
             Se votou, indica se foi voto positivo (true) ou negativo (false)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.EventId">
+            <summary>
+            ID do evento a ser promovido
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.Type">
+            <summary>
+            Tipo de promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.StartDate">
+            <summary>
+            Data de início da promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.EndDate">
+            <summary>
+            Data de término da promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.Budget">
+            <summary>
+            Orçamento total para a promoção
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.TargetRegion">
+            <summary>
+            Região alvo (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.TargetRadiusKm">
+            <summary>
+            Raio em KM para promoção regional (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.CustomBannerUrl">
+            <summary>
+            Banner personalizado
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.EventPromotion.Commands.CreateEventPromotion.CreateEventPromotionCommand.PaymentMethod">
+            <summary>
+            Método de pagamento
             </summary>
         </member>
         <member name="P:MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand.File">
@@ -659,6 +1158,21 @@
             Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
             </summary>
         </member>
+        <member name="T:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommand">
+            <summary>
+            Comando para deletar permanentemente um membro (Hard Delete)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommand.Reason">
+            <summary>
+            Motivo da exclusão (obrigatório para auditoria)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommandHandler.DeleteMemberDependenciesAsync(MyChurch.Domain.Entities.Member,System.Threading.CancellationToken)">
+            <summary>
+            Remove todas as dependências do membro antes de deletá-lo
+            </summary>
+        </member>
         <member name="P:MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand.Documents">
             <summary>Documentos do membro</summary>
         </member>
@@ -704,7 +1218,7 @@
             <summary>Filtro por aprovação pendente</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.Ministry">
-            <summary>Filtro por ministério</summary>
+            <summary>Filtro por ministério (nome do ministério em texto)</summary>
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.MaritalStatus">
             <summary>Filtro por estado civil</summary>
@@ -726,6 +1240,40 @@
         </member>
         <member name="P:MyChurch.Application.Member.Queries.GetAllMembers.GetAllMembersQuery.SortDirection">
             <summary>Direção da ordenação (asc ou desc)</summary>
+        </member>
+        <member name="P:MyChurch.Application.Onboarding.IdentifyMember.IdentifyMemberResultDto.Status">
+            <summary>
+            Status do membro:
+            - NotFound: Membro não encontrado
+            - PendingApproval: Cadastro aguardando aprovação do administrador
+            - AlreadyActive: Conta aprovada e ativa - pode fazer login
+            - Rejected: Cadastro foi rejeitado pelo administrador
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Onboarding.IdentifyMember.IdentifyMemberResultDto.MaskedName">
+            <summary>
+            Nome mascarado do membro (ex: "João S.")
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.TargetMemberId">
+            <summary>
+            ID do membro que receberá a permissão
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.Permission">
+            <summary>
+            Permissão a ser concedida
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.Reason">
+            <summary>
+            Motivo da concessão (opcional)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Permissions.Commands.GrantPermission.GrantPermissionCommand.ExpiresAt">
+            <summary>
+            Data de expiração (null = permanente)
+            </summary>
         </member>
         <member name="P:MyChurch.Application.Plan.Commands.CreatePlan.CreatePlanCommand.Name">
             <summary>Nome do plano</summary>
@@ -813,6 +1361,26 @@
         <member name="T:MyChurch.Application.Reviews.Queries.GetChurchPhotoGallery.ReviewPhotoItemDto">
             <summary>
             DTO para foto de review (diferente de ChurchPhotoDto que é da galeria geral)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetChurchStatistics.GetChurchStatisticsQuery.ChurchId">
+            <summary>
+            ID da igreja (opcional, pega da autenticação se não fornecido)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetMonthlyFinancial.GetMonthlyFinancialQuery.Months">
+            <summary>
+            Número de meses para retornar (padrão: 12)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetMonthlyMemberGrowth.GetMonthlyMemberGrowthQuery.Months">
+            <summary>
+            Número de meses para retornar (padrão: 12)
+            </summary>
+        </member>
+        <member name="P:MyChurch.Application.Statistics.Queries.GetTopEngagedMembers.GetTopEngagedMembersQuery.Top">
+            <summary>
+            Quantidade de membros para retornar (padrão: 10)
             </summary>
         </member>
     </members>

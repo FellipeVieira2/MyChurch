@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mychurch.Common.WebClients.Asaas;
 using MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry;
+using MyChurch.Application.CashFlow.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -21,17 +22,20 @@ namespace MyChurch.Application.Webhook.Commands
         private readonly ILogger<ConfirmPaymentCommandHandler> _logger;
         private readonly IAsaasWebClient _asaasWebClient;
         private readonly IMediator _mediator;
+        private readonly ICashFlowAutomationService _cashFlowAutomation; // 🔥 NOVO
 
         public ConfirmPaymentCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<ConfirmPaymentCommandHandler> logger,
             IAsaasWebClient asaasWebClient,
-            IMediator mediator)
+            IMediator mediator,
+            ICashFlowAutomationService cashFlowAutomation) // 🔥 NOVO
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _asaasWebClient = asaasWebClient;
             _mediator = mediator;
+            _cashFlowAutomation = cashFlowAutomation; // 🔥 NOVO
         }
 
         public async Task<bool> Handle(ConfirmPaymentCommand request, CancellationToken cancellationToken)
@@ -43,6 +47,7 @@ namespace MyChurch.Application.Webhook.Commands
                         .ThenInclude(s => s.Plan)
                     .Include(p => p.Subscription)
                         .ThenInclude(s => s.Church)
+                    .Include(p => p.Donation) // 🔥 NOVO
                     .FirstOrDefaultAsync(p => p.TransactionId == request.PaymentId, cancellationToken);
 
                 if (payment == null)
@@ -51,10 +56,12 @@ namespace MyChurch.Application.Webhook.Commands
                     return false;
                 }
 
+                var oldStatus = payment.PaymentStatus;
                 payment.PaymentStatus = request.Status.ToString();
                 payment.Date = DateTime.UtcNow;
                 _unitOfWork.Payments.Update(payment);
 
+                // 🔥 NOVA LÓGICA: Automação de Doações → CashFlow
                 if (payment.DonationId != null)
                 {
                     var donation = await _unitOfWork.Donations.Query()
@@ -63,39 +70,45 @@ namespace MyChurch.Application.Webhook.Commands
 
                     if (donation != null)
                     {
-                        var churchId = donation.Member?.ChurchId; // null se visitante
-                        if (churchId.HasValue)
+                        // ✅ SE PAGAMENTO FOI CONFIRMADO, CRIA LANÇAMENTO AUTOMÁTICO
+                        var isPaid = request.Status == PaymentStatus.Completed ||
+                                    request.Status == PaymentStatus.Received ||
+                                    request.Status == PaymentStatus.Confirmed;
+
+                        if (isPaid && oldStatus != request.Status.ToString())
                         {
-                            var category = await _unitOfWork.CashFlowCategories.Query()
-                                .FirstOrDefaultAsync(
-                                    c => c.ChurchId == churchId.Value &&
-                                         c.Name.ToLower() == "doacao",
+                            _logger.LogInformation(
+                                "💰 Pagamento confirmado! Criando lançamento automático para doação {DonationId}",
+                                donation.Id);
+
+                            try
+                            {
+                                await _cashFlowAutomation.CreateEntryFromDonationAsync(
+                                    donation.Id,
                                     cancellationToken);
-
-                            if (category == null)
-                            {
-                                category = new CashFlowCategory
-                                {
-                                    Name = "Doacao",
-                                    ChurchId = churchId.Value
-                                };
-                                _unitOfWork.CashFlowCategories.Create(category);
-                                await _unitOfWork.CommitAsync();
                             }
-
-                            await _mediator.Send(new CreateCashFlowEntryCommand
+                            catch (Exception ex)
                             {
-                                UserId = donation.MemberId ?? 0,
-                                Amount = donation.Amount,
-                                Date = DateTime.UtcNow,
-                                Description = "Doação recebida",
-                                Type = CashFlowType.Income,
-                                CategoryId = category.Id
-                            }, cancellationToken);
+                                _logger.LogError(ex,
+                                    "❌ Erro ao criar lançamento automático para doação {DonationId}",
+                                    donation.Id);
+                                // Não falha o webhook por causa disso
+                            }
                         }
                     }
                 }
-                if (payment.Subscription != null && request.Status == PaymentStatus.Completed || request.Status == PaymentStatus.Received || PaymentStatus.Confirmed == request.Status)
+
+                // ⚠️ CÓDIGO ANTIGO REMOVIDO (duplicação)
+                // A criação de CashFlowEntry agora é feita APENAS pelo CashFlowAutomationService
+                // Isso garante:
+                // 1. Não duplicar lançamentos
+                // 2. Usar valor líquido correto
+                // 3. Centralizar lógica de automação
+
+                if (payment.Subscription != null && 
+                    (request.Status == PaymentStatus.Completed || 
+                     request.Status == PaymentStatus.Received || 
+                     request.Status == PaymentStatus.Confirmed))
                 {
                     var subscription = payment.Subscription;
 
@@ -127,12 +140,12 @@ namespace MyChurch.Application.Webhook.Commands
 
                 await _unitOfWork.CommitAsync();
 
-                _logger.LogInformation($"Pagamento {request.PaymentId} atualizado para status {request.Status} com sucesso.");
+                _logger.LogInformation($"✅ Pagamento {request.PaymentId} atualizado: {oldStatus} → {request.Status}");
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erro ao confirmar pagamento {request.PaymentId}");
+                _logger.LogError(ex, $"❌ Erro ao confirmar pagamento {request.PaymentId}");
                 throw;
             }
         }

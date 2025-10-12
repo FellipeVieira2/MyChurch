@@ -8,6 +8,7 @@ using MyChurch.Application.Member.Commands.AdminChangePassword;
 using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
 using MyChurch.Application.Member.Commands.CreateMemberImportFile;
+using MyChurch.Application.Member.Commands.DeleteMember;
 using MyChurch.Application.Member.Queries.GetAllCreditCardsMember;
 using MyChurch.Application.Member.Queries.GetAllMembers;
 using MyChurch.Application.Member.Queries.GetBirthdayMembers;
@@ -228,12 +229,49 @@ namespace MyChurch.Api.Web.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Deleta permanentemente um membro (Hard Delete) - Apenas Admin
+        /// ⚠️ ATENÇÃO: Esta ação é irreversível!
+        /// Membros com doações ou lançamentos financeiros não podem ser deletados (apenas desativados)
+        /// </summary>
+        /// <param name="id">ID do membro</param>
+        /// <param name="reason">Motivo da exclusão (obrigatório para auditoria)</param>
+        /// <response code="204">Sucesso: Membro deletado permanentemente</response>
+        /// <response code="400">Falha: Membro possui dados críticos vinculados</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        /// <response code="403">Falha: Apenas administradores podem deletar</response>
+        /// <response code="404">Falha: Membro não encontrado</response>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteMember([FromRoute] int id, [FromBody] DeleteMemberRequest request)
+        {
+            var command = AuthorizationRequestCreate<DeleteMemberCommand>();
+            command.MemberId = id;
+            command.Reason = request.Reason;
+            
+            await Mediator.Send(command);
+            return NoContent();
+        }
+
         public class RecieveCsvFile()
         {
             public IFormFile CsvFile
             {
                 get; set;
             }
+        }
+
+        public class DeleteMemberRequest
+        {
+            /// <summary>
+            /// Motivo da exclusão (obrigatório)
+            /// </summary>
+            public string Reason { get; set; }
         }
     }
 }

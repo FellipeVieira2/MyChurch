@@ -1,29 +1,36 @@
 using MediatR;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Services;
 
 namespace MyChurch.Application.Onboarding.IdentifyMember
 {
     public class IdentifyMemberCommand : IRequest<IdentifyMemberResultDto>
     {
-        public string Identifier { get; set; } // CPF
+        public string Identifier { get; set; } // CPF, Email ou Telefone
         public string ChurchId { get; set; }
 
         public class Handler : IRequestHandler<IdentifyMemberCommand, IdentifyMemberResultDto>
         {
             private readonly IUnitOfWork _unitOfWork;
+            private readonly IDocumentValidator _documentValidator;
 
-            public Handler(IUnitOfWork unitOfWork)
+            public Handler(IUnitOfWork unitOfWork, IDocumentValidator documentValidator)
             {
                 _unitOfWork = unitOfWork;
+                _documentValidator = documentValidator;
             }
 
             public async Task<IdentifyMemberResultDto> Handle(IdentifyMemberCommand request, CancellationToken cancellationToken)
             {
+                // ?? Normalizar identifier (caso seja CPF)
+                var normalizedIdentifier = _documentValidator.RemoveFormatting(request.Identifier);
+                var originalIdentifier = request.Identifier;
+                
                 var member = _unitOfWork.Members.Query()
-                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == request.Identifier) 
-                                       || m.Phone == request.Identifier 
-                                       || m.Email.ToLower() == request.Identifier.ToLower()) 
+                    .FirstOrDefault(m => (m.Documents.Any(d => d.Number == normalizedIdentifier) 
+                                       || m.Phone == originalIdentifier 
+                                       || m.Email.ToLower() == originalIdentifier.ToLower()) 
                                        && m.ChurchId.ToString() == request.ChurchId);
 
                 if (member == null)
@@ -31,19 +38,21 @@ namespace MyChurch.Application.Onboarding.IdentifyMember
                     return new IdentifyMemberResultDto { Status = "NotFound" };
                 }
                 
-                // ?? SEGURANÇA: Verificar se já tem senha (PasswordHash existe e não é token temporário)
-                // Considerar ativo se PasswordHash existe e tem formato BCrypt ($2a$, $2b$ ou $2y$)
-                bool isActive = !string.IsNullOrEmpty(member.PasswordHash) 
-                             && member.PasswordHash.StartsWith("$2");
+                // ? Se ainda está pendente de aprovação do admin
+                if (member.PendingApproval)
+                {
+                    return new IdentifyMemberResultDto { Status = "PendingApproval" };
+                }
                 
-                if (isActive)
+                // ? Se foi aprovado e está ativo, pode fazer login
+                if (!member.PendingApproval && member.IsActive)
                 {
                     return new IdentifyMemberResultDto { Status = "AlreadyActive" };
                 }
                 
-                // Ofusca o nome: Exemplo "Fellipe V. S."
+                // ? Cadastro foi rejeitado
                 string maskedName = MaskName(member.Name);
-                return new IdentifyMemberResultDto { Status = "ActivationRequired", MaskedName = maskedName };
+                return new IdentifyMemberResultDto { Status = "Rejected", MaskedName = maskedName };
             }
 
             private string MaskName(string name)

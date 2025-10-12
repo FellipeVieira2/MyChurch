@@ -6,6 +6,7 @@ using MyChurch.Domain.Behauviours;
 using MyChurch.Application.Engagement;
 using MyChurch.Application.Presentation.Services;
 using MyChurch.Application.Services;
+using MyChurch.Application.CashFlow.Services; // 🔥 NOVO
 
 namespace MyChurch.Application
 {
@@ -22,6 +23,9 @@ namespace MyChurch.Application
             services.AddScoped<ContentGenerationService>();
             services.AddScoped<IBibleService, BibleService>();
             services.AddScoped<IHymnService, HymnService>();
+            
+            // 🔥 NOVO - Serviço de Automação de CashFlow
+            services.AddScoped<ICashFlowAutomationService, CashFlowAutomationService>();
 
             return services;
         }
