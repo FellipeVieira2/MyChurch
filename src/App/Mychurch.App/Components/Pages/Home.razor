@@ -1,0 +1,63 @@
+﻿@page "/home"
+@using Mychurch.App.Services
+@using Mychurch.App.Models
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<PageTitle>Home</PageTitle>
+
+@if (isLoading)
+{
+    <div class="text-center">
+        <p>Carregando...</p>
+    </div>
+}
+else if (currentUser != null)
+{
+    <div class="welcome-container">
+        <h1>Olá, @currentUser.Name! 👋</h1>
+        <p class="welcome-message">Bem-vindo(a) ao MyChurch</p>
+        
+        <div class="user-info">
+            <p><strong>E-mail:</strong> @currentUser.Email</p>
+            <p><strong>Telefone:</strong> @currentUser.Phone</p>
+            <p><strong>Função:</strong> @currentUser.Role</p>
+        </div>
+
+        <button class="btn btn-danger mt-3" @onclick="HandleLogout">
+            Sair
+        </button>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <p>Redirecionando para login...</p>
+    </div>
+}
+
+@code {
+    private MemberDto? currentUser;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        
+        if (!isAuthenticated)
+        {
+            // Não está autenticado, redirecionar para login
+            Navigation.NavigateTo("/login");
+            return;
+        }
+
+        currentUser = await AuthService.GetCurrentUserAsync();
+        isLoading = false;
+    }
+
+    private async Task HandleLogout()
+    {
+        await AuthService.LogoutAsync();
+        Navigation.NavigateTo("/login", forceLoad: true);
+    }
+}

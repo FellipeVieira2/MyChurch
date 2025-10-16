@@ -1,0 +1,29 @@
+@using Mychurch.App.Services
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool RequireAuth { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (RequireAuth)
+        {
+            var isAuthenticated = await AuthService.IsAuthenticatedAsync();
+            
+            if (!isAuthenticated)
+            {
+                Navigation.NavigateTo("/login");
+            }
+        }
+    }
+}
+
+@if (ChildContent != null)
+{
+    @ChildContent
+}
