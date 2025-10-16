@@ -168,7 +168,7 @@ builder.Services.AddCors(options =>
         if (builder.Environment.IsProduction())
         {
             // ?? PRODUÇÃO: Apenas domínio oficial
-            policy.WithOrigins("https://www.mychurchlab.net")
+            policy.WithOrigins("https://www.mychurchlab.net", "http://localhost:3000")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();

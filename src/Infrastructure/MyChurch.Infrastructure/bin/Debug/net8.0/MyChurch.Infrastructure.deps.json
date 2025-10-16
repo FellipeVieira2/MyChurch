@@ -403,7 +403,8 @@
       "Microsoft.CodeAnalysis.Workspaces.MSBuild/4.8.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.Common": "4.8.0",
-          "Microsoft.CodeAnalysis.Workspaces.Common": "4.8.0"
+          "Microsoft.CodeAnalysis.Workspaces.Common": "4.8.0",
+          "System.Text.Json": "9.0.3"
         },
         "runtime": {
           "lib/net7.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll": {
@@ -807,6 +808,9 @@
         }
       },
       "Postmark/5.2.0": {
+        "dependencies": {
+          "System.Text.Json": "9.0.3"
+        },
         "runtime": {
           "lib/netstandard2.0/Postmark.dll": {
             "assemblyVersion": "5.2.0.0",
