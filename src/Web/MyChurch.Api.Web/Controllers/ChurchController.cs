@@ -30,21 +30,6 @@ namespace MyChurch.Api.Web.Controllers
         public ChurchController() : base() { }
 
         /// <summary>
-        /// Busca pública de igrejas (não requer autenticação)
-        /// Filtros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating
-        /// </summary>
-        /// <param name="query">Parâmetros de filtro e ordenação</param>
-        /// <response code="200">Lista paginada com dados de avaliações, distância e relevância</response>
-        [HttpGet("public/search")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(object))]
-        public async Task<IActionResult> SearchPublicChurches([FromQuery] GetPublicChurchesQuery query)
-        {
-            var result = await Mediator.Send(query);
-            return Ok(result);
-        }
-
-        /// <summary>
         /// Busca igrejas próximas por latitude/longitude e raio (km)
         /// </summary>
         [HttpGet("public/nearby")]

@@ -1,185 +1,9 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {
-      "FluentValidation/11.11.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/FluentValidation.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/FluentValidation.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "MediatR/12.4.1": {
-        "type": "package",
-        "dependencies": {
-          "MediatR.Contracts": "[2.0.1, 3.0.0)",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
-        },
-        "compile": {
-          "lib/net6.0/MediatR.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/MediatR.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "MediatR.Contracts/2.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/MediatR.Contracts.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/MediatR.Contracts.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net8.0/_._": {}
-        }
-      },
-      "NetTopologySuite/2.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.1/NetTopologySuite.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/NetTopologySuite.dll": {
-            "related": ".xml"
-          }
-        }
-      }
-    }
+    "net8.0": {}
   },
-  "libraries": {
-    "FluentValidation/11.11.0": {
-      "sha512": "cyIVdQBwSipxWG8MA3Rqox7iNbUNUTK5bfJi9tIdm4CAfH71Oo5ABLP4/QyrUwuakqpUEPGtE43BDddvEehuYw==",
-      "type": "package",
-      "path": "fluentvalidation/11.11.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "fluent-validation-icon.png",
-        "fluentvalidation.11.11.0.nupkg.sha512",
-        "fluentvalidation.nuspec",
-        "lib/net5.0/FluentValidation.dll",
-        "lib/net5.0/FluentValidation.xml",
-        "lib/net6.0/FluentValidation.dll",
-        "lib/net6.0/FluentValidation.xml",
-        "lib/net7.0/FluentValidation.dll",
-        "lib/net7.0/FluentValidation.xml",
-        "lib/net8.0/FluentValidation.dll",
-        "lib/net8.0/FluentValidation.xml",
-        "lib/netstandard2.0/FluentValidation.dll",
-        "lib/netstandard2.0/FluentValidation.xml",
-        "lib/netstandard2.1/FluentValidation.dll",
-        "lib/netstandard2.1/FluentValidation.xml"
-      ]
-    },
-    "MediatR/12.4.1": {
-      "sha512": "0tLxCgEC5+r1OCuumR3sWyiVa+BMv3AgiU4+pz8xqTc+2q1WbUEXFOr7Orm96oZ9r9FsldgUtWvB2o7b9jDOaw==",
-      "type": "package",
-      "path": "mediatr/12.4.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "gradient_128x128.png",
-        "lib/net6.0/MediatR.dll",
-        "lib/net6.0/MediatR.xml",
-        "lib/netstandard2.0/MediatR.dll",
-        "lib/netstandard2.0/MediatR.xml",
-        "mediatr.12.4.1.nupkg.sha512",
-        "mediatr.nuspec"
-      ]
-    },
-    "MediatR.Contracts/2.0.1": {
-      "sha512": "FYv95bNT4UwcNA+G/J1oX5OpRiSUxteXaUt2BJbRSdRNiIUNbggJF69wy6mnk2wYToaanpdXZdCwVylt96MpwQ==",
-      "type": "package",
-      "path": "mediatr.contracts/2.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "gradient_128x128.png",
-        "lib/netstandard2.0/MediatR.Contracts.dll",
-        "lib/netstandard2.0/MediatR.Contracts.xml",
-        "mediatr.contracts.2.0.1.nupkg.sha512",
-        "mediatr.contracts.nuspec"
-      ]
-    },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.3": {
-      "sha512": "TfaHPSe39NyL2wxkisRxXK7xvHGZYBZ+dy3r+mqGvnxKgAPdHkMu3QMQZI4pquP6W5FIQBqs8FJpWV8ffCgDqQ==",
-      "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "PACKAGE.md",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net8.0/_._",
-        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.Abstractions.targets",
-        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net462/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
-        "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.9.0.3.nupkg.sha512",
-        "microsoft.extensions.dependencyinjection.abstractions.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "NetTopologySuite/2.6.0": {
-      "sha512": "1B1OTacTd4QtFyBeuIOcThwSSLUdRZU3bSFIwM8vk36XiZlBMi3K36u74e4OqwwHRHUuJC1PhbDx4hyI266X1Q==",
-      "type": "package",
-      "path": "nettopologysuite/2.6.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "icon.png",
-        "lib/netstandard2.0/NetTopologySuite.dll",
-        "lib/netstandard2.0/NetTopologySuite.xml",
-        "lib/netstandard2.1/NetTopologySuite.dll",
-        "lib/netstandard2.1/NetTopologySuite.xml",
-        "nettopologysuite.2.6.0.nupkg.sha512",
-        "nettopologysuite.nuspec"
-      ]
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
     "net8.0": [
       "FluentValidation >= 11.11.0",
@@ -215,7 +39,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
@@ -272,10 +97,9 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(, 4.7.32767]",
-          "Microsoft.NETCore.App": "(, 2.1.32767]",
           "Microsoft.VisualBasic": "(, 10.3.32767]",
           "Microsoft.Win32.Primitives": "(, 4.3.32767]",
           "Microsoft.Win32.Registry": "(, 5.0.32767]",
@@ -558,5 +382,40 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Error",
+      "message": "Falha ao baixar o pacote 'MediatR.12.4.1' de 'https://api.nuget.org/v3-flatcontainer/mediatr/12.4.1/mediatr.12.4.1.nupkg'.\r\nServicePointManager não oferece suporte para proxies com o esquema https."
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Falha ao recuperar informações sobre 'MediatR' da origem remota 'https://api.nuget.org/v3-flatcontainer/mediatr/index.json'.\r\n  ServicePointManager não oferece suporte para proxies com o esquema https.",
+      "libraryId": "MediatR"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Não é possível carregar o índice de serviço para a origem https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json.\r\n  ServicePointManager não oferece suporte para proxies com o esquema https.",
+      "libraryId": "MediatR"
+    },
+    {
+      "code": "Undefined",
+      "level": "Error",
+      "message": "Falha ao baixar o pacote 'Microsoft.Extensions.DependencyInjection.Abstractions.9.0.3' de 'https://api.nuget.org/v3-flatcontainer/microsoft.extensions.dependencyinjection.abstractions/9.0.3/microsoft.extensions.dependencyinjection.abstractions.9.0.3.nupkg'.\r\nServicePointManager não oferece suporte para proxies com o esquema https."
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Não é possível carregar o índice de serviço para a origem https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json.\r\n  ServicePointManager não oferece suporte para proxies com o esquema https.",
+      "libraryId": "Microsoft.Extensions.DependencyInjection.Abstractions"
+    },
+    {
+      "code": "Undefined",
+      "level": "Error",
+      "message": "O feed 'nuget.org [https://api.nuget.org/v3/index.json]' lista o pacote 'Microsoft.Extensions.DependencyInjection.Abstractions.9.0.3', mas várias tentativas de baixar o nupkg falharam. O feed é inválido ou os pacotes necessários foram removidos enquanto a operação atual estava em andamento. Verifique se o pacote existe no feed e tente novamente."
+    }
+  ]
 }

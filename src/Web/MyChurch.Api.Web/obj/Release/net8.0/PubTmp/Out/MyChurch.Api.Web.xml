@@ -223,14 +223,6 @@
             <param name="query">Filtros e paginação</param>
             <returns>Lista paginada de categorias</returns>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.SearchPublicChurches(MyChurch.Application.Church.Queries.SearchPublicChurches.GetPublicChurchesQuery)">
-            <summary>
-            Busca pública de igrejas (não requer autenticação)
-            Filtros avançados: rating mínimo, quantidade de reviews, ordenação por relevância/distância/rating
-            </summary>
-            <param name="query">Parâmetros de filtro e ordenação</param>
-            <response code="200">Lista paginada com dados de avaliações, distância e relevância</response>
-        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetNearby(System.Double,System.Double,System.Double,System.Nullable{System.Int32})">
             <summary>
             Busca igrejas próximas por latitude/longitude e raio (km)
@@ -1447,11 +1439,6 @@
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.SendAdminNotice(System.Int32,MyChurch.Application.WorshipActivity.Commands.SendAdminNoticeCommand)">
             <summary>
             Envia um aviso administrativo para todos do culto
-            </summary>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterVisitorPresence(System.Int32,System.Int32,MyChurch.Api.Web.Controllers.WorshipActivityController.VisitorPresenceRequest)">
-            <summary>
-            Check-in de visitante (não autenticado como membro) no culto
             </summary>
         </member>
     </members>

@@ -44,18 +44,38 @@ namespace MyChurch.Api.Web.Middleware
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.ReadJwtToken(token);
 
-                var userId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
-                var email = jwtToken.Claims.First(x => x.Type == "email").Value;
-                var role = jwtToken.Claims.First(x => x.Type == "role").Value;
+                var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "role")?.Value
+                           ?? jwtToken.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
 
-                // 🔥 DEBUG LOG
-                _logger.LogInformation("✅ JWT Claims extraídos: UserId={UserId}, Email={Email}, Role={Role}", userId, email, role);
+                if (string.Equals(role, "Visitor", StringComparison.OrdinalIgnoreCase))
+                {
+                    var visitorId = jwtToken.Claims.First(x => x.Type == "visitor_id").Value;
+                    var email = jwtToken.Claims.FirstOrDefault(x => x.Type == "email")?.Value
+                              ?? jwtToken.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+
+                    _logger.LogInformation("✅ JWT Visitor Claims: VisitorId={VisitorId}, Email={Email}", visitorId, email);
+
+                    context.Items["Visitor"] = new VisitorJwtDto
+                    {
+                        VisitorId = int.Parse(visitorId),
+                        Email = email,
+                        Role = "Visitor"
+                    };
+                    return;
+                }
+
+                // Padrão: tratar como membro
+                var userId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
+                var memberEmail = jwtToken.Claims.First(x => x.Type == "email").Value;
+                var memberRole = jwtToken.Claims.First(x => x.Type == "role").Value;
+
+                _logger.LogInformation("✅ JWT Claims extraídos: UserId={UserId}, Email={Email}, Role={Role}", userId, memberEmail, memberRole);
 
                 context.Items["User"] = new JwtMemberDto
                 {
                     UserId = int.Parse(userId),
-                    Email = email,
-                    Role = role
+                    Email = memberEmail,
+                    Role = memberRole
                 };
             }
             catch (Exception ex)

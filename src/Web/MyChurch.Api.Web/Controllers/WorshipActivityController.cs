@@ -297,36 +297,5 @@ namespace MyChurch.Api.Web.Controllers
                 .SendAsync("AdminNoticeReceived", new { noticeId });
             return Ok(new { noticeId });
         }
-
-        /// <summary>
-        /// Check-in de visitante (não autenticado como membro) no culto
-        /// </summary>
-        [AllowAnonymous]
-        [HttpPost("{worshipServiceId}/visitor/{visitorId}/presence/check-in")]
-        public async Task<IActionResult> RegisterVisitorPresence(int worshipServiceId, int visitorId, [FromBody] VisitorPresenceRequest body)
-        {
-            var cmd = new RegisterVisitorWorshipPresenceCommand
-            {
-                WorshipServiceId = worshipServiceId,
-                VisitorId = visitorId,
-                Latitude = body.Latitude,
-                Longitude = body.Longitude,
-                MaxDistanceMeters = body.MaxDistanceMeters ?? 150
-            };
-            var id = await Mediator.Send(cmd);
-            if (id > 0)
-            {
-                await _hubContext.Clients.Group($"worship_{worshipServiceId}")
-                    .SendAsync("VisitorJoined", new { worshipServiceId, visitorId });
-            }
-            return Ok(new { presenceId = id });
-        }
-
-        public class VisitorPresenceRequest
-        {
-            public double Latitude { get; set; }
-            public double Longitude { get; set; }
-            public double? MaxDistanceMeters { get; set; }
-        }
     }
 }

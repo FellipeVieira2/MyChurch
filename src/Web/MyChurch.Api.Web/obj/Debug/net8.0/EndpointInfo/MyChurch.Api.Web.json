@@ -368,6 +368,37 @@
         }
       }
     },
+    "/api/Auth/google": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoogleLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Bible/versions": {
       "get": {
         "tags": [
@@ -1697,142 +1728,6 @@
         "responses": {
           "204": {
             "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/Church/public/search": {
-      "get": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "Search",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "City",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "State",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "HasServiceToday",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "UserLatitude",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "UserLongitude",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "RadiusKm",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "MinRating",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "MinReviews",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "SortBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Amenities",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "Denominations",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "PageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": { }
-              },
-              "application/json": {
-                "schema": { }
-              },
-              "text/json": {
-                "schema": { }
-              }
-            }
           }
         }
       }
@@ -3372,6 +3267,286 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/church/public/search": {
+      "get": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchListItemDtoPagedResultDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchListItemDtoPagedResultDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchListItemDtoPagedResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/public/nearby": {
+      "get": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "radiusKm",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "default": 5
+            }
+          },
+          {
+            "name": "maxResults",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NearbyChurchDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NearbyChurchDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NearbyChurchDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/public/{id}": {
+      "get": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchDetailsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicChurchDetailsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/church/public/{id}/current-worship": {
+      "get": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "liveWindowHours",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 6
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/church/public/{id}/upcoming-worships": {
+      "get": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "hoursAhead",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 48
+            }
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/church/public/{id}/visit": {
+      "post": {
+        "tags": [
+          "ChurchPublic"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -10591,57 +10766,6 @@
           }
         }
       }
-    },
-    "/api/WorshipActivity/{worshipServiceId}/visitor/{visitorId}/presence/check-in": {
-      "post": {
-        "tags": [
-          "WorshipActivity"
-        ],
-        "parameters": [
-          {
-            "name": "worshipServiceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "visitorId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VisitorPresenceRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VisitorPresenceRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/VisitorPresenceRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -13955,6 +14079,21 @@
         },
         "additionalProperties": false
       },
+      "GoogleLoginRequest": {
+        "type": "object",
+        "properties": {
+          "idToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "churchId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "GroupType": {
         "enum": [
           1,
@@ -14801,6 +14940,38 @@
         },
         "additionalProperties": false
       },
+      "NearbyChurchDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "distanceKm": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "PaymentDto": {
         "type": "object",
         "properties": {
@@ -15117,6 +15288,200 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "PublicChurchDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "denomination": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalVisits": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasParking": {
+            "type": "boolean"
+          },
+          "isAccessible": {
+            "type": "boolean"
+          },
+          "hasChildMinistry": {
+            "type": "boolean"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "instagramUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "facebookUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "youtubeUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "whatsAppNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicChurchListItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "denomination": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "averageRating": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalReviews": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalVisits": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasParking": {
+            "type": "boolean"
+          },
+          "isAccessible": {
+            "type": "boolean"
+          },
+          "hasChildMinistry": {
+            "type": "boolean"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PublicChurchListItemDtoPagedResultDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicChurchListItemDto"
+            },
+            "nullable": true
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
       },
       "RegisterForApprovalCommand": {
         "required": [
@@ -16645,25 +17010,6 @@
           },
           "reference": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "VisitorPresenceRequest": {
-        "type": "object",
-        "properties": {
-          "latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxDistanceMeters": {
-            "type": "number",
-            "format": "double",
             "nullable": true
           }
         },

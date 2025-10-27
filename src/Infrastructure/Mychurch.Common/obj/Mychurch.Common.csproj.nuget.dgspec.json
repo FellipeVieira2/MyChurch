@@ -27,7 +27,8 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
@@ -72,10 +73,9 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(, 4.7.32767]",
-            "Microsoft.NETCore.App": "(, 2.1.32767]",
             "Microsoft.VisualBasic": "(, 10.3.32767]",
             "Microsoft.Win32.Primitives": "(, 4.3.32767]",
             "Microsoft.Win32.Registry": "(, 5.0.32767]",
