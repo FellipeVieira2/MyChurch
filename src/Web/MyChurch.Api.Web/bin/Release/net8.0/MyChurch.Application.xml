@@ -1323,6 +1323,26 @@
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
         </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.DashboardMetricsDto">
+            <summary>
+            Métricas gerais para o dashboard da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.EngagementReportDto">
+            <summary>
+            Relatório de engajamento dos membros
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.FinancialReportDto">
+            <summary>
+            Relatório financeiro detalhado
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.VisitorAnalyticsDto">
+            <summary>
+            Análise de visitantes e conversão
+            </summary>
+        </member>
         <member name="T:MyChurch.Application.Reviews.Commands.EditReviewResponse.EditReviewResponseCommand">
             <summary>
             Comando para editar resposta da igreja a uma review

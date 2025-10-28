@@ -8,6 +8,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.Login;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
+using MyChurch.Infrastructure.Utils.SES; // ✅ NOVO: Para IEmailService
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
@@ -23,13 +24,20 @@ namespace MyChurch.Api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IMediator mediator, IUnitOfWork unitOfWork, IConfiguration configuration, IHttpClientFactory httpClientFactory)
+        public AuthController(
+            IMediator mediator, 
+            IUnitOfWork unitOfWork, 
+            IConfiguration configuration, 
+            IHttpClientFactory httpClientFactory,
+            IEmailService emailService)
         {
             _mediator = mediator;
             _unitOfWork = unitOfWork;
             _configuration = configuration;
             _httpClientFactory = httpClientFactory;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
@@ -129,6 +137,29 @@ namespace MyChurch.Api.Controllers
 
                 _unitOfWork.Members.Create(member);
                 await _unitOfWork.CommitAsync();
+
+                // ✅ NOVO: Enviar email de boas-vindas
+                var church = await _unitOfWork.Churchs.Query()
+                    .FirstOrDefaultAsync(c => c.Id == body.ChurchId.Value);
+                if (church != null && !string.IsNullOrEmpty(member.Email))
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _emailService.SendWelcomeEmailAsync(
+                                member.Email,
+                                member.Name,
+                                church.Name
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log error but don't fail the request
+                            Console.WriteLine($"Erro ao enviar email de boas-vindas: {ex.Message}");
+                        }
+                    });
+                }
             }
 
             if (member.PendingApproval)

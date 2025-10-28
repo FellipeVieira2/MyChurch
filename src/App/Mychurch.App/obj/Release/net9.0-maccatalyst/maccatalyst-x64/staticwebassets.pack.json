@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\scopedcss\\bundle\\Mychurch.App.styles.css",
+      "PackagePath": "staticwebassets\\Mychurch.App.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.Mychurch.App.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.Mychurch.App.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.build.Mychurch.App.props",
+      "PackagePath": "build\\Mychurch.App.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.buildMultiTargeting.Mychurch.App.props",
+      "PackagePath": "buildMultiTargeting\\Mychurch.App.props"
+    },
+    {
+      "Id": "obj\\Release\\net9.0-maccatalyst\\maccatalyst-x64\\staticwebassets\\msbuild.buildTransitive.Mychurch.App.props",
+      "PackagePath": "buildTransitive\\Mychurch.App.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

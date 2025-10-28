@@ -29,6 +29,8 @@ using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 using Path = System.IO.Path;
 using MyChurch.Api.Web.Middleware;
+using Mychurch.Common.Services;
+using MyChurch.Infrastructure.Services.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -168,7 +170,7 @@ builder.Services.AddCors(options =>
         if (builder.Environment.IsProduction())
         {
             // ?? PRODUÇÃO: Apenas domínio oficial
-            policy.WithOrigins("https://www.mychurchlab.net", "http://localhost:3000")
+            policy.WithOrigins("https://www.mychurchlab.net", "http://localhost:3000", "http://localhost:5210/", "https://demoapp.top1soft.com.br/")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -225,11 +227,11 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Creat
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
-builder.Services.AddScoped<IEmailService, PostmarkEmailService>(); // Serviço de email
+builder.Services.AddScoped<IEmailService, SendGridEmailService>(); // ? NOVO: SendGrid ao invés de Postmark
 builder.Services.AddScoped<IReviewVerificationService, ReviewVerificationService>();
 
-// ?? Background Jobs (comentado até adicionar pacote Microsoft.Extensions.Hosting.Abstractions)
-// builder.Services.AddHostedService<ExpiredPromotionsCleanupJob>();
+// Register report generator (interface in Mychurch.Common, implementation in Infrastructure)
+builder.Services.AddScoped<IReportGeneratorService, ReportGeneratorService>();
 
 var app = builder.Build();
 
@@ -291,4 +293,4 @@ app.MapHub<WorshipServiceHub>("/ws/worship");
 app.MapHub<CampaignHub>("/campaignHub");
 app.MapHub<GroupHub>("/hubs/group");
 
-app.Run();
+app.Run();app.Run();

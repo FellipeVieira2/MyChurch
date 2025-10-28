@@ -29,21 +29,19 @@
           "net9.0-windows10.0.19041.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://artifact-sinerlog-development-759166138063.d.codeartifact.us-east-1.amazonaws.com/nuget/artifact-sinerlog-development/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net9.0-android35.0": {
             "targetAlias": "net9.0-android",
             "projectReferences": {}
           },
-          "net9.0-ios18.5": {
+          "net9.0-ios26.0": {
             "targetAlias": "net9.0-ios",
             "projectReferences": {}
           },
-          "net9.0-maccatalyst18.5": {
+          "net9.0-maccatalyst26.0": {
             "targetAlias": "net9.0-maccatalyst",
             "projectReferences": {}
           },
@@ -70,7 +68,7 @@
           "dependencies": {
             "Microsoft.AspNetCore.Components.WebView.Maui": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
@@ -82,12 +80,12 @@
             },
             "Microsoft.Maui.Controls": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.9, )",
+              "version": "[9.0.10, )",
               "autoReferenced": true
             }
           },
@@ -105,15 +103,15 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.Android.Ref.35",
-              "version": "[35.0.101, 35.0.101]"
+              "version": "[35.0.105, 35.0.105]"
             },
             {
               "name": "Microsoft.Android.Runtime.35.android-arm64",
-              "version": "[35.0.101, 35.0.101]"
+              "version": "[35.0.105, 35.0.105]"
             },
             {
               "name": "Microsoft.Android.Runtime.35.android-x64",
-              "version": "[35.0.101, 35.0.101]"
+              "version": "[35.0.105, 35.0.105]"
             }
           ],
           "frameworkReferences": {
@@ -124,14 +122,14 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json"
         },
-        "net9.0-ios18.5": {
+        "net9.0-ios26.0": {
           "targetAlias": "net9.0-ios",
           "dependencies": {
             "Microsoft.AspNetCore.Components.WebView.Maui": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
@@ -143,12 +141,12 @@
             },
             "Microsoft.Maui.Controls": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.9, )",
+              "version": "[9.0.10, )",
               "autoReferenced": true
             }
           },
@@ -165,12 +163,12 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.iOS.Ref.net9.0_18.5",
-              "version": "[18.5.9219, 18.5.9219]"
+              "name": "Microsoft.iOS.Ref.net9.0_26.0",
+              "version": "[26.0.9752, 26.0.9752]"
             },
             {
-              "name": "Microsoft.iOS.Runtime.iossimulator-x64.net9.0_18.5",
-              "version": "[18.5.9219, 18.5.9219]"
+              "name": "Microsoft.iOS.Runtime.iossimulator-x64.net9.0_26.0",
+              "version": "[26.0.9752, 26.0.9752]"
             }
           ],
           "frameworkReferences": {
@@ -181,14 +179,14 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json"
         },
-        "net9.0-maccatalyst18.5": {
+        "net9.0-maccatalyst26.0": {
           "targetAlias": "net9.0-maccatalyst",
           "dependencies": {
             "Microsoft.AspNetCore.Components.WebView.Maui": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
@@ -200,12 +198,12 @@
             },
             "Microsoft.Maui.Controls": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.9, )",
+              "version": "[9.0.10, )",
               "autoReferenced": true
             }
           },
@@ -223,16 +221,16 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.MacCatalyst.Ref.net9.0_18.5",
-              "version": "[18.5.9219, 18.5.9219]"
+              "name": "Microsoft.MacCatalyst.Ref.net9.0_26.0",
+              "version": "[26.0.9752, 26.0.9752]"
             },
             {
-              "name": "Microsoft.MacCatalyst.Runtime.maccatalyst-arm64.net9.0_18.5",
-              "version": "[18.5.9219, 18.5.9219]"
+              "name": "Microsoft.MacCatalyst.Runtime.maccatalyst-arm64.net9.0_26.0",
+              "version": "[26.0.9752, 26.0.9752]"
             },
             {
-              "name": "Microsoft.MacCatalyst.Runtime.maccatalyst-x64.net9.0_18.5",
-              "version": "[18.5.9219, 18.5.9219]"
+              "name": "Microsoft.MacCatalyst.Runtime.maccatalyst-x64.net9.0_26.0",
+              "version": "[26.0.9752, 26.0.9752]"
             }
           ],
           "frameworkReferences": {
@@ -243,14 +241,14 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107/PortableRuntimeIdentifierGraph.json"
         },
         "net9.0-windows10.0.19041": {
           "targetAlias": "net9.0-windows10.0.19041.0",
           "dependencies": {
             "Microsoft.AspNetCore.Components.WebView.Maui": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             },
             "Microsoft.Extensions.Http": {
               "target": "Package",
@@ -262,7 +260,7 @@
             },
             "Microsoft.Maui.Controls": {
               "target": "Package",
-              "version": "[9.0.82, )"
+              "version": "[9.0.111, )"
             }
           },
           "imports": [
@@ -279,15 +277,15 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[9.0.9, 9.0.9]"
+              "version": "[9.0.10, 9.0.10]"
             },
             {
               "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
-              "version": "[9.0.9, 9.0.9]"
+              "version": "[9.0.10, 9.0.10]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[9.0.9, 9.0.9]"
+              "version": "[9.0.10, 9.0.10]"
             },
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
@@ -295,7 +293,7 @@
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[9.0.9, 9.0.9]"
+              "version": "[9.0.10, 9.0.10]"
             }
           ],
           "frameworkReferences": {
@@ -306,7 +304,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.1.25451.107\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100-rc.2.25502.107\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

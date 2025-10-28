@@ -56,27 +56,33 @@ namespace MyChurch.Application.Member.Commands.Login
             if (member is null)
             {
                 _logger.LogWarning("Invalid identifier: {Identifier}", request.Identifier);
-                ValidationException.ThrowException("Login", "Invalid email/phone or password.");
+                ValidationException.ThrowException("invalid_credentials", "Invalid email/phone or password.");
             }
 
             // 🔐 VERIFICAÇÃO DE SEGURANÇA: Apenas PasswordHash deve existir
             if (string.IsNullOrEmpty(member.PasswordHash))
             {
                 _logger.LogWarning("Account not activated: {Identifier}", request.Identifier);
-                ValidationException.ThrowException("Login", "Account not activated. Please activate your account.");
+                ValidationException.ThrowException("account_not_activated", "Account not activated. Please activate your account.");
             }
 
             if (member.PendingApproval)
             {
                 _logger.LogWarning("Account pending approval: {Identifier}", request.Identifier);
-                ValidationException.ThrowException("Login", "Account pending approval. Please wait for admin approval.");
+                ValidationException.ThrowException("pending_approval", "Account pending approval. Please wait for admin approval.");
+            }
+
+            if (!member.IsActive)
+            {
+                _logger.LogWarning("Account inactive: {Identifier}", request.Identifier);
+                ValidationException.ThrowException("account_inactive", "Account inactive. Contact your administrator.");
             }
 
             // 🔐 SEGURANÇA: Verificar senha usando BCrypt
             if (!_passwordHasher.VerifyPassword(request.Password, member.PasswordHash))
             {
                 _logger.LogWarning("Invalid password for identifier: {Identifier}", request.Identifier);
-                ValidationException.ThrowException("Login", "Invalid email/phone or password.");
+                ValidationException.ThrowException("invalid_credentials", "Invalid email/phone or password.");
             }
 
             var token = GenerateJwtToken(member);

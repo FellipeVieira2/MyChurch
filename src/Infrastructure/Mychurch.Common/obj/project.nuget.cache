@@ -1,26 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "m5W4Sf85ecI=",
-  "success": false,
+  "dgSpecHash": "ov180Z6AWgw=",
+  "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-  "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Error",
-      "message": "Falha ao baixar o pacote 'Microsoft.Extensions.Primitives.9.0.3' de 'https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/9.0.3/microsoft.extensions.primitives.9.0.3.nupkg'.\r\nServicePointManager não oferece suporte para proxies com o esquema https.",
-      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-      "targetGraphs": []
-    },
-    {
-      "code": "NU1301",
-      "level": "Error",
-      "message": "Falha ao recuperar informações sobre 'Microsoft.Extensions.Primitives' da origem remota 'https://api.nuget.org/v3-flatcontainer/microsoft.extensions.primitives/index.json'.\r\n  ServicePointManager não oferece suporte para proxies com o esquema https.",
-      "projectPath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-      "filePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-      "libraryId": "Microsoft.Extensions.Primitives",
-      "targetGraphs": []
-    }
-  ]
+  "expectedPackageFiles": [
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.3\\microsoft.extensions.configuration.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.3\\microsoft.extensions.primitives.9.0.3.nupkg.sha512"
+  ],
+  "logs": []
 }

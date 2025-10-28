@@ -11,6 +11,7 @@
 	  <PackageReference Include="AWSSDK.SimpleEmail" Version="4.0.0.4" />
     <PackageReference Include="AWSSDK.S3" Version="4.0.0.7" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.70.0" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.69.0.3742" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
@@ -29,10 +30,13 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="9.0.4" />
     <PackageReference Include="Postmark" Version="5.2.0" />
+    <PackageReference Include="QuestPDF" Version="2025.7.3" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\MyChurch.Domain\MyChurch.Domain.csproj" />
+    <ProjectReference Include="..\Mychurch.Common\Mychurch.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

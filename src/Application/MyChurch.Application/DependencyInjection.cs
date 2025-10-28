@@ -7,6 +7,7 @@ using MyChurch.Application.Engagement;
 using MyChurch.Application.Presentation.Services;
 using MyChurch.Application.Services;
 using MyChurch.Application.CashFlow.Services; // 🔥 NOVO
+using Mychurch.Common.Services;
 
 namespace MyChurch.Application
 {
@@ -26,6 +27,9 @@ namespace MyChurch.Application
             
             // 🔥 NOVO - Serviço de Automação de CashFlow
             services.AddScoped<ICashFlowAutomationService, CashFlowAutomationService>();
+
+            // Note: IReportGeneratorService should be registered in Web (implementation lives in Infrastructure)
+            // services.AddScoped<IReportGeneratorService, ReportGeneratorService>();
 
             return services;
         }
