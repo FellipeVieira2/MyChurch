@@ -42,6 +42,9 @@ namespace MyChurch.Infrastructure.Configurations
                 .HasColumnName("category_id")
                 .IsRequired();
 
+            builder.Property(x => x.DepartmentId)
+                .HasColumnName("department_id");
+
             builder.Property(x => x.Created)
                 .HasColumnName("created")
                 .IsRequired();
@@ -60,6 +63,11 @@ namespace MyChurch.Infrastructure.Configurations
             builder.HasOne(x => x.Category)
                 .WithMany(x => x.CashFlowEntries)
                 .HasForeignKey(x => x.CategoryId);
+
+            builder.HasOne(x => x.Department)
+                .WithMany()
+                .HasForeignKey(x => x.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

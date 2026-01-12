@@ -7,6 +7,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,9 +16,11 @@ using Mychurch.Common.WebClients.Asaas;
 using MyChurch.Api.Web.Filters;
 using MyChurch.Application;
 using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
+using MyChurch.Application.Departments.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Services;
 using MyChurch.Infrastructure;
+using MyChurch.Infrastructure.BackgroundJobs;
 using MyChurch.Infrastructure.Repositories;
 using MyChurch.Infrastructure.Services;
 using MyChurch.Infrastructure.Utils.Postmark;
@@ -229,9 +232,13 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Services
 builder.Services.AddScoped<IEmailService, SendGridEmailService>(); // ? NOVO: SendGrid ao invés de Postmark
 builder.Services.AddScoped<IReviewVerificationService, ReviewVerificationService>();
+builder.Services.AddScoped<IDepartmentAccessService, DepartmentAccessService>();
 
 // Register report generator (interface in Mychurch.Common, implementation in Infrastructure)
 builder.Services.AddScoped<IReportGeneratorService, ReportGeneratorService>();
+
+// Background workers
+builder.Services.AddHostedService<PendingTransfersWorker>();
 
 var app = builder.Build();
 
@@ -261,20 +268,50 @@ app.UseExceptionHandler(errorApp =>
         var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
         var exception = exceptionHandlerPathFeature?.Error;
 
+        if (exception is null)
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            return;
+        }
+
+        var logger = context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("GlobalExceptionHandler");
+        logger.LogError(exception, "Unhandled exception processing {Method} {Path}", context.Request.Method, context.Request.Path);
+
         context.Response.ContentType = "application/json";
 
         if (exception is MyChurch.Domain.Exceptions.ValidationException validationEx)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            var result = System.Text.Json.JsonSerializer.Serialize(new { errors = validationEx.Errors });
-            await context.Response.WriteAsync(result);
+
+            var problem = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation failed",
+                Type = "https://httpstatuses.com/400",
+                Detail = "One or more validation errors occurred."
+            };
+            problem.Extensions["errors"] = validationEx.Errors;
+
+            await context.Response.WriteAsJsonAsync(problem);
+            return;
         }
-        else
+
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var genericProblem = new ProblemDetails
         {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            var result = System.Text.Json.JsonSerializer.Serialize(new { errors = "Internal Server Error." });
-            await context.Response.WriteAsync(result);
+            Status = StatusCodes.Status500InternalServerError,
+            Title = "Internal Server Error",
+            Type = "https://httpstatuses.com/500",
+            Detail = app.Environment.IsDevelopment() ? exception.Message : "An unexpected error occurred."
+        };
+
+        if (app.Environment.IsDevelopment())
+        {
+            genericProblem.Extensions["stackTrace"] = exception.StackTrace;
         }
+
+        await context.Response.WriteAsJsonAsync(genericProblem);
     });
 });
 
@@ -293,4 +330,4 @@ app.MapHub<WorshipServiceHub>("/ws/worship");
 app.MapHub<CampaignHub>("/campaignHub");
 app.MapHub<GroupHub>("/hubs/group");
 
-app.Run();app.Run();
+app.Run();

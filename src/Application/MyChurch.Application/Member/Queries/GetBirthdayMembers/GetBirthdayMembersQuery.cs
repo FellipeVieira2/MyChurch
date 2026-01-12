@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.Member.Queries.GetBirthdayMembers
@@ -50,6 +50,21 @@ namespace MyChurch.Application.Member.Queries.GetBirthdayMembers
                 .AsNoTracking()
                 .Where(m => m.ChurchId == churchId && m.IsActive);
 
+            // Não-admin (Leader incluído): restringe a membros que compartilham ao menos um departamento
+            if (member.Role != UserRole.Admin)
+            {
+                var myDeptIds = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Where(dm => dm.MemberId == member.Id && dm.IsActive)
+                    .Select(dm => dm.DepartmentId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                query = query.Where(m => _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Any(dm => dm.MemberId == m.Id && dm.IsActive && myDeptIds.Contains(dm.DepartmentId)));
+            }
+
             switch (request.FilterType)
             {
                 case BirthdayFilterType.Day:
@@ -68,13 +83,11 @@ namespace MyChurch.Application.Member.Queries.GetBirthdayMembers
                     break;
             }
 
-            var members = query
+            return await query
                 .OrderBy(m => m.BirthDate.Month)
                 .ThenBy(m => m.BirthDate.Day)
-                .Select(MemberDto.New)
-                .ToList();
-
-            return members;
+                .Select(m => MemberDto.New(m))
+                .ToListAsync(cancellationToken);
         }
     }
 }

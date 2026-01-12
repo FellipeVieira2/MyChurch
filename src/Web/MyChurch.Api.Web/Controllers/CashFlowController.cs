@@ -23,12 +23,20 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Cria um novo lançamento de fluxo de caixa
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> CreateCashFlowEntry([FromBody] CreateCashFlowEntryCommand command)
         {
-            var result = await Mediator.Send(command);
+            var c = AuthorizationRequestCreate<CreateCashFlowEntryCommand>();
+            c.Amount = command.Amount;
+            c.Date = command.Date;
+            c.Description = command.Description;
+            c.Type = command.Type;
+            c.CategoryId = command.CategoryId;
+            c.DepartmentId = command.DepartmentId;
+
+            var result = await Mediator.Send(c);
             return Ok(result);
         }
 

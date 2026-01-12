@@ -49,7 +49,7 @@ namespace MyChurch.Application.Visitors.Commands
                 }
             }
 
-            _unitOfWork.Visitors.Create(visitor);
+            await _unitOfWork.Visitors.Create(visitor);
             await _unitOfWork.CommitAsync();
             return visitor.Id;
         }

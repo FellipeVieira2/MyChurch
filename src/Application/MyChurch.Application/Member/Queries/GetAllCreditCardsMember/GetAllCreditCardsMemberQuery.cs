@@ -67,11 +67,13 @@ namespace MyChurch.Application.Member.Queries.GetAllCreditCardsMember
 
             var totalCount = await query.CountAsync(cancellationToken);
 
-            var items = query
+            var cards = await query
                 .OrderByDescending(c => c.Created)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .ToList()
+                .ToListAsync(cancellationToken);
+
+            var items = cards
                 .Select(CreditCardInfoDto.New)
                 .ToList();
 

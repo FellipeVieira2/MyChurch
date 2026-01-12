@@ -32,6 +32,7 @@ namespace MyChurch.Application.Event.Queires.GetAllWorship
         {
             // Busca o membro logado para obter o ChurchId
             var loggedMember = await _unitOfWork.Members.Query()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (loggedMember == null)
@@ -40,7 +41,21 @@ namespace MyChurch.Application.Event.Queires.GetAllWorship
             int churchId = loggedMember.ChurchId;
 
             var query = _unitOfWork.WorshipServices.Query()
+                .AsNoTracking()
+                .Include(ws => ws.Department)
                 .Where(ws => ws.ChurchId == churchId);
+
+            if (loggedMember.Role != UserRole.Admin)
+            {
+                var allowedDepartmentIds = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Where(dm => dm.MemberId == loggedMember.Id && dm.IsActive)
+                    .Select(dm => dm.DepartmentId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                query = query.Where(ws => ws.DepartmentId == null || (ws.DepartmentId.HasValue && allowedDepartmentIds.Contains(ws.DepartmentId.Value)));
+            }
 
             if (!string.IsNullOrEmpty(request.Title))
                 query = query.Where(ws => ws.Title.Contains(request.Title));

@@ -6,5 +6,6 @@
         Task<Stream> DownloadFileAsync(string fileName, CancellationToken cancellationToken = default);
         Task DeleteFileAsync(string fileName, CancellationToken cancellationToken = default);
         Task<string> GetFileUrlAsync(string fileName, CancellationToken cancellationToken = default);
+        Task CheckConnectionAsync(CancellationToken cancellationToken = default);
     }
 }

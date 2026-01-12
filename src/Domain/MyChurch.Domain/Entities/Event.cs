@@ -11,8 +11,12 @@ namespace MyChurch.Domain.Entities
         public DateTime FinishDate { get; set; }
         public string Location { get; set; }
         public int ChurchId { get; set; }
-        public EventType EventType { get; set; } 
+        public EventType EventType { get; set; }
         public Church Church { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
         public bool RequiresParticipantList { get; set; } = false;
         public ICollection<Member> Participants { get; set; } = new List<Member>();
         public ICollection<WorshipService> WorshipServices { get; set; } = new List<WorshipService>();

@@ -132,12 +132,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                     (m.Documents.Any(x => documentNumbers.Contains(x.Number)) ||
                      (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email) || (request.Name == m.Name)),
                     cancellationToken);
-            
-            if (request.Name == "Quercio Goes Santos ")
-            {
-                var teste = "x";
-            }
-            
+ 
             if (exists)
                 ValidationException.ThrowException("Member", "This Member already exists.");
 
@@ -178,7 +173,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 member.Photo = await UploadPhotoAsync(request.Photo, cancellationToken);
             }
 
-            _unitOfWork.Members.Create(member);
+            await _unitOfWork.Members.Create(member);
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Member created with ID: {MemberId}", member.Id);

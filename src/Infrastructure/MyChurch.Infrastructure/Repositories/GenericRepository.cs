@@ -23,7 +23,7 @@ namespace MyChurch.Infrastructure.Repositories
         public async Task<IEnumerable<TEntity>> List()
             => await _context.Set<TEntity>().ToListAsync();
 
-        public async void Create(TEntity entity)
+        public async Task Create(TEntity entity)
             => await _context.Set<TEntity>().AddAsync(entity);
 
         public void Delete(TEntity entity)

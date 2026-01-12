@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "y4mTUv3auZs=",
+  "dgSpecHash": "jbSi4PkHCVQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\Mychurch.App.csproj",
+  "projectFilePath": "D:\\MyChurch\\src\\App\\Mychurch.App\\Mychurch.App.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\googlegson\\2.13.0.1\\googlegson.2.13.0.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.aspnetcore.authorization\\9.0.8\\microsoft.aspnetcore.authorization.9.0.8.nupkg.sha512",
@@ -46,7 +46,7 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maui.graphics\\9.0.111\\microsoft.maui.graphics.9.0.111.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maui.graphics.win2d.winui.desktop\\9.0.111\\microsoft.maui.graphics.win2d.winui.desktop.9.0.111.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maui.resizetizer\\9.0.111\\microsoft.maui.resizetizer.9.0.111.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.10\\microsoft.net.illink.tasks.9.0.10.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.11\\microsoft.net.illink.tasks.9.0.11.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.web.webview2\\1.0.3179.45\\microsoft.web.webview2.1.0.3179.45.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.22621.756\\microsoft.windows.sdk.buildtools.10.0.22621.756.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.windowsappsdk\\1.7.250606001\\microsoft.windowsappsdk.1.7.250606001.nupkg.sha512",
@@ -139,19 +139,15 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\xamarin.kotlinx.coroutines.core.jvm\\1.9.0.3\\xamarin.kotlinx.coroutines.core.jvm.1.9.0.3.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\xamarin.kotlinx.serialization.core\\1.7.3.4\\xamarin.kotlinx.serialization.core.1.7.3.4.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\xamarin.kotlinx.serialization.core.jvm\\1.7.3.4\\xamarin.kotlinx.serialization.core.jvm.1.7.3.4.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.android.runtime.35.android-arm64\\35.0.105\\microsoft.android.runtime.35.android-arm64.35.0.105.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.android.runtime.35.android-x64\\35.0.105\\microsoft.android.runtime.35.android-x64.35.0.105.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.android.ref.35\\35.0.105\\microsoft.android.ref.35.35.0.105.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.android-x64\\9.0.11\\microsoft.netcore.app.runtime.mono.android-x64.9.0.11.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.android-arm64\\9.0.11\\microsoft.netcore.app.runtime.mono.android-arm64.9.0.11.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.iossimulator-x64\\9.0.11\\microsoft.netcore.app.runtime.mono.iossimulator-x64.9.0.11.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.ios.runtime.iossimulator-x64.net9.0_26.0\\26.0.9752\\microsoft.ios.runtime.iossimulator-x64.net9.0_26.0.26.0.9752.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.ios.ref.net9.0_26.0\\26.0.9752\\microsoft.ios.ref.net9.0_26.0.26.0.9752.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maccatalyst.runtime.maccatalyst-arm64.net9.0_26.0\\26.0.9752\\microsoft.maccatalyst.runtime.maccatalyst-arm64.net9.0_26.0.26.0.9752.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maccatalyst.runtime.maccatalyst-x64.net9.0_26.0\\26.0.9752\\microsoft.maccatalyst.runtime.maccatalyst-x64.net9.0_26.0.26.0.9752.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.maccatalyst.ref.net9.0_26.0\\26.0.9752\\microsoft.maccatalyst.ref.net9.0_26.0.26.0.9752.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\9.0.10\\microsoft.netcore.app.crossgen2.win-x64.9.0.10.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.10\\microsoft.aspnetcore.app.runtime.win-x64.9.0.10.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.10.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.10\\microsoft.netcore.app.runtime.win-x64.9.0.10.nupkg.sha512"
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.maccatalyst-x64\\9.0.11\\microsoft.netcore.app.runtime.mono.maccatalyst-x64.9.0.11.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512"
   ],
   "logs": []
 }

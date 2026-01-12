@@ -29,7 +29,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
         public bool? IsActive { get; set; }
         public string? Notes { get; set; }
         public string? Photo { get; set; }
-        public string? BirthCity { get; set; } 
+        public string? BirthCity { get; set; }
         public string? BirthState { get; set; }
         public AddressMemberUpdate? Address { get; set; }
 
@@ -83,6 +83,7 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
 
             // Busca o membro autenticado para obter o ChurchId
             var loggedMember = await _unitOfWork.Members.Query()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (loggedMember == null)
@@ -96,12 +97,31 @@ namespace MyChurch.Application.Member.Commands.UpdateMember
             // Busca o membro a ser atualizado e valida se pertence à mesma igreja
             var member = await _unitOfWork.Members.Query()
                 .Include(m => m.Documents)
+                .Include(m => m.Address)
                 .FirstOrDefaultAsync(m => m.Id == request.Id && m.ChurchId == churchId, cancellationToken);
 
             if (member == null)
             {
                 _logger.LogWarning("Membro não encontrado ou não pertence à igreja. MemberId: {MemberId}, ChurchId: {ChurchId}", request.Id, churchId);
                 ValidationException.ThrowException("Member", "Member not found or does not belong to your church.");
+            }
+
+            // Não-admin (Leader incluído): só pode editar a si mesmo ou membro que compartilha ao menos 1 departamento
+            if (loggedMember.Role != UserRole.Admin && loggedMember.Id != member.Id)
+            {
+                var myDeptIds = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Where(dm => dm.MemberId == loggedMember.Id && dm.IsActive)
+                    .Select(dm => dm.DepartmentId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                var canEdit = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .AnyAsync(dm => dm.MemberId == member.Id && dm.IsActive && myDeptIds.Contains(dm.DepartmentId), cancellationToken);
+
+                if (!canEdit)
+                    ValidationException.ThrowException("Member", "Sem permissão para editar este membro.");
             }
 
             // Verifica se há foto para upload

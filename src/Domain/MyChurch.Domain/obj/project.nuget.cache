@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "k9n2uXOZqhw=",
+  "dgSpecHash": "mQZP208xocw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
+  "projectFilePath": "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",

@@ -2,6 +2,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Amazon.S3.Util;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -49,7 +50,7 @@ namespace MyChurch.Infrastructure.Utils.S3
             var response = await _s3Client.PutObjectAsync(putRequest, cancellationToken);
             _logger.LogInformation("File uploaded to S3 with key: {FileName}", fileName);
 
-            return $"https://mychurchbucketnet.s3.us-east-2.amazonaws.com/{fileName}";
+            return await GetFileUrlAsync(fileName, cancellationToken);
         }
 
         public async Task<Stream> DownloadFileAsync(string fileName, CancellationToken cancellationToken = default)
@@ -83,6 +84,19 @@ namespace MyChurch.Infrastructure.Utils.S3
             var url = $"https://{_settings.BucketName}.s3.{_settings.Region}.amazonaws.com/{fileName}";
             _logger.LogInformation("Generated URL for S3 file: {FileName}", fileName);
             return await Task.FromResult(url);
+        }
+
+        public async Task CheckConnectionAsync(CancellationToken cancellationToken = default)
+        {
+            // Faz uma chamada simples que valida credenciais e acesso ao bucket.
+            // Usando MaxKeys=1 para ser leve.
+            var request = new ListObjectsV2Request
+            {
+                BucketName = _settings.BucketName,
+                MaxKeys = 1
+            };
+
+            await _s3Client.ListObjectsV2Async(request, cancellationToken);
         }
     }
 }

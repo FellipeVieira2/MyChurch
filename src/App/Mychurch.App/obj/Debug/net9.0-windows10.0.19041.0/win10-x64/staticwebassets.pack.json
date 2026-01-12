@@ -1,23 +1,23 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\obj\\Debug\\net9.0-windows10.0.19041.0\\win10-x64\\scopedcss\\bundle\\Mychurch.App.styles.css",
+      "Id": "D:\\MyChurch\\src\\App\\Mychurch.App\\obj\\Debug\\net9.0-windows10.0.19041.0\\win10-x64\\scopedcss\\bundle\\Mychurch.App.styles.css",
       "PackagePath": "staticwebassets\\Mychurch.App.styles.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\app.css",
+      "Id": "D:\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Id": "D:\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Id": "D:\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\FellipeVieira2\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\index.html",
+      "Id": "D:\\MyChurch\\src\\App\\Mychurch.App\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {

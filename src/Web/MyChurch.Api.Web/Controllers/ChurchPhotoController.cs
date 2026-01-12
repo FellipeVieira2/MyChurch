@@ -25,7 +25,7 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// ?? Upload de foto da igreja (Membros e Visitantes)
+        /// ?? Upload de foto da igreja (Membros autenticados)
         /// </summary>
         /// <param name="churchId">ID da igreja</param>
         /// <param name="command">Dados da foto</param>
@@ -33,9 +33,12 @@ namespace MyChurch.Api.Web.Controllers
         [Authorize] // Membros autenticados
         public async Task<ActionResult<ChurchPhotoDto>> UploadPhoto(int churchId, [FromBody] UploadChurchPhotoCommand command)
         {
-            command = AuthorizationRequestCreate<UploadChurchPhotoCommand>();
+            // Não sobrescrever o body: apenas aplicar dados de auth (UserId, Role etc.)
+            var auth = AuthorizationRequestCreate<UploadChurchPhotoCommand>();
+            command.UserId = auth.UserId;
+            command.Role = auth.Role;
             command.ChurchId = churchId;
-            
+
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -52,7 +55,7 @@ namespace MyChurch.Api.Web.Controllers
         {
             command.ChurchId = churchId;
             command.VisitorId = visitorId;
-            
+
             var result = await _mediator.Send(command);
             return Ok(result);
         }

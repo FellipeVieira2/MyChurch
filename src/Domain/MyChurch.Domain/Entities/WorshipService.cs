@@ -10,6 +10,10 @@ namespace MyChurch.Domain.Entities
         public string? Theme { get; set; }
         public int EventId { get; set; }
         public Event Event { get; set; }
+
+        public int? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public string? Description { get; set; }

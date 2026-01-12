@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Common.Models;
+using MyChurch.Application.Departments.Services;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
@@ -17,6 +18,7 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries
         public DateTime? EndDate { get; set; }
         public CashFlowType? Type { get; set; }
         public int? CategoryId { get; set; }
+        public int? DepartmentId { get; set; }
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 20;
         public string? SortBy { get; set; } = "Date";
@@ -35,11 +37,13 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<GetAllCashFlowEntriesQueryHandler> _logger;
+        private readonly IDepartmentAccessService _departmentAccess;
 
-        public GetAllCashFlowEntriesQueryHandler(IUnitOfWork unitOfWork, ILogger<GetAllCashFlowEntriesQueryHandler> logger)
+        public GetAllCashFlowEntriesQueryHandler(IUnitOfWork unitOfWork, ILogger<GetAllCashFlowEntriesQueryHandler> logger, IDepartmentAccessService departmentAccess)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _departmentAccess = departmentAccess;
         }
 
         public async Task<CashFlowEntryPagedResult> Handle(GetAllCashFlowEntriesQuery request, CancellationToken cancellationToken)
@@ -68,6 +72,30 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries
                 .Include(e => e.Category)
                 .Include(e => e.Church)
                 .Where(e => e.ChurchId == churchId);
+
+            // Permissões por departamento:
+            // - Admin vê tudo (pode filtrar DepartmentId específico)
+            // - Demais usuários: apenas DepartmentId que ele participa + lançamentos gerais (DepartmentId null)
+            if (member.Role != UserRole.Admin)
+            {
+                var allowedDepartments = await _departmentAccess.GetAccessibleDepartmentIdsAsync(member.Id, cancellationToken);
+
+                query = query.Where(e => e.DepartmentId == null || (e.DepartmentId.HasValue && allowedDepartments.Contains(e.DepartmentId.Value)));
+
+                if (request.DepartmentId.HasValue)
+                {
+                    // Se o usuário pediu um dept específico, valida se ele tem acesso
+                    if (!allowedDepartments.Contains(request.DepartmentId.Value))
+                        ValidationException.ThrowException("Department", "Sem permissão para visualizar este departamento.");
+
+                    query = query.Where(e => e.DepartmentId == request.DepartmentId.Value);
+                }
+            }
+            else
+            {
+                if (request.DepartmentId.HasValue)
+                    query = query.Where(e => e.DepartmentId == request.DepartmentId.Value);
+            }
 
             query = ApplyFilters(query, request);
 

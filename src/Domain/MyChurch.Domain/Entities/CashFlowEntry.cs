@@ -18,6 +18,9 @@ namespace MyChurch.Domain.Entities
         public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime? Updated { get; set; }
 
+        public int? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
         // 🔥 NOVOS CAMPOS - Integração e Auditoria
         /// <summary>
         /// Lançamento criado automaticamente pelo sistema (ex: doação confirmada)

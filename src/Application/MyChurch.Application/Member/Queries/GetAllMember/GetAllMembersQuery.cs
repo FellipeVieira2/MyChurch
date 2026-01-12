@@ -103,6 +103,21 @@ namespace MyChurch.Application.Member.Queries.GetAllMembers
                 .Include(x => x.Documents)
                 .Where(m => m.ChurchId == churchId);
 
+            // Não-admin (Leader incluído): restringe a membros que compartilham ao menos um departamento
+            if (member.Role != UserRole.Admin)
+            {
+                var myDeptIds = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Where(dm => dm.MemberId == member.Id && dm.IsActive)
+                    .Select(dm => dm.DepartmentId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                query = query.Where(m => _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Any(dm => dm.MemberId == m.Id && dm.IsActive && myDeptIds.Contains(dm.DepartmentId)));
+            }
+
             // Aplicar filtros
             query = ApplyFilters(query, request);
 

@@ -6,11 +6,18 @@ namespace MyChurch.Domain.Entities
     {
         public int Id { get; set; }
         public int ChurchId { get; set; }
+
+        public int? BankingInfoId { get; set; }
+        public BankingInfo? BankingInfo { get; set; }
+
         public decimal Amount { get; set; }
         public DateTime RequestedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? ScheduledFor { get; set; }
         public DateTime? CompletedAt { get; set; }
         public string? Status { get; set; } // Ex: Pending, Completed, Failed
         public string? Notes { get; set; }
         public Church Church { get; set; }
+
+        public string? FailureReason { get; set; }
     }
 }

@@ -4,16 +4,16 @@ using Mychurch.Common.WebClients.Asaas;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
 {
     public class TransferChurchBalanceCommand : JwtMemberDto, IRequest<bool>
     {
+        public int BankingInfoId { get; set; }
+        public decimal? Amount { get; set; }
+        public DateTime? ScheduledFor { get; set; }
         public string? Notes { get; set; }
     }
 
@@ -36,93 +36,140 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
             if (member == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
-            if (member.Role != Domain.Enum.UserRole.Admin)
+            if (member.Role != UserRole.Admin)
                 ValidationException.ThrowException("Member", "Apenas administradores podem efetuar retiradas.");
 
             var churchId = member.ChurchId;
 
-            // Busca os dados bancários da igreja
             var bankingInfo = await _unitOfWork.BankingInfos.Query()
-                .FirstOrDefaultAsync(b => b.ChurchId == churchId, cancellationToken);
+                .FirstOrDefaultAsync(b => b.Id == request.BankingInfoId && b.ChurchId == churchId, cancellationToken);
 
             if (bankingInfo == null)
-                ValidationException.ThrowException("Church" ,"Dados bancários da igreja não cadastrados.");
+                ValidationException.ThrowException("Church", "Conta bancária não encontrada para esta igreja.");
+
+            // Agendamento: registra e deixa para o worker executar
+            if (request.ScheduledFor.HasValue && request.ScheduledFor.Value.ToUniversalTime() > DateTime.UtcNow)
+            {
+                var scheduledTransfer = new TransferHistory
+                {
+                    ChurchId = churchId,
+                    BankingInfoId = request.BankingInfoId,
+                    Amount = request.Amount ?? 0m,
+                    RequestedAt = DateTime.UtcNow,
+                    ScheduledFor = request.ScheduledFor.Value.ToUniversalTime(),
+                    Status = "Pending",
+                    Notes = request.Notes
+                };
+
+                _unitOfWork.TransferHistories.Create(scheduledTransfer);
+                await _unitOfWork.CommitAsync();
+                return true;
+            }
 
             // Busca as doações disponíveis para repasse
-            var donations = await _unitOfWork.Donations.Query()
+            var donationsQuery = _unitOfWork.Donations.Query()
+                .Include(d => d.Member)
+                .Include(d => d.Payments)
                 .Where(d => d.Member.ChurchId == churchId && d.IsTransferred == false &&
-                            d.Payments.Any(p => p.PaymentStatus == "Received"))
-                .OrderBy(d => d.Date)
-                .ToListAsync(cancellationToken);
+                            d.Payments.Any(p => p.PaymentStatus == PaymentStatus.Received.ToString() || p.PaymentStatus == "Received"))
+                .OrderBy(d => d.Date);
+
+            var donations = await donationsQuery.ToListAsync(cancellationToken);
 
             decimal totalAvailable = donations.Sum(d => d.Amount);
-
             if (totalAvailable <= 0)
-                ValidationException.ThrowException("Church","Não há valor disponível para repasse.");
+                ValidationException.ThrowException("Church", "Não há valor disponível para repasse.");
 
-            // Preferencialmente transfere por PIX se houver chave cadastrada
-            object transferenciaRequest;
-            if (!string.IsNullOrWhiteSpace(bankingInfo.PixKey))
-            {
-                transferenciaRequest = new
-                {
-                    value = totalAvailable,
-                    pixAddressKey = bankingInfo.PixKey,
-                    pixAddressKeyType = bankingInfo.PixKeyType,
-                    description = request.Notes
-                };
-            }
-            else
-            {
-                transferenciaRequest = new
-                {
-                    value = totalAvailable,
-                    bankAccount = new
-                    {
-                        bank = new { code = bankingInfo.BankCode },
-                        ownerName = bankingInfo.HolderName,
-                        cpfCnpj = bankingInfo.HolderDocument,
-                        agency = bankingInfo.Agency,
-                        account = bankingInfo.Account,
-                        accountDigit = bankingInfo.AccountDigit,
-                        bankAccountType = bankingInfo.AccountType
-                    },
-                    operationType = "TED",
+            var amountToTransferTotal = request.Amount.HasValue ? request.Amount.Value : totalAvailable;
+            if (amountToTransferTotal <= 0)
+                ValidationException.ThrowException("Church", "Valor inválido para repasse.");
 
-                    description = request.Notes
-                };
-            }
+            if (amountToTransferTotal > totalAvailable)
+                ValidationException.ThrowException("Church", "Valor solicitado maior que o disponível para repasse.");
 
-            // Realiza a transferência via Asaas
-            var asaasTransferResponse = await _asaasWebClient.CriarTransferenciaAsync(transferenciaRequest);
-
-            decimal amountToTransfer = totalAvailable;
-            foreach (var donation in donations)
-            {
-                if (amountToTransfer <= 0) break;
-                if (donation.Amount <= amountToTransfer)
-                {
-                    donation.IsTransferred = true;
-                    donation.TransferredAt = DateTime.UtcNow;
-                    amountToTransfer -= donation.Amount;
-                    _unitOfWork.Donations.Update(donation);
-                }
-                // Caso queira permitir repasse parcial, ajuste aqui
-            }
-
-            // Registra a retirada
-            var transfer = new TransferHistory
+            var transferRecord = new TransferHistory
             {
                 ChurchId = churchId,
-                Amount = totalAvailable,
+                BankingInfoId = request.BankingInfoId,
+                Amount = amountToTransferTotal,
                 RequestedAt = DateTime.UtcNow,
-                Status = "Completed",
+                Status = "Pending",
                 Notes = request.Notes
             };
-            _unitOfWork.TransferHistories.Create(transfer);
-
+            _unitOfWork.TransferHistories.Create(transferRecord);
             await _unitOfWork.CommitAsync();
-            return true;
+
+            try
+            {
+                object transferenciaRequest;
+                if (!string.IsNullOrWhiteSpace(bankingInfo.PixKey))
+                {
+                    transferenciaRequest = new
+                    {
+                        value = amountToTransferTotal,
+                        pixAddressKey = bankingInfo.PixKey,
+                        pixAddressKeyType = bankingInfo.PixKeyType,
+                        description = request.Notes
+                    };
+                }
+                else
+                {
+                    transferenciaRequest = new
+                    {
+                        value = amountToTransferTotal,
+                        bankAccount = new
+                        {
+                            bank = new { code = bankingInfo.BankCode },
+                            ownerName = bankingInfo.HolderName,
+                            cpfCnpj = bankingInfo.HolderDocument,
+                            agency = bankingInfo.Agency,
+                            account = bankingInfo.Account,
+                            accountDigit = bankingInfo.AccountDigit,
+                            bankAccountType = bankingInfo.AccountType
+                        },
+                        operationType = "TED",
+                        description = request.Notes
+                    };
+                }
+
+                await _asaasWebClient.CriarTransferenciaAsync(transferenciaRequest);
+
+                // Marca doações como transferidas até cobrir o valor
+                decimal remaining = amountToTransferTotal;
+                foreach (var donation in donations)
+                {
+                    if (remaining <= 0) break;
+
+                    if (donation.Amount <= remaining)
+                    {
+                        donation.IsTransferred = true;
+                        donation.TransferredAt = DateTime.UtcNow;
+                        remaining -= donation.Amount;
+                        _unitOfWork.Donations.Update(donation);
+                    }
+                    else
+                    {
+                        // Não suporta parcial por doação ainda; ficaria pendente restante
+                        break;
+                    }
+                }
+
+                transferRecord.Status = "Completed";
+                transferRecord.CompletedAt = DateTime.UtcNow;
+                transferRecord.FailureReason = null;
+                _unitOfWork.TransferHistories.Update(transferRecord);
+
+                await _unitOfWork.CommitAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transferRecord.Status = "Failed";
+                transferRecord.FailureReason = ex.Message;
+                _unitOfWork.TransferHistories.Update(transferRecord);
+                await _unitOfWork.CommitAsync();
+                throw;
+            }
         }
     }
 }

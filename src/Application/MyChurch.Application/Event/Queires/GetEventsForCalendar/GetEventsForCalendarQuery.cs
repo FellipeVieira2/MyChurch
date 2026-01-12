@@ -31,6 +31,7 @@ namespace MyChurch.Application.Event.Queires.GetEventsForCalendar
         public async Task<List<EventCalendarDto>> Handle(GetEventsForCalendarQuery request, CancellationToken cancellationToken)
         {
             var loggedMember = await _unitOfWork.Members.Query()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (loggedMember == null)
@@ -38,11 +39,25 @@ namespace MyChurch.Application.Event.Queires.GetEventsForCalendar
 
             int churchId = loggedMember.ChurchId;
 
-            // Busca todos os eventos da igreja
-            var events = await _unitOfWork.Events.Query()
+            var eventQuery = _unitOfWork.Events.Query()
+                .AsNoTracking()
                 .Include(e => e.Recurrence)
-                .Where(e => e.ChurchId == churchId)
-                .ToListAsync(cancellationToken);
+                .Where(e => e.ChurchId == churchId);
+
+            // Permissões por departamento: não-admin só vê eventos gerais + dos seus departamentos
+            if (loggedMember.Role != UserRole.Admin)
+            {
+                var allowedDepartmentIds = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .Where(dm => dm.MemberId == loggedMember.Id && dm.IsActive)
+                    .Select(dm => dm.DepartmentId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                eventQuery = eventQuery.Where(e => e.DepartmentId == null || (e.DepartmentId.HasValue && allowedDepartmentIds.Contains(e.DepartmentId.Value)));
+            }
+
+            var events = await eventQuery.ToListAsync(cancellationToken);
 
             var result = new List<EventCalendarDto>();
 

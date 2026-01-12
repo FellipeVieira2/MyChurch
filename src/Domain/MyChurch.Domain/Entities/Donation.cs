@@ -14,6 +14,9 @@
         public bool IsTransferred { get; set; } = false;
         public DateTime? TransferredAt { get; set; }
 
+        public int? DepartmentId { get; set; }
+        public Department? Department { get; set; }
+
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
         public ICollection<DonationWorshipService> DonationWorshipServices { get; set; } = new List<DonationWorshipService>();
 

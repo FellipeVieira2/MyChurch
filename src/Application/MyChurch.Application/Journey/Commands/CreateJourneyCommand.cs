@@ -61,7 +61,7 @@ namespace MyChurch.Application.Journey.Commands
                 });
             }
 
-            _unitOfWork.Journeys.Create(journey);
+            await _unitOfWork.Journeys.Create(journey);
             await _unitOfWork.CommitAsync();
 
             return journey.Id;

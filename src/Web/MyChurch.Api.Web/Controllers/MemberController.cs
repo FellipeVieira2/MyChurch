@@ -9,6 +9,7 @@ using MyChurch.Application.Member.Commands.CreateMember;
 using MyChurch.Application.Member.Commands.UpdateMember;
 using MyChurch.Application.Member.Commands.CreateMemberImportFile;
 using MyChurch.Application.Member.Commands.DeleteMember;
+using MyChurch.Application.Member.Commands.UpdateMemberAccess;
 using MyChurch.Application.Member.Queries.GetAllCreditCardsMember;
 using MyChurch.Application.Member.Queries.GetAllMembers;
 using MyChurch.Application.Member.Queries.GetBirthdayMembers;
@@ -125,12 +126,30 @@ namespace MyChurch.Api.Web.Controllers
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetMember([FromRoute] int id, [FromBody] UpdateMemberCommand command)
+        public async Task<IActionResult> UpdateMember([FromRoute] int id, [FromBody] UpdateMemberCommand body)
         {
-
+            var command = AuthorizationRequestCreate<UpdateMemberCommand>();
             command.Id = id;
-            var member = await Mediator.Send(command);
 
+            command.Name = body.Name;
+            command.Email = body.Email;
+            command.Phone = body.Phone;
+            command.BirthDate = body.BirthDate;
+            command.IsBaptized = body.IsBaptized;
+            command.BaptizedDate = body.BaptizedDate;
+            command.IsTither = body.IsTither;
+            command.MaritalStatus = body.MaritalStatus;
+            command.MemberSince = body.MemberSince;
+            command.Ministry = body.Ministry;
+            command.IsActive = body.IsActive;
+            command.Notes = body.Notes;
+            command.Photo = body.Photo;
+            command.BirthCity = body.BirthCity;
+            command.BirthState = body.BirthState;
+            command.Address = body.Address;
+            command.Documents = body.Documents;
+
+            var member = await Mediator.Send(command);
             return Ok(member);
         }
 
@@ -154,13 +173,16 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Lista membros da igreja com filtros e paginação (apenas para Admin).
         /// Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
+        /// Lista membros da igreja com filtros e paginação.
+        /// - Admin: vê todos
+        /// - Não-admin (Leader): vê apenas membros que compartilham departamento (regra aplicada no handler)
         /// </summary>
         /// <param name="query">Filtros, paginação e ordenação</param>
         /// <response code="200">Sucesso: Lista paginada de membros</response>
         /// <response code="400">Falha: Requisição inválida</response>
         /// <response code="401">Falha: Não autorizado</response>
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<MemberDto>))]
         public async Task<IActionResult> GetAllMembers([FromQuery] GetAllMembersQuery query)
         {
@@ -258,6 +280,24 @@ namespace MyChurch.Api.Web.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Atualiza acesso do membro (ativar/desativar) e/ou role (ex.: promover para Admin).
+        /// Apenas Admin.
+        /// </summary>
+        [HttpPatch("{id}/access")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDto))]
+        public async Task<IActionResult> UpdateAccess([FromRoute] int id, [FromBody] UpdateMemberAccessRequest body)
+        {
+            var cmd = AuthorizationRequestCreate<UpdateMemberAccessCommand>();
+            cmd.MemberId = id;
+            cmd.IsActive = body.IsActive;
+            cmd.Role = body.Role;
+
+            var member = await Mediator.Send(cmd);
+            return Ok(member);
+        }
+
         public class RecieveCsvFile()
         {
             public IFormFile CsvFile
@@ -272,6 +312,12 @@ namespace MyChurch.Api.Web.Controllers
             /// Motivo da exclusão (obrigatório)
             /// </summary>
             public string Reason { get; set; }
+        }
+
+        public class UpdateMemberAccessRequest
+        {
+            public bool? IsActive { get; set; }
+            public MyChurch.Domain.Enum.UserRole? Role { get; set; }
         }
     }
 }

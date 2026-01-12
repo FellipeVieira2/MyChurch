@@ -97,7 +97,7 @@ namespace MyChurch.Application.PastorBot.Commands.VerseOfTheDay
                 Reference = result.Reference,
                 Date = today
             };
-            _unitOfWork.VerseOfTheDays.Create(entity);
+            await _unitOfWork.VerseOfTheDays.Create(entity);
             await _unitOfWork.CommitAsync();
 
             return result;

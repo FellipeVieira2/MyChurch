@@ -2,7 +2,7 @@ wwwroot\css\app.css
 wwwroot\css\bootstrap\bootstrap.min.css
 wwwroot\css\bootstrap\bootstrap.min.css.map
 wwwroot\index.html
-C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\App\Mychurch.App\wwwroot\css\bootstrap\bootstrap.min.css
-C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\App\Mychurch.App\wwwroot\css\bootstrap\bootstrap.min.css.map
-C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\App\Mychurch.App\wwwroot\index.html
-C:\Users\Usuario\source\repos\FellipeVieira2\MyChurch\src\App\Mychurch.App\wwwroot\css\app.css
+D:\MyChurch\src\App\Mychurch.App\wwwroot\css\bootstrap\bootstrap.min.css
+D:\MyChurch\src\App\Mychurch.App\wwwroot\index.html
+D:\MyChurch\src\App\Mychurch.App\wwwroot\css\app.css
+D:\MyChurch\src\App\Mychurch.App\wwwroot\css\bootstrap\bootstrap.min.css.map

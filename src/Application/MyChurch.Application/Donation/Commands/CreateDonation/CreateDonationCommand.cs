@@ -195,12 +195,12 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
                     Last4Digits = last4,
                     MemberId = member.Id
                 };
-                _unitOfWork.CreditCardInfos.Create(cardInfo);
+                await _unitOfWork.CreditCardInfos.Create(cardInfo);
             }
 
             _unitOfWork.Members.Update(member);
             // 6. Persistir no banco
-            _unitOfWork.Donations.Create(donation);
+            await _unitOfWork.Donations.Create(donation);
 
             // Relacionamento com campanha de arrecadação
             if (request.CampaignId.HasValue)
@@ -221,12 +221,19 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             // Relacionamento doação-culto
             if (request.WorshipServiceId.HasValue)
             {
+                var ws = await _unitOfWork.WorshipServices.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == request.WorshipServiceId.Value, cancellationToken);
+
+                if (ws != null)
+                    donation.DepartmentId = ws.DepartmentId;
+
                 var donationWorship = new Domain.Entities.DonationWorshipService
                 {
                     DonationId = donation.Id,
                     WorshipServiceId = request.WorshipServiceId.Value
                 };
-                _unitOfWork.DonationWorshipServices.Create(donationWorship);
+                await _unitOfWork.DonationWorshipServices.Create(donationWorship);
                 await _unitOfWork.CommitAsync();
             }
 

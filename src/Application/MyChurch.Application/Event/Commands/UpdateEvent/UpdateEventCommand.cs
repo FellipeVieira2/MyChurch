@@ -20,6 +20,8 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
         public string? Location { get; set; }
         public bool? RequiresParticipantList { get; set; }
 
+        public int? DepartmentId { get; set; }
+
         // Recorrência
         public EventRecurrenceType? RecurrenceType { get; set; }
         public int? Frequency { get; set; }
@@ -57,6 +59,16 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
             if (eventEntity == null)
                 ValidationException.ThrowException("Event", "Event not found or does not belong to your church.");
 
+            if (request.DepartmentId.HasValue)
+            {
+                var dept = await _unitOfWork.Departments.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.Id == request.DepartmentId.Value && d.ChurchId == churchId, cancellationToken);
+
+                if (dept == null)
+                    ValidationException.ThrowException("Department", "Departamento não encontrado para esta igreja.");
+            }
+
             if (request.Title != null)
                 eventEntity.Title = request.Title;
             if (request.Description != null)
@@ -69,6 +81,9 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
                 eventEntity.Location = request.Location;
             if (request.RequiresParticipantList.HasValue)
                 eventEntity.RequiresParticipantList = request.RequiresParticipantList.Value;
+
+            if (request.DepartmentId.HasValue || request.DepartmentId == null)
+                eventEntity.DepartmentId = request.DepartmentId;
 
             // Atualiza WorshipService(s) se existirem (um para cada ocorrência do evento)
             if (eventEntity.WorshipServices != null && eventEntity.WorshipServices.Any())
@@ -85,6 +100,9 @@ namespace MyChurch.Application.Event.Commands.UpdateEvent
                         worshipService.StartTime = request.Date.Value;
                     if (request.FinishDate.HasValue)
                         worshipService.EndTime = request.FinishDate.Value;
+
+                    if (request.DepartmentId.HasValue || request.DepartmentId == null)
+                        worshipService.DepartmentId = request.DepartmentId;
                 }
             }
 

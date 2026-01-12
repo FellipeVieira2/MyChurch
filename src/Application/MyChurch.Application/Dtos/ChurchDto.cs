@@ -16,6 +16,9 @@
         // Banking information (only visible to admin users)
         public BankingInfoDto BankingInfo { get; set; }
 
+        // Nova lista (suporta múltiplas contas)
+        public List<BankingInfoDto>? BankingInfos { get; set; }
+
         // Exibe apenas para admin
         public string? OnboardingQrCode { get; set; }
         

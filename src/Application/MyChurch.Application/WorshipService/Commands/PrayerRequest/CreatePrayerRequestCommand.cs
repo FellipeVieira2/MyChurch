@@ -29,7 +29,7 @@ namespace MyChurch.Application.WorshipService.Commands.PrayerRequest
                 CreatedAt = DateTime.UtcNow,
                 IsRead = false
             };
-            _unitOfWork.PrayerRequests.Create(entity);
+            await _unitOfWork.PrayerRequests.Create(entity);
             await _unitOfWork.CommitAsync();
 
             // Notificar admin do culto via SignalR

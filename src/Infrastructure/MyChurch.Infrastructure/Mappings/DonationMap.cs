@@ -50,6 +50,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(d => d.DepartmentId)
+                .HasColumnName("department_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
+                .HasOne(d => d.Department)
+                .WithMany()
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder
                 .HasOne(d => d.Member)
                 .WithMany(m => m.Donations)
                 .HasForeignKey(d => d.MemberId)

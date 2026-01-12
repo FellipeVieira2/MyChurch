@@ -99,6 +99,7 @@ namespace MyChurch.Application.CashFlow.Services
                 ChurchId = churchId,
                 MemberId = donation.MemberId,
                 DonationId = donationId,
+                DepartmentId = donation.DepartmentId,
                 IsAutomatic = true,
                 Description = $"Doação #{donation.Id} - {donation.Member.Name}",
                 Notes = $"Gerado automaticamente via confirmação de pagamento"

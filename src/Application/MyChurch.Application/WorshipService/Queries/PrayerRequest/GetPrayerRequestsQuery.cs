@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 using System.Text.Json.Serialization;
 
 namespace MyChurch.Application.WorshipService.Queries.PrayerRequest
@@ -24,9 +25,9 @@ namespace MyChurch.Application.WorshipService.Queries.PrayerRequest
             var query = _unitOfWork.PrayerRequests.Query()
                 .Include(x => x.Member)
                 .Where(x => x.WorshipServiceId == request.WorshipServiceId);
-               
 
-            if (!(request.Role == "Admin"))
+            var isAdmin = Enum.TryParse<UserRole>(request.Role, true, out var role) && role == UserRole.Admin;
+            if (!isAdmin)
             {
                 query = query.Where(x => x.MemberId == request.UserId);
             }

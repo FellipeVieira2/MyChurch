@@ -10,6 +10,8 @@ namespace MyChurch.Application.Dtos
         public int Id { get; set; }
         public int ChurchId { get; set; }
         public int EventId { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
         public string Title { get; set; }
         public string? Theme { get; set; }
         public DateTime StartTime { get; set; }
@@ -27,6 +29,8 @@ namespace MyChurch.Application.Dtos
                 Id = entity.Id,
                 ChurchId = entity.ChurchId,
                 EventId = entity.EventId,
+                DepartmentId = entity.DepartmentId,
+                DepartmentName = entity.Department?.Name,
                 Title = entity.Title,
                 Theme = entity.Theme,
                 StartTime = entity.StartTime,

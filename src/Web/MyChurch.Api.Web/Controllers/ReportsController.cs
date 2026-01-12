@@ -2,18 +2,20 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Reports.Queries.GetDashboardMetrics;
+using MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport;
 
 namespace MyChurch.Api.Web.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin,Leader")]
+    [Authorize]
     public class ReportsController : BaseController
     {
         /// <summary>
         /// ?? Dashboard com métricas gerais da igreja
         /// </summary>
         [HttpGet("dashboard")]
+        [Authorize(Roles = "Admin,Leader")]
         public async Task<IActionResult> GetDashboardMetrics([FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
         {
             var query = AuthorizationRequestCreate<GetDashboardMetricsQuery>();
@@ -21,6 +23,23 @@ namespace MyChurch.Api.Web.Controllers
             query.EndDate = endDate;
 
             var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Relatório financeiro (entrada/saída/saldo) agrupado por departamento.
+        /// Admin vê todos. Membro vê apenas os departamentos que participa (e opcionalmente o geral).
+        /// </summary>
+        [HttpGet("department-financial")]
+        public async Task<IActionResult> GetDepartmentFinancial([FromQuery] GetDepartmentFinancialReportQuery query)
+        {
+            var q = AuthorizationRequestCreate<GetDepartmentFinancialReportQuery>();
+            q.DepartmentId = query.DepartmentId;
+            q.StartDate = query.StartDate;
+            q.EndDate = query.EndDate;
+            q.IncludeGeneral = query.IncludeGeneral;
+
+            var result = await Mediator.Send(q);
             return Ok(result);
         }
 

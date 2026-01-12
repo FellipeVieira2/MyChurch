@@ -63,16 +63,13 @@ namespace MyChurch.Application.Church.Queries.GetChurch
             else
             {
                 // If user is admin, include banking information
-                var bankingInfo = await _unitOfWork.BankingInfos.Query()
-                    .FirstOrDefaultAsync(b => b.ChurchId == church.Id, cancellationToken);
-                
-                if (bankingInfo != null)
-                {
-                    dto.BankingInfo = BankingInfoDto.New(bankingInfo);
-                }else
-                {
-                    dto.BankingInfo = null;
-                }
+                var bankingInfos = await _unitOfWork.BankingInfos.Query()
+                    .Where(b => b.ChurchId == church.Id)
+                    .OrderByDescending(b => b.Created)
+                    .ToListAsync(cancellationToken);
+
+                dto.BankingInfos = bankingInfos.Select(BankingInfoDto.New).ToList();
+                dto.BankingInfo = dto.BankingInfos.FirstOrDefault();
             }
 
             return dto;

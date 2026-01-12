@@ -90,7 +90,10 @@
         // 🔐 SISTEMA DE PERMISSÕES GRANULARES
         IRolePermissionRepository RolePermissions { get; }
         IMemberCustomPermissionRepository MemberCustomPermissions { get; }
-        
+
+        IDepartmentRepository Departments { get; }
+        IDepartmentMemberRepository DepartmentMembers { get; }
+
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
         Task CommitTransactionAsync();

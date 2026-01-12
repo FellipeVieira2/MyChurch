@@ -115,6 +115,9 @@
         <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.CategoryId">
             <summary>ID da Categoria</summary>
         </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.DepartmentId">
+            <summary>ID do Departamento (opcional)</summary>
+        </member>
         <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Name">
             <summary>Nome da categoria</summary>
         </member>
@@ -1322,6 +1325,26 @@
         <member name="P:MyChurch.Application.Plan.Commands.UpdatePlan.UpdatePlanCommand.Branches">
             <summary>Número de filiais permitidas</summary>
             <example>3</example>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.DashboardMetricsDto">
+            <summary>
+            Métricas gerais para o dashboard da igreja
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.EngagementReportDto">
+            <summary>
+            Relatório de engajamento dos membros
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.FinancialReportDto">
+            <summary>
+            Relatório financeiro detalhado
+            </summary>
+        </member>
+        <member name="T:MyChurch.Application.Reports.Dtos.VisitorAnalyticsDto">
+            <summary>
+            Análise de visitantes e conversão
+            </summary>
         </member>
         <member name="T:MyChurch.Application.Reviews.Commands.EditReviewResponse.EditReviewResponseCommand">
             <summary>

@@ -35,10 +35,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("event_id")
                 .IsRequired();
 
+            builder.Property(ws => ws.DepartmentId)
+                .HasColumnName("department_id");
+
             builder.HasOne(ws => ws.Event)
                 .WithMany(e => e.WorshipServices)
                 .HasForeignKey(ws => ws.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(ws => ws.Department)
+                .WithMany()
+                .HasForeignKey(ws => ws.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Property(x => x.EndTime)
                 .HasColumnName("end_time");

@@ -68,6 +68,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(e => e.DepartmentId)
+                .HasColumnName("department_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
                 .Property<int?>("WorshipServiceId")
                 .HasColumnName("worship_service_id")
                 .HasColumnType("integer")
@@ -78,6 +84,12 @@ namespace MyChurch.Infrastructure.Mappings
                 .WithMany(c => c.Events)
                 .HasForeignKey(e => e.ChurchId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(e => e.Department)
+                .WithMany()
+                .HasForeignKey(e => e.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .HasMany(e => e.WorshipServices)

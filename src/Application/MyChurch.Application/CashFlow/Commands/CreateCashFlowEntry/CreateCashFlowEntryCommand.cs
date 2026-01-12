@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MyChurch.Application.Departments.Services;
+using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Exceptions;
-using Microsoft.Extensions.Logging;
-using MyChurch.Application.Dtos;
 using MyChurch.Domain.Enum;
 
 namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry
@@ -22,19 +22,23 @@ namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry
         public CashFlowType Type { get; set; }
         /// <summary>ID da Categoria</summary>
         public int CategoryId { get; set; }
-        /// <summary>ID do Membro (opcional)</summary>
+        /// <summary>ID do Departamento (opcional)</summary>
+        public int? DepartmentId { get; set; }
     }
     public class CreateCashFlowEntryCommandHandler : IRequestHandler<CreateCashFlowEntryCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateCashFlowEntryCommandHandler> _logger;
+        private readonly IDepartmentAccessService _departmentAccess;
 
         public CreateCashFlowEntryCommandHandler(
             IUnitOfWork unitOfWork,
-            ILogger<CreateCashFlowEntryCommandHandler> logger)
+            ILogger<CreateCashFlowEntryCommandHandler> logger,
+            IDepartmentAccessService departmentAccess)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _departmentAccess = departmentAccess;
         }
 
         public async Task<int> Handle(CreateCashFlowEntryCommand request, CancellationToken cancellationToken)
@@ -55,6 +59,20 @@ namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry
             if (category == null)
                 ValidationException.ThrowException("Categoria", "Categoria de fluxo de caixa não encontrada para esta igreja.");
 
+            if (request.DepartmentId.HasValue)
+            {
+                var dept = await _unitOfWork.Departments.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.Id == request.DepartmentId.Value && d.ChurchId == churchId, cancellationToken);
+
+                if (dept == null)
+                    ValidationException.ThrowException("Department", "Departamento não encontrado para esta igreja.");
+
+                var access = await _departmentAccess.CanAccessDepartmentFinancialAsync(loggedMember.Id, dept.Id, cancellationToken);
+                if (!access.hasAccess || !access.canEdit)
+                    ValidationException.ThrowException("Department", "Sem permissão para lançar no financeiro deste departamento.");
+            }
+
             // Cria o lançamento
             var entry = new CashFlowEntry
             {
@@ -64,6 +82,7 @@ namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry
                 Type = request.Type,
                 CategoryId = request.CategoryId,
                 ChurchId = churchId,
+                DepartmentId = request.DepartmentId,
                 MemberId = loggedMember.Id,
                 Created = DateTime.UtcNow
             };

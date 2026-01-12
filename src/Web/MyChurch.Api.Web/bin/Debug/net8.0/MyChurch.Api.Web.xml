@@ -223,11 +223,6 @@
             <param name="query">Filtros e paginação</param>
             <returns>Lista paginada de categorias</returns>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetNearby(System.Double,System.Double,System.Double,System.Nullable{System.Int32})">
-            <summary>
-            Busca igrejas próximas por latitude/longitude e raio (km)
-            </summary>
-        </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
             <summary>
             Create a new Church
@@ -260,7 +255,7 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateSocialMedia(MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateSocialMedia(System.Object)">
             <summary>
             Atualiza as redes sociais e contatos da igreja (Website, Instagram, Facebook, YouTube, WhatsApp, Twitter, TikTok)
             </summary>
@@ -268,7 +263,7 @@
             <response code="400">Falha: URLs inválidas</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCharacteristics(MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCharacteristics(System.Object)">
             <summary>
             Atualiza características avançadas da igreja (denominação, amenidades, idiomas) para busca avançada
             </summary>
@@ -276,7 +271,7 @@
             <response code="400">Falha: Dados inválidos</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCapacity(MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCapacity(System.Object)">
             <summary>
             Atualiza capacidade e infraestrutura da igreja (lotação, estacionamento, equipamentos, instalações)
             </summary>
@@ -307,7 +302,7 @@
             <response code="200">QRCode base64</response>
             <response code="404">Igreja não encontrada</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32,MyChurch.Api.Web.Controllers.UpdateChurchLocationRequest)">
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32,System.Object)">
             <summary>
             Atualiza latitude e longitude da igreja.
             Pode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.
@@ -338,7 +333,7 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhoto(System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
             <summary>
-            ?? Upload de foto da igreja (Membros e Visitantes)
+            ?? Upload de foto da igreja (Membros autenticados)
             </summary>
             <param name="churchId">ID da igreja</param>
             <param name="command">Dados da foto</param>
@@ -999,7 +994,7 @@
             <response code="200">Sucesso: Lista de aniversariantes</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.UpdateMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
             <summary>
             Update Member by ID
             </summary>
@@ -1021,6 +1016,9 @@
             <summary>
             Lista membros da igreja com filtros e paginação (apenas para Admin).
             Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
+            Lista membros da igreja com filtros e paginação.
+            - Admin: vê todos
+            - Não-admin (Leader): vê apenas membros que compartilham departamento (regra aplicada no handler)
             </summary>
             <param name="query">Filtros, paginação e ordenação</param>
             <response code="200">Sucesso: Lista paginada de membros</response>
@@ -1070,6 +1068,12 @@
             <response code="401">Falha: Não autorizado</response>
             <response code="403">Falha: Apenas administradores podem deletar</response>
             <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.UpdateAccess(System.Int32,MyChurch.Api.Web.Controllers.MemberController.UpdateMemberAccessRequest)">
+            <summary>
+            Atualiza acesso do membro (ativar/desativar) e/ou role (ex.: promover para Admin).
+            Apenas Admin.
+            </summary>
         </member>
         <member name="P:MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest.Reason">
             <summary>
@@ -1213,6 +1217,42 @@
         <member name="M:MyChurch.Api.Web.Controllers.PreLaunchController.GetInterests(System.Nullable{System.Boolean})">
             <summary>
             Obtém todos os interesses no pré-lançamento (requer autenticação de administrador)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetDashboardMetrics(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            ?? Dashboard com métricas gerais da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetDepartmentFinancial(MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport.GetDepartmentFinancialReportQuery)">
+            <summary>
+            Relatório financeiro (entrada/saída/saldo) agrupado por departamento.
+            Admin vê todos. Membro vê apenas os departamentos que participa (e opcionalmente o geral).
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetFinancialReport(System.DateTime,System.DateTime,System.String)">
+            <summary>
+            ?? Relatório Financeiro Detalhado
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetEngagementReport(System.DateTime,System.DateTime,System.String)">
+            <summary>
+            ?? Relatório de Engajamento dos Membros
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetVisitorAnalytics(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>
+            ?? Análise de Visitantes e Conversão
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportPdf(System.DateTime,System.DateTime)">
+            <summary>
+            ?? Exportar Relatório Financeiro em PDF
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportExcel(System.DateTime,System.DateTime)">
+            <summary>
+            ?? Exportar Relatório Financeiro em Excel
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.SubmitReview(MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand)">

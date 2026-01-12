@@ -9,6 +9,8 @@
         public DateTime FinishDate { get; set; }
         public string Location { get; set; }
         public int ChurchId { get; set; }
+        public int? DepartmentId { get; set; }
+        public string? DepartmentName { get; set; }
         public ChurchDto Church { get; set; }
         public bool RequiresParticipantList { get; set; }
         public int EventType { get; set; } // Assuming EventType is an integer enum
@@ -28,6 +30,8 @@
                 FinishDate = ev.FinishDate,
                 Location = ev.Location,
                 ChurchId = ev.ChurchId,
+                DepartmentId = ev.DepartmentId,
+                DepartmentName = ev.Department?.Name,
                 RequiresParticipantList = ev.RequiresParticipantList,
                 Participants = ev.Participants?.Select(MemberDto.New).ToList() ?? new List<MemberDto>(),
                 Recurrence = ev.Recurrence != null ? EventRecurrenceDto.New(ev.Recurrence) : null,

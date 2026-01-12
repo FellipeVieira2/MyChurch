@@ -2,7 +2,7 @@
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        void Create(TEntity entity);
+        Task Create(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
         Task<TEntity> ById(int id);

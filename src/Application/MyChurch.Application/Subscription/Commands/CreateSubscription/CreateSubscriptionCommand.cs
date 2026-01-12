@@ -79,13 +79,17 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                     ExternalReference = null
                 };
 
-                _unitOfWork.Subscriptions.Create(subscription);
+                await _unitOfWork.Subscriptions.Create(subscription);
                 await _unitOfWork.CommitAsync();
 
                 _logger.LogInformation("Assinatura gratuita criada para a igreja {ChurchId} no plano {PlanId}.", church.Id, plan.Id);
 
-                // Não há link de checkout para plano grátis
-                return null;
+                return new CreateSubscriptionResultDto
+                {
+                    CheckoutUrl = null,
+                    PixQrCode = null,
+                    Payload = string.Empty
+                };
             }
 
             // Monta o request para o Asaas
@@ -156,7 +160,7 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                 ExternalReference = transactionId
             };
 
-            _unitOfWork.Subscriptions.Create(paidSubscription);
+            await _unitOfWork.Subscriptions.Create(paidSubscription);
             await _unitOfWork.CommitAsync();
 
             // Salva o pagamento localmente
@@ -169,7 +173,7 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                );
             payment.SubscriptionId = paidSubscription.Id;
 
-            _unitOfWork.Payments.Create(payment);
+            await _unitOfWork.Payments.Create(payment);
 
             // Salva cartão novo se for cartão de crédito e não foi usado um já cadastrado
             if (request.BillingType == "CREDIT_CARD" && !request.CreditCardInfoId.HasValue && cobrancaResponse.CreditCard != null)
@@ -186,7 +190,7 @@ namespace MyChurch.Application.Subscription.Commands.CreateSubscription
                     Last4Digits = last4,
                     MemberId = loggedMember.Id
                 };
-                _unitOfWork.CreditCardInfos.Create(cardInfo);
+                await _unitOfWork.CreditCardInfos.Create(cardInfo);
             }
 
 

@@ -103,7 +103,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchCommand
                 }
             }
 
-            _unitOfWork.Churchs.Create(church);
+            await _unitOfWork.Churchs.Create(church);
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Church created with ID: {ChurchId}", church.Id);

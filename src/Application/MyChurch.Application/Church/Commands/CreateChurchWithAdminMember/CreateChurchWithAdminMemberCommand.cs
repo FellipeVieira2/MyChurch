@@ -198,7 +198,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             {
                 church.LogoFileName = await UploadLogoAsync(request.Logo, cancellationToken);
             }
-            _unitOfWork.Churchs.Create(church);
+            await _unitOfWork.Churchs.Create(church);
             await _unitOfWork.CommitAsync();
             return church;
         }
@@ -208,7 +208,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             var defaultJourneys = JourneySeedData.GetDefaultJourneys(churchId);
             foreach (var journey in defaultJourneys)
             {
-                _unitOfWork.Journeys.Create(journey);
+                await _unitOfWork.Journeys.Create(journey);
             }
         }
 
@@ -257,7 +257,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
 
         private async Task SaveChurchAndAdminAsync(Domain.Entities.Church church, Domain.Entities.Member adminMember, CancellationToken cancellationToken)
         {
-            _unitOfWork.Members.Create(adminMember);
+            await _unitOfWork.Members.Create(adminMember);
             await _unitOfWork.CommitAsync();
         }
 
@@ -302,7 +302,7 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
                 ExternalReference = null // Não tem referência externa pois é gratuito
             };
 
-            _unitOfWork.Subscriptions.Create(subscription);
+            await _unitOfWork.Subscriptions.Create(subscription);
             await _unitOfWork.CommitAsync();
 
             _logger.LogInformation("Assinatura gratuita criada para a igreja {ChurchId} no plano {PlanId} ({PlanName})", 

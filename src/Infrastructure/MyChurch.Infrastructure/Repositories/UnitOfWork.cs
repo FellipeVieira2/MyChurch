@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Storage;
 using MyChurch.Domain.Contracts;
 
 namespace MyChurch.Infrastructure.Repositories
@@ -8,22 +8,14 @@ namespace MyChurch.Infrastructure.Repositories
         private readonly MyChurchDbContext _context;
         private IDbContextTransaction? _currentTransaction;
 
-        public IChurchRepository Churchs { get; }        
-
+        public IChurchRepository Churchs { get; }
         public IDonationRepository Donations { get; }
-
         public IEventRepository Events { get; }
-
         public IMemberRepository Members { get; }
-
         public IPaymentRepository Payments { get; }
-
         public IPlanRepository Plans { get; }
-
         public ISubscriptionRepository Subscriptions { get; }
-
         public IAssetRepository Assets { get; }
-
         public IEventNotificationRepository EventNotifications { get; }
         public IEventRecurrenceRepository EventRecurrences { get; }
         public IFeedPostRepository FeedPosts { get; }
@@ -40,7 +32,6 @@ namespace MyChurch.Infrastructure.Repositories
         public IBankingInfoRepository BankingInfos { get; }
         public ITransferHistoryRepository TransferHistories { get; }
         public IVerseOfTheDayRepository VerseOfTheDays { get; }
-        // Repositories for worship activities
         public IWorshipActivityBibleRepository WorshipActivityBibles { get; }
         public IWorshipActivityHymnRepository WorshipActivityHymns { get; }
         public IWorshipActivityRepository WorshipActivities { get; }
@@ -68,208 +59,134 @@ namespace MyChurch.Infrastructure.Repositories
         public IMemberAchievementRepository MemberAchievements { get; }
         public IDailyChallengeRepository DailyChallenges { get; }
         public IPastoralAlertRepository PastoralAlerts { get; }
-        public IFaithLevelRepository FaithLevels { get; private set; }
+        public IFaithLevelRepository FaithLevels { get; }
         public IMemberFavoriteVerseRepository MemberFavoriteVerses { get; }
         public IMemberConfigurationRepository MemberConfigurations { get; }
         public IPreLaunchInterestRepository PreLaunchInterests { get; }
         public IBibleReadingPlanRepository BibleReadingPlans { get; }
         public IBibleReadingPlanStageRepository BibleReadingPlanStages { get; }
         public IMemberBibleReadingProgressRepository MemberBibleReadingProgresses { get; }
+        public IMemberBibleReadingAssignmentRepository MemberBibleReadingAssignments { get; }
         public IGroupMeetingRepository GroupMeetings { get; }
         public IGroupMeetingAttendanceRepository GroupMeetingAttendances { get; }
         public IGroupMeetingMemberNoteRepository GroupMeetingMemberNotes { get; }
-        public IMemberBibleReadingAssignmentRepository MemberBibleReadingAssignments { get; }
         public IUserActionHistoryRepository UserActionHistories { get; }
         public IPresentationRepository Presentations { get; }
         public ISlideRepository Slides { get; }
         public IImportedHymnRepository ImportedHymns { get; }
-        public IVisitorRepository Visitors { get; } // added
-        public IVisitorStatusHistoryRepository VisitorStatusHistories { get; } // added
-        public IReviewRepository Reviews { get; } // added
-        public IReviewVoteRepository ReviewVotes { get; } // added
-        public IReviewPhotoRepository ReviewPhotos { get; } // added
-        public IReviewResponseRepository ReviewResponses { get; } // added
-        
-        // 📸 Galeria de Fotos da Igreja
+        public IVisitorRepository Visitors { get; }
+        public IVisitorStatusHistoryRepository VisitorStatusHistories { get; }
+        public IReviewRepository Reviews { get; }
+        public IReviewVoteRepository ReviewVotes { get; }
+        public IReviewPhotoRepository ReviewPhotos { get; }
+        public IReviewResponseRepository ReviewResponses { get; }
+
         public IChurchPhotoRepository ChurchPhotos { get; }
         public IChurchPhotoLikeRepository ChurchPhotoLikes { get; }
-        
-        // 🎯 Sistema de Promoções
+
         public IChurchPromotionRepository ChurchPromotions { get; }
         public IEventPromotionRepository EventPromotions { get; }
         public IEngagementEventRepository EngagementEvents { get; }
 
-        // 🕐 HORÁRIOS DE CULTOS
         public IChurchScheduleRepository ChurchSchedules { get; }
 
-        // 🔐 SISTEMA DE PERMISSÕES GRANULARES
         public IRolePermissionRepository RolePermissions { get; }
         public IMemberCustomPermissionRepository MemberCustomPermissions { get; }
 
-        public UnitOfWork(
-            IChurchRepository churchs,
-            IDonationRepository donations,
-            IEventRepository events,
-            IMemberRepository members,
-            IPaymentRepository payments,
-            IPlanRepository plans,
-            ISubscriptionRepository subscriptions,
-            MyChurchDbContext context,
-            IAssetRepository assets,
-            IEventNotificationRepository eventNotifications,
-            IEventRecurrenceRepository eventRecurrences,
-            IFeedPostRepository feedPosts,
-            IFeedLikeRepository feedLikes,
-            ICashFlowEntryRepository cashFlowEntries,
-            ICashFlowCategoryRepository cashFlowCategories,
-            IVerseRepository verses,
-            IVersionRepository versions,
-            IBookRepository books,
-            IChapterRepository chapters,
-            IHymnRepository hymns,
-            IMemberDocumetRepository memberDocuments,
-            ICreditCardInfoRepository creditCardInfos,
-            IBankingInfoRepository bankingInfos,
-            ITransferHistoryRepository transferHistories,
-            IVerseOfTheDayRepository verseOfTheDays,
-            IWorshipActivityBibleRepository worshipActivityBibles,
-            IWorshipActivityHymnRepository worshipActivityHymns,
-            IWorshipActivityRepository worshipActivities,
-            IWorshipServiceRepository worshipServices,
-            IWorshipPresenceRepository worshipPresences,
-            IWorshipScheduleRepository worshipSchedules,
-            IDonationWorshipServiceRepository donationWorshipServices,
-            IPrayerRequestRepository prayerRequests,
-            IFeedPostImageRepository feedPostImages,
-            IAdminNoticeRepository adminNotices,
-            IHymnVerseRepository hymnVerses,
-            ICampaignRepository campaigns,
-            IFamilyRepository families,
-            IFamilyInvitationRepository familyInvitations,
-            IChildRepository children,
-            IGroupRepository groups,
-            IChildGroupAssignmentRepository childGroupAssignments,
-            IGroupMemberRepository groupMembers,
-            IGroupResourceRepository groupResources,
-            IJourneyRepository journeys,
-            IJourneyStageRepository journeyStages,
-            IMemberJourneyProgressRepository memberJourneyProgresses,
-            IMemberJourneyAssignmentRepository memberJourneyAssignments,
-            IAchievementRepository achievements,
-            IMemberAchievementRepository memberAchievements,
-            IDailyChallengeRepository dailyChallenges,
-            IPastoralAlertRepository pastoralAlerts,
-            IFaithLevelRepository faithLevels,
-            IMemberFavoriteVerseRepository memberFavoriteVerses,
-            IMemberConfigurationRepository memberConfigurations,
-            IPreLaunchInterestRepository preLaunchInterests,
-            IBibleReadingPlanRepository bibleReadingPlans,
-            IBibleReadingPlanStageRepository bibleReadingPlanStages,
-            IMemberBibleReadingProgressRepository memberBibleReadingProgresses,
-            IGroupMeetingRepository groupMeetings,
-            IGroupMeetingAttendanceRepository groupMeetingAttendances,
-            IGroupMeetingMemberNoteRepository groupMeetingMemberNotes,
-            IMemberBibleReadingAssignmentRepository memberBibleReadingAssignments,
-            IUserActionHistoryRepository userActionHistories,
-            IPresentationRepository presentations,
-            ISlideRepository slides,
-            IImportedHymnRepository importedHymns,
-            IVisitorRepository visitors,
-            IVisitorStatusHistoryRepository visitorStatusHistories,
-            IReviewRepository reviews,
-            IReviewVoteRepository reviewVotes,
-            IReviewPhotoRepository reviewPhotos,
-            IReviewResponseRepository reviewResponses,
-            IChurchPhotoRepository churchPhotos,
-            IChurchPhotoLikeRepository churchPhotoLikes,
-            IChurchPromotionRepository churchPromotions,
-            IEventPromotionRepository eventPromotions,
-            IEngagementEventRepository engagementEvents,
-            IChurchScheduleRepository churchSchedules,
-            IRolePermissionRepository rolePermissions,
-            IMemberCustomPermissionRepository memberCustomPermissions)
+        public IDepartmentRepository Departments { get; }
+        public IDepartmentMemberRepository DepartmentMembers { get; }
+
+        public UnitOfWork(MyChurchDbContext context)
         {
-            Churchs = churchs;
-            Donations = donations;
-            Events = events;
-            Members = members;
-            Payments = payments;
-            Plans = plans;
-            Subscriptions = subscriptions;
             _context = context;
-            Assets = assets;
-            EventNotifications = eventNotifications;
-            EventRecurrences = eventRecurrences;
-            FeedPosts = feedPosts;
-            FeedLikes = feedLikes;
-            CashFlowEntries = cashFlowEntries;
-            CashFlowCategories = cashFlowCategories;
-            Verses = verses;
-            Versions = versions;
-            Books = books;
-            Chapters = chapters;
-            Hymns = hymns;
-            MemberDocuments = memberDocuments;
-            CreditCardInfos = creditCardInfos;
-            BankingInfos = bankingInfos;
-            TransferHistories = transferHistories;
-            VerseOfTheDays = verseOfTheDays;
-            WorshipActivityBibles = worshipActivityBibles;
-            WorshipActivityHymns = worshipActivityHymns;
-            WorshipActivities = worshipActivities;
-            WorshipServices = worshipServices;
-            WorshipPresences = worshipPresences;
-            WorshipSchedules = worshipSchedules;
-            DonationWorshipServices = donationWorshipServices;
-            PrayerRequests = prayerRequests;
-            FeedPostImages = feedPostImages;
-            AdminNotices = adminNotices;
-            HymnVerses = hymnVerses;
-            Campaigns = campaigns;
-            Families = families;
-            FamilyInvitations = familyInvitations;
-            Children = children;
-            Groups = groups;
-            ChildGroupAssignments = childGroupAssignments;
-            GroupMembers = groupMembers;
-            GroupResources = groupResources;
-            Journeys = journeys;
-            JourneyStages = journeyStages;
-            MemberJourneyProgresses = memberJourneyProgresses;
-            MemberJourneyAssignments = memberJourneyAssignments;
-            Achievements = achievements;
-            MemberAchievements = memberAchievements;
-            DailyChallenges = dailyChallenges;
-            PastoralAlerts = pastoralAlerts;
-            FaithLevels = faithLevels;
-            MemberFavoriteVerses = memberFavoriteVerses;
-            MemberConfigurations = memberConfigurations;
-            PreLaunchInterests = preLaunchInterests;
-            BibleReadingPlans = bibleReadingPlans;
-            BibleReadingPlanStages = bibleReadingPlanStages;
-            MemberBibleReadingProgresses = memberBibleReadingProgresses;
-            GroupMeetings = groupMeetings;
-            GroupMeetingAttendances = groupMeetingAttendances;
-            GroupMeetingMemberNotes = groupMeetingMemberNotes;
-            MemberBibleReadingAssignments = memberBibleReadingAssignments;
-            UserActionHistories = userActionHistories;
-            Presentations = presentations;
-            Slides = slides;
-            ImportedHymns = importedHymns;
-            Visitors = visitors;
-            VisitorStatusHistories = visitorStatusHistories;
-            Reviews = reviews;
-            ReviewVotes = reviewVotes;
-            ReviewPhotos = reviewPhotos;
-            ReviewResponses = reviewResponses;
-            ChurchPhotos = churchPhotos;
-            ChurchPhotoLikes = churchPhotoLikes;
-            ChurchPromotions = churchPromotions;
-            EventPromotions = eventPromotions;
-            EngagementEvents = engagementEvents;
-            ChurchSchedules = churchSchedules;
-            RolePermissions = rolePermissions;
-            MemberCustomPermissions = memberCustomPermissions;
+
+            Churchs = new ChurchRepository(_context);
+            Donations = new DonationRepository(_context);
+            Events = new EventRepository(_context);
+            Members = new MemberRepository(_context);
+            Payments = new PaymentRepository(_context);
+            Plans = new PlanRepository(_context);
+            Subscriptions = new SubscriptionRepository(_context);
+            Assets = new AssetRepository(_context);
+            EventNotifications = new EventNotificationRepository(_context);
+            EventRecurrences = new EventRecurrenceRepository(_context);
+            FeedPosts = new FeedPostRepository(_context);
+            FeedLikes = new FeedLikeRepository(_context);
+            CashFlowEntries = new CashFlowEntryRepository(_context);
+            CashFlowCategories = new CashFlowCategoryRepository(_context);
+            Verses = new VerseRepository(_context);
+            Versions = new VersionRepository(_context);
+            Books = new BookRepository(_context);
+            Chapters = new ChapterRepository(_context);
+            Hymns = new HymnRepository(_context);
+            MemberDocuments = new MemberDocumentRepository(_context);
+            CreditCardInfos = new CreditCardInfoRepository(_context);
+            BankingInfos = new BankingInfoRepository(_context);
+            TransferHistories = new TransferHistoryRepository(_context);
+            VerseOfTheDays = new VerseOfTheDayRepository(_context);
+            WorshipActivityBibles = new WorshipActivityBibleRepository(_context);
+            WorshipActivityHymns = new WorshipActivityHymnRepository(_context);
+            WorshipActivities = new WorshipActivityRepository(_context);
+            WorshipServices = new WorshipServiceRepository(_context);
+            WorshipPresences = new WorshipPresenceRepository(_context);
+            WorshipSchedules = new WorshipScheduleRepository(_context);
+            DonationWorshipServices = new DonationWorshipServiceRepository(_context);
+            PrayerRequests = new PrayerRequestRepository(_context);
+            FeedPostImages = new FeedPostImageRepository(_context);
+            AdminNotices = new AdminNoticeRepository(_context);
+            HymnVerses = new HymnVerseRepository(_context);
+            Campaigns = new CampaignRepository(_context);
+            Families = new FamilyRepository(_context);
+            FamilyInvitations = new FamilyInvitationRepository(_context);
+            Children = new ChildRepository(_context);
+            Groups = new GroupRepository(_context);
+            ChildGroupAssignments = new ChildGroupAssignmentRepository(_context);
+            GroupMembers = new GroupMemberRepository(_context);
+            GroupResources = new GroupResourceRepository(_context);
+            Journeys = new JourneyRepository(_context);
+            JourneyStages = new JourneyStageRepository(_context);
+            MemberJourneyProgresses = new MemberJourneyProgressRepository(_context);
+            MemberJourneyAssignments = new MemberJourneyAssignmentRepository(_context);
+            Achievements = new AchievementRepository(_context);
+            MemberAchievements = new MemberAchievementRepository(_context);
+            DailyChallenges = new DailyChallengeRepository(_context);
+            PastoralAlerts = new PastoralAlertRepository(_context);
+            FaithLevels = new FaithLevelRepository(_context);
+            MemberFavoriteVerses = new MemberFavoriteVerseRepository(_context);
+            MemberConfigurations = new MemberConfigurationRepository(_context);
+            PreLaunchInterests = new PreLaunchInterestRepository(_context);
+            BibleReadingPlans = new BibleReadingPlanRepository(_context);
+            BibleReadingPlanStages = new BibleReadingPlanStageRepository(_context);
+            MemberBibleReadingProgresses = new MemberBibleReadingProgressRepository(_context);
+            MemberBibleReadingAssignments = new MemberBibleReadingAssignmentRepository(_context);
+            GroupMeetings = new GroupMeetingRepository(_context);
+            GroupMeetingAttendances = new GroupMeetingAttendanceRepository(_context);
+            GroupMeetingMemberNotes = new GroupMeetingMemberNoteRepository(_context);
+            UserActionHistories = new UserActionHistoryRepository(_context);
+            Presentations = new PresentationRepository(_context);
+            Slides = new SlideRepository(_context);
+            ImportedHymns = new ImportedHymnRepository(_context);
+            Visitors = new VisitorRepository(_context);
+            VisitorStatusHistories = new VisitorStatusHistoryRepository(_context);
+            Reviews = new ReviewRepository(_context);
+            ReviewVotes = new ReviewVoteRepository(_context);
+            ReviewPhotos = new ReviewPhotoRepository(_context);
+            ReviewResponses = new ReviewResponseRepository(_context);
+
+            ChurchPhotos = new ChurchPhotoRepository(_context);
+            ChurchPhotoLikes = new ChurchPhotoLikeRepository(_context);
+
+            ChurchPromotions = new ChurchPromotionRepository(_context);
+            EventPromotions = new EventPromotionRepository(_context);
+            EngagementEvents = new EngagementEventRepository(_context);
+
+            ChurchSchedules = new ChurchScheduleRepository(_context);
+
+            RolePermissions = new RolePermissionRepository(_context);
+            MemberCustomPermissions = new MemberCustomPermissionRepository(_context);
+
+            Departments = new DepartmentRepository(_context);
+            DepartmentMembers = new DepartmentMemberRepository(_context);
         }
 
         public async Task<IDisposable> BeginTransactionAsync()
@@ -302,17 +219,11 @@ namespace MyChurch.Infrastructure.Repositories
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
         public void Dispose()
         {
-            Dispose(true);
+            _context.Dispose();
             GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
         }
     }
 }

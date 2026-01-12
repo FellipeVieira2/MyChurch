@@ -17,6 +17,8 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
         public string? Location { get; set; }
         public bool RequiresParticipantList { get; set; }
 
+        public int? DepartmentId { get; set; }
+
         // Recorrência
         public EventRecurrenceType? RecurrenceType { get; set; }
         public int? Frequency { get; set; }
@@ -39,7 +41,6 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
 
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
-            // Busca o membro logado para obter o ChurchId
             var loggedMember = await _unitOfWork.Members.Query()
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
@@ -48,7 +49,16 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
 
             int churchId = loggedMember.ChurchId;
 
-            // Cria o evento principal
+            if (request.DepartmentId.HasValue)
+            {
+                var dept = await _unitOfWork.Departments.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.Id == request.DepartmentId.Value && d.ChurchId == churchId, cancellationToken);
+
+                if (dept == null)
+                    ValidationException.ThrowException("Department", "Departamento não encontrado para esta igreja.");
+            }
+
             var entity = new Domain.Entities.Event
             {
                 Title = request.Title,
@@ -58,12 +68,12 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                 Location = request.Location ?? "",
                 ChurchId = churchId,
                 RequiresParticipantList = request.RequiresParticipantList,
-                EventType = request.EventType // Salva o tipo do evento
+                EventType = request.EventType,
+                DepartmentId = request.DepartmentId
             };
 
-            _unitOfWork.Events.Create(entity);
+            await _unitOfWork.Events.Create(entity);
 
-            // Se houver recorrência, cria o registro de recorrência
             if (request.RecurrenceType.HasValue && request.RecurrenceType != EventRecurrenceType.None && request.Frequency.HasValue)
             {
                 var recurrence = new EventRecurrence
@@ -72,13 +82,11 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                     RecurrenceType = request.RecurrenceType.Value,
                     Frequency = request.Frequency.Value
                 };
-                _unitOfWork.EventRecurrences.Create(recurrence);
+                await _unitOfWork.EventRecurrences.Create(recurrence);
             }
 
-            // Commit para garantir que o Event tenha Id gerado
             await _unitOfWork.CommitAsync();
 
-            // Se for culto, cria WorshipService relacionado ao Event
             if (request.EventType == EventType.WorshipService)
             {
                 var worshipService = new Domain.Entities.WorshipService
@@ -89,9 +97,10 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                     StartTime = request.Date,
                     EndTime = request.FinishDate,
                     Description = request.Description ?? "",
-                    EventId = entity.Id
+                    EventId = entity.Id,
+                    DepartmentId = request.DepartmentId
                 };
-                _unitOfWork.WorshipServices.Create(worshipService);
+                await _unitOfWork.WorshipServices.Create(worshipService);
                 await _unitOfWork.CommitAsync();
             }
 
