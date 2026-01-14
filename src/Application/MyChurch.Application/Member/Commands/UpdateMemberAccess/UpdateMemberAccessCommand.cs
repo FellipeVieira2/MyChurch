@@ -32,25 +32,37 @@ namespace MyChurch.Application.Member.Commands.UpdateMemberAccess
 
         public async Task<MemberDto> Handle(UpdateMemberAccessCommand request, CancellationToken cancellationToken)
         {
-            var admin = await _unitOfWork.Members.Query()
+            var actor = await _unitOfWork.Members.Query()
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
-            if (admin == null)
+            if (actor == null)
                 ValidationException.ThrowException("Member", "Authenticated member does not exist.");
 
-            if (admin.Role != UserRole.Admin)
+            var isPlatformAdmin = actor.Role == UserRole.PlatformAdmin;
+            var isAdmin = actor.Role == UserRole.Admin;
+
+            if (!isPlatformAdmin && !isAdmin)
                 ValidationException.ThrowException("Member", "Only admins can update member access.");
 
-            var member = await _unitOfWork.Members.Query()
+            // PlatformAdmin pode operar globalmente; Admin fica restrito à própria igreja.
+            var membersQuery = _unitOfWork.Members.Query()
                 .Include(m => m.Documents)
                 .Include(m => m.Address)
-                .FirstOrDefaultAsync(m => m.Id == request.MemberId && m.ChurchId == admin.ChurchId, cancellationToken);
+                .AsQueryable();
+
+            if (!isPlatformAdmin)
+                membersQuery = membersQuery.Where(m => m.ChurchId == actor.ChurchId);
+
+            var member = await membersQuery
+                .FirstOrDefaultAsync(m => m.Id == request.MemberId, cancellationToken);
 
             if (member == null)
-                ValidationException.ThrowException("Member", "Member not found or does not belong to your church.");
+                ValidationException.ThrowException("Member", isPlatformAdmin
+                    ? "Member not found."
+                    : "Member not found or does not belong to your church.");
 
-            // Admin não pode desativar a própria conta via endpoint
-            if (member.Id == admin.Id && request.IsActive.HasValue && request.IsActive.Value == false)
+            // Não permitir desativar a própria conta via endpoint
+            if (member.Id == actor.Id && request.IsActive is false)
                 ValidationException.ThrowException("Member", "You cannot deactivate your own account.");
 
             if (request.IsActive.HasValue)
@@ -58,11 +70,19 @@ namespace MyChurch.Application.Member.Commands.UpdateMemberAccess
 
             if (request.Role.HasValue)
             {
-                // Evitar rebaixar o último admin da igreja
+                // SOMENTE PlatformAdmin pode promover para PlatformAdmin
+                if (request.Role.Value == UserRole.PlatformAdmin && !isPlatformAdmin)
+                    ValidationException.ThrowException("Member", "Only PlatformAdmin can grant PlatformAdmin role.");
+
+                // Admin não pode alterar PlatformAdmin
+                if (member.Role == UserRole.PlatformAdmin && !isPlatformAdmin)
+                    ValidationException.ThrowException("Member", "Only PlatformAdmin can update a PlatformAdmin.");
+
+                // Evitar rebaixar o último Admin da igreja
                 if (member.Role == UserRole.Admin && request.Role.Value != UserRole.Admin)
                 {
                     var otherAdminsCount = await _unitOfWork.Members.Query()
-                        .CountAsync(m => m.ChurchId == admin.ChurchId && m.Role == UserRole.Admin && m.Id != member.Id, cancellationToken);
+                        .CountAsync(m => m.ChurchId == member.ChurchId && m.Role == UserRole.Admin && m.Id != member.Id, cancellationToken);
 
                     if (otherAdminsCount == 0)
                         ValidationException.ThrowException("Member", "You cannot remove admin role from the last admin of the church.");
@@ -76,7 +96,9 @@ namespace MyChurch.Application.Member.Commands.UpdateMemberAccess
             _unitOfWork.Members.Update(member);
             await _unitOfWork.CommitAsync();
 
-            _logger.LogInformation("Member access updated. MemberId: {MemberId}, IsActive: {IsActive}, Role: {Role}", member.Id, member.IsActive, member.Role);
+            _logger.LogInformation(
+                "Member access updated. ActorId: {ActorId}, ActorRole: {ActorRole}, MemberId: {MemberId}, IsActive: {IsActive}, Role: {Role}",
+                actor.Id, actor.Role, member.Id, member.IsActive, member.Role);
 
             return MemberDto.New(member);
         }

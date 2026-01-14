@@ -34,6 +34,7 @@ namespace MyChurch.Infrastructure
         // 🔐 SISTEMA DE PERMISSÕES GRANULARES
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<MemberCustomPermission> MemberCustomPermissions { get; set; }
+        public DbSet<PlatformUser> PlatformUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

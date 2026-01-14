@@ -1904,6 +1904,29 @@
         }
       }
     },
+    "/api/Church/{id}": {
+      "get": {
+        "tags": [
+          "Church"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Church/public/nearby": {
       "get": {
         "tags": [
@@ -1911,7 +1934,7 @@
         ],
         "parameters": [
           {
-            "name": "lat",
+            "name": "latitude",
             "in": "query",
             "schema": {
               "type": "number",
@@ -1919,7 +1942,7 @@
             }
           },
           {
-            "name": "lng",
+            "name": "longitude",
             "in": "query",
             "schema": {
               "type": "number",
@@ -1936,428 +1959,12 @@
             }
           },
           {
-            "name": "max",
+            "name": "maxResults",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32",
               "default": 50
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church": {
-      "post": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Church/{id}": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateChurchCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateChurchCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateChurchCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChurchDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Church/withadmin": {
-      "post": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Church/banking-info": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateBankingInfoCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankingInfoDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankingInfoDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankingInfoDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Church/social-media": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { }
-            },
-            "text/json": {
-              "schema": { }
-            },
-            "application/*+json": {
-              "schema": { }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/characteristics": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { }
-            },
-            "text/json": {
-              "schema": { }
-            },
-            "application/*+json": {
-              "schema": { }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/capacity": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { }
-            },
-            "text/json": {
-              "schema": { }
-            },
-            "application/*+json": {
-              "schema": { }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/dashboard": {
-      "get": {
-        "tags": [
-          "Church"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/{id}/generate-onboarding-qrcode": {
-      "post": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/{id}/location": {
-      "put": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { }
-            },
-            "text/json": {
-              "schema": { }
-            },
-            "application/*+json": {
-              "schema": { }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Church/{id}/geocode": {
-      "post": {
-        "tags": [
-          "Church"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
             }
           }
         ],
@@ -8736,6 +8343,131 @@
         }
       }
     },
+    "/api/platform/auth/login": {
+      "post": {
+        "tags": [
+          "PlatformAuth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginPlatformUserCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginPlatformUserCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginPlatformUserCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/platform/auth/google": {
+      "post": {
+        "tags": [
+          "PlatformAuth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlatformGoogleLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlatformGoogleLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlatformGoogleLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/platform/users": {
+      "get": {
+        "tags": [
+          "PlatformUsers"
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/platform/users/{id}/access": {
+      "patch": {
+        "tags": [
+          "PlatformUsers"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlatformUserAccessRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlatformUserAccessRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePlatformUserAccessRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/PreLaunch/register": {
       "post": {
         "tags": [
@@ -11717,78 +11449,6 @@
         },
         "additionalProperties": false
       },
-      "AddressChurch": {
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "zipCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string",
-            "nullable": true
-          },
-          "neighborhood": {
-            "type": "string",
-            "nullable": true
-          },
-          "number": {
-            "type": "string",
-            "nullable": true
-          },
-          "complement": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddressChurchCreate": {
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "zipCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "country": {
-            "type": "string",
-            "nullable": true
-          },
-          "neighborhood": {
-            "type": "string",
-            "nullable": true
-          },
-          "number": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "AddressChurchWithAdminCreate": {
         "type": "object",
         "properties": {
@@ -13647,44 +13307,6 @@
         },
         "additionalProperties": false
       },
-      "CreateChurchCommand": {
-        "required": [
-          "address",
-          "name",
-          "phone"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "planId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "document": {
-            "type": "string",
-            "nullable": true
-          },
-          "logo": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressChurchCreate"
-          }
-        },
-        "additionalProperties": false
-      },
       "CreateChurchPromotionCommand": {
         "type": "object",
         "properties": {
@@ -13763,117 +13385,6 @@
           "description": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateChurchWithAdminMemberCommand": {
-        "required": [
-          "address",
-          "adminDocuments",
-          "adminName",
-          "adminPassword",
-          "adminPhone",
-          "document",
-          "name",
-          "phone"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "maxLength": 200,
-            "minLength": 1,
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "maxLength": 20,
-            "minLength": 1,
-            "type": "string"
-          },
-          "logo": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
-          },
-          "adminName": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string"
-          },
-          "adminEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "adminDocuments": {
-            "minItems": 1,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MemberDocumentDtoCreateChurch"
-            }
-          },
-          "adminPhoto": {
-            "type": "string",
-            "nullable": true
-          },
-          "document": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "adminPhone": {
-            "maxLength": 20,
-            "minLength": 1,
-            "type": "string"
-          },
-          "adminBirthDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "adminIsBaptized": {
-            "type": "boolean"
-          },
-          "adminBaptizedDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "adminIsTither": {
-            "type": "boolean"
-          },
-          "adminPassword": {
-            "minLength": 6,
-            "type": "string"
-          },
-          "adminBirthCity": {
-            "type": "string",
-            "nullable": true
-          },
-          "adminBirthState": {
-            "type": "string",
-            "nullable": true
-          },
-          "ministry": {
-            "type": "string",
-            "nullable": true
-          },
-          "memberSince": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "notes": {
-            "type": "string",
-            "nullable": true
-          },
-          "adminAddress": {
-            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
-          },
-          "maritalStatus": {
-            "$ref": "#/components/schemas/MaritalStatus"
           }
         },
         "additionalProperties": false
@@ -15218,6 +14729,20 @@
         },
         "additionalProperties": false
       },
+      "LoginPlatformUserCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MapBoundsDto": {
         "type": "object",
         "properties": {
@@ -15354,23 +14879,6 @@
         "additionalProperties": false
       },
       "MemberDocumentDtoCreate": {
-        "required": [
-          "number"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/MemberDocumentType"
-          },
-          "number": {
-            "maxLength": 50,
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "MemberDocumentDtoCreateChurch": {
         "required": [
           "number"
         ],
@@ -16003,6 +15511,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "tier": {
+            "$ref": "#/components/schemas/PlanTier"
+          },
           "name": {
             "type": "string",
             "nullable": true
@@ -16023,7 +15534,37 @@
             "type": "integer",
             "format": "int32"
           },
+          "maxAdmins": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxLeaders": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxDonationsPerMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
           "showsAds": {
+            "type": "boolean"
+          },
+          "canExportCsv": {
+            "type": "boolean"
+          },
+          "canExportPdf": {
+            "type": "boolean"
+          },
+          "hasDepartmentReports": {
+            "type": "boolean"
+          },
+          "hasAdvancedPermissions": {
+            "type": "boolean"
+          },
+          "hasAuditTrail": {
+            "type": "boolean"
+          },
+          "hasAutomations": {
             "type": "boolean"
           },
           "canPromoteChurch": {
@@ -16040,6 +15581,26 @@
           },
           "hasVerifiedBadge": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlanTier": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PlatformGoogleLoginRequest": {
+        "type": "object",
+        "properties": {
+          "idToken": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -17172,48 +16733,6 @@
         },
         "additionalProperties": false
       },
-      "UpdateBankingInfoCommand": {
-        "type": "object",
-        "properties": {
-          "bankName": {
-            "type": "string",
-            "nullable": true
-          },
-          "agency": {
-            "type": "string",
-            "nullable": true
-          },
-          "account": {
-            "type": "string",
-            "nullable": true
-          },
-          "accountDigit": {
-            "type": "string",
-            "nullable": true
-          },
-          "accountType": {
-            "type": "string",
-            "nullable": true
-          },
-          "holderName": {
-            "type": "string",
-            "nullable": true
-          },
-          "holderDocument": {
-            "type": "string",
-            "nullable": true
-          },
-          "pixKey": {
-            "type": "string",
-            "nullable": true
-          },
-          "pixKeyType": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "UpdateBankingInfoV2Command": {
         "type": "object",
         "properties": {
@@ -17333,23 +16852,6 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateChurchCommand": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressChurch"
           }
         },
         "additionalProperties": false
@@ -17688,6 +17190,16 @@
           "branches": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdatePlatformUserAccessRequest": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false

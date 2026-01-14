@@ -254,6 +254,7 @@ using (var scope = app.Services.CreateScope())
     // Seed data
     BibleReadingPlanSeedData.SeedDefaultPlans(dbContext);
     MemberSeedData.SeedMembers(dbContext);
+    PlatformUserSeedData.SeedPlatformUsers(dbContext);
 }
 
 app.UseSwagger();

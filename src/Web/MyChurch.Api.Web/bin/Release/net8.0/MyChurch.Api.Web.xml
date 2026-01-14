@@ -223,113 +223,6 @@
             <param name="query">Filtros e paginação</param>
             <returns>Lista paginada de categorias</returns>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetNearby(System.Double,System.Double,System.Double,System.Nullable{System.Int32})">
-            <summary>
-            Busca igrejas próximas por latitude/longitude e raio (km)
-            </summary>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurch(MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand)">
-            <summary>
-            Create a new Church
-            </summary>
-            <response code="200">Success: Church Created</response>
-            <response code="400">Failure: Invalid Request</response>
-            <response code="401">Failure: Unauthorized</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateChurch(System.Int32,MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand)">
-            <summary>
-            Update a Church
-            </summary>
-            <response code="200">Success: Church Updated</response>
-            <response code="400">Failure: Invalid Request</response>
-            <response code="401">Failure: Unauthorized</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.CreateChurchWithAdmin(MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand)">
-            <summary>
-            Cria uma nova Igreja já com usuário Admin
-            </summary>
-            <response code="200">Sucesso: Igreja criada</response>
-            <response code="400">Falha: Requisição inválida</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateBankingInfo(MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand)">
-            <summary>
-            Atualiza os dados bancários da igreja
-            </summary>
-            <response code="200">Sucesso: Dados bancários atualizados</response>
-            <response code="400">Falha: Requisição inválida</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateSocialMedia(MyChurch.Application.Church.Commands.UpdateChurchSocialMedia.UpdateChurchSocialMediaCommand)">
-            <summary>
-            Atualiza as redes sociais e contatos da igreja (Website, Instagram, Facebook, YouTube, WhatsApp, Twitter, TikTok)
-            </summary>
-            <response code="200">Sucesso: Redes sociais atualizadas</response>
-            <response code="400">Falha: URLs inválidas</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCharacteristics(MyChurch.Application.Church.Commands.UpdateChurchCharacteristics.UpdateChurchCharacteristicsCommand)">
-            <summary>
-            Atualiza características avançadas da igreja (denominação, amenidades, idiomas) para busca avançada
-            </summary>
-            <response code="200">Sucesso: Características atualizadas</response>
-            <response code="400">Falha: Dados inválidos</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateCapacity(MyChurch.Application.Church.Commands.UpdateChurchCapacity.UpdateChurchCapacityCommand)">
-            <summary>
-            Atualiza capacidade e infraestrutura da igreja (lotação, estacionamento, equipamentos, instalações)
-            </summary>
-            <response code="200">Sucesso: Capacidade e infraestrutura atualizadas</response>
-            <response code="400">Falha: Dados inválidos (capacidade negativa)</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurchDashboard">
-            <summary>
-            Dashboard com indicadores da igreja
-            </summary>
-            <response code="200">Sucesso: Dados consolidados</response>
-            <response code="401">Falha: Não autorizado</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GetChurch(System.Int32)">
-            <summary>
-            Update a Church
-            </summary>
-            <response code="200">Success: Returned Church</response>
-            <response code="400">Failure: Invalid Request</response>
-            <response code="401">Failure: Unauthorized</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GenerateOnboardingQrCode(System.Int32)">
-            <summary>
-            Força a geração do QRCode de onboarding para a igreja caso não exista
-            </summary>
-            <param name="id">Id da igreja</param>
-            <response code="200">QRCode base64</response>
-            <response code="404">Igreja não encontrada</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.UpdateLocation(System.Int32,MyChurch.Api.Web.Controllers.UpdateChurchLocationRequest)">
-            <summary>
-            Atualiza latitude e longitude da igreja.
-            Pode ser atualizado manualmente (lat/lng) ou automaticamente via geocoding do endereço.
-            Limite: 20 requests por minuto.
-            </summary>
-            <param name="id">Id da igreja</param>
-            <param name="request">Dados de localização</param>
-            <response code="200">Localização atualizada com sucesso</response>
-            <response code="400">Coordenadas inválidas ou erro no geocoding</response>
-            <response code="404">Igreja não encontrada</response>
-            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ChurchController.GeocodeLocation(System.Int32)">
-            <summary>
-            Atualiza localização da igreja automaticamente usando Google Geocoding (apenas via endereço).
-            Limite: 20 requests por minuto.
-            </summary>
-            <param name="id">Id da igreja</param>
-            <response code="200">Localização geocodificada com sucesso</response>
-            <response code="404">Igreja não encontrada ou endereço inválido</response>
-            <response code="429">Muitas requisições - aguarde antes de tentar novamente</response>
-        </member>
         <member name="T:MyChurch.Api.Web.Controllers.ChurchPhotoController">
             <summary>
             Controller para galeria de fotos da igreja
@@ -338,7 +231,7 @@
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ChurchPhotoController.UploadPhoto(System.Int32,MyChurch.Application.ChurchPhoto.Commands.UploadPhoto.UploadChurchPhotoCommand)">
             <summary>
-            ?? Upload de foto da igreja (Membros e Visitantes)
+            ?? Upload de foto da igreja (Membros autenticados)
             </summary>
             <param name="churchId">ID da igreja</param>
             <param name="command">Dados da foto</param>
@@ -999,7 +892,7 @@
             <response code="200">Sucesso: Lista de aniversariantes</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.MemberController.GetMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.UpdateMember(System.Int32,MyChurch.Application.Member.Commands.UpdateMember.UpdateMemberCommand)">
             <summary>
             Update Member by ID
             </summary>
@@ -1021,6 +914,9 @@
             <summary>
             Lista membros da igreja com filtros e paginação (apenas para Admin).
             Suporta ordenação dinâmica por Name, Email, BirthDate ou Created.
+            Lista membros da igreja com filtros e paginação.
+            - Admin: vê todos
+            - Não-admin (Leader): vê apenas membros que compartilham departamento (regra aplicada no handler)
             </summary>
             <param name="query">Filtros, paginação e ordenação</param>
             <response code="200">Sucesso: Lista paginada de membros</response>
@@ -1070,6 +966,12 @@
             <response code="401">Falha: Não autorizado</response>
             <response code="403">Falha: Apenas administradores podem deletar</response>
             <response code="404">Falha: Membro não encontrado</response>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.MemberController.UpdateAccess(System.Int32,MyChurch.Api.Web.Controllers.MemberController.UpdateMemberAccessRequest)">
+            <summary>
+            Atualiza acesso do membro (ativar/desativar) e/ou role (ex.: promover para Admin/PlatformAdmin).
+            Admin (igreja) ou PlatformAdmin (global).
+            </summary>
         </member>
         <member name="P:MyChurch.Api.Web.Controllers.MemberController.DeleteMemberRequest.Reason">
             <summary>
@@ -1218,6 +1120,12 @@
         <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetDashboardMetrics(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             ?? Dashboard com métricas gerais da igreja
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetDepartmentFinancial(MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport.GetDepartmentFinancialReportQuery)">
+            <summary>
+            Relatório financeiro (entrada/saída/saldo) agrupado por departamento.
+            Admin vê todos. Membro vê apenas os departamentos que participa (e opcionalmente o geral).
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetFinancialReport(System.DateTime,System.DateTime,System.String)">

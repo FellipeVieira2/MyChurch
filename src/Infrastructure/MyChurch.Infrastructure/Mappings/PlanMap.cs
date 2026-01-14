@@ -20,10 +20,20 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired();
 
             builder
+                .Property(p => p.Tier)
+                .HasColumnName("tier")
+                .HasColumnType("int")
+                .IsRequired();
+
+            builder
                 .Property(p => p.Name)
                 .HasColumnName("name")
                 .HasColumnType("varchar(100)")
                 .IsRequired();
+
+            builder
+                .HasIndex(p => p.Tier)
+                .IsUnique();
 
             builder
                 .Property(p => p.Price)
@@ -55,12 +65,71 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
-            // 🆕 FEATURES PREMIUM
+            builder
+                .Property(p => p.MaxAdmins)
+                .HasColumnName("max_admins")
+                .HasColumnType("int")
+                .IsRequired();
+
+            builder
+                .Property(p => p.MaxLeaders)
+                .HasColumnName("max_leaders")
+                .HasColumnType("int")
+                .IsRequired();
+
+            builder
+                .Property(p => p.MaxDonationsPerMonth)
+                .HasColumnName("max_donations_per_month")
+                .HasColumnType("int")
+                .IsRequired();
+
             builder
                 .Property(p => p.ShowsAds)
                 .HasColumnName("shows_ads")
                 .HasColumnType("boolean")
                 .HasDefaultValue(true)
+                .IsRequired();
+
+            builder
+                .Property(p => p.CanExportCsv)
+                .HasColumnName("can_export_csv")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.CanExportPdf)
+                .HasColumnName("can_export_pdf")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasDepartmentReports)
+                .HasColumnName("has_department_reports")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasAdvancedPermissions)
+                .HasColumnName("has_advanced_permissions")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasAuditTrail)
+                .HasColumnName("has_audit_trail")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder
+                .Property(p => p.HasAutomations)
+                .HasColumnName("has_automations")
+                .HasColumnType("boolean")
+                .HasDefaultValue(false)
                 .IsRequired();
 
             builder

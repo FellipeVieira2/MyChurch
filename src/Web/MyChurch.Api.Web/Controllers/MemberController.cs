@@ -281,11 +281,11 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
-        /// Atualiza acesso do membro (ativar/desativar) e/ou role (ex.: promover para Admin).
-        /// Apenas Admin.
+        /// Atualiza acesso do membro (ativar/desativar) e/ou role (ex.: promover para Admin/PlatformAdmin).
+        /// Admin (igreja) ou PlatformAdmin (global).
         /// </summary>
         [HttpPatch("{id}/access")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,PlatformAdmin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MemberDto))]
         public async Task<IActionResult> UpdateAccess([FromRoute] int id, [FromBody] UpdateMemberAccessRequest body)
         {

@@ -1261,32 +1261,6 @@
     ]
   },
   {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "CreateChurch",
-    "RelativePath": "api/Church",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "MyChurch.Application.Church.Commands.CreateChurchCommand.CreateChurchCommand",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Int32",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchPhotoController",
     "Method": "GetPhotos",
     "RelativePath": "api/church/{churchId}/photos",
@@ -1592,38 +1566,7 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateChurch",
-    "RelativePath": "api/Church/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "command",
-        "Type": "MyChurch.Application.Church.Commands.UpdateChurch.UpdateChurchCommand",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "MyChurch.Application.Dtos.ChurchDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "GetChurch",
+    "Method": "RedirectToPublicDetails",
     "RelativePath": "api/Church/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1632,69 +1575,6 @@
       {
         "Name": "id",
         "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "MyChurch.Application.Dtos.ChurchDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "GenerateOnboardingQrCode",
-    "RelativePath": "api/Church/{id}/generate-onboarding-qrcode",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "GeocodeLocation",
-    "RelativePath": "api/Church/{id}/geocode",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateLocation",
-    "RelativePath": "api/Church/{id}/location",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "request",
-        "Type": "System.Object",
         "IsRequired": true
       }
     ],
@@ -1719,92 +1599,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateBankingInfo",
-    "RelativePath": "api/Church/banking-info",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "MyChurch.Application.Church.Commands.UpdateBankingInfo.UpdateBankingInfoCommand",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "MyChurch.Application.Dtos.BankingInfoDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateCapacity",
-    "RelativePath": "api/Church/capacity",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "System.Object",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateCharacteristics",
-    "RelativePath": "api/Church/characteristics",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "System.Object",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "GetChurchDashboard",
-    "RelativePath": "api/Church/dashboard",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "System.Void",
@@ -1945,19 +1739,19 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "GetNearby",
+    "Method": "RedirectToPublicNearby",
     "RelativePath": "api/Church/public/nearby",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "lat",
+        "Name": "latitude",
         "Type": "System.Double",
         "IsRequired": false
       },
       {
-        "Name": "lng",
+        "Name": "longitude",
         "Type": "System.Double",
         "IsRequired": false
       },
@@ -1967,7 +1761,7 @@
         "IsRequired": false
       },
       {
-        "Name": "max",
+        "Name": "maxResults",
         "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       }
@@ -2215,54 +2009,6 @@
     "ReturnTypes": [
       {
         "Type": "MyChurch.Application.Dtos.ChurchSearchResultDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "UpdateSocialMedia",
-    "RelativePath": "api/Church/social-media",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "System.Object",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchController",
-    "Method": "CreateChurchWithAdmin",
-    "RelativePath": "api/Church/withadmin",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "command",
-        "Type": "MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Int32",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -5486,6 +5232,75 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PlatformAuthController",
+    "Method": "Google",
+    "RelativePath": "api/platform/auth/google",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Web.Controllers.PlatformAuthController\u002BPlatformGoogleLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PlatformAuthController",
+    "Method": "Login",
+    "RelativePath": "api/platform/auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.PlatformUsers.Commands.LoginPlatformUser.LoginPlatformUserCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PlatformUsersController",
+    "Method": "List",
+    "RelativePath": "api/platform/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "search",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.PlatformUsersController",
+    "Method": "UpdateAccess",
+    "RelativePath": "api/platform/users/{id}/access",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Web.Controllers.PlatformUsersController\u002BUpdatePlatformUserAccessRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.PreLaunchController",

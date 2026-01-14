@@ -113,10 +113,15 @@ namespace MyChurch.Infrastructure
             services.AddDbContext<MyChurchDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(connectionString)); // Removed UseNetTopologySuite to avoid postgis migration extension
+
+                options.ConfigureWarnings(w =>
+                    w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+
 #if DEBUG
                 options.LogTo(Console.WriteLine, LogLevel.Information);
 #endif
             });
+
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             services.AddScoped<IEmailService, PostmarkEmailService>();

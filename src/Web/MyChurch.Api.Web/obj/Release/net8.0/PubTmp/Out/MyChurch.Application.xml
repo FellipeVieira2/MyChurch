@@ -115,6 +115,9 @@
         <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.CategoryId">
             <summary>ID da Categoria</summary>
         </member>
+        <member name="P:MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry.CreateCashFlowEntryCommand.DepartmentId">
+            <summary>ID do Departamento (opcional)</summary>
+        </member>
         <member name="P:MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory.UpdateCashFlowCategoryCommand.Name">
             <summary>Nome da categoria</summary>
         </member>

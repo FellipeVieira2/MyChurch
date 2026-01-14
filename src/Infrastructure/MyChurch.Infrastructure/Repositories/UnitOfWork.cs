@@ -96,6 +96,8 @@ namespace MyChurch.Infrastructure.Repositories
         public IDepartmentRepository Departments { get; }
         public IDepartmentMemberRepository DepartmentMembers { get; }
 
+        public IPlatformUserRepository PlatformUsers { get; }
+
         public UnitOfWork(MyChurchDbContext context)
         {
             _context = context;
@@ -187,6 +189,7 @@ namespace MyChurch.Infrastructure.Repositories
 
             Departments = new DepartmentRepository(_context);
             DepartmentMembers = new DepartmentMemberRepository(_context);
+            PlatformUsers = new PlatformUserRepository(_context);
         }
 
         public async Task<IDisposable> BeginTransactionAsync()

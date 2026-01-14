@@ -19,7 +19,6 @@ namespace MyChurch.Api.Web.Middleware
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-            // 🔥 DEBUG LOG
             if (string.IsNullOrEmpty(token))
             {
                 _logger.LogWarning("⚠️ Token JWT não encontrado no header Authorization");
@@ -47,6 +46,25 @@ namespace MyChurch.Api.Web.Middleware
                 var role = jwtToken.Claims.FirstOrDefault(x => x.Type == "role")?.Value
                            ?? jwtToken.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
 
+                // Platform user token
+                var platformUserIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "platform_user_id")?.Value;
+                if (!string.IsNullOrWhiteSpace(platformUserIdClaim))
+                {
+                    var email = jwtToken.Claims.FirstOrDefault(x => x.Type == "email")?.Value
+                              ?? jwtToken.Claims.FirstOrDefault(x => x.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+
+                    _logger.LogInformation("✅ JWT PlatformUser Claims: PlatformUserId={PlatformUserId}, Email={Email}, Role={Role}", platformUserIdClaim, email, role);
+
+                    context.Items["PlatformUser"] = new PlatformUserJwtDto
+                    {
+                        PlatformUserId = int.Parse(platformUserIdClaim),
+                        Email = email,
+                        Role = role ?? "PlatformAdmin"
+                    };
+                    return;
+                }
+
+                // Visitor token
                 if (string.Equals(role, "Visitor", StringComparison.OrdinalIgnoreCase))
                 {
                     var visitorId = jwtToken.Claims.First(x => x.Type == "visitor_id").Value;
@@ -64,7 +82,7 @@ namespace MyChurch.Api.Web.Middleware
                     return;
                 }
 
-                // Padrão: tratar como membro
+                // Member token
                 var userId = jwtToken.Claims.First(x => x.Type == "nameid").Value;
                 var memberEmail = jwtToken.Claims.First(x => x.Type == "email").Value;
                 var memberRole = jwtToken.Claims.First(x => x.Type == "role").Value;
@@ -80,7 +98,6 @@ namespace MyChurch.Api.Web.Middleware
             }
             catch (Exception ex)
             {
-                // 🔥 LOG DE ERRO
                 _logger.LogError(ex, "❌ Erro ao processar token JWT");
             }
         }

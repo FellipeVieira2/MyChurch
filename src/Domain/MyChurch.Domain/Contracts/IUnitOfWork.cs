@@ -93,6 +93,7 @@
 
         IDepartmentRepository Departments { get; }
         IDepartmentMemberRepository DepartmentMembers { get; }
+        IPlatformUserRepository PlatformUsers { get; }
 
         Task<bool> CommitAsync();
         Task<IDisposable> BeginTransactionAsync();
