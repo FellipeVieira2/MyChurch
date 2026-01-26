@@ -42,23 +42,26 @@ namespace MyChurch.Application.Departments.Queries.GetDepartmentMembers
             if (loggedMember == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
-            // Admin vê tudo; membro normal só pode ver membros dos departamentos que participa
-            if (loggedMember.Role != UserRole.Admin)
-            {
-                var isInDept = await _unitOfWork.DepartmentMembers.Query()
-                    .AsNoTracking()
-                    .AnyAsync(dm => dm.DepartmentId == request.DepartmentId && dm.MemberId == loggedMember.Id && dm.IsActive, cancellationToken);
-
-                if (!isInDept)
-                    ValidationException.ThrowException("Department", "Sem permissão para visualizar este departamento.");
-            }
-
             var department = await _unitOfWork.Departments.Query()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(d => d.Id == request.DepartmentId && d.ChurchId == loggedMember.ChurchId, cancellationToken);
 
             if (department == null)
                 ValidationException.ThrowException("Department", "Departamento não encontrado.");
+
+            // Admin vê tudo; outros só com regra
+            if (loggedMember.Role != UserRole.Admin)
+            {
+                var myDeptMembership = await _unitOfWork.DepartmentMembers.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(dm => dm.DepartmentId == request.DepartmentId && dm.MemberId == loggedMember.Id && dm.IsActive, cancellationToken);
+
+                if (myDeptMembership == null)
+                    ValidationException.ThrowException("Department", "Sem permissão para visualizar este departamento.");
+
+                // Se for GeneralLeader, pode ver membros do departamento desta igreja (filial) normalmente.
+                // O acesso cross-filiais será via endpoints específicos da matriz (não aqui), para evitar leak entre filiais.
+            }
 
             var list = await _unitOfWork.DepartmentMembers.Query()
                 .AsNoTracking()

@@ -111,10 +111,10 @@ INSERT INTO postgres.plan (
     created, updated
 )
 VALUES
-    (1, 1, 'Free',     0.00,  200,  50,  1, 1, 2, 10,  100,  true,  false, false, false, false, false, false, false, false, false, false, false, NOW(), NULL),
-    (2, 2, 'ProSmall', 19.90, 500, 200,  5, 1, 5, 25,  500,  false, true,  false, true,  false, false, false, false, false, false, false, false, NOW(), NULL),
-    (3, 3, 'Pro',      39.90, 2000,500, 10, 2, 10,50, 2000,  false, true,  true,  true,  true,  false, false, false, false, true,  true,  false, NOW(), NULL),
-    (4, 4, 'ProPlus',  79.90,10000,2000,50, 5, 50,200,999999,false, true,  true,  true,  true,  true,  true,  false, false, true,  true,  true,  NOW(), NULL)
+    (1, 1, 'Starter',    0.00,  200,  50,  1, 1, 2, 10,  100,  true,  false, false, false, false, false, false, false, false, false, false, false, NOW(), NULL),
+    (2, 2, 'Essentials', 19.90, 500, 200,  5, 1, 5, 25,  500,  false, true,  false, true,  false, false, false, false, false, false, false, false, NOW(), NULL),
+    (3, 3, 'Plus',       39.90, 2000,500, 10, 2, 10,50, 2000,  false, true,  true,  true,  true,  false, false, false, false, true,  true,  false, NOW(), NULL),
+    (4, 4, 'Premium',    79.90,10000,2000,50, 5, 50,200,999999,false, true,  true,  true,  true,  true,  true,  false, false, true,  true,  true,  NOW(), NULL)
 ON CONFLICT (id)
 DO UPDATE SET
     tier = EXCLUDED.tier,

@@ -4,6 +4,7 @@ namespace MyChurch.Domain.Enum
     {
         Member = 0,
         Financial = 1,
-        Manager = 2
+        Manager = 2,
+        GeneralLeader = 3
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -93,17 +94,20 @@ namespace MyChurch.Application.Member.Commands.CreateMember
         private readonly ILogger<CreateMemberCommandHandler> _logger;
         private readonly IS3Helper _s3Helper;
         private readonly IDocumentValidator _documentValidator;
+        private readonly IPlanLimitService _planLimits;
 
         public CreateMemberCommandHandler(
-            IUnitOfWork unitOfWork, 
-            ILogger<CreateMemberCommandHandler> logger, 
+            IUnitOfWork unitOfWork,
+            ILogger<CreateMemberCommandHandler> logger,
             IS3Helper s3Helper,
-            IDocumentValidator documentValidator)
+            IDocumentValidator documentValidator,
+            IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _s3Helper = s3Helper;
             _documentValidator = documentValidator;
+            _planLimits = planLimits;
         }
 
         public async Task<int> Handle(CreateMemberCommand request, CancellationToken cancellationToken)
@@ -118,7 +122,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             int churchId = loggedMember.ChurchId;
 
             // Validação de limite de membros do plano
-            await ValidatePlanMemberLimitAsync(churchId, cancellationToken);
+            await _planLimits.EnsureMaxMembersAllowedAsync(churchId, additionalMembersToAdd: 1, cancellationToken);
 
             // Normalizar números de documentos antes da validação de duplicidade
             var documentNumbers = request.Documents?
@@ -195,33 +199,6 @@ namespace MyChurch.Application.Member.Commands.CreateMember
             return member.Id;
         }
 
-        /// <summary>
-        /// Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
-        /// </summary>
-        private async Task ValidatePlanMemberLimitAsync(int churchId, CancellationToken cancellationToken)
-        {
-            // Busca assinatura ativa da igreja (Subscription + Plan)
-            var subscription = await _unitOfWork.Subscriptions.Query()
-                .Include(s => s.Plan)
-                .FirstOrDefaultAsync(s => s.ChurchId == churchId && s.EndDate > DateTime.UtcNow, cancellationToken);
-
-            if (subscription == null || subscription.Plan == null)
-            {
-                _logger.LogInformation("This Church does not has a Active Plan.");
-                ValidationException.ThrowException("Plan", "This Church does not has a Active Plan.");
-            }
-
-            // Conta membros já cadastrados
-            var currentMembersCount = await _unitOfWork.Members.Query()
-                .CountAsync(m => m.ChurchId == churchId, cancellationToken);
-
-            // Valida limite do plano
-            if (currentMembersCount >= subscription.Plan.MaxMembers)
-            {
-                _logger.LogInformation("This Church does not has a Active Plan.");
-                ValidationException.ThrowException("Plan", $"Member limit reached for the plan '{subscription.Plan.Name}'. To register more members, please upgrade your plan.");
-            }
-        }
         private async Task<string> UploadPhotoAsync(string photoBase64, CancellationToken cancellationToken)
         {
             if (photoBase64.Contains(','))

@@ -40,7 +40,8 @@ namespace MyChurch.Application.Departments.Services
                 return (false, false);
 
             var canEdit = dm.Role == DepartmentMemberRole.Financial || dm.Role == DepartmentMemberRole.Manager;
-            return (true, canEdit);
+            var hasAccess = dm.Role == DepartmentMemberRole.Financial || dm.Role == DepartmentMemberRole.Manager;
+            return (hasAccess, canEdit);
         }
 
         public async Task<List<int>> GetAccessibleDepartmentIdsAsync(int loggedMemberId, CancellationToken cancellationToken)

@@ -107,6 +107,11 @@ namespace MyChurch.Infrastructure
             // 🔐 SISTEMA DE PERMISSÕES GRANULARES
             services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             services.AddScoped<IMemberCustomPermissionRepository, MemberCustomPermissionRepository>();
+
+            // 🏢 Departamentos
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IDepartmentMemberRepository, DepartmentMemberRepository>();
+            services.AddScoped<IDepartmentGeneralLeaderScopeRepository, DepartmentGeneralLeaderScopeRepository>();
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
  

@@ -33,11 +33,27 @@ namespace MyChurch.Application.Feed.Post.Queries.GetAllFeedPosts
 
             int churchId = loggedMember.ChurchId;
 
+            var church = await _unitOfWork.Churchs.Query()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == churchId, cancellationToken);
+
             var query = _unitOfWork.FeedPosts.Query()
                 .Include(p => p.Member)
                 .Include(p => p.Likes)
                 .Include(p => p.Images)
-                .Where(p => p.ChurchId == churchId);
+                .AsQueryable();
+
+            if (church != null && church.ParentChurchId.HasValue)
+            {
+                var parentId = church.ParentChurchId.Value;
+                query = query.Where(p =>
+                    p.ChurchId == churchId ||
+                    (p.ChurchId == parentId && p.VisibleToBranches));
+            }
+            else
+            {
+                query = query.Where(p => p.ChurchId == churchId);
+            }
 
             var total = await query.CountAsync(cancellationToken);
 

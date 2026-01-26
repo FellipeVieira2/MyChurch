@@ -35,6 +35,11 @@ namespace MyChurch.Infrastructure.Configurations
             builder.Property(x => x.Updated)
                 .HasColumnName("updated");
 
+            builder.Property(x => x.VisibleToBranches)
+                .HasColumnName("visible_to_branches")
+                .HasDefaultValue(false)
+                .IsRequired();
+
             builder.HasOne(x => x.Member)
                 .WithMany()
                 .HasForeignKey(x => x.MemberId);

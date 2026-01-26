@@ -3,8 +3,10 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.CreateMember;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Entities;
 using System.Globalization;
@@ -16,12 +18,18 @@ namespace MyChurch.Application.Member.Commands.CreateMemberImportFile
     {
         public IFormFile CsvFile { get; set; }
     }
+
     public class CreateMemberImportFileCommandHandler : IRequestHandler<CreateMemberImportFileCommand, List<int>>
     {
         private readonly IMediator _mediator;
-        public CreateMemberImportFileCommandHandler(IMediator mediator)
+        private readonly IPlanLimitService _planLimits;
+        private readonly Domain.Contracts.IUnitOfWork _uow;
+
+        public CreateMemberImportFileCommandHandler(IMediator mediator, IPlanLimitService planLimits, Domain.Contracts.IUnitOfWork uow)
         {
             _mediator = mediator;
+            _planLimits = planLimits;
+            _uow = uow;
         }
 
         public async Task<List<int>> Handle(CreateMemberImportFileCommand request, CancellationToken cancellationToken)
@@ -29,6 +37,13 @@ namespace MyChurch.Application.Member.Commands.CreateMemberImportFile
             var result = new List<int>();
             try
             {
+                // churchId do usuário logado
+                var logged = await _uow.Members.Query()
+                    .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
+
+                if (logged == null)
+                    MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member", "This Member does not exist.");
+
                 using var stream = request.CsvFile.OpenReadStream();
                 using var reader = new StreamReader(stream);
                 using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -37,31 +52,32 @@ namespace MyChurch.Application.Member.Commands.CreateMemberImportFile
                     HeaderValidated = null,
                     MissingFieldFound = null
                 });
+
                 csv.Context.RegisterClassMap<MemberCsvImportModelMap>();
                 var records = csv.GetRecords<MemberCsvImportModel>().ToList();
                 if (!records.Any())
                     throw new Exception("Nenhum registro encontrado no CSV. Verifique o cabeçalho e o conteúdo do arquivo.");
+
+                // valida limite antes de tentar importar
+                await _planLimits.EnsureMaxMembersAllowedAsync(logged.ChurchId, records.Count, cancellationToken);
+
                 foreach (var record in records)
                 {
                     try
                     {
                         var command = record.ToCreateMemberCommand();
-                        if (command.Name == "Quercio Goes Santos ")
-                        {
-                            var teste = "x";
-                        }
                         command.UserId = request.UserId;
                         var id = await _mediator.Send(command, cancellationToken);
                         result.Add(id);
                     }
                     catch { continue; }
-                    
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception($"Erro ao processar o arquivo CSV: {ex.Message}", ex);
             }
+
             return result;
         }
     }

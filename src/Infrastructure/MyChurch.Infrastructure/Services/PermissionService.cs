@@ -15,6 +15,27 @@ namespace MyChurch.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
+        private async Task<bool> IsAdvancedPermissionsEnabledAsync(int churchId, CancellationToken cancellationToken)
+        {
+            // Preferir assinatura ativa
+            var now = DateTime.UtcNow;
+            var plan = await _unitOfWork.Subscriptions.Query()
+                .AsNoTracking()
+                .Include(s => s.Plan)
+                .Where(s => s.ChurchId == churchId)
+                .Where(s => s.StartDate <= now && s.EndDate > now)
+                .OrderByDescending(s => s.EndDate)
+                .Select(s => s.Plan)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            plan ??= await _unitOfWork.Plans.Query()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Tier == PlanTier.Free, cancellationToken);
+
+            // Se ainda assim não existir plano, seja conservador: desabilita permissões avançadas
+            return plan?.HasAdvancedPermissions == true;
+        }
+
         public async Task<bool> HasPermissionAsync(int memberId, Permission permission, CancellationToken cancellationToken = default)
         {
             // 1. Buscar o membro
@@ -23,6 +44,10 @@ namespace MyChurch.Infrastructure.Services
                 .FirstOrDefaultAsync(m => m.Id == memberId, cancellationToken);
 
             if (member == null)
+                return false;
+
+            // ?? Plano: permissões granulares só existem quando o plano permite
+            if (!await IsAdvancedPermissionsEnabledAsync(member.ChurchId, cancellationToken))
                 return false;
 
             // 2. Verificar se existe permissão customizada (tem prioridade)
@@ -68,6 +93,10 @@ namespace MyChurch.Infrastructure.Services
                 .FirstOrDefaultAsync(m => m.Id == memberId, cancellationToken);
 
             if (member == null)
+                return new List<Permission>();
+
+            // ?? Plano: permissões granulares só existem quando o plano permite
+            if (!await IsAdvancedPermissionsEnabledAsync(member.ChurchId, cancellationToken))
                 return new List<Permission>();
 
             // 1. Obter permissões da role
@@ -162,6 +191,10 @@ namespace MyChurch.Infrastructure.Services
 
         public async Task<List<Permission>> GetRolePermissionsAsync(UserRole role, int? churchId = null, CancellationToken cancellationToken = default)
         {
+            // ?? Se for permissão para uma igreja específica, exige plano
+            if (churchId.HasValue && !await IsAdvancedPermissionsEnabledAsync(churchId.Value, cancellationToken))
+                return new List<Permission>();
+
             var rolePermissions = await _unitOfWork.RolePermissions
                 .GetByRoleAsync(role, churchId);
 

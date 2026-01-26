@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -64,13 +65,16 @@ namespace MyChurch.Application.EventPromotion.Commands.CreateEventPromotion
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateEventPromotionCommandHandler> _logger;
+        private readonly IPlanLimitService _planLimits;
 
         public CreateEventPromotionCommandHandler(
             IUnitOfWork unitOfWork,
-            ILogger<CreateEventPromotionCommandHandler> logger)
+            ILogger<CreateEventPromotionCommandHandler> logger,
+            IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _planLimits = planLimits;
         }
 
         public async Task<int> Handle(CreateEventPromotionCommand request, CancellationToken cancellationToken)
@@ -92,13 +96,7 @@ namespace MyChurch.Application.EventPromotion.Commands.CreateEventPromotion
             if (church == null)
                 ValidationException.ThrowException("Church", "Igreja não encontrada.");
 
-            // 2. Validar plano
-            var subscription = church.Subscription;
-            if (subscription == null || subscription.Plan == null)
-                ValidationException.ThrowException("Subscription", "Igreja não possui assinatura ativa.");
-
-            if (!subscription.Plan.CanPromoteEvents)
-                ValidationException.ThrowException("Plan", "Seu plano não permite promoção de eventos. Faça upgrade para Premium.");
+            await _planLimits.EnsurePromotionAllowedAsync(church.Id, PlanPromotionType.Event, cancellationToken);
 
             // 3. Validar evento
             var eventEntity = await _unitOfWork.Events.Query()

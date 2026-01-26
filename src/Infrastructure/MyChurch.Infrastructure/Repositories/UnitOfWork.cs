@@ -95,6 +95,7 @@ namespace MyChurch.Infrastructure.Repositories
 
         public IDepartmentRepository Departments { get; }
         public IDepartmentMemberRepository DepartmentMembers { get; }
+        public IDepartmentGeneralLeaderScopeRepository DepartmentGeneralLeaderScopes { get; }
 
         public IPlatformUserRepository PlatformUsers { get; }
 
@@ -189,6 +190,7 @@ namespace MyChurch.Infrastructure.Repositories
 
             Departments = new DepartmentRepository(_context);
             DepartmentMembers = new DepartmentMemberRepository(_context);
+            DepartmentGeneralLeaderScopes = new DepartmentGeneralLeaderScopeRepository(_context);
             PlatformUsers = new PlatformUserRepository(_context);
         }
 

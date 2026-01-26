@@ -17,6 +17,7 @@ using MyChurch.Api.Web.Filters;
 using MyChurch.Application;
 using MyChurch.Application.Church.Commands.CreateChurchWithAdminMember;
 using MyChurch.Application.Departments.Services;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Services;
 using MyChurch.Infrastructure;
@@ -34,6 +35,7 @@ using Path = System.IO.Path;
 using MyChurch.Api.Web.Middleware;
 using Mychurch.Common.Services;
 using MyChurch.Infrastructure.Services.Reports;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -119,11 +121,26 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"])),
+        RoleClaimType = ClaimTypes.Role,
+        NameClaimType = ClaimTypes.NameIdentifier
     };
 
     options.Events = new JwtBearerEvents
     {
+        OnTokenValidated = context =>
+        {
+            if (context.Principal?.Identity is ClaimsIdentity identity)
+            {
+                // Se é token de PlatformUser, adiciona NameIdentifier baseado em platform_user_id
+                var platformUserId = identity.FindFirst("platform_user_id")?.Value;
+                if (!string.IsNullOrWhiteSpace(platformUserId) && identity.FindFirst(ClaimTypes.NameIdentifier) == null)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, platformUserId));
+                }
+            }
+            return Task.CompletedTask;
+        },
         OnMessageReceived = context =>
         {
             var accessToken = context.Request.Query["access_token"];
@@ -233,6 +250,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailService, SendGridEmailService>(); // ? NOVO: SendGrid ao invés de Postmark
 builder.Services.AddScoped<IReviewVerificationService, ReviewVerificationService>();
 builder.Services.AddScoped<IDepartmentAccessService, DepartmentAccessService>();
+builder.Services.AddScoped<IPlanAccessService, PlanAccessService>();
+builder.Services.AddScoped<IPlanLimitService, PlanLimitService>();
 
 // Register report generator (interface in Mychurch.Common, implementation in Infrastructure)
 builder.Services.AddScoped<IReportGeneratorService, ReportGeneratorService>();
@@ -247,10 +266,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<MyChurchDbContext>();
-    
+
     // Apply migrations
     dbContext.Database.Migrate();
-    
+
     // Seed data
     BibleReadingPlanSeedData.SeedDefaultPlans(dbContext);
     MemberSeedData.SeedMembers(dbContext);
@@ -319,7 +338,10 @@ app.UseExceptionHandler(errorApp =>
 // Ativar Rate Limiting
 app.UseRateLimiter();
 
-// ?? ADICIONAR JWT MIDDLEWARE (ANTES DE AUTHENTICATION)
+// Auditoria de ações (salva histórico de requests autenticados)
+app.UseMiddleware<UserActionHistoryMiddleware>();
+
+// ? ADICIONAR JWT MIDDLEWARE (ANTES DE AUTHENTICATION)
 app.UseMiddleware<MyChurch.Api.Web.Middleware.JwtMiddleware>();
 
 app.UseAuthentication();

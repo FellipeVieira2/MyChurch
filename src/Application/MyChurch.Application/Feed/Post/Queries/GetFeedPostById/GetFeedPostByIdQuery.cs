@@ -29,12 +29,30 @@ namespace MyChurch.Application.Feed.Post.Queries.GetFeedPostById
             if (loggedMember == null)
                 throw new UnauthorizedAccessException("Usuário não encontrado.");
 
-            // Busca o post e inclui o autor, os likes e as imagens
-            var post = await _unitOfWork.FeedPosts.Query()
+            // Busca a igreja do membro logado
+            var church = await _unitOfWork.Churchs.Query()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == loggedMember.ChurchId, cancellationToken);
+
+            var query = _unitOfWork.FeedPosts.Query()
                 .Include(p => p.Member)
                 .Include(p => p.Likes)
                 .Include(p => p.Images)
-                .FirstOrDefaultAsync(p => p.Id == request.PostId && p.ChurchId == loggedMember.ChurchId, cancellationToken);
+                .Where(p => p.Id == request.PostId);
+
+            if (church != null && church.ParentChurchId.HasValue)
+            {
+                var parentId = church.ParentChurchId.Value;
+                query = query.Where(p =>
+                    p.ChurchId == loggedMember.ChurchId ||
+                    (p.ChurchId == parentId && p.VisibleToBranches));
+            }
+            else
+            {
+                query = query.Where(p => p.ChurchId == loggedMember.ChurchId);
+            }
+
+            var post = await query.FirstOrDefaultAsync(cancellationToken);
 
             if (post == null)
                 ValidationException.ThrowException("FeedPost", "Post não encontrado ou não pertence à sua igreja.");

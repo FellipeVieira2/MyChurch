@@ -1156,11 +1156,6 @@
             <summary>Número do documento</summary>
             <example>12345678901</example>
         </member>
-        <member name="M:MyChurch.Application.Member.Commands.CreateMember.CreateMemberCommandHandler.ValidatePlanMemberLimitAsync(System.Int32,System.Threading.CancellationToken)">
-            <summary>
-            Valida se a igreja pode cadastrar mais membros de acordo com o plano atual.
-            </summary>
-        </member>
         <member name="T:MyChurch.Application.Member.Commands.DeleteMember.DeleteMemberCommand">
             <summary>
             Comando para deletar permanentemente um membro (Hard Delete)

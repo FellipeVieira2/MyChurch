@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -70,24 +71,26 @@ namespace MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<CreateChurchPromotionCommandHandler> _logger;
         private readonly IAsaasWebClient _asaasWebClient;
+        private readonly IPlanLimitService _planLimits;
 
         public CreateChurchPromotionCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateChurchPromotionCommandHandler> logger,
-            IAsaasWebClient asaasWebClient)
+            IAsaasWebClient asaasWebClient,
+            IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _asaasWebClient = asaasWebClient;
+            _planLimits = planLimits;
         }
 
         public async Task<int> Handle(CreateChurchPromotionCommand request, CancellationToken cancellationToken)
         {
             // 1. Buscar membro e igreja
             var member = await _unitOfWork.Members.Query()
+                .AsNoTracking()
                 .Include(m => m.Church)
-                .ThenInclude(c => c.Subscription)
-                .ThenInclude(s => s.Plan)
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (member == null)
@@ -95,6 +98,10 @@ namespace MyChurch.Application.ChurchPromotion.Commands.CreateChurchPromotion
 
             if (member.Role != UserRole.Admin)
                 ValidationException.ThrowException("Member", "Apenas administradores podem criar promoções.");
+
+            // ?? Plano: precisa permitir promoções de igreja
+            // Reutiliza o member já carregado no handler (não redeclara)
+            await _planLimits.EnsurePromotionAllowedAsync(member.ChurchId, MyChurch.Application.Plans.Services.PlanPromotionType.Church, cancellationToken);
 
             var church = member.Church;
             if (church == null)

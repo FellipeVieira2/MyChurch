@@ -11,6 +11,7 @@ namespace MyChurch.Application.Dtos
         public string Content { get; set; }
         public int MemberId { get; set; }
         public int ChurchId { get; set; }
+        public bool VisibleToBranches { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
         public MemberDto Member { get; set; }
@@ -25,6 +26,7 @@ namespace MyChurch.Application.Dtos
                 Content = post.Content,
                 MemberId = post.MemberId,
                 ChurchId = post.ChurchId,
+                VisibleToBranches = post.VisibleToBranches,
                 Created = post.Created,
                 Updated = post.Updated,
                 Member = post.Member != null ? MemberDto.New(post.Member) : null,

@@ -29,7 +29,12 @@ namespace MyChurch.Api.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> CreateFeedPost([FromBody] CreateFeedPostCommand command)
         {
-            var result = await Mediator.Send(command);
+            var cmd = AuthorizationRequestCreate<CreateFeedPostCommand>();
+            cmd.Content = command.Content;
+            cmd.Images = command.Images;
+            cmd.VisibleToBranches = command.VisibleToBranches;
+
+            var result = await Mediator.Send(cmd);
             return Ok(result);
         }
         
@@ -44,8 +49,12 @@ namespace MyChurch.Api.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FeedPostDto))]
         public async Task<IActionResult> UpdateFeedPost([FromRoute] int id,[FromBody] UpdateFeedPostCommand command)
         {
-            command.PostId = id;
-            var result = await Mediator.Send(command);
+            var cmd = AuthorizationRequestCreate<UpdateFeedPostCommand>();
+            cmd.PostId = id;
+            cmd.Content = command.Content;
+            cmd.VisibleToBranches = command.VisibleToBranches;
+
+            var result = await Mediator.Send(cmd);
             return Ok(result);
         }
 

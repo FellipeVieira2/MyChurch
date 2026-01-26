@@ -13,6 +13,7 @@ namespace MyChurch.Application.Feed.Post.Commands.UpdateFeedPost
         [JsonIgnore]
         public int PostId { get; set; }
         public string Content { get; set; }
+        public bool? VisibleToBranches { get; set; }
     }
 
     public class UpdateFeedPostCommandHandler : IRequestHandler<UpdateFeedPostCommand, FeedPostDto>
@@ -45,6 +46,8 @@ namespace MyChurch.Application.Feed.Post.Commands.UpdateFeedPost
 
             // Atualiza o conteúdo e a data de atualização
             post.Content = request.Content;
+            if (request.VisibleToBranches.HasValue)
+                post.VisibleToBranches = request.VisibleToBranches.Value;
             post.Updated = DateTime.UtcNow;
 
             _unitOfWork.FeedPosts.Update(post);

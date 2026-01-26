@@ -544,6 +544,11 @@
             DTO para autocomplete
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ChurchWithAdminController.CreateWithAdmin(MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand)">
+            <summary>
+            Cria uma igreja e cria também o membro Admin inicial.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.DonationController.CreateDonation(MyChurch.Application.Donation.Commands.CreateDonation.CreateDonationCommand)">
             <summary>
             Create a new Donation
@@ -1128,9 +1133,19 @@
             Admin vê todos. Membro vê apenas os departamentos que participa (e opcionalmente o geral).
             </summary>
         </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetFinancialReport(System.DateTime,System.DateTime,System.String)">
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetFinancialReport(System.DateTime,System.DateTime,System.Nullable{System.Int32})">
             <summary>
-            ?? Relatório Financeiro Detalhado
+            ?? Relatório Financeiro (JSON)
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportPdf(System.DateTime,System.DateTime,System.Nullable{System.Int32},MyChurch.Application.Plans.Services.IPlanLimitService)">
+            <summary>
+            ?? Exportar Relatório Financeiro em PDF
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportExcel(System.DateTime,System.DateTime,System.Nullable{System.Int32},MyChurch.Application.Plans.Services.IPlanLimitService)">
+            <summary>
+            ?? Exportar Relatório Financeiro em Excel
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetEngagementReport(System.DateTime,System.DateTime,System.String)">
@@ -1141,16 +1156,6 @@
         <member name="M:MyChurch.Api.Web.Controllers.ReportsController.GetVisitorAnalytics(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
             <summary>
             ?? Análise de Visitantes e Conversão
-            </summary>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportPdf(System.DateTime,System.DateTime)">
-            <summary>
-            ?? Exportar Relatório Financeiro em PDF
-            </summary>
-        </member>
-        <member name="M:MyChurch.Api.Web.Controllers.ReportsController.ExportFinancialReportExcel(System.DateTime,System.DateTime)">
-            <summary>
-            ?? Exportar Relatório Financeiro em Excel
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.ReviewsController.SubmitReview(MyChurch.Application.Reviews.Commands.SubmitReview.SubmitReviewCommand)">

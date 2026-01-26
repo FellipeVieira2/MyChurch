@@ -6,6 +6,7 @@
         public int MemberId { get; set; }
         public int ChurchId { get; set; }
         public string Content { get; set; }
+        public bool VisibleToBranches { get; set; } = false;
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 

@@ -86,6 +86,22 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
+                .Property(x => x.ParentChurchId)
+                .HasColumnName("parent_church_id")
+                .HasColumnType("int")
+                .IsRequired(false);
+
+            builder
+                .HasOne(x => x.ParentChurch)
+                .WithMany(x => x.Branches)
+                .HasForeignKey(x => x.ParentChurchId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasIndex(x => x.ParentChurchId)
+                .HasName("IX_Church_ParentChurchId");
+
+            builder
                 .HasOne(x => x.Address)
                 .WithOne(x => x.Church)
                 .HasForeignKey<Church>(x => x.AddressId)

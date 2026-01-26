@@ -5,11 +5,12 @@ using Mychurch.Common.WebClients.Asaas;
 using Mychurch.Common.WebClients.Asaas.Models.Requests;
 using Mychurch.Common.WebClients.Asaas.Models.Responses;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Engagement;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Application.Engagement;
 
 namespace MyChurch.Application.Donation.Commands.CreateDonation
 {
@@ -42,17 +43,20 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
         private readonly ILogger<CreateDonationCommandHandler> _logger;
         private readonly IAsaasWebClient _asaasWebClient;
         private readonly IEngagementService _engagementService;
+        private readonly IPlanLimitService _planLimits;
 
         public CreateDonationCommandHandler(
             IUnitOfWork unitOfWork,
             ILogger<CreateDonationCommandHandler> logger,
             IAsaasWebClient asaasWebClient,
-            IEngagementService engagementService)
+            IEngagementService engagementService,
+            IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _asaasWebClient = asaasWebClient;
             _engagementService = engagementService;
+            _planLimits = planLimits;
         }
 
         public async Task<CreateDonationResultDto> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
@@ -70,7 +74,12 @@ namespace MyChurch.Application.Donation.Commands.CreateDonation
             }
 
             var church = member.Church;
-            if (church == null || string.IsNullOrEmpty(church.AsaasCustomerId))
+            if (church == null)
+                ValidationException.ThrowException("CreateDonation", "Igreja não encontrada.");
+
+            await _planLimits.EnsureMaxDonationsPerMonthAllowedAsync(church.Id, additionalDonationsToAdd: 1, cancellationToken);
+
+            if (string.IsNullOrEmpty(church.AsaasCustomerId))
             {
                 _logger.LogWarning("Igreja não encontrada ou sem integração com Asaas.");
                 ValidationException.ThrowException("CreateDonation", "Igreja não encontrada ou sem integração com Asaas.");

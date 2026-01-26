@@ -82,6 +82,10 @@
         public string? AdditionalFacilities { get; set; } // JSON array de instalações adicionais
         public string? EquipmentNotes { get; set; } // Notas sobre equipamentos disponíveis
         
+        public int? ParentChurchId { get; set; }
+        public Church? ParentChurch { get; set; }
+        public ICollection<Church> Branches { get; set; } = new List<Church>();
+
         public Subscription Subscription { get; set; }
         
         // 🕐 HORÁRIOS DE CULTOS

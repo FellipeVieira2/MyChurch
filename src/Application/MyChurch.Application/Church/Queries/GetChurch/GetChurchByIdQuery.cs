@@ -34,6 +34,7 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 .Include(c => c.Members)
                 .Include(c => c.Subscription)
                     .ThenInclude(x => x.Plan)
+                .Include(c => c.Branches)
                 .FirstOrDefaultAsync(c => c.Id == request.Id && c.Members.Any(x => x.Id == request.UserId), cancellationToken);
             if (church == null)
             {
@@ -52,7 +53,10 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 Logo = church.LogoFileName,
                 Address = AddressDto.New(church.Address),
                 Subscription = church.Subscription != null ? SubscriptionDto.New(church.Subscription) : null,
-                OnboardingQrCode = isAdmin ? church.OnboardingQrCode : null
+                OnboardingQrCode = isAdmin ? church.OnboardingQrCode : null,
+                ParentChurchId = church.ParentChurchId,
+                BranchesCount = church.Branches?.Count ?? 0,
+                AllowedBranches = church.Subscription?.Plan?.Branches ?? 0
             };
 
             if (!isAdmin)

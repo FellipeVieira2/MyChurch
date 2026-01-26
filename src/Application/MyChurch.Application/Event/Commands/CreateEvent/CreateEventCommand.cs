@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
@@ -33,10 +34,12 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
     public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, int>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPlanLimitService _planLimits;
 
-        public CreateEventCommandHandler(IUnitOfWork unitOfWork)
+        public CreateEventCommandHandler(IUnitOfWork unitOfWork, IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
+            _planLimits = planLimits;
         }
 
         public async Task<int> Handle(CreateEventCommand request, CancellationToken cancellationToken)
@@ -48,6 +51,8 @@ namespace MyChurch.Application.Event.Commands.CreateEvent
                 ValidationException.ThrowException("Member", "This Member does not exist.");
 
             int churchId = loggedMember.ChurchId;
+
+            await _planLimits.EnsureMaxEventsAllowedAsync(churchId, additionalEventsToAdd: 1, cancellationToken);
 
             if (request.DepartmentId.HasValue)
             {

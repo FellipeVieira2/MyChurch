@@ -75,6 +75,12 @@
         // 🕐 HORÁRIOS DE CULTOS
         public List<ChurchScheduleDto>? Schedules { get; set; }
 
+        public int? ParentChurchId { get; set; }
+        public bool IsBranch => ParentChurchId.HasValue;
+
+        public int BranchesCount { get; set; }
+        public int AllowedBranches { get; set; }
+
         public static ChurchDto New(Domain.Entities.Church church)
         {
             return new ChurchDto
@@ -128,7 +134,10 @@
                     ? null
                     : System.Text.Json.JsonSerializer.Deserialize<List<string>>(church.AdditionalFacilities),
                 EquipmentNotes = church.EquipmentNotes,
-                Schedules = church.Schedules?.Select(ChurchScheduleDto.New).ToList()
+                Schedules = church.Schedules?.Select(ChurchScheduleDto.New).ToList(),
+                ParentChurchId = church.ParentChurchId,
+                BranchesCount = church.Branches?.Count ?? 0,
+                AllowedBranches = church.Subscription?.Plan?.Branches ?? 0,
             };
         }
     }

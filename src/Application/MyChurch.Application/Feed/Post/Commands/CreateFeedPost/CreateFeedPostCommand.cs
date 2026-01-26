@@ -13,6 +13,7 @@ namespace MyChurch.Application.Feed.Post.Commands.CreateFeedPost
     {
         public string Content { get; set; }
         public List<string> Images { get; set; } = new List<string>();
+        public bool VisibleToBranches { get; set; } = false;
     }
     public class CreateFeedPostCommandHandler : IRequestHandler<CreateFeedPostCommand, int>
     {
@@ -63,6 +64,7 @@ namespace MyChurch.Application.Feed.Post.Commands.CreateFeedPost
                 MemberId = member.Id,
                 ChurchId = member.ChurchId,
                 Content = request.Content,
+                VisibleToBranches = request.VisibleToBranches,
                 Created = DateTime.UtcNow,
                 Images = images
             };

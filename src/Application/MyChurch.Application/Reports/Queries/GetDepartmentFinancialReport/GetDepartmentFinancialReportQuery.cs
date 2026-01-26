@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Departments.Services;
 using MyChurch.Application.Dtos;
+using MyChurch.Application.Plans.Services;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
@@ -36,11 +37,13 @@ namespace MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDepartmentAccessService _departmentAccess;
+        private readonly IPlanLimitService _planLimits;
 
-        public GetDepartmentFinancialReportQueryHandler(IUnitOfWork unitOfWork, IDepartmentAccessService departmentAccess)
+        public GetDepartmentFinancialReportQueryHandler(IUnitOfWork unitOfWork, IDepartmentAccessService departmentAccess, IPlanLimitService planLimits)
         {
             _unitOfWork = unitOfWork;
             _departmentAccess = departmentAccess;
+            _planLimits = planLimits;
         }
 
         public async Task<DepartmentFinancialReportDto> Handle(GetDepartmentFinancialReportQuery request, CancellationToken cancellationToken)
@@ -51,6 +54,8 @@ namespace MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport
 
             if (member == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
+
+            await _planLimits.EnsureDepartmentReportsAllowedAsync(member.ChurchId, cancellationToken);
 
             var query = _unitOfWork.CashFlowEntries.Query()
                 .AsNoTracking()
