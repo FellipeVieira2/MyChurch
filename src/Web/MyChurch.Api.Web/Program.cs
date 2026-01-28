@@ -25,7 +25,6 @@ using MyChurch.Infrastructure.BackgroundJobs;
 using MyChurch.Infrastructure.Repositories;
 using MyChurch.Infrastructure.Services;
 using MyChurch.Infrastructure.Utils.Postmark;
-using MyChurch.Infrastructure.Utils.SES;
 using Serilog;
 using System.Reflection;
 using System.Text;
@@ -36,6 +35,7 @@ using MyChurch.Api.Web.Middleware;
 using Mychurch.Common.Services;
 using MyChurch.Infrastructure.Services.Reports;
 using System.Security.Claims;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -247,14 +247,14 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Creat
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
-builder.Services.AddScoped<IEmailService, SendGridEmailService>(); // ? NOVO: SendGrid ao invés de Postmark
+builder.Services.AddScoped<MyChurch.Domain.Contracts.IEmailService, SendGridEmailService>();
 builder.Services.AddScoped<IReviewVerificationService, ReviewVerificationService>();
 builder.Services.AddScoped<IDepartmentAccessService, DepartmentAccessService>();
 builder.Services.AddScoped<IPlanAccessService, PlanAccessService>();
 builder.Services.AddScoped<IPlanLimitService, PlanLimitService>();
-
 // Register report generator (interface in Mychurch.Common, implementation in Infrastructure)
 builder.Services.AddScoped<IReportGeneratorService, ReportGeneratorService>();
+builder.Services.AddScoped<MyChurch.Infrastructure.Utils.SES.IEmailService, SendGridEmailService>();
 
 // Background workers
 builder.Services.AddHostedService<PendingTransfersWorker>();
@@ -353,4 +353,4 @@ app.MapHub<WorshipServiceHub>("/ws/worship");
 app.MapHub<CampaignHub>("/campaignHub");
 app.MapHub<GroupHub>("/hubs/group");
 
-app.Run();
+app.Run();app.Run();

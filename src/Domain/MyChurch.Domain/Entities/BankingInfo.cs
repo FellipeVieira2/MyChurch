@@ -6,6 +6,7 @@ namespace MyChurch.Domain.Entities
     {
         public int Id { get; set; }
         public int ChurchId { get; set; }
+        public string? Nickname { get; set; }
         public string? BankName { get; set; }
         public string? BankCode { get; set; }
         public string? Agency { get; set; }

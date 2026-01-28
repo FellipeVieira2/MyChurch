@@ -368,6 +368,54 @@
         }
       }
     },
+    "/api/Auth/login-unified": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnifiedLoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnifiedLoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnifiedLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnifiedLoginResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnifiedLoginResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnifiedLoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Auth/google": {
       "post": {
         "tags": [
@@ -559,6 +607,37 @@
         "responses": {
           "204": {
             "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/banking-info/default": {
+      "put": {
+        "tags": [
+          "BankingInfo"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetDefaultBankingInfoRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetDefaultBankingInfoRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetDefaultBankingInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -3934,6 +4013,37 @@
         }
       }
     },
+    "/api/church/withadmin": {
+      "post": {
+        "tags": [
+          "ChurchWithAdmin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChurchWithAdminMemberCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/departments": {
       "post": {
         "tags": [
@@ -4631,6 +4741,77 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Event/{id}/participants": {
+      "put": {
+        "tags": [
+          "Event"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -8047,6 +8228,99 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RegisterForApprovalCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/password/forgot": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestPasswordResetCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/password/reset": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPasswordResetCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPasswordResetCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPasswordResetCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/password/change": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyPasswordCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyPasswordCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeMyPasswordCommand"
               }
             }
           }
@@ -12383,6 +12657,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
           "bankName": {
             "type": "string",
             "nullable": true
@@ -12922,6 +13200,20 @@
         },
         "additionalProperties": false
       },
+      "ChangeMyPasswordCommand": {
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChapterBasedReference": {
         "type": "object",
         "properties": {
@@ -13012,6 +13304,14 @@
               "$ref": "#/components/schemas/BankingInfoDto"
             },
             "nullable": true
+          },
+          "defaultBankingInfoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "defaultBankingInfo": {
+            "$ref": "#/components/schemas/BankingInfoDto"
           },
           "onboardingQrCode": {
             "type": "string",
@@ -13863,6 +14163,20 @@
         },
         "additionalProperties": false
       },
+      "ConfirmPasswordResetCommand": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateAnonymousVisitorCommand": {
         "type": "object",
         "properties": {
@@ -13963,6 +14277,10 @@
       "CreateBankingInfoCommand": {
         "type": "object",
         "properties": {
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
           "bankName": {
             "type": "string",
             "nullable": true
@@ -14241,6 +14559,117 @@
           "description": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateChurchWithAdminMemberCommand": {
+        "required": [
+          "address",
+          "adminDocuments",
+          "adminName",
+          "adminPassword",
+          "adminPhone",
+          "document",
+          "name",
+          "phone"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
+          },
+          "adminName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "adminEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminDocuments": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MemberDocumentDtoCreateChurch"
+            }
+          },
+          "adminPhoto": {
+            "type": "string",
+            "nullable": true
+          },
+          "document": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "adminPhone": {
+            "maxLength": 20,
+            "minLength": 1,
+            "type": "string"
+          },
+          "adminBirthDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "adminIsBaptized": {
+            "type": "boolean"
+          },
+          "adminBaptizedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "adminIsTither": {
+            "type": "boolean"
+          },
+          "adminPassword": {
+            "minLength": 6,
+            "type": "string"
+          },
+          "adminBirthCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminBirthState": {
+            "type": "string",
+            "nullable": true
+          },
+          "ministry": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberSince": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "adminAddress": {
+            "$ref": "#/components/schemas/AddressChurchWithAdminCreate"
+          },
+          "maritalStatus": {
+            "$ref": "#/components/schemas/MaritalStatus"
           }
         },
         "additionalProperties": false
@@ -15694,7 +16123,8 @@
           0,
           1,
           2,
-          3
+          3,
+          4
         ],
         "type": "integer",
         "format": "int32"
@@ -15795,6 +16225,23 @@
         "additionalProperties": false
       },
       "MemberDocumentDtoCreate": {
+        "required": [
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/MemberDocumentType"
+          },
+          "number": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MemberDocumentDtoCreateChurch": {
         "required": [
           "number"
         ],
@@ -17203,6 +17650,20 @@
         },
         "additionalProperties": false
       },
+      "RequestPasswordResetCommand": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "resetBaseUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ResetPasswordRequest": {
         "type": "object",
         "properties": {
@@ -17514,6 +17975,17 @@
         },
         "additionalProperties": false
       },
+      "SetDefaultBankingInfoRequest": {
+        "type": "object",
+        "properties": {
+          "bankingInfoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SimulatePromotionPriceQuery": {
         "type": "object",
         "properties": {
@@ -17753,7 +18225,13 @@
         "properties": {
           "bankingInfoId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
+          },
+          "departmentId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "amount": {
             "type": "number",
@@ -17767,6 +18245,47 @@
           },
           "notes": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnifiedLoginRequest": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnifiedLoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "userType": {
+            "type": "string",
+            "nullable": true
+          },
+          "member": {
+            "$ref": "#/components/schemas/MemberDto"
+          },
+          "platformUser": {
+            "nullable": true
+          },
+          "visitor": {
             "nullable": true
           }
         },
@@ -17846,6 +18365,10 @@
       "UpdateBankingInfoV2Command": {
         "type": "object",
         "properties": {
+          "nickname": {
+            "type": "string",
+            "nullable": true
+          },
           "bankName": {
             "type": "string",
             "nullable": true

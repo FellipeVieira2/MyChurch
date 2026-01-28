@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyChurch.Infrastructure.Utils.Postmark
 {
-    public class PostmarkEmailService : IEmailService
+    public class PostmarkEmailService : MyChurch.Infrastructure.Utils.SES.IEmailService
     {
         private readonly string _remetente;
         private readonly string _postmarkServerToken;

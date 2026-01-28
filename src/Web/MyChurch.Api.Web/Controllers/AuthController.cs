@@ -6,9 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Member.Commands.Login;
+using MyChurch.Application.PlatformUsers.Commands.LoginPlatformUser;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Enum;
-using MyChurch.Infrastructure.Utils.SES; // ✅ NOVO: Para IEmailService
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
@@ -46,6 +46,76 @@ namespace MyChurch.Api.Controllers
         {
             var dto = await _mediator.Send(command);
             return Ok(new { Token = dto.Token, Role = dto.Role, Member = dto.Member });
+        }
+
+        public class UnifiedLoginRequest
+        {
+            // Pode ser email/telefone/cpf, igual LoginCommand
+            public string Identifier { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+        }
+
+        public class UnifiedLoginResponse
+        {
+            public string Token { get; set; } = string.Empty;
+            public string Role { get; set; } = string.Empty;
+
+            // Para o front diferenciar o "tipo" de usuário sem inferir por claim
+            public string UserType { get; set; } = string.Empty; // "PlatformUser" | "Member" | "Visitor"
+
+            public MemberDto? Member { get; set; }
+            public object? PlatformUser { get; set; }
+            public object? Visitor { get; set; }
+        }
+
+        /// <summary>
+        /// Login único: tenta autenticar como PlatformUser (PlatformAdmin) e, se não for, como Member.
+        /// O front usa Role/UserType para direcionar o usuário.
+        /// </summary>
+        [HttpPost("login-unified")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(UnifiedLoginResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> LoginUnified([FromBody] UnifiedLoginRequest body)
+        {
+            // 1) Tenta PlatformUser (somente email/senha) - reusa handler existente
+            if (!string.IsNullOrWhiteSpace(body.Identifier) && body.Identifier.Contains('@'))
+            {
+                try
+                {
+                    var platformDto = await _mediator.Send(new LoginPlatformUserCommand
+                    {
+                        Email = body.Identifier,
+                        Password = body.Password
+                    });
+
+                    return Ok(new UnifiedLoginResponse
+                    {
+                        Token = platformDto.Token,
+                        Role = platformDto.Role,
+                        UserType = "PlatformUser",
+                        PlatformUser = platformDto.User
+                    });
+                }
+                catch (MyChurch.Domain.Exceptions.ValidationException)
+                {
+                    // cai para login de Member
+                }
+            }
+
+            // 2) Member login (email/telefone/cpf)
+            var memberDto = await _mediator.Send(new LoginCommand
+            {
+                Identifier = body.Identifier,
+                Password = body.Password
+            });
+
+            return Ok(new UnifiedLoginResponse
+            {
+                Token = memberDto.Token,
+                Role = memberDto.Role,
+                UserType = "Member",
+                Member = memberDto.Member
+            });
         }
 
         public class GoogleLoginRequest

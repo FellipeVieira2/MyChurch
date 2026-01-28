@@ -248,6 +248,32 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "MyChurch.Api.Controllers.AuthController",
+    "Method": "LoginUnified",
+    "RelativePath": "api/Auth/login-unified",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Controllers.AuthController\u002BUnifiedLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Api.Controllers.AuthController\u002BUnifiedLoginResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.BankingInfoController",
     "Method": "GetAll",
     "RelativePath": "api/banking-info",
@@ -345,6 +371,22 @@
         "StatusCode": 204
       }
     ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.BankingInfoController",
+    "Method": "SetDefault",
+    "RelativePath": "api/banking-info/default",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "body",
+        "Type": "MyChurch.Api.Web.Controllers.SetDefaultBankingInfoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.BibleController",
@@ -2077,6 +2119,28 @@
     ]
   },
   {
+    "ContainingType": "MyChurch.Api.Web.Controllers.ChurchWithAdminController",
+    "Method": "CreateWithAdmin",
+    "RelativePath": "api/church/withadmin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "MyChurch.Api.Web.Controllers.ChurchPromotionController",
     "Method": "CreatePromotion",
     "RelativePath": "api/ChurchPromotion",
@@ -2992,6 +3056,37 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MyChurch.Application.Dtos.EventDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.EventController",
+    "Method": "UpdateParticipants",
+    "RelativePath": "api/Event/{id}/participants",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "participantIds",
+        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": true
       }
     ],
@@ -5074,6 +5169,54 @@
       {
         "Name": "command",
         "Type": "MyChurch.Application.Onboarding.RegisterForApproval.RegisterForApprovalCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Controllers.PasswordController",
+    "Method": "Change",
+    "RelativePath": "api/password/change",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Member.Commands.ChangeMyPassword.ChangeMyPasswordCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Controllers.PasswordController",
+    "Method": "Forgot",
+    "RelativePath": "api/password/forgot",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Member.Commands.ForgotPassword.RequestPasswordResetCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Controllers.PasswordController",
+    "Method": "Reset",
+    "RelativePath": "api/password/reset",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.Member.Commands.ForgotPassword.ConfirmPasswordResetCommand",
         "IsRequired": true
       }
     ],

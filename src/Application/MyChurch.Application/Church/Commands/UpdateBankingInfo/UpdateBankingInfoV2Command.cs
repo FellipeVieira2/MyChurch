@@ -14,6 +14,7 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
         [JsonIgnore]
         public int BankingInfoId { get; set; }
 
+        public string? Nickname { get; set; }
         public string? BankName { get; set; }
         public string? BankCode { get; set; }
         public string? Agency { get; set; }
@@ -54,6 +55,7 @@ namespace MyChurch.Application.Church.Commands.UpdateBankingInfo
             if (entity == null)
                 ValidationException.ThrowException("BankingInfo", "Conta bancária não encontrada.");
 
+            if (request.Nickname is not null) entity.Nickname = request.Nickname;
             if (request.BankName is not null) entity.BankName = request.BankName;
             if (request.BankCode is not null) entity.BankCode = request.BankCode;
             if (request.Agency is not null) entity.Agency = request.Agency;

@@ -94,16 +94,16 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             {
                 try
                 {
-                    ValidateAdminDocuments(request, cancellationToken);
                     ValidateChurchDocument(request);
 
                     var address = CreateAddress(request.Address);
                     var church = await CreateChurchAsync(request, address, cancellationToken);
                     await SeedDefaultJourneysAsync(church.Id);
-                    var adminMember = await CreateAdminMemberAsync(request, church.Id, cancellationToken);
-                    await SaveChurchAndAdminAsync(church, adminMember, cancellationToken);
+
+                    var adminMember = await CreateOrUpdateAdminMemberAsync(request, church.Id, cancellationToken);
+
                     await UpdateChurchWithAsaasCustomerIdAsync(church, request.AdminEmail, cancellationToken);
-                    
+
                     // Gera o QRCode de onboarding
                     var onboardingUrl = $"https://www.mychurchlab.net/onboarding?church={church.Id}";
                     church.OnboardingQrCode = GenerateQrCodeBase64(onboardingUrl);
@@ -137,25 +137,6 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
         {
             if (string.IsNullOrEmpty(input)) return string.Empty;
             return new string(input.Where(char.IsDigit).ToArray());
-        }
-
-        private void ValidateAdminDocuments(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
-        {
-            // Usar o DocumentValidator para normalizar os documentos
-            var adminDocumentNumbers = request.AdminDocuments?
-                .Select(d => _documentValidator.RemoveFormatting(d.Number))
-                .ToList() ?? new List<string>();
-                
-            var existingDocuments = _unitOfWork.MemberDocuments
-                .Query()
-                .Where(x => adminDocumentNumbers.Contains(x.Number))
-                .Select(x => x.Number)
-                .ToList();
-                
-            if (existingDocuments.Any())
-            {
-                ValidationException.ThrowException("Church", "Document Already Used");
-            }
         }
 
         private void ValidateChurchDocument(CreateChurchWithAdminMemberCommand request)
@@ -209,6 +190,109 @@ namespace MyChurch.Application.Church.Commands.CreateChurchWithAdminMember
             foreach (var journey in defaultJourneys)
             {
                 await _unitOfWork.Journeys.Create(journey);
+            }
+        }
+
+        private Domain.Entities.Member? TryGetExistingMemberByDocuments(List<string> normalizedDocumentNumbers)
+        {
+            if (normalizedDocumentNumbers.Count == 0) return null;
+
+            return _unitOfWork.Members
+                .Query()
+                .Include(m => m.Documents)
+                .FirstOrDefault(m => m.Documents.Any(d => normalizedDocumentNumbers.Contains(d.Number)));
+        }
+
+        private async Task<Domain.Entities.Member> CreateOrUpdateAdminMemberAsync(CreateChurchWithAdminMemberCommand request, int churchId, CancellationToken cancellationToken)
+        {
+            // Normalizar documentos do admin
+            var normalizedDocs = request.AdminDocuments?
+                .Select(d => _documentValidator.RemoveFormatting(d.Number))
+                .ToList() ?? new List<string>();
+
+            var existingMember = TryGetExistingMemberByDocuments(normalizedDocs);
+
+            // Se já existe e NÃO é visitante, bloqueia (CPF já pertence a um membro real)
+            if (existingMember != null && existingMember.Role != UserRole.Visitor)
+            {
+                ValidationException.ThrowException("Church", "Document Already Used");
+            }
+
+            if (existingMember != null)
+            {
+                // Promove o visitante para Admin e vincula na igreja recém criada
+                existingMember.Name = request.AdminName;
+                existingMember.Email = request.AdminEmail;
+                existingMember.Phone = request.AdminPhone;
+                existingMember.BirthDate = request.AdminBirthDate;
+                existingMember.IsBaptized = request.AdminIsBaptized;
+                existingMember.BaptizedDate = request.AdminBaptizedDate;
+                existingMember.IsTither = request.AdminIsTither;
+                existingMember.ChurchId = churchId;
+                existingMember.Role = UserRole.Admin;
+                existingMember.BirthCity = request.AdminBirthCity;
+                existingMember.BirthState = request.AdminBirthState;
+                existingMember.Ministry = request.Ministry;
+                existingMember.MaritalStatus = request.MaritalStatus;
+                existingMember.Notes = request.Notes;
+                existingMember.MemberSince = request.MemberSince;
+                existingMember.Address = CreateAddress(request.AdminAddress);
+                existingMember.IsActive = true;
+                existingMember.PendingApproval = false;
+
+                if (!string.IsNullOrEmpty(request.AdminPhoto))
+                {
+                    existingMember.Photo = await UploadPhotoAsync(request.AdminPhoto, cancellationToken);
+                }
+
+                if (!string.IsNullOrWhiteSpace(request.AdminPassword))
+                {
+                    existingMember.PasswordHash = _passwordHasher.HashPassword(request.AdminPassword);
+                }
+
+                // Garantir que documentos normalizados existam (caso o visitante não tinha, ou estava incompleto)
+                existingMember.Documents ??= [];
+                foreach (var doc in request.AdminDocuments ?? [])
+                {
+                    var normalizedNumber = _documentValidator.RemoveFormatting(doc.Number);
+                    if (!existingMember.Documents.Any(d => d.Number == normalizedNumber))
+                    {
+                        existingMember.Documents.Add(new MemberDocument
+                        {
+                            Type = doc.Type,
+                            Number = normalizedNumber
+                        });
+                    }
+                }
+
+                _unitOfWork.Members.Update(existingMember);
+                await _unitOfWork.CommitAsync();
+                return existingMember;
+            }
+
+            // Não existia: cria novo
+            var adminMember = await CreateAdminMemberAsync(request, churchId, cancellationToken);
+            await _unitOfWork.Members.Create(adminMember);
+            await _unitOfWork.CommitAsync();
+            return adminMember;
+        }
+
+        // (mantido para compatibilidade, mas não usado mais pelo fluxo principal)
+        private void ValidateAdminDocuments(CreateChurchWithAdminMemberCommand request, CancellationToken cancellationToken)
+        {
+            var adminDocumentNumbers = request.AdminDocuments?
+                .Select(d => _documentValidator.RemoveFormatting(d.Number))
+                .ToList() ?? new List<string>();
+
+            var existingDocuments = _unitOfWork.MemberDocuments
+                .Query()
+                .Where(x => adminDocumentNumbers.Contains(x.Number))
+                .Select(x => x.Number)
+                .ToList();
+
+            if (existingDocuments.Any())
+            {
+                ValidationException.ThrowException("Church", "Document Already Used");
             }
         }
 

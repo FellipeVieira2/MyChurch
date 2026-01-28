@@ -2,9 +2,37 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Enum;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace MyChurch.Infrastructure.Mappings
 {
+    internal static class EnumDisplayNameParser
+    {
+        public static TEnum ParseFromNameOrDisplayName<TEnum>(string value) where TEnum : struct, System.Enum
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(value));
+
+            if (System.Enum.TryParse<TEnum>(value, ignoreCase: true, out var parsed))
+                return parsed;
+
+            var type = typeof(TEnum);
+            foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+            {
+                var display = field.GetCustomAttribute<DisplayAttribute>();
+                var displayName = display?.GetName();
+                if (!string.IsNullOrWhiteSpace(displayName) && string.Equals(displayName, value, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (System.Enum.TryParse<TEnum>(field.Name, out var byFieldName))
+                        return byFieldName;
+                }
+            }
+
+            throw new ArgumentException($"Requested value '{value}' was not found.");
+        }
+    }
+
     public class MemberMap : IEntityTypeConfiguration<Member>
     {
         public void Configure(EntityTypeBuilder<Member> builder)
@@ -42,6 +70,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .Property(m => m.PasswordHash)
                 .HasColumnName("password_hash")
                 .HasColumnType("varchar(500)")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.PasswordResetToken)
+                .HasColumnName("password_reset_token")
+                .HasColumnType("varchar(200)")
+                .IsRequired(false);
+
+            builder
+                .Property(m => m.PasswordResetTokenExpiresAt)
+                .HasColumnName("password_reset_token_expires_at")
+                .HasColumnType("timestamp")
                 .IsRequired(false);
 
             builder
@@ -110,7 +150,7 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnType("varchar(50)")
                 .HasConversion(
                     v => v.HasValue ? v.Value.ToString() : null, // Enum para string
-                    v => string.IsNullOrEmpty(v) ? null : Enum.Parse<MaritalStatus>(v) // String para Enum
+                    v => string.IsNullOrEmpty(v) ? null : EnumDisplayNameParser.ParseFromNameOrDisplayName<MaritalStatus>(v) // String para Enum
                 )
                 .IsRequired(false);
 

@@ -13,6 +13,9 @@ namespace MyChurch.Domain.Entities
         
         // 🔐 SEGURANÇA: Apenas PasswordHash deve ser usado - NUNCA armazenar senha em texto plano!
         public string? PasswordHash { get; set; }
+
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiresAt { get; set; }
         
         public string? Phone { get; set; }
         public DateTime BirthDate { get; set; }

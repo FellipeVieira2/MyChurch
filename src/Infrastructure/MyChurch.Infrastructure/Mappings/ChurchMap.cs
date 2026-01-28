@@ -92,6 +92,18 @@ namespace MyChurch.Infrastructure.Mappings
                 .IsRequired(false);
 
             builder
+                .Property(x => x.DefaultBankingInfoId)
+                .HasColumnName("default_banking_info_id")
+                .HasColumnType("integer")
+                .IsRequired(false);
+
+            builder
+                .HasOne(x => x.DefaultBankingInfo)
+                .WithMany()
+                .HasForeignKey(x => x.DefaultBankingInfoId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder
                 .HasOne(x => x.ParentChurch)
                 .WithMany(x => x.Branches)
                 .HasForeignKey(x => x.ParentChurchId)

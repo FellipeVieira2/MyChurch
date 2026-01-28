@@ -5,6 +5,7 @@ using MyChurch.Application.Dtos;
 using MyChurch.Application.Event.Commands.CreateEvent;
 using MyChurch.Application.Event.Commands.DeleteEvent;
 using MyChurch.Application.Event.Commands.UpdateEvent;
+using MyChurch.Application.Event.Commands.ManageEventParticipants;
 using MyChurch.Application.Event.Queires.GetAllWorship;
 using MyChurch.Application.Event.Queires.GetEventsForCalendar;
 using MyChurch.Application.Event.Queires.GetWorshipById;
@@ -46,6 +47,26 @@ namespace MyChurch.Api.Web.Controllers
             command.Id = id;
             var result = await Mediator.Send(command);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Atualiza a lista de participantes do evento (substitui a lista inteira).
+        /// </summary>
+        /// <response code="200">Sucesso: Evento atualizado com lista de participantes</response>
+        /// <response code="400">Falha: Requisição inválida</response>
+        /// <response code="401">Falha: Não autorizado</response>
+        /// <response code="403">Falha: Apenas Admin</response>
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/participants")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventDto))]
+        public async Task<IActionResult> UpdateParticipants([FromRoute] int id, [FromBody] List<int> participantIds)
+        {
+            var cmd = AuthorizationRequestCreate<ManageEventParticipantsCommand>();
+            cmd.EventId = id;
+            cmd.ParticipantIds = participantIds ?? new List<int>();
+
+            var updated = await Mediator.Send(cmd);
+            return Ok(updated);
         }
 
         /// <summary>

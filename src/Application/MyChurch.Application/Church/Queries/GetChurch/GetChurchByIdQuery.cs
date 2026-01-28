@@ -56,7 +56,8 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                 OnboardingQrCode = isAdmin ? church.OnboardingQrCode : null,
                 ParentChurchId = church.ParentChurchId,
                 BranchesCount = church.Branches?.Count ?? 0,
-                AllowedBranches = church.Subscription?.Plan?.Branches ?? 0
+                AllowedBranches = church.Subscription?.Plan?.Branches ?? 0,
+                DefaultBankingInfoId = isAdmin ? church.DefaultBankingInfoId : null
             };
 
             if (!isAdmin)
@@ -73,7 +74,13 @@ namespace MyChurch.Application.Church.Queries.GetChurch
                     .ToListAsync(cancellationToken);
 
                 dto.BankingInfos = bankingInfos.Select(BankingInfoDto.New).ToList();
-                dto.BankingInfo = dto.BankingInfos.FirstOrDefault();
+
+                dto.DefaultBankingInfo = dto.DefaultBankingInfoId.HasValue
+                    ? dto.BankingInfos.FirstOrDefault(b => b.Id == dto.DefaultBankingInfoId.Value)
+                    : null;
+
+                // Backward compatibility
+                dto.BankingInfo = dto.DefaultBankingInfo ?? dto.BankingInfos.FirstOrDefault();
             }
 
             return dto;

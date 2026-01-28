@@ -5,13 +5,16 @@ namespace MyChurch.Domain.Enum
 {
     public enum MaritalStatus
     {
-        [Display(Name = "Solteiro")]
+        [Display(Name = "Solteiro(a)")]
         Solteiro,
-        [Display(Name = "Casado")]
+        [Display(Name = "Casado(a)")]
         Casado,
-        [Display(Name = "Divorciado")]
+        [Display(Name = "Divorciado(a)")]
         Divorciado,
-        [Display(Name = "Viuvo")]
-        Viuvo
+        [Display(Name = "Viuvo(a)")]
+        Viuvo,
+        [Display(Name = "União Estavel")]
+        UniaoEstavel,
+
     }
 }

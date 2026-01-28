@@ -322,6 +322,11 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("holder_name");
 
+                    b.Property<string>("Nickname")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nickname");
+
                     b.Property<string>("PixKey")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
@@ -1039,6 +1044,10 @@ namespace MyChurch.Infrastructure.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("created");
 
+                    b.Property<int?>("DefaultBankingInfoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("default_banking_info_id");
+
                     b.Property<string>("Denomination")
                         .HasColumnType("text");
 
@@ -1183,6 +1192,8 @@ namespace MyChurch.Infrastructure.Migrations
 
                     b.HasIndex("AddressId")
                         .IsUnique();
+
+                    b.HasIndex("DefaultBankingInfoId");
 
                     b.HasIndex("ParentChurchId")
                         .HasDatabaseName("IX_Church_ParentChurchId");
@@ -2711,6 +2722,14 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("varchar(500)")
                         .HasColumnName("password_hash");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("password_reset_token");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpiresAt")
+                        .HasColumnType("timestamp")
+                        .HasColumnName("password_reset_token_expires_at");
 
                     b.Property<bool>("PendingApproval")
                         .HasColumnType("boolean")
@@ -4521,12 +4540,19 @@ namespace MyChurch.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyChurch.Domain.Entities.BankingInfo", "DefaultBankingInfo")
+                        .WithMany()
+                        .HasForeignKey("DefaultBankingInfoId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("MyChurch.Domain.Entities.Church", "ParentChurch")
                         .WithMany("Branches")
                         .HasForeignKey("ParentChurchId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Address");
+
+                    b.Navigation("DefaultBankingInfo");
 
                     b.Navigation("ParentChurch");
                 });

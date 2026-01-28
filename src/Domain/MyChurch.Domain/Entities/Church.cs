@@ -31,7 +31,10 @@
         public ICollection<CashFlowCategory> CashFlowCategories { get; set; }
         public ICollection<CashFlowEntry> CashFlowEntries { get; set; }
         public string? OnboardingQrCode { get; set; }
-        
+
+        public int? DefaultBankingInfoId { get; set; }
+        public BankingInfo? DefaultBankingInfo { get; set; }
+
         // 🗺️ GEOLOCALIZAÇÃO - Para busca por proximidade
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }

@@ -600,6 +600,15 @@
             <response code="400">Falha: Requisição inválida</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.EventController.UpdateParticipants(System.Int32,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Atualiza a lista de participantes do evento (substitui a lista inteira).
+            </summary>
+            <response code="200">Sucesso: Evento atualizado com lista de participantes</response>
+            <response code="400">Falha: Requisição inválida</response>
+            <response code="401">Falha: Não autorizado</response>
+            <response code="403">Falha: Apenas Admin</response>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.EventController.DeleteEvent(System.Int32)">
             <summary>
             Deleta um evento existente
@@ -1382,6 +1391,12 @@
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.SendAdminNotice(System.Int32,MyChurch.Application.WorshipActivity.Commands.SendAdminNoticeCommand)">
             <summary>
             Envia um aviso administrativo para todos do culto
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Controllers.AuthController.LoginUnified(MyChurch.Api.Controllers.AuthController.UnifiedLoginRequest)">
+            <summary>
+            Login único: tenta autenticar como PlatformUser (PlatformAdmin) e, se não for, como Member.
+            O front usa Role/UserType para direcionar o usuário.
             </summary>
         </member>
     </members>

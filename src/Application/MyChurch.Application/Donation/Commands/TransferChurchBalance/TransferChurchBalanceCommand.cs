@@ -11,7 +11,8 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
 {
     public class TransferChurchBalanceCommand : JwtMemberDto, IRequest<bool>
     {
-        public int BankingInfoId { get; set; }
+        public int? BankingInfoId { get; set; }
+        public int? DepartmentId { get; set; }
         public decimal? Amount { get; set; }
         public DateTime? ScheduledFor { get; set; }
         public string? Notes { get; set; }
@@ -41,8 +42,40 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
 
             var churchId = member.ChurchId;
 
+            // Resolve conta destino:
+            // 1) BankingInfoId explícito
+            // 2) Conta do departamento (se DepartmentId informado)
+            // 3) Conta default da igreja
+            int? resolvedBankingInfoId = request.BankingInfoId;
+
+            if (!resolvedBankingInfoId.HasValue && request.DepartmentId.HasValue)
+            {
+                var dept = await _unitOfWork.Departments.Query()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(d => d.Id == request.DepartmentId.Value && d.ChurchId == churchId, cancellationToken);
+
+                if (dept == null)
+                    ValidationException.ThrowException("Department", "Departamento não encontrado para esta igreja.");
+
+                resolvedBankingInfoId = dept.BankingInfoId;
+            }
+
+            if (!resolvedBankingInfoId.HasValue)
+            {
+                var churchDefault = await _unitOfWork.Churchs.Query()
+                    .AsNoTracking()
+                    .Where(c => c.Id == churchId)
+                    .Select(c => c.DefaultBankingInfoId)
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                resolvedBankingInfoId = churchDefault;
+            }
+
+            if (!resolvedBankingInfoId.HasValue)
+                ValidationException.ThrowException("Church", "Nenhuma conta destino definida. Informe BankingInfoId, DepartmentId com conta, ou defina uma conta principal da igreja.");
+
             var bankingInfo = await _unitOfWork.BankingInfos.Query()
-                .FirstOrDefaultAsync(b => b.Id == request.BankingInfoId && b.ChurchId == churchId, cancellationToken);
+                .FirstOrDefaultAsync(b => b.Id == resolvedBankingInfoId.Value && b.ChurchId == churchId, cancellationToken);
 
             if (bankingInfo == null)
                 ValidationException.ThrowException("Church", "Conta bancária não encontrada para esta igreja.");
@@ -53,7 +86,7 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                 var scheduledTransfer = new TransferHistory
                 {
                     ChurchId = churchId,
-                    BankingInfoId = request.BankingInfoId,
+                    BankingInfoId = resolvedBankingInfoId.Value,
                     Amount = request.Amount ?? 0m,
                     RequestedAt = DateTime.UtcNow,
                     ScheduledFor = request.ScheduledFor.Value.ToUniversalTime(),
@@ -71,8 +104,13 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
                 .Include(d => d.Member)
                 .Include(d => d.Payments)
                 .Where(d => d.Member.ChurchId == churchId && d.IsTransferred == false &&
-                            d.Payments.Any(p => p.PaymentStatus == PaymentStatus.Received.ToString() || p.PaymentStatus == "Received"))
-                .OrderBy(d => d.Date);
+                            d.Payments.Any(p => p.PaymentStatus == PaymentStatus.Received.ToString() || p.PaymentStatus == "Received"));
+
+            // Se for transferência por departamento, considerar apenas doações do departamento
+            if (request.DepartmentId.HasValue)
+                donationsQuery = donationsQuery.Where(d => d.DepartmentId == request.DepartmentId.Value);
+
+            donationsQuery = donationsQuery.OrderBy(d => d.Date);
 
             var donations = await donationsQuery.ToListAsync(cancellationToken);
 
@@ -90,7 +128,7 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
             var transferRecord = new TransferHistory
             {
                 ChurchId = churchId,
-                BankingInfoId = request.BankingInfoId,
+                BankingInfoId = resolvedBankingInfoId.Value,
                 Amount = amountToTransferTotal,
                 RequestedAt = DateTime.UtcNow,
                 Status = "Pending",

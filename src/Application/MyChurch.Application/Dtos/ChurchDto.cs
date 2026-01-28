@@ -19,6 +19,9 @@
         // Nova lista (suporta múltiplas contas)
         public List<BankingInfoDto>? BankingInfos { get; set; }
 
+        public int? DefaultBankingInfoId { get; set; }
+        public BankingInfoDto? DefaultBankingInfo { get; set; }
+
         // Exibe apenas para admin
         public string? OnboardingQrCode { get; set; }
         
@@ -138,6 +141,8 @@
                 ParentChurchId = church.ParentChurchId,
                 BranchesCount = church.Branches?.Count ?? 0,
                 AllowedBranches = church.Subscription?.Plan?.Branches ?? 0,
+                DefaultBankingInfoId = church.DefaultBankingInfoId,
+                DefaultBankingInfo = null
             };
         }
     }

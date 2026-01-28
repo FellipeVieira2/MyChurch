@@ -20,6 +20,10 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasColumnName("church_id")
                 .IsRequired();
 
+            builder.Property(x => x.Nickname)
+                .HasColumnName("nickname")
+                .HasMaxLength(100);
+
             builder.Property(x => x.BankName)
                 .HasColumnName("bank_name")
                 .HasMaxLength(100);

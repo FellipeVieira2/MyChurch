@@ -4,7 +4,6 @@ using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
 using MyChurch.Domain.Exceptions;
-using MyChurch.Infrastructure.Utils.SES;
 using System.Text.RegularExpressions;
 
 namespace MyChurch.Application.PreLaunch.Commands.CreatePreLaunchInterest

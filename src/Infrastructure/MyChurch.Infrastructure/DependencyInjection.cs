@@ -129,7 +129,8 @@ namespace MyChurch.Infrastructure
 
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-            services.AddScoped<IEmailService, PostmarkEmailService>();
+            // Email
+            services.AddScoped<MyChurch.Domain.Contracts.IEmailService, PostmarkEmailService>();
 
             services.AddHttpClient<GoogleGeocodingService>();
             

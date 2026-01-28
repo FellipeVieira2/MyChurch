@@ -12,9 +12,37 @@ using MyChurch.Infrastructure.Utils.S3;
 using MyChurch.Infrastructure.Utils.SES;
 using System.Collections.Generic;
 using static MyChurch.Application.Church.Commands.CreateChurchWithAdminMember.CreateChurchWithAdminMemberCommand;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 
 namespace MyChurch.Application.Member.Commands.CreateMember
 {
+    internal static class EnumDisplayNameParser
+    {
+        public static TEnum ParseFromNameOrDisplayName<TEnum>(string value) where TEnum : struct, System.Enum
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Value cannot be null or empty.", nameof(value));
+
+            if (System.Enum.TryParse<TEnum>(value, ignoreCase: true, out var parsed))
+                return parsed;
+
+            var type = typeof(TEnum);
+            foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.Static))
+            {
+                var display = field.GetCustomAttribute<DisplayAttribute>();
+                var displayName = display?.GetName();
+                if (!string.IsNullOrWhiteSpace(displayName) && string.Equals(displayName, value, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (System.Enum.TryParse<TEnum>(field.Name, out var byFieldName))
+                        return byFieldName;
+                }
+            }
+
+            throw new ArgumentException($"Requested value '{value}' was not found.");
+        }
+    }
+
     public class CreateMemberCommand : JwtMemberDto, IRequest<int>
     {
         /// <summary>Name</summary>
@@ -117,7 +145,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 .FirstOrDefaultAsync(m => m.Id == request.UserId, cancellationToken);
 
             if (loggedMember == null)
-                ValidationException.ThrowException("Member", "This Member does not exist.");
+                MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member", "This Member does not exist.");
 
             int churchId = loggedMember.ChurchId;
 
@@ -138,7 +166,7 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                     cancellationToken);
  
             if (exists)
-                ValidationException.ThrowException("Member", "This Member already exists.");
+                MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member", "This Member already exists.");
 
             var member = new Domain.Entities.Member
             {
@@ -152,7 +180,9 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 ChurchId = churchId,
                 Role = request.RoleMember,
                 Created = DateTime.UtcNow,
-                MaritalStatus =request.MaritalStatus is not null ? Enum.Parse<MaritalStatus>(request.MaritalStatus) : null,
+                MaritalStatus = !string.IsNullOrWhiteSpace(request.MaritalStatus)
+                    ? EnumDisplayNameParser.ParseFromNameOrDisplayName<MaritalStatus>(request.MaritalStatus)
+                    : null,
                 MemberSince = request?.MemberSince,
                 Ministry = request.Ministry,
                 IsActive = request.IsActive,

@@ -3,6 +3,7 @@
     public class BankingInfoDto
     {
         public int Id { get; set; }
+        public string? Nickname { get; set; }
         public string BankName { get; set; }
         public string BankDigit { get; set; }
         public string Agency { get; set; }
@@ -18,6 +19,7 @@
             return new BankingInfoDto
             {
                 Id = info.Id,
+                Nickname = info.Nickname,
                 BankName = info.BankName,
                 Agency = info.Agency,
                 Account = info.Account,

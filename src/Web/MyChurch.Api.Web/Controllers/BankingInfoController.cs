@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.Church.Commands.CreateBankingInfo;
 using MyChurch.Application.Church.Commands.DeleteBankingInfo;
+using MyChurch.Application.Church.Commands.SetDefaultBankingInfo;
 using MyChurch.Application.Church.Commands.UpdateBankingInfo;
 using MyChurch.Application.Church.Queries.GetChurchBankingInfos;
 using MyChurch.Application.Dtos;
@@ -29,6 +30,7 @@ namespace MyChurch.Api.Web.Controllers
         public async Task<IActionResult> Create([FromBody] CreateBankingInfoCommand command)
         {
             var cmd = AuthorizationRequestCreate<CreateBankingInfoCommand>();
+            cmd.Nickname = command.Nickname;
             cmd.BankName = command.BankName;
             cmd.BankCode = command.BankCode;
             cmd.Agency = command.Agency;
@@ -51,6 +53,7 @@ namespace MyChurch.Api.Web.Controllers
         {
             var cmd = AuthorizationRequestCreate<UpdateBankingInfoV2Command>();
             cmd.BankingInfoId = id;
+            cmd.Nickname = body.Nickname;
             cmd.BankName = body.BankName;
             cmd.BankCode = body.BankCode;
             cmd.Agency = body.Agency;
@@ -76,5 +79,21 @@ namespace MyChurch.Api.Web.Controllers
             await Mediator.Send(cmd);
             return NoContent();
         }
+
+        [HttpPut("default")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SetDefault([FromBody] SetDefaultBankingInfoRequest body)
+        {
+            var cmd = AuthorizationRequestCreate<SetDefaultBankingInfoCommand>();
+            cmd.BankingInfoId = body.BankingInfoId;
+
+            var ok = await Mediator.Send(cmd);
+            return Ok(new { success = ok });
+        }
+    }
+
+    public class SetDefaultBankingInfoRequest
+    {
+        public int? BankingInfoId { get; set; }
     }
 }

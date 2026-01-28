@@ -11,6 +11,7 @@ namespace MyChurch.Application.Church.Commands.CreateBankingInfo
 {
     public class CreateBankingInfoCommand : JwtMemberDto, IRequest<BankingInfoDto>
     {
+        public string? Nickname { get; set; }
         public string BankName { get; set; }
         public string? BankCode { get; set; }
         public string Agency { get; set; }
@@ -48,6 +49,7 @@ namespace MyChurch.Application.Church.Commands.CreateBankingInfo
             var entity = new BankingInfo
             {
                 ChurchId = member.ChurchId,
+                Nickname = request.Nickname,
                 BankName = request.BankName,
                 BankCode = request.BankCode,
                 Agency = request.Agency,
