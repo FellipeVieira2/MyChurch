@@ -26,15 +26,9 @@ namespace MyChurch.Application.Plans.Services
             if (plan == null)
                 return;
 
-            if (newRole == UserRole.Admin)
-            {
-                var currentAdmins = await _uow.Members.Query()
-                    .AsNoTracking()
-                    .CountAsync(m => m.ChurchId == churchId && m.Role == UserRole.Admin && m.IsActive, cancellationToken);
-
-                if (currentAdmins >= plan.MaxAdmins)
-                    ValidationException.ThrowException("plan_limit", $"Limite de administradores atingido para o plano atual (MaxAdmins={plan.MaxAdmins}).");
-            }
+            // Perfis administrativos não dependem de limites de líderes
+            if (newRole is UserRole.Admin or UserRole.Pastor or UserRole.Administration)
+                return;
 
             if (newRole == UserRole.Leader)
             {

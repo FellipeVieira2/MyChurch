@@ -30,6 +30,9 @@ namespace MyChurch.Application.CashFlow.Queries.GetChurchCashFlowBalance
             if (member == null)
                 ValidationException.ThrowException("Member", "Este membro não existe.");
 
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui acesso ao módulo financeiro.");
+
             int churchId = member.ChurchId;
 
             // Calcula o saldo diretamente no banco

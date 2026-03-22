@@ -20,6 +20,7 @@ namespace MyChurch.Application.Dtos
         public WorshipServiceStatus Status { get; set; }
         public List<WorshipActivityDto> Activities { get; set; } = new();
         public List<WorshipScheduleItemDto>? Schedule { get; set; }
+        public List<WorshipScaleMemberDto>? ScaleMembers { get; set; }
         public int PresencesCount { get; set; }
 
         public static WorshipServiceDto New(Domain.Entities.WorshipService entity)
@@ -39,6 +40,11 @@ namespace MyChurch.Application.Dtos
                 Status = entity.Status,
                 Activities = entity.Activities?.Select(WorshipActivityDto.New).ToList() ?? new(),
                 Schedule = entity.Schedule?.Select(WorshipScheduleItemDto.New).ToList() ?? new(),
+                ScaleMembers = entity.ScaleMembers?
+                    .OrderBy(x => x.Order)
+                    .ThenBy(x => x.Member != null ? x.Member.Name : string.Empty)
+                    .Select(WorshipScaleMemberDto.New)
+                    .ToList() ?? new(),
                 PresencesCount = entity.Presences?.Count ?? 0
             };
         }

@@ -7,6 +7,7 @@ using MyChurch.Application.Church.Commands.SetDefaultBankingInfo;
 using MyChurch.Application.Church.Commands.UpdateBankingInfo;
 using MyChurch.Application.Church.Queries.GetChurchBankingInfos;
 using MyChurch.Application.Dtos;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -15,7 +16,7 @@ namespace MyChurch.Api.Web.Controllers
     public class BankingInfoController : BaseController
     {
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<BankingInfoDto>))]
         public async Task<IActionResult> GetAll()
         {
@@ -25,7 +26,7 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankingInfoDto))]
         public async Task<IActionResult> Create([FromBody] CreateBankingInfoCommand command)
         {
@@ -47,7 +48,7 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BankingInfoDto))]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBankingInfoV2Command body)
         {
@@ -70,7 +71,7 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -81,7 +82,7 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         [HttpPut("default")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         public async Task<IActionResult> SetDefault([FromBody] SetDefaultBankingInfoRequest body)
         {
             var cmd = AuthorizationRequestCreate<SetDefaultBankingInfoCommand>();

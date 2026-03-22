@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Application.Donation.Queries.GetChurchTransferBalance
 {
@@ -25,6 +26,9 @@ namespace MyChurch.Application.Donation.Queries.GetChurchTransferBalance
 
             if (member == null)
                 throw new UnauthorizedAccessException("Usuário não encontrado.");
+
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                throw new UnauthorizedAccessException("Este perfil não possui acesso ao módulo financeiro.");
 
             var churchId = member.ChurchId;
 

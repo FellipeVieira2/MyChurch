@@ -7,6 +7,7 @@ using MyChurch.Application.Reports.Queries.GetDashboardMetrics;
 using MyChurch.Application.Reports.Queries.GetDepartmentFinancialReport;
 using MyChurch.Application.Reports.Queries.GetFinancialReport;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 using Mychurch.Common.Services;
 
 namespace MyChurch.Api.Web.Controllers
@@ -61,7 +62,7 @@ namespace MyChurch.Api.Web.Controllers
         /// ?? Relatório Financeiro (JSON)
         /// </summary>
         [HttpGet("financial")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         public async Task<IActionResult> GetFinancialReport(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate,
@@ -80,7 +81,7 @@ namespace MyChurch.Api.Web.Controllers
         /// ?? Exportar Relatório Financeiro em PDF
         /// </summary>
         [HttpGet("financial/pdf")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         public async Task<IActionResult> ExportFinancialReportPdf(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate,
@@ -118,7 +119,7 @@ namespace MyChurch.Api.Web.Controllers
         /// ?? Exportar Relatório Financeiro em Excel
         /// </summary>
         [HttpGet("financial/excel")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         public async Task<IActionResult> ExportFinancialReportExcel(
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate,

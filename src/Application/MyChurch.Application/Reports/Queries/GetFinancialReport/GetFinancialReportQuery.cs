@@ -36,7 +36,8 @@ namespace MyChurch.Application.Reports.Queries.GetFinancialReport
             if (member == null)
                 ValidationException.ThrowException("Member", "Authenticated member does not exist.");
 
-            if (member.Role != UserRole.Admin)
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Member", "Only authorized financial profiles can access financial reports.");
                 ValidationException.ThrowException("Member", "Only admins can access financial reports.");
 
             var churchId = member.ChurchId;

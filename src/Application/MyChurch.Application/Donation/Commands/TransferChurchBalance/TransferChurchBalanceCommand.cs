@@ -37,8 +37,8 @@ namespace MyChurch.Application.Donation.Commands.TransferChurchBalance
             if (member == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
-            if (member.Role != UserRole.Admin)
-                ValidationException.ThrowException("Member", "Apenas administradores podem efetuar retiradas.");
+            if (!UserRoleAccess.CanManageFinancialModule(member.Role))
+                ValidationException.ThrowException("Member", "Apenas perfis com gestão financeira podem efetuar retiradas.");
 
             var churchId = member.ChurchId;
 

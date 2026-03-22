@@ -4,6 +4,7 @@ using MyChurch.Application.Donation.Commands.CreateDonation;
 using MyChurch.Application.Donation.Commands.TransferChurchBalance;
 using MyChurch.Application.Donation.Queries.GetAllPaidDonations;
 using MyChurch.Application.Donation.Queries.GetChurchTransferBalance;
+using MyChurch.Domain.Enum;
 namespace MyChurch.Api.Web.Controllers
 {
     public class DonationController : BaseController
@@ -49,7 +50,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Valor disponível para repasse para a igreja
         /// </summary>
         [HttpGet("transfer-balance")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTransferBalance()
         {
@@ -62,7 +63,7 @@ namespace MyChurch.Api.Web.Controllers
         /// Efetua retirada do valor disponível para a conta da igreja
         /// </summary>
         [HttpPost("transfer")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> TransferChurchBalance([FromBody] TransferChurchBalanceCommand command)
         {

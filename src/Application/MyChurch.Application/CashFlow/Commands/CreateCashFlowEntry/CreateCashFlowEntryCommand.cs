@@ -50,6 +50,9 @@ namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowEntry
             if (loggedMember == null)
                 ValidationException.ThrowException("Member", "Este membro não existe.");
 
+            if (!UserRoleAccess.CanManageFinancialModule(loggedMember.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui gestão financeira.");
+
             int churchId = loggedMember.ChurchId;
 
             // Valida se a categoria existe e pertence à igreja

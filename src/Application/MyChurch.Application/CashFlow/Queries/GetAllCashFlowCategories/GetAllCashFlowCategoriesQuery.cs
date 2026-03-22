@@ -4,6 +4,7 @@ using MyChurch.Application.Common.Models;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories
@@ -53,6 +54,9 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories
                 _logger.LogWarning("User {UserId} not found", request.UserId);
                 ValidationException.ThrowException("Member", "This Member does not exist.");
             }
+
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Member", "This profile does not have access to the financial module.");
 
             int churchId = member.ChurchId;
 

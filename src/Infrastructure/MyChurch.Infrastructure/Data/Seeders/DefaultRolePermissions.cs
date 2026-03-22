@@ -19,163 +19,37 @@ namespace MyChurch.Infrastructure.Data.Seeders
                 // ============================================
                 // ????? ADMIN - Administrador da igreja
                 // ============================================
-                [UserRole.Admin] = new List<Permission>
-                {
-                    // Membros
-                    Permission.ViewMembers,
-                    Permission.CreateMembers,
-                    Permission.EditMembers,
-                    Permission.DeleteMembers,
-                    Permission.ExportMembers,
-                    Permission.ImportMembers,
-                    Permission.ApproveMemberRegistration,
-                    Permission.ViewMemberDocuments,
-                    Permission.ViewMemberSensitiveData,
-                    Permission.ManageMemberRoles,
-                    Permission.ResetMemberPasswords,
+                [UserRole.Admin] = GetAdminPermissions(),
 
-                    // Finanças
-                    Permission.ViewFinances,
-                    Permission.ViewDonations,
-                    Permission.ManageDonations,
-                    Permission.ExportFinancialReports,
-                    Permission.ViewCampaigns,
-                    Permission.CreateCampaigns,
-                    Permission.EditCampaigns,
-                    Permission.DeleteCampaigns,
-                    Permission.ViewCashFlow,
-                    Permission.ManageCashFlow,
-                    Permission.CreateCashFlowEntry,
-                    Permission.EditCashFlowEntry,
-                    Permission.DeleteCashFlowEntry,
-                    Permission.ViewBankingInfo,
-                    Permission.ManageBankingInfo,
-                    Permission.RequestTransfers,
+                // ============================================
+                // ?? PASTOR - Visualiza tudo sem gerir financeiro
+                // ============================================
+                [UserRole.Pastor] = GetPastorPermissions(),
 
-                    // Eventos
-                    Permission.ViewEvents,
-                    Permission.CreateEvents,
-                    Permission.EditEvents,
-                    Permission.DeleteEvents,
-                    Permission.ManageEventParticipants,
-                    Permission.SendEventNotifications,
-                    Permission.ViewEventReports,
-                    Permission.ManageEventRecurrence,
+                // ============================================
+                // ?? ADMINISTRATION - Acesso administrativo completo
+                // ============================================
+                [UserRole.Administration] = GetAdministrationPermissions(),
 
-                    // Cultos
-                    Permission.ViewWorshipServices,
-                    Permission.CreateWorshipServices,
-                    Permission.EditWorshipServices,
-                    Permission.DeleteWorshipServices,
-                    Permission.ManageWorshipSchedule,
-                    Permission.ManagePrayerRequests,
-                    Permission.ViewPrayerRequests,
-                    Permission.ManagePresenceTracking,
-                    Permission.ViewPresenceReports,
+                // ============================================
+                // ?? WORSHIP - Louvor
+                // ============================================
+                [UserRole.Worship] = GetWorshipPermissions(),
 
-                    // Grupos
-                    Permission.ViewGroups,
-                    Permission.CreateGroups,
-                    Permission.EditGroups,
-                    Permission.DeleteGroups,
-                    Permission.ManageGroupMembers,
-                    Permission.ManageGroupMeetings,
-                    Permission.ViewGroupReports,
-                    Permission.ManageGroupResources,
+                // ============================================
+                // ?? YOUTH - Jovens
+                // ============================================
+                [UserRole.Youth] = GetYouthPermissions(),
 
-                    // Planos de Leitura
-                    Permission.ViewBibleReadingPlans,
-                    Permission.CreateBibleReadingPlans,
-                    Permission.EditBibleReadingPlans,
-                    Permission.DeleteBibleReadingPlans,
-                    Permission.AssignBibleReadingPlans,
-                    Permission.ViewMemberBibleProgress,
-                    Permission.ManagePublicPlans,
+                // ============================================
+                // ?? KIDS - Ministério infantil
+                // ============================================
+                [UserRole.Kids] = GetKidsPermissions(),
 
-                    // Jornadas
-                    Permission.ViewJourneys,
-                    Permission.CreateJourneys,
-                    Permission.EditJourneys,
-                    Permission.DeleteJourneys,
-                    Permission.AssignJourneys,
-                    Permission.VerifyJourneyProgress,
-                    Permission.ViewJourneyReports,
-
-                    // Visitantes
-                    Permission.ViewVisitors,
-                    Permission.CreateVisitors,
-                    Permission.EditVisitors,
-                    Permission.DeleteVisitors,
-                    Permission.ManageVisitorStatus,
-                    Permission.ViewVisitorTimeline,
-                    Permission.ManageVisitorFollowUp,
-                    Permission.ConvertVisitorToMember,
-
-                    // Relatórios
-                    Permission.ViewDashboard,
-                    Permission.ViewEngagementReports,
-                    Permission.ViewFinancialDashboard,
-                    Permission.ViewMembershipGrowth,
-                    Permission.ExportAllReports,
-                    Permission.ViewPastoralAlerts,
-
-                    // Configurações
-                    Permission.ViewChurchSettings,
-                    Permission.EditChurchSettings,
-                    Permission.ManageChurchPhotos,
-                    Permission.ManageChurchSchedules,
-                    Permission.ViewSubscriptionInfo,
-                    Permission.ManageSubscription,
-                    Permission.ViewOnboardingQRCode,
-                    Permission.ManageSocialMediaLinks,
-
-                    // Apresentações
-                    Permission.ViewPresentations,
-                    Permission.CreatePresentations,
-                    Permission.EditPresentations,
-                    Permission.DeletePresentations,
-                    Permission.ControlLivePresentations,
-
-                    // Feed Social
-                    Permission.ViewFeed,
-                    Permission.CreatePosts,
-                    Permission.EditOwnPosts,
-                    Permission.EditAllPosts,
-                    Permission.DeleteOwnPosts,
-                    Permission.DeleteAllPosts,
-                    Permission.ManageFeedImages,
-
-                    // Gamificação
-                    Permission.ViewAchievements,
-                    Permission.ManageAchievements,
-                    Permission.ViewFaithLevels,
-                    Permission.ManageFaithLevels,
-                    Permission.ViewDailyChallenges,
-                    Permission.ManageDailyChallenges,
-
-                    // Avaliações
-                    Permission.ViewReviews,
-                    Permission.CreateReviews,
-                    Permission.EditOwnReviews,
-                    Permission.DeleteOwnReviews,
-                    Permission.ModerateReviews,
-                    Permission.RespondToReviews,
-
-                    // Famílias
-                    Permission.ViewFamilies,
-                    Permission.CreateFamilies,
-                    Permission.EditFamilies,
-                    Permission.DeleteFamilies,
-                    Permission.ManageFamilyMembers,
-                    Permission.ManageChildren,
-
-                    // Sistema
-                    Permission.ManageUserRoles,
-                    Permission.ManagePermissions,
-                    Permission.ViewAuditLogs,
-                    Permission.ManageIntegrations,
-                    Permission.AccessAdminPanel,
-                },
+                // ============================================
+                // ?? DIACONATE - Diaconato
+                // ============================================
+                [UserRole.Diaconate] = GetDiaconatePermissions(),
 
                 // ============================================
                 // ?? MINISTER - Ministro/Pastor
@@ -267,41 +141,28 @@ namespace MyChurch.Infrastructure.Data.Seeders
                 // ============================================
                 [UserRole.Leader] = new List<Permission>
                 {
-                    // Membros
                     Permission.ViewMembers,
                     Permission.ViewMemberDocuments,
-
-                    // Eventos
                     Permission.ViewEvents,
                     Permission.CreateEvents,
                     Permission.EditEvents,
                     Permission.ManageEventParticipants,
-
-                    // Cultos
                     Permission.ViewWorshipServices,
                     Permission.ViewPrayerRequests,
                     Permission.ManagePresenceTracking,
-
-                    // Grupos
                     Permission.ViewGroups,
                     Permission.CreateGroups,
                     Permission.EditGroups,
                     Permission.ManageGroupMembers,
                     Permission.ManageGroupMeetings,
                     Permission.ManageGroupResources,
-
-                    // Jornadas
                     Permission.ViewJourneys,
                     Permission.AssignJourneys,
                     Permission.VerifyJourneyProgress,
-
-                    // Feed
                     Permission.ViewFeed,
                     Permission.CreatePosts,
                     Permission.EditOwnPosts,
                     Permission.DeleteOwnPosts,
-
-                    // Apresentações
                     Permission.ViewPresentations,
                     Permission.ControlLivePresentations,
                 },
@@ -402,6 +263,212 @@ namespace MyChurch.Infrastructure.Data.Seeders
                     Permission.ViewReviews,
                     Permission.CreateReviews,
                 },
+            };
+        }
+
+        private static List<Permission> GetAdminPermissions()
+        {
+            return new List<Permission>
+            {
+                Permission.ViewMembers,
+                Permission.CreateMembers,
+                Permission.EditMembers,
+                Permission.DeleteMembers,
+                Permission.ExportMembers,
+                Permission.ImportMembers,
+                Permission.ApproveMemberRegistration,
+                Permission.ViewMemberDocuments,
+                Permission.ViewMemberSensitiveData,
+                Permission.ManageMemberRoles,
+                Permission.ResetMemberPasswords,
+                Permission.ViewFinances,
+                Permission.ViewDonations,
+                Permission.ManageDonations,
+                Permission.ExportFinancialReports,
+                Permission.ViewCampaigns,
+                Permission.CreateCampaigns,
+                Permission.EditCampaigns,
+                Permission.DeleteCampaigns,
+                Permission.ViewCashFlow,
+                Permission.ManageCashFlow,
+                Permission.CreateCashFlowEntry,
+                Permission.EditCashFlowEntry,
+                Permission.DeleteCashFlowEntry,
+                Permission.ViewBankingInfo,
+                Permission.ManageBankingInfo,
+                Permission.RequestTransfers,
+                Permission.ViewEvents,
+                Permission.CreateEvents,
+                Permission.EditEvents,
+                Permission.DeleteEvents,
+                Permission.ManageEventParticipants,
+                Permission.SendEventNotifications,
+                Permission.ViewEventReports,
+                Permission.ManageEventRecurrence,
+                Permission.ViewWorshipServices,
+                Permission.CreateWorshipServices,
+                Permission.EditWorshipServices,
+                Permission.DeleteWorshipServices,
+                Permission.ManageWorshipSchedule,
+                Permission.ManagePrayerRequests,
+                Permission.ViewPrayerRequests,
+                Permission.ManagePresenceTracking,
+                Permission.ViewPresenceReports,
+                Permission.ViewGroups,
+                Permission.CreateGroups,
+                Permission.EditGroups,
+                Permission.DeleteGroups,
+                Permission.ManageGroupMembers,
+                Permission.ManageGroupMeetings,
+                Permission.ViewGroupReports,
+                Permission.ManageGroupResources,
+                Permission.ViewBibleReadingPlans,
+                Permission.CreateBibleReadingPlans,
+                Permission.EditBibleReadingPlans,
+                Permission.DeleteBibleReadingPlans,
+                Permission.AssignBibleReadingPlans,
+                Permission.ViewMemberBibleProgress,
+                Permission.ManagePublicPlans,
+                Permission.ViewJourneys,
+                Permission.CreateJourneys,
+                Permission.EditJourneys,
+                Permission.DeleteJourneys,
+                Permission.AssignJourneys,
+                Permission.VerifyJourneyProgress,
+                Permission.ViewJourneyReports,
+                Permission.ViewVisitors,
+                Permission.CreateVisitors,
+                Permission.EditVisitors,
+                Permission.DeleteVisitors,
+                Permission.ManageVisitorStatus,
+                Permission.ViewVisitorTimeline,
+                Permission.ManageVisitorFollowUp,
+                Permission.ConvertVisitorToMember,
+                Permission.ViewDashboard,
+                Permission.ViewEngagementReports,
+                Permission.ViewFinancialDashboard,
+                Permission.ViewMembershipGrowth,
+                Permission.ExportAllReports,
+                Permission.ViewPastoralAlerts,
+                Permission.ViewChurchSettings,
+                Permission.EditChurchSettings,
+                Permission.ManageChurchPhotos,
+                Permission.ManageChurchSchedules,
+                Permission.ViewSubscriptionInfo,
+                Permission.ManageSubscription,
+                Permission.ViewOnboardingQRCode,
+                Permission.ManageSocialMediaLinks,
+                Permission.ViewPresentations,
+                Permission.CreatePresentations,
+                Permission.EditPresentations,
+                Permission.DeletePresentations,
+                Permission.ControlLivePresentations,
+                Permission.ViewFeed,
+                Permission.CreatePosts,
+                Permission.EditOwnPosts,
+                Permission.EditAllPosts,
+                Permission.DeleteOwnPosts,
+                Permission.DeleteAllPosts,
+                Permission.ManageFeedImages,
+                Permission.ViewAchievements,
+                Permission.ManageAchievements,
+                Permission.ViewFaithLevels,
+                Permission.ManageFaithLevels,
+                Permission.ViewDailyChallenges,
+                Permission.ManageDailyChallenges,
+                Permission.ViewReviews,
+                Permission.CreateReviews,
+                Permission.EditOwnReviews,
+                Permission.DeleteOwnReviews,
+                Permission.ModerateReviews,
+                Permission.RespondToReviews,
+                Permission.ViewFamilies,
+                Permission.CreateFamilies,
+                Permission.EditFamilies,
+                Permission.DeleteFamilies,
+                Permission.ManageFamilyMembers,
+                Permission.ManageChildren,
+                Permission.ManageUserRoles,
+                Permission.ManagePermissions,
+                Permission.ViewAuditLogs,
+                Permission.ManageIntegrations,
+                Permission.AccessAdminPanel,
+            };
+        }
+
+        private static List<Permission> GetAdministrationPermissions()
+        {
+            return new List<Permission>(GetAdminPermissions());
+        }
+
+        private static List<Permission> GetPastorPermissions()
+        {
+            var permissions = GetAdminPermissions();
+
+            permissions.RemoveAll(permission => permission is
+                Permission.ManageDonations or
+                Permission.CreateCampaigns or
+                Permission.EditCampaigns or
+                Permission.DeleteCampaigns or
+                Permission.ManageCashFlow or
+                Permission.CreateCashFlowEntry or
+                Permission.EditCashFlowEntry or
+                Permission.DeleteCashFlowEntry or
+                Permission.ManageBankingInfo or
+                Permission.RequestTransfers or
+                Permission.ManageSubscription);
+
+            return permissions;
+        }
+
+        private static List<Permission> GetWorshipPermissions()
+        {
+            return new List<Permission>
+            {
+                Permission.ViewDashboard,
+                Permission.ViewEvents,
+                Permission.ViewWorshipServices,
+                Permission.ManageWorshipSchedule,
+                Permission.ViewBibleReadingPlans,
+                Permission.ViewPresentations,
+                Permission.ControlLivePresentations,
+            };
+        }
+
+        private static List<Permission> GetYouthPermissions()
+        {
+            return new List<Permission>
+            {
+                Permission.ViewDashboard,
+                Permission.ViewEvents,
+                Permission.ViewWorshipServices,
+                Permission.ViewBibleReadingPlans,
+            };
+        }
+
+        private static List<Permission> GetKidsPermissions()
+        {
+            return new List<Permission>
+            {
+                Permission.ViewDashboard,
+                Permission.ViewEvents,
+                Permission.ViewWorshipServices,
+                Permission.ManageWorshipSchedule,
+                Permission.ManagePresenceTracking,
+                Permission.ViewPresenceReports,
+                Permission.ViewBibleReadingPlans,
+            };
+        }
+
+        private static List<Permission> GetDiaconatePermissions()
+        {
+            return new List<Permission>
+            {
+                Permission.ViewDashboard,
+                Permission.ViewEvents,
+                Permission.ViewWorshipServices,
+                Permission.ManageWorshipSchedule,
+                Permission.ViewBibleReadingPlans,
             };
         }
 

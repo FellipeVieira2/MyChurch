@@ -33,7 +33,8 @@ namespace MyChurch.Application.Donation.Queries.GetTransferHistory
             if (member == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
-            if (member.Role != UserRole.Admin)
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Permissão", "Apenas perfis com acesso financeiro podem ver o histórico de retiradas.");
                 ValidationException.ThrowException("Permissão", "Apenas administradores podem ver o histórico de retiradas.");
 
             var query = _unitOfWork.TransferHistories.Query()

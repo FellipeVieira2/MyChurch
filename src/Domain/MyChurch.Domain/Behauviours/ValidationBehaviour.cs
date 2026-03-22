@@ -1,6 +1,6 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
+using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Domain.Behauviours
 {
@@ -14,7 +14,7 @@ namespace MyChurch.Domain.Behauviours
             _validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest request,  RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if (_validators.Any())
             {
@@ -31,10 +31,10 @@ namespace MyChurch.Domain.Behauviours
 
                 if (failures.Any())
                 {
-                    throw new ValidationException(failures);
+                    throw new MyChurch.Domain.Exceptions.ValidationException(failures);
                 }
-
             }
+
             return await next();
         }
     }

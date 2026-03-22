@@ -72,6 +72,11 @@ namespace MyChurch.Infrastructure.Mappings
                 .HasForeignKey(x => x.WorshipServiceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(x => x.ScaleMembers)
+                .WithOne(x => x.WorshipService)
+                .HasForeignKey(x => x.WorshipServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder
                 .HasMany(ws => ws.DonationWorshipServices)
                 .WithOne(dws => dws.WorshipService)

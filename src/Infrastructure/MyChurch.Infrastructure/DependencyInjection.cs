@@ -49,6 +49,7 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IWorshipPresenceRepository, WorshipPresenceRepository>();
             services.AddScoped<IWorshipServiceRepository, WorshipServiceRepository>();
             services.AddScoped<IWorshipScheduleRepository, WorshipScheduleRepository>();
+            services.AddScoped<IWorshipScaleMemberRepository, WorshipScaleMemberRepository>();
             services.AddScoped<IDonationWorshipServiceRepository, DonationWorshipServiceRepository>();
             services.AddScoped<IFeedPostImageRepository, FeedPostImageRepository>();
             services.AddScoped<IPrayerRequestRepository, PrayerRequestRepository>();

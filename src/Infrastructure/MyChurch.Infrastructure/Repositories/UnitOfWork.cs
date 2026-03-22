@@ -38,6 +38,7 @@ namespace MyChurch.Infrastructure.Repositories
         public IWorshipServiceRepository WorshipServices { get; }
         public IWorshipPresenceRepository WorshipPresences { get; }
         public IWorshipScheduleRepository WorshipSchedules { get; }
+        public IWorshipScaleMemberRepository WorshipScaleMembers { get; }
         public IDonationWorshipServiceRepository DonationWorshipServices { get; }
         public IPrayerRequestRepository PrayerRequests { get; }
         public IFeedPostImageRepository FeedPostImages { get; }
@@ -133,6 +134,7 @@ namespace MyChurch.Infrastructure.Repositories
             WorshipServices = new WorshipServiceRepository(_context);
             WorshipPresences = new WorshipPresenceRepository(_context);
             WorshipSchedules = new WorshipScheduleRepository(_context);
+            WorshipScaleMembers = new WorshipScaleMemberRepository(_context);
             DonationWorshipServices = new DonationWorshipServiceRepository(_context);
             PrayerRequests = new PrayerRequestRepository(_context);
             FeedPostImages = new FeedPostImageRepository(_context);

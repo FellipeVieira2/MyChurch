@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.CashFlow.Queries.GetCashFlowEntryById
@@ -30,6 +31,9 @@ namespace MyChurch.Application.CashFlow.Queries.GetCashFlowEntryById
 
             if (loggedMember == null)
                 throw new UnauthorizedAccessException("Usuário não encontrado.");
+
+            if (!UserRoleAccess.CanViewFinancialModule(loggedMember.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui acesso ao módulo financeiro.");
 
             // Busca o lançamento e inclui navegações relevantes
             var entry = await _unitOfWork.CashFlowEntries.Query()

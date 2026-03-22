@@ -21,6 +21,7 @@ namespace MyChurch.Domain.Entities
         public ICollection<WorshipActivity> Activities { get; set; } = new List<WorshipActivity>();
         public ICollection<WorshipPresence> Presences { get; set; } = new List<WorshipPresence>();
         public ICollection<WorshipScheduleItem> Schedule { get; set; } = new List<WorshipScheduleItem>();
+        public ICollection<WorshipScaleMember> ScaleMembers { get; set; } = new List<WorshipScaleMember>();
         public ICollection<DonationWorshipService> DonationWorshipServices { get; set; } = new List<DonationWorshipService>();
         public ICollection<PrayerRequest> PrayerRequests { get; set; } = new List<PrayerRequest>();
     }

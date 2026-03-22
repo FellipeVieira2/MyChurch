@@ -28,7 +28,8 @@ namespace MyChurch.Application.Church.Queries.GetChurchBankingInfos
             if (member == null)
                 ValidationException.ThrowException("Member", "Usuário não encontrado.");
 
-            if (member.Role != UserRole.Admin)
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Permissão", "Apenas perfis com acesso financeiro podem visualizar contas bancárias.");
                 ValidationException.ThrowException("Permissão", "Apenas administradores podem visualizar contas bancárias.");
 
             var items = await _unitOfWork.BankingInfos.Query()

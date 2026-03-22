@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyChurch.Application.Donation.Queries.GetTransferHistory;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -9,7 +10,7 @@ namespace MyChurch.Api.Web.Controllers
     public class TransferHistoryController : BaseController
     {
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         public async Task<IActionResult> Get([FromQuery] GetTransferHistoryQuery query)
         {
             var q = AuthorizationRequestCreate<GetTransferHistoryQuery>();

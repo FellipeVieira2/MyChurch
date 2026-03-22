@@ -157,16 +157,28 @@ namespace MyChurch.Application.Member.Commands.CreateMember
                 .Select(d => _documentValidator.RemoveFormatting(d.Number))
                 .ToList() ?? new List<string>();
 
-            // Validação de duplicidade (documento/email)
-            var exists = await _unitOfWork.Members.Query()
-                .AnyAsync(m =>
-                    m.ChurchId == churchId &&
-                    (m.Documents.Any(x => documentNumbers.Contains(x.Number)) ||
-                     (!string.IsNullOrEmpty(request.Email) && m.Email == request.Email) || (request.Name == m.Name)),
-                    cancellationToken);
- 
-            if (exists)
-                MyChurch.Domain.Exceptions.ValidationException.ThrowException("Member", "This Member already exists.");
+            // Validação de duplicidade (email)
+            if (!string.IsNullOrWhiteSpace(request.Email))
+            {
+                var emailExists = await _unitOfWork.Members.Query()
+                    .AnyAsync(m => m.ChurchId == churchId && m.Email == request.Email, cancellationToken);
+
+                if (emailExists)
+                    MyChurch.Domain.Exceptions.ValidationException.ThrowException("Email", "Este e-mail já está cadastrado.");
+            }
+
+            // Validação de duplicidade (documentos)
+            if (documentNumbers.Count > 0)
+            {
+                var documentExists = await _unitOfWork.Members.Query()
+                    .AnyAsync(m =>
+                        m.ChurchId == churchId &&
+                        m.Documents.Any(x => documentNumbers.Contains(x.Number)),
+                        cancellationToken);
+
+                if (documentExists)
+                    MyChurch.Domain.Exceptions.ValidationException.ThrowException("Document", "Este documento já está cadastrado.");
+            }
 
             var member = new Domain.Entities.Member
             {

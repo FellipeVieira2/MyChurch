@@ -32,6 +32,7 @@
         IWorshipServiceRepository WorshipServices { get; }
         IWorshipPresenceRepository WorshipPresences { get; }
         IWorshipScheduleRepository WorshipSchedules { get; }
+        IWorshipScaleMemberRepository WorshipScaleMembers { get; }
         IDonationWorshipServiceRepository DonationWorshipServices { get; }
         IPrayerRequestRepository PrayerRequests { get; }
         IFeedPostImageRepository FeedPostImages { get; }

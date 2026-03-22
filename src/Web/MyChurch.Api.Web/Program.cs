@@ -36,6 +36,7 @@ using Mychurch.Common.Services;
 using MyChurch.Infrastructure.Services.Reports;
 using System.Security.Claims;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -180,7 +181,21 @@ builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
 builder.Services.InjectS3(builder.Configuration);
 builder.Services.InjectApplication();
 builder.Services.AddHttpClient<IAsaasWebClient, AsaasWebClient>();
-builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>());
+builder.Services.AddControllers(options => options.Filters.Add<JwtMemberFilter>())
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var problem = new ValidationProblemDetails(context.ModelState)
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation failed",
+                Type = "https://httpstatuses.com/400"
+            };
+
+            return new BadRequestObjectResult(problem);
+        };
+    });
 
 // ? CORS configurado corretamente para Produção e Desenvolvimento
 builder.Services.AddCors(options =>
@@ -297,22 +312,34 @@ app.UseExceptionHandler(errorApp =>
         var logger = context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("GlobalExceptionHandler");
         logger.LogError(exception, "Unhandled exception processing {Method} {Path}", context.Request.Method, context.Request.Path);
 
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = "application/problem+json";
 
+        // Domínio: validação (FluentValidation + ValidationBehaviour + ThrowException)
         if (exception is MyChurch.Domain.Exceptions.ValidationException validationEx)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-            var problem = new ProblemDetails
+            var problem = new ValidationProblemDetails(validationEx.Errors)
             {
                 Status = StatusCodes.Status400BadRequest,
-                Title = "Validation failed",
-                Type = "https://httpstatuses.com/400",
-                Detail = "One or more validation errors occurred."
+                Title = validationEx.Message,
+                Type = "https://httpstatuses.com/400"
             };
-            problem.Extensions["errors"] = validationEx.Errors;
 
             await context.Response.WriteAsJsonAsync(problem);
+            return;
+        }
+
+        // Auth
+        if (exception is UnauthorizedAccessException)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsJsonAsync(new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Unauthorized",
+                Type = "https://httpstatuses.com/401"
+            });
             return;
         }
 
@@ -353,4 +380,4 @@ app.MapHub<WorshipServiceHub>("/ws/worship");
 app.MapHub<CampaignHub>("/campaignHub");
 app.MapHub<GroupHub>("/hubs/group");
 
-app.Run();app.Run();
+app.Run();

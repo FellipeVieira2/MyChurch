@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using MyChurch.Api.Web.Middleware;
 using MyChurch.Application.WorshipActivity.Commands;
+using MyChurch.Application.WorshipService.Commands.ManageScale;
 using MyChurch.Application.WorshipService.Commands.ManageSchedule;
 using MyChurch.Application.WorshipService.Commands.PrayerRequest;
+using MyChurch.Application.WorshipService.Queries.GetScaleMembers;
 using MyChurch.Application.WorshipService.Queries.PrayerRequest;
 using MyChurch.Domain.Contracts;
 using MyChurch.Application.WorshipService.Commands.Presence; // added
@@ -245,6 +247,58 @@ namespace MyChurch.Api.Web.Controllers
         public async Task<IActionResult> RemoveScheduleItem(int worshipServiceId, int id)
         {
             var command = AuthorizationRequestCreate<RemoveWorshipScheduleItemCommand>();
+            command.Id = id;
+            command.WorshipServiceId = worshipServiceId;
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{worshipServiceId}/scale")]
+        public async Task<IActionResult> GetScaleMembers(int worshipServiceId)
+        {
+            var query = AuthorizationRequestCreate<GetWorshipScaleMembersQuery>();
+            query.WorshipServiceId = worshipServiceId;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{worshipServiceId}/scale")]
+        public async Task<IActionResult> AddScaleMember(int worshipServiceId, [FromBody] AddWorshipScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<AddWorshipScaleMemberCommand>();
+            authorizedCommand.WorshipServiceId = worshipServiceId;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var id = await Mediator.Send(authorizedCommand);
+            return Ok(new { id });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{worshipServiceId}/scale/{id}")]
+        public async Task<IActionResult> UpdateScaleMember(int worshipServiceId, int id, [FromBody] UpdateWorshipScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<UpdateWorshipScaleMemberCommand>();
+            authorizedCommand.Id = id;
+            authorizedCommand.WorshipServiceId = worshipServiceId;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var result = await Mediator.Send(authorizedCommand);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{worshipServiceId}/scale/{id}")]
+        public async Task<IActionResult> RemoveScaleMember(int worshipServiceId, int id)
+        {
+            var command = AuthorizationRequestCreate<RemoveWorshipScaleMemberCommand>();
             command.Id = id;
             command.WorshipServiceId = worshipServiceId;
             var result = await Mediator.Send(command);

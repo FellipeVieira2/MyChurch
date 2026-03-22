@@ -43,6 +43,9 @@ namespace MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory
             if (loggedMember is null)
                 ValidationException.ThrowException("Member", "Este membro não existe.");
 
+            if (!UserRoleAccess.CanManageFinancialModule(loggedMember.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui gestão financeira.");
+
             var categories = await _unitOfWork.CashFlowCategories.Query()
                 .FirstOrDefaultAsync(e => e.Id == request.Id && e.ChurchId == loggedMember.ChurchId, cancellationToken);
 

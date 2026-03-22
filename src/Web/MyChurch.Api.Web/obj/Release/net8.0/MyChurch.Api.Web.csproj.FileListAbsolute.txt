@@ -593,3 +593,4 @@ D:\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\MyChurch.Api.Web.xml
 D:\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\MyChurch.Api.Web.pdb
 D:\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\MyChurch.Api.Web.genruntimeconfig.cache
 D:\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\ref\MyChurch.Api.Web.dll
+D:\MyChurch\src\Web\MyChurch.Api.Web\obj\Release\net8.0\swae.build.ex.cache

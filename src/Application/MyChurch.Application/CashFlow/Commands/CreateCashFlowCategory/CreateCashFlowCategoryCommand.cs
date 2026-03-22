@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
 using MyChurch.Domain.Entities;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 
 namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory
@@ -36,6 +37,9 @@ namespace MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory
 
             if (loggedMember == null)
                 ValidationException.ThrowException("Member", "Este membro não existe.");
+
+            if (!UserRoleAccess.CanManageFinancialModule(loggedMember.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui gestão financeira.");
 
             int churchId = loggedMember.ChurchId;
 

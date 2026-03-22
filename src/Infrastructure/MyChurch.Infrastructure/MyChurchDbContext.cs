@@ -26,6 +26,7 @@ namespace MyChurch.Infrastructure
         public DbSet<ReviewVote> ReviewVotes { get; set; }
         public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
         public DbSet<ReviewResponse> ReviewResponses { get; set; }
+        public DbSet<WorshipScaleMember> WorshipScaleMembers { get; set; }
         
         // 🎯 MINISTÉRIOS
         public DbSet<Ministry> Ministries { get; set; }

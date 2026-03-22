@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "EDSZk6hJRhE=",
+  "dgSpecHash": "aX06uJoZTW8=",
   "success": true,
   "projectFilePath": "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.3\\microsoft.extensions.configuration.abstractions.9.0.3.nupkg.sha512",
-    "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.3\\microsoft.extensions.primitives.9.0.3.nupkg.sha512"
+    "C:\\Users\\fvsou\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.3\\microsoft.extensions.configuration.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\fvsou\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.3\\microsoft.extensions.primitives.9.0.3.nupkg.sha512"
   ],
   "logs": []
 }

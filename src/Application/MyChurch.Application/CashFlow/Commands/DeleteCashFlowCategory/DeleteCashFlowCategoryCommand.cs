@@ -5,6 +5,7 @@ using MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory;
 using MyChurch.Application.CashFlow.Commands.UpdateCashFlowEntry;
 using MyChurch.Application.Dtos;
 using MyChurch.Domain.Contracts;
+using MyChurch.Domain.Enum;
 using MyChurch.Domain.Exceptions;
 using System.Text.Json.Serialization;
 
@@ -38,6 +39,9 @@ namespace MyChurch.Application.CashFlow.Commands.DeleteCashFlowCategory
 
             if (loggedMember == null)
                 ValidationException.ThrowException("Member", "Este membro não existe.");
+
+            if (!UserRoleAccess.CanManageFinancialModule(loggedMember.Role))
+                ValidationException.ThrowException("Permissão", "Este perfil não possui gestão financeira.");
 
             // Busca o lançamento
             var category = await _unitOfWork.CashFlowCategories.Query()

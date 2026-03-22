@@ -4222,6 +4222,48 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("worship_schedule_items", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipScaleMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("integer")
+                        .HasColumnName("member_id");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("role_name");
+
+                    b.Property<int>("WorshipServiceId")
+                        .HasColumnType("integer")
+                        .HasColumnName("worship_service_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("WorshipServiceId", "MemberId", "RoleName")
+                        .IsUnique();
+
+                    b.ToTable("worship_scale_members", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.WorshipService", b =>
                 {
                     b.Property<int>("Id")
@@ -5356,6 +5398,25 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("WorshipService");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.WorshipScaleMember", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.WorshipService", "WorshipService")
+                        .WithMany("ScaleMembers")
+                        .HasForeignKey("WorshipServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("WorshipService");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.WorshipService", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Department", "Department")
@@ -5560,6 +5621,8 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("PrayerRequests");
 
                     b.Navigation("Presences");
+
+                    b.Navigation("ScaleMembers");
 
                     b.Navigation("Schedule");
                 });

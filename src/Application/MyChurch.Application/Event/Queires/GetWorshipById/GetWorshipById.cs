@@ -45,6 +45,8 @@ namespace MyChurch.Application.Event.Queires.GetWorshipById
                     .ThenInclude(a => a.Hymns)
                 .Include(ws => ws.Presences)
                 .Include(ws => ws.Schedule)
+                .Include(ws => ws.ScaleMembers)
+                    .ThenInclude(sm => sm.Member)
                 .Where(ws => ws.Id == request.Id && ws.ChurchId == loggedMember.ChurchId);
 
             if (loggedMember.Role != UserRole.Admin)

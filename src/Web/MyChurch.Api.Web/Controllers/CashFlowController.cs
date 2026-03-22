@@ -13,6 +13,7 @@ using MyChurch.Application.CashFlow.Commands.CreateCashFlowCategory;
 using MyChurch.Application.CashFlow.Commands.UpdateCashFlowCategory;
 using MyChurch.Application.CashFlow.Commands.DeleteCashFlowCategory;
 using MyChurch.Application.CashFlow.Queries.GetAllCashFlowCategories;
+using MyChurch.Domain.Enum;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Cria um novo lançamento de fluxo de caixa
         /// </summary>
-        [Authorize]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> CreateCashFlowEntry([FromBody] CreateCashFlowEntryCommand command)
@@ -43,7 +44,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Retorna o saldo consolidado do fluxo de caixa da igreja com totalizadores
         /// </summary>
-        [Authorize]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [HttpGet("balance")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(decimal))]
         public async Task<IActionResult> GetChurchCashFlowBalance()
@@ -55,7 +56,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Atualiza um lançamento de fluxo de caixa existente
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CashFlowEntryDto))]
         public async Task<IActionResult> UpdateCashFlowEntry(int id, [FromBody] UpdateCashFlowEntryCommand command)
@@ -68,7 +69,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Busca um lançamento de fluxo de caixa por ID
         /// </summary>
-        [Authorize]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CashFlowEntryDto))]
         public async Task<IActionResult> GetCashFlowEntry(int id)
@@ -85,7 +86,7 @@ namespace MyChurch.Api.Web.Controllers
         /// </summary>
         /// <param name="query">Filtros de busca e paginação</param>
         /// <returns>Lista paginada com totalizadores</returns>
-        [Authorize]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CashFlowEntryPagedResult))]
         public async Task<IActionResult> GetAllCashFlowEntries([FromQuery] GetAllCashFlowEntriesQuery query)
@@ -97,7 +98,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Exclui um lançamento de fluxo de caixa
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteCashFlowEntry(int id)
@@ -111,7 +112,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Cria uma nova categoria de fluxo de caixa
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpPost("categories")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         public async Task<IActionResult> CreateCashFlowCategory([FromBody] CreateCashFlowCategoryCommand command)
@@ -123,7 +124,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Atualiza uma categoria de fluxo de caixa existente
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpPut("categories/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CashFlowCategoryDto))]
         public async Task<IActionResult> UpdateCashFlowCategory(int id, [FromBody] UpdateCashFlowCategoryCommand command)
@@ -136,7 +137,7 @@ namespace MyChurch.Api.Web.Controllers
         /// <summary>
         /// Exclui uma categoria de fluxo de caixa
         /// </summary>
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UserRoleAccess.FinancialManageRoles)]
         [HttpDelete("categories/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> DeleteCashFlowCategory(int id)
@@ -152,7 +153,7 @@ namespace MyChurch.Api.Web.Controllers
         /// </summary>
         /// <param name="query">Filtros e paginação</param>
         /// <returns>Lista paginada de categorias</returns>
-        [Authorize]
+        [Authorize(Roles = UserRoleAccess.FinancialViewRoles)]
         [HttpGet("categories")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaginatedList<CashFlowCategoryDto>))]
         public async Task<IActionResult> GetAllCashFlowCategories([FromQuery] GetAllCashFlowCategoriesQuery query)

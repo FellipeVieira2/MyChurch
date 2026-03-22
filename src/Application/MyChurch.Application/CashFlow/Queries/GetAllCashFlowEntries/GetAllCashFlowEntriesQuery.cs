@@ -64,6 +64,9 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries
                 ValidationException.ThrowException("Member", "This Member does not exist.");
             }
 
+            if (!UserRoleAccess.CanViewFinancialModule(member.Role))
+                ValidationException.ThrowException("Member", "This profile does not have access to the financial module.");
+
             int churchId = member.ChurchId;
 
             var query = _unitOfWork.CashFlowEntries.Query()
@@ -76,7 +79,7 @@ namespace MyChurch.Application.CashFlow.Queries.GetAllCashFlowEntries
             // Permissões por departamento:
             // - Admin vê tudo (pode filtrar DepartmentId específico)
             // - Demais usuários: apenas DepartmentId que ele participa + lançamentos gerais (DepartmentId null)
-            if (member.Role != UserRole.Admin)
+            if (!UserRoleAccess.CanManageFinancialModule(member.Role))
             {
                 var allowedDepartments = await _departmentAccess.GetAccessibleDepartmentIdsAsync(member.Id, cancellationToken);
 

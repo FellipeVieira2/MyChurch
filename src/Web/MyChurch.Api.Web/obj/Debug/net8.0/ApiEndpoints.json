@@ -7443,6 +7443,90 @@
   },
   {
     "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "GetScaleMembers",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/scale",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "AddScaleMember",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/scale",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.WorshipService.Commands.ManageScale.AddWorshipScaleMemberCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "UpdateScaleMember",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/scale/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "command",
+        "Type": "MyChurch.Application.WorshipService.Commands.ManageScale.UpdateWorshipScaleMemberCommand",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
+    "Method": "RemoveScaleMember",
+    "RelativePath": "api/WorshipActivity/{worshipServiceId}/scale/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "worshipServiceId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MyChurch.Api.Web.Controllers.WorshipActivityController",
     "Method": "AddScheduleItem",
     "RelativePath": "api/WorshipActivity/{worshipServiceId}/schedule/add",
     "HttpMethod": "POST",
