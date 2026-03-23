@@ -832,9 +832,24 @@
             <response code="400">Falha: Dados inválidos</response>
             <response code="401">Falha: Não autorizado</response>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetAll(System.String)">
+            <summary>
+            Lista os hinos cadastrados na plataforma.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.HymnController.ImportHymns(MyChurch.Application.Hymn.Commands.ImportHymnJson.ImportHymnJsonCommand)">
             <summary>
             Importa hinos a partir de um arquivo JSON no formato da Harpa.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.Create(MyChurch.Application.Hymn.Commands.CreateHymn.CreateHymnCommand)">
+            <summary>
+            Cria um novo hino.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetById(System.Int32)">
+            <summary>
+            Retorna um hino pelo identificador.
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetHymnByNumber(System.Int32)">
@@ -842,9 +857,24 @@
             Busca um hino pelo número, retornando o coro e os versos.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.Update(System.Int32,MyChurch.Application.Hymn.Commands.UpdateHymn.UpdateHymnCommand)">
+            <summary>
+            Atualiza um hino existente.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.Delete(System.Int32)">
+            <summary>
+            Remove um hino da plataforma.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.HymnController.GetAllHymnSummaries">
             <summary>
             Retorna uma lista de todos os hinos com número e título.
+            </summary>
+        </member>
+        <member name="M:MyChurch.Api.Web.Controllers.HymnController.Preview(MyChurch.Application.Hymn.Queries.PreviewHymnLayout.PreviewHymnLayoutQuery)">
+            <summary>
+            Gera uma pré-visualização das telas da apresentação com base no texto informado.
             </summary>
         </member>
         <member name="M:MyChurch.Api.Web.Controllers.LyricsController.GetLyrics(System.String)">

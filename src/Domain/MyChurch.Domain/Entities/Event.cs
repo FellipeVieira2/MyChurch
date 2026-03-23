@@ -19,6 +19,8 @@ namespace MyChurch.Domain.Entities
 
         public bool RequiresParticipantList { get; set; } = false;
         public ICollection<Member> Participants { get; set; } = new List<Member>();
+        public ICollection<DiaconateScaleMember> DiaconateScaleMembers { get; set; } = new List<DiaconateScaleMember>();
+        public ICollection<KidsScaleMember> KidsScaleMembers { get; set; } = new List<KidsScaleMember>();
         public ICollection<WorshipService> WorshipServices { get; set; } = new List<WorshipService>();
         public EventRecurrence Recurrence { get; set; }
         public ICollection<EventNotification> Notifications { get; set; } = new List<EventNotification>();

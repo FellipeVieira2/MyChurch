@@ -15,6 +15,8 @@
         public bool RequiresParticipantList { get; set; }
         public int EventType { get; set; } // Assuming EventType is an integer enum
         public ICollection<MemberDto> Participants { get; set; } = new List<MemberDto>();
+        public ICollection<DiaconateScaleMemberDto> DiaconateScaleMembers { get; set; } = new List<DiaconateScaleMemberDto>();
+        public ICollection<KidsScaleMemberDto> KidsScaleMembers { get; set; } = new List<KidsScaleMemberDto>();
 
         public EventRecurrenceDto? Recurrence { get; set; }
         public ICollection<EventNotificationDto> Notifications { get; set; } = new List<EventNotificationDto>();
@@ -34,6 +36,16 @@
                 DepartmentName = ev.Department?.Name,
                 RequiresParticipantList = ev.RequiresParticipantList,
                 Participants = ev.Participants?.Select(MemberDto.New).ToList() ?? new List<MemberDto>(),
+                DiaconateScaleMembers = ev.DiaconateScaleMembers?
+                    .OrderBy(x => x.Order)
+                    .ThenBy(x => x.Member != null ? x.Member.Name : string.Empty)
+                    .Select(DiaconateScaleMemberDto.New)
+                    .ToList() ?? new List<DiaconateScaleMemberDto>(),
+                KidsScaleMembers = ev.KidsScaleMembers?
+                    .OrderBy(x => x.Order)
+                    .ThenBy(x => x.Member != null ? x.Member.Name : string.Empty)
+                    .Select(KidsScaleMemberDto.New)
+                    .ToList() ?? new List<KidsScaleMemberDto>(),
                 Recurrence = ev.Recurrence != null ? EventRecurrenceDto.New(ev.Recurrence) : null,
                 EventType = (int)ev.EventType, // Assuming EventType is an enum
                 Notifications = ev.Notifications?.Select(EventNotificationDto.New).ToList() ?? new List<EventNotificationDto>()

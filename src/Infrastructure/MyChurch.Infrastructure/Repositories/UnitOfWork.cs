@@ -11,6 +11,8 @@ namespace MyChurch.Infrastructure.Repositories
         public IChurchRepository Churchs { get; }
         public IDonationRepository Donations { get; }
         public IEventRepository Events { get; }
+        public IDiaconateScaleMemberRepository DiaconateScaleMembers { get; }
+        public IKidsScaleMemberRepository KidsScaleMembers { get; }
         public IMemberRepository Members { get; }
         public IPaymentRepository Payments { get; }
         public IPlanRepository Plans { get; }
@@ -48,6 +50,8 @@ namespace MyChurch.Infrastructure.Repositories
         public IFamilyRepository Families { get; }
         public IFamilyInvitationRepository FamilyInvitations { get; }
         public IChildRepository Children { get; }
+        public IChildPickupAuthorizationRepository ChildPickupAuthorizations { get; }
+        public IKidsCheckInRepository KidsCheckIns { get; }
         public IGroupRepository Groups { get; }
         public IChildGroupAssignmentRepository ChildGroupAssignments { get; }
         public IGroupMemberRepository GroupMembers { get; }
@@ -107,6 +111,8 @@ namespace MyChurch.Infrastructure.Repositories
             Churchs = new ChurchRepository(_context);
             Donations = new DonationRepository(_context);
             Events = new EventRepository(_context);
+            DiaconateScaleMembers = new DiaconateScaleMemberRepository(_context);
+            KidsScaleMembers = new KidsScaleMemberRepository(_context);
             Members = new MemberRepository(_context);
             Payments = new PaymentRepository(_context);
             Plans = new PlanRepository(_context);
@@ -144,6 +150,8 @@ namespace MyChurch.Infrastructure.Repositories
             Families = new FamilyRepository(_context);
             FamilyInvitations = new FamilyInvitationRepository(_context);
             Children = new ChildRepository(_context);
+            ChildPickupAuthorizations = new ChildPickupAuthorizationRepository(_context);
+            KidsCheckIns = new KidsCheckInRepository(_context);
             Groups = new GroupRepository(_context);
             ChildGroupAssignments = new ChildGroupAssignmentRepository(_context);
             GroupMembers = new GroupMemberRepository(_context);

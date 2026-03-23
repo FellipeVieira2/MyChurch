@@ -39,6 +39,10 @@ namespace MyChurch.Application.Event.Queries.GetEventById
                 .Include(e => e.Department)
                 .Include(e => e.Church)
                 .Include(e => e.Participants)
+                .Include(e => e.DiaconateScaleMembers)
+                    .ThenInclude(x => x.Member)
+                .Include(e => e.KidsScaleMembers)
+                    .ThenInclude(x => x.Member)
                 .Include(e => e.Notifications)
                 .Include(e => e.Recurrence)
                 .Where(e => e.Id == request.Id && e.ChurchId == churchId);

@@ -5,6 +5,7 @@ using MyChurch.Application.Departments.Queries.GetDepartments;
 using MyChurch.Application.Departments.Commands.AddDepartmentMember;
 using MyChurch.Application.Departments.Commands.RemoveDepartmentMember;
 using MyChurch.Application.Departments.Queries.GetDepartmentMembers;
+using MyChurch.Application.Departments.Queries.GetDepartmentPermissionOverview;
 
 namespace MyChurch.Api.Web.Controllers
 {
@@ -43,6 +44,15 @@ namespace MyChurch.Api.Web.Controllers
         public async Task<IActionResult> GetMembers([FromRoute] int departmentId)
         {
             var q = AuthorizationRequestCreate<GetDepartmentMembersQuery>();
+            q.DepartmentId = departmentId;
+            var result = await Mediator.Send(q);
+            return Ok(result);
+        }
+
+        [HttpGet("{departmentId}/permissions/overview")]
+        public async Task<IActionResult> GetPermissionOverview([FromRoute] int departmentId)
+        {
+            var q = AuthorizationRequestCreate<GetDepartmentPermissionOverviewQuery>();
             q.DepartmentId = departmentId;
             var result = await Mediator.Send(q);
             return Ok(result);

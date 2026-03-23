@@ -38,7 +38,7 @@ namespace MyChurch.Application.Hymn.Queries.GetHymnByNumber
                 MelodyAuthor = hymn.MelodyAuthor,
                 Verses = hymn.HymnVerses
                     .OrderBy(v => v.Number)
-                    .Select(v => new HymnVerseDto { Number = v.Number, Text = v.Text })
+                    .Select(v => new HymnVerseDto { Id = v.Id, Number = v.Number, Text = v.Text })
                     .ToList()
             };
         }

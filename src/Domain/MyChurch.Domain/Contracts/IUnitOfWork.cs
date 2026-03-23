@@ -5,6 +5,8 @@
         IChurchRepository Churchs { get; }
         IDonationRepository Donations { get; }
         IEventRepository Events { get; }
+        IDiaconateScaleMemberRepository DiaconateScaleMembers { get; }
+        IKidsScaleMemberRepository KidsScaleMembers { get; }
         IMemberRepository Members { get; }
         IPaymentRepository Payments { get; }
         IPlanRepository Plans { get; }
@@ -42,6 +44,8 @@
         IFamilyRepository Families { get; }
         IFamilyInvitationRepository FamilyInvitations { get; }
         IChildRepository Children { get; }
+        IChildPickupAuthorizationRepository ChildPickupAuthorizations { get; }
+        IKidsCheckInRepository KidsCheckIns { get; }
         IGroupRepository Groups { get; }
         IChildGroupAssignmentRepository ChildGroupAssignments { get; }
         IGroupMemberRepository GroupMembers { get; }

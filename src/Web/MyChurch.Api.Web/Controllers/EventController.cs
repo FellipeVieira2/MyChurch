@@ -4,12 +4,16 @@ using Mychurch.Common.Utils.Objects;
 using MyChurch.Application.Dtos;
 using MyChurch.Application.Event.Commands.CreateEvent;
 using MyChurch.Application.Event.Commands.DeleteEvent;
+using MyChurch.Application.Event.Commands.ManageDiaconateScale;
+using MyChurch.Application.Event.Commands.ManageKidsScale;
 using MyChurch.Application.Event.Commands.UpdateEvent;
 using MyChurch.Application.Event.Commands.ManageEventParticipants;
 using MyChurch.Application.Event.Queires.GetAllWorship;
 using MyChurch.Application.Event.Queires.GetEventsForCalendar;
 using MyChurch.Application.Event.Queires.GetWorshipById;
+using MyChurch.Application.Event.Queries.GetDiaconateScaleMembers;
 using MyChurch.Application.Event.Queries.GetEventById;
+using MyChurch.Application.Event.Queries.GetKidsScaleMembers;
 using MyChurch.Application.WorshipService.Commands.ManageSchedule;
 
 namespace MyChurch.Api.Web.Controllers
@@ -67,6 +71,110 @@ namespace MyChurch.Api.Web.Controllers
 
             var updated = await Mediator.Send(cmd);
             return Ok(updated);
+        }
+
+        [Authorize]
+        [HttpGet("{id}/diaconate-scale")]
+        public async Task<IActionResult> GetDiaconateScale([FromRoute] int id)
+        {
+            var query = AuthorizationRequestCreate<GetDiaconateScaleMembersQuery>();
+            query.EventId = id;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{id}/diaconate-scale")]
+        public async Task<IActionResult> AddDiaconateScale([FromRoute] int id, [FromBody] AddDiaconateScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<AddDiaconateScaleMemberCommand>();
+            authorizedCommand.EventId = id;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var result = await Mediator.Send(authorizedCommand);
+            return Ok(new { id = result });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/diaconate-scale/{scaleItemId}")]
+        public async Task<IActionResult> UpdateDiaconateScale([FromRoute] int id, [FromRoute] int scaleItemId, [FromBody] UpdateDiaconateScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<UpdateDiaconateScaleMemberCommand>();
+            authorizedCommand.Id = scaleItemId;
+            authorizedCommand.EventId = id;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var result = await Mediator.Send(authorizedCommand);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}/diaconate-scale/{scaleItemId}")]
+        public async Task<IActionResult> RemoveDiaconateScale([FromRoute] int id, [FromRoute] int scaleItemId)
+        {
+            var command = AuthorizationRequestCreate<RemoveDiaconateScaleMemberCommand>();
+            command.Id = scaleItemId;
+            command.EventId = id;
+            var result = await Mediator.Send(command);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{id}/kids-scale")]
+        public async Task<IActionResult> GetKidsScale([FromRoute] int id)
+        {
+            var query = AuthorizationRequestCreate<GetKidsScaleMembersQuery>();
+            query.EventId = id;
+            var result = await Mediator.Send(query);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{id}/kids-scale")]
+        public async Task<IActionResult> AddKidsScale([FromRoute] int id, [FromBody] AddKidsScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<AddKidsScaleMemberCommand>();
+            authorizedCommand.EventId = id;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var result = await Mediator.Send(authorizedCommand);
+            return Ok(new { id = result });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/kids-scale/{scaleItemId}")]
+        public async Task<IActionResult> UpdateKidsScale([FromRoute] int id, [FromRoute] int scaleItemId, [FromBody] UpdateKidsScaleMemberCommand command)
+        {
+            var authorizedCommand = AuthorizationRequestCreate<UpdateKidsScaleMemberCommand>();
+            authorizedCommand.Id = scaleItemId;
+            authorizedCommand.EventId = id;
+            authorizedCommand.MemberId = command.MemberId;
+            authorizedCommand.RoleName = command.RoleName;
+            authorizedCommand.Order = command.Order;
+            authorizedCommand.Notes = command.Notes;
+
+            var result = await Mediator.Send(authorizedCommand);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}/kids-scale/{scaleItemId}")]
+        public async Task<IActionResult> RemoveKidsScale([FromRoute] int id, [FromRoute] int scaleItemId)
+        {
+            var command = AuthorizationRequestCreate<RemoveKidsScaleMemberCommand>();
+            command.Id = scaleItemId;
+            command.EventId = id;
+            var result = await Mediator.Send(command);
+            return Ok(result);
         }
 
         /// <summary>

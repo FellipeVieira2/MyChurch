@@ -22,6 +22,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IChurchRepository, ChurchRepository>();
             services.AddScoped<IDonationRepository, DonationRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IDiaconateScaleMemberRepository, DiaconateScaleMemberRepository>();
+            services.AddScoped<IKidsScaleMemberRepository, KidsScaleMemberRepository>();
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPlanRepository, PlanRepository>();
@@ -59,6 +61,8 @@ namespace MyChurch.Infrastructure
             services.AddScoped<IFamilyRepository, FamilyRepository>();
             services.AddScoped<IFamilyInvitationRepository, FamilyInvitationRepository>();
             services.AddScoped<IChildRepository, ChildRepository>();
+            services.AddScoped<IChildPickupAuthorizationRepository, ChildPickupAuthorizationRepository>();
+            services.AddScoped<IKidsCheckInRepository, KidsCheckInRepository>();
             services.AddScoped<IChildGroupAssignmentRepository, ChildGroupAssignmentRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupMemberRepository, GroupMemberRepository>();

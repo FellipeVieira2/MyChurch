@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using MyChurch.Domain.Behauviours;
 using MyChurch.Application.Engagement;
+using MyChurch.Application.Hymn.Services;
 using MyChurch.Application.Presentation.Services;
 using MyChurch.Application.Services;
 using MyChurch.Application.CashFlow.Services; // 🔥 NOVO
@@ -21,6 +22,7 @@ namespace MyChurch.Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddScoped<IEngagementService, EngagementService>();
+            services.AddScoped<HymnPresentationPreviewService>();
             services.AddScoped<ContentGenerationService>();
             services.AddScoped<IBibleService, BibleService>();
             services.AddScoped<IHymnService, HymnService>();

@@ -997,6 +997,66 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("child", (string)null);
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.ChildPickupAuthorization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChildId")
+                        .HasColumnType("integer")
+                        .HasColumnName("child_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<int?>("CreatedByMemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("created_by_member_id");
+
+                    b.Property<string>("DocumentNumber")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("document_number");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("full_name");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("phone_number");
+
+                    b.Property<string>("Relationship")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("relationship");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildId");
+
+                    b.HasIndex("CreatedByMemberId");
+
+                    b.HasIndex("ChildId", "FullName", "PhoneNumber");
+
+                    b.ToTable("child_pickup_authorizations", (string)null);
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.ChildGroupAssignment", b =>
                 {
                     b.Property<int>("ChildId")
@@ -1893,6 +1953,90 @@ namespace MyChurch.Infrastructure.Migrations
                     b.ToTable("event", "postgres");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.DiaconateScaleMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("role_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId", "MemberId", "RoleName")
+                        .IsUnique();
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("diaconate_scale_members", "postgres");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.KidsScaleMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int")
+                        .HasColumnName("event_id");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("member_id");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("role_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId", "MemberId", "RoleName")
+                        .IsUnique();
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("kids_scale_members", "postgres");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.EventNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -2618,6 +2762,86 @@ namespace MyChurch.Infrastructure.Migrations
                     b.HasIndex("JourneyId");
 
                     b.ToTable("journey_stages", (string)null);
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.KidsCheckIn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AuthorizedPickupId")
+                        .HasColumnType("integer")
+                        .HasColumnName("authorized_pickup_id");
+
+                    b.Property<int>("CheckedInByMemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("checked_in_by_member_id");
+
+                    b.Property<DateTime>("CheckedInAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("checked_in_at");
+
+                    b.Property<int?>("CheckedOutByMemberId")
+                        .HasColumnType("int")
+                        .HasColumnName("checked_out_by_member_id");
+
+                    b.Property<DateTime?>("CheckedOutAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("checked_out_at");
+
+                    b.Property<int>("ChildId")
+                        .HasColumnType("integer")
+                        .HasColumnName("child_id");
+
+                    b.Property<int>("ChurchId")
+                        .HasColumnType("int")
+                        .HasColumnName("church_id");
+
+                    b.Property<string>("EnvironmentName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("environment_name");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<string>("PickupToken")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("pickup_token");
+
+                    b.Property<DateTime>("PickupTokenExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("pickup_token_expires_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorizedPickupId");
+
+                    b.HasIndex("CheckedInByMemberId");
+
+                    b.HasIndex("CheckedOutByMemberId");
+
+                    b.HasIndex("ChildId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_kids_check_ins_child_active")
+                        .HasFilter("checked_out_at IS NULL");
+
+                    b.HasIndex("ChurchId", "CheckedInAt")
+                        .HasDatabaseName("IX_kids_check_ins_church_checked_in_at");
+
+                    b.HasIndex("PickupToken")
+                        .IsUnique();
+
+                    b.ToTable("kids_check_ins", (string)null);
                 });
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Member", b =>
@@ -4847,6 +5071,44 @@ namespace MyChurch.Infrastructure.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("MyChurch.Domain.Entities.DiaconateScaleMember", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithMany("DiaconateScaleMembers")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("MyChurch.Domain.Entities.KidsScaleMember", b =>
+                {
+                    b.HasOne("MyChurch.Domain.Entities.Event", "Event")
+                        .WithMany("KidsScaleMembers")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChurch.Domain.Entities.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("MyChurch.Domain.Entities.EventNotification", b =>
                 {
                     b.HasOne("MyChurch.Domain.Entities.Event", "Event")
@@ -5519,6 +5781,10 @@ namespace MyChurch.Infrastructure.Migrations
 
             modelBuilder.Entity("MyChurch.Domain.Entities.Event", b =>
                 {
+                    b.Navigation("DiaconateScaleMembers");
+
+                    b.Navigation("KidsScaleMembers");
+
                     b.Navigation("Notifications");
 
                     b.Navigation("Recurrence")

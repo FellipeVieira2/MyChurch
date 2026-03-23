@@ -119,6 +119,18 @@ namespace MyChurch.Infrastructure.Mappings
                     });
 
             builder
+                .HasMany(e => e.DiaconateScaleMembers)
+                .WithOne(x => x.Event)
+                .HasForeignKey(x => x.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(e => e.KidsScaleMembers)
+                .WithOne(x => x.Event)
+                .HasForeignKey(x => x.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .HasMany(e => e.Notifications)
                 .WithOne(n => n.Event)
                 .HasForeignKey(n => n.EventId)

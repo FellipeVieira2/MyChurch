@@ -14,5 +14,7 @@ namespace MyChurch.Domain.Entities
         public Gender Gender { get; set; } // Enum
         public bool IsActive { get; set; } = true;
         public virtual ICollection<ChildGroupAssignment> GroupAssignments { get; set; } = new List<ChildGroupAssignment>();
+        public virtual ICollection<ChildPickupAuthorization> PickupAuthorizations { get; set; } = new List<ChildPickupAuthorization>();
+        public virtual ICollection<KidsCheckIn> KidsCheckIns { get; set; } = new List<KidsCheckIn>();
     }
 }
