@@ -24,3 +24,16 @@ D:\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.
 D:\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\refint\Mychurch.Common.dll
 D:\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.pdb
 D:\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\ref\Mychurch.Common.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\bin\Debug\net8.0\Mychurch.Common.deps.json
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\bin\Debug\net8.0\Mychurch.Common.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\bin\Debug\net8.0\Mychurch.Common.pdb
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.csproj.AssemblyReference.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.AssemblyInfoInputs.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.AssemblyInfo.cs
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.csproj.CoreCompileInputs.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.sourcelink.json
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\refint\Mychurch.Common.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\Mychurch.Common.pdb
+C:\Users\Fellipe.Souza\MyChurch\src\Infrastructure\Mychurch.Common\obj\Debug\net8.0\ref\Mychurch.Common.dll

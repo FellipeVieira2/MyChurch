@@ -24,3 +24,16 @@ D:\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.dll
 D:\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\refint\MyChurch.Domain.dll
 D:\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.pdb
 D:\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\ref\MyChurch.Domain.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.deps.json
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\bin\Debug\net8.0\MyChurch.Domain.pdb
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.csproj.AssemblyReference.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.AssemblyInfoInputs.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.AssemblyInfo.cs
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.sourcelink.json
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\refint\MyChurch.Domain.dll
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\MyChurch.Domain.pdb
+C:\Users\Fellipe.Souza\MyChurch\src\Domain\MyChurch.Domain\obj\Debug\net8.0\ref\MyChurch.Domain.dll

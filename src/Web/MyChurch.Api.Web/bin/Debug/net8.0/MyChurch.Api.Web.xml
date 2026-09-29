@@ -1353,6 +1353,11 @@
             Faz check-in do membro no culto (geolocalização obrigatória). Retorna 0 se já presente.
             </summary>
         </member>
+        <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterVisitorPresence(System.Int32,System.Int32,MyChurch.Api.Web.Controllers.WorshipActivityController.RegisterPresenceRequest)">
+            <summary>
+            Faz check-in do visitante no culto (geolocalização obrigatória). Retorna 0 se já presente.
+            </summary>
+        </member>
         <member name="M:MyChurch.Api.Web.Controllers.WorshipActivityController.HighlightBibleReading(System.Int32,System.Int32,System.Int32,System.Int32,System.Nullable{System.Int32})">
             <summary>
             Destaca a leitura bíblica para todos os membros do culto

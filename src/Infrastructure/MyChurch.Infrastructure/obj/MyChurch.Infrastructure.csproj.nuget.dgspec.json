@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {}
+    "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj": {
+    "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
         "projectName": "MyChurch.Domain",
-        "projectPath": "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
-        "packagesPath": "C:\\Users\\fvsou\\.nuget\\packages\\",
-        "outputPath": "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\obj\\",
+        "projectPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj",
+        "packagesPath": "C:\\Users\\Fellipe.Souza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\fvsou\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fellipe.Souza\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,10 +26,12 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -44,10 +46,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
             "FluentValidation": {
@@ -83,24 +86,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj": {
+    "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
         "projectName": "Mychurch.Common",
-        "projectPath": "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
-        "packagesPath": "C:\\Users\\fvsou\\.nuget\\packages\\",
-        "outputPath": "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\obj\\",
+        "projectPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj",
+        "packagesPath": "C:\\Users\\Fellipe.Souza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\fvsou\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fellipe.Souza\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -109,10 +112,12 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {}
           }
@@ -127,10 +132,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.Extensions.Configuration.Abstractions": {
@@ -154,24 +160,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {
+    "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
         "projectName": "MyChurch.Infrastructure",
-        "projectPath": "D:\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\fvsou\\.nuget\\packages\\",
-        "outputPath": "D:\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\MyChurch.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Fellipe.Souza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\MyChurch.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\fvsou\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Fellipe.Souza\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -180,17 +186,19 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
+            "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj": {
-                "projectPath": "D:\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj"
+              "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj": {
+                "projectPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Domain\\MyChurch.Domain\\MyChurch.Domain.csproj"
               },
-              "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj": {
-                "projectPath": "D:\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj"
+              "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj": {
+                "projectPath": "C:\\Users\\Fellipe.Souza\\MyChurch\\src\\Infrastructure\\Mychurch.Common\\Mychurch.Common.csproj"
               }
             }
           }
@@ -205,10 +213,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net8.0": {
+          "framework": "net8.0",
           "targetAlias": "net8.0",
           "dependencies": {
             "AWSSDK.Extensions.NETCore.Setup": {
@@ -312,7 +321,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
