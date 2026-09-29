@@ -56,6 +56,30 @@ namespace MyChurch.Api.Web.Controllers
         }
 
         /// <summary>
+        /// Faz check-in do visitante no culto (geolocalização obrigatória). Retorna 0 se já presente.
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost("{worshipServiceId}/visitor/{visitorId}/presence/check-in")]
+        public async Task<IActionResult> RegisterVisitorPresence(int worshipServiceId, int visitorId, [FromBody] RegisterPresenceRequest body)
+        {
+            var command = new RegisterVisitorWorshipPresenceCommand
+            {
+                WorshipServiceId = worshipServiceId,
+                VisitorId = visitorId,
+                Latitude = body.Latitude,
+                Longitude = body.Longitude,
+                MaxDistanceMeters = body.MaxDistanceMeters ?? 150
+            };
+            var id = await Mediator.Send(command);
+            if (id > 0)
+            {
+                await _hubContext.Clients.Group($"worship_{worshipServiceId}")
+                    .SendAsync("VisitorJoined", new { worshipServiceId, visitorId });
+            }
+            return Ok(new { presenceId = id });
+        }
+
+        /// <summary>
         /// Destaca a leitura bíblica para todos os membros do culto
         /// </summary>
         [Authorize(Roles = "Admin")]
